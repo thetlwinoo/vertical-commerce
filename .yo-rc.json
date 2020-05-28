@@ -1,0 +1,41 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.vertical.commerce",
+      "nativeLanguage": "en"
+    },
+    "jhipsterVersion": "6.9.0",
+    "applicationType": "microservice",
+    "baseName": "vscommerce",
+    "packageName": "com.vertical.commerce",
+    "packageFolder": "com/vertical/commerce",
+    "serverPort": "8181",
+    "authenticationType": "oauth2",
+    "cacheProvider": "hazelcast",
+    "enableHibernateCache": true,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": "consul",
+    "buildTool": "maven",
+    "enableSwaggerCodegen": true,
+    "jwtSecretKey": "MTBkOTViNjFiNmFmNDNjN2E3MTAyYTE2Y2VkMTY3M2E5OTIwM2RlOGRhZDYzNmUzMDc1YTUwZjUwOTdlZDkyYjFkODc0YTE3NWQ5ODRjY2NkZjg1ZTJkYmExNjk5MTZhMjdjNjJkMzZmM2I4OThiYzZiOWVkNWI4OTA2ZjllMDg=",
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1590639670466,
+    "testFrameworks": ["gatling"],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "clientPackageManager": "npm",
+    "nativeLanguage": "en",
+    "languages": ["en", "my"],
+    "blueprints": [],
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
