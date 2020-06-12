@@ -1,0 +1,6 @@
+mvnw package -Pprod -DskipTests jib:dockerBuild
+
+docker image tag zezawar thetlwinoo/vertical-zezawar
+
+docker image push thetlwinoo/vertical-zezawar
+

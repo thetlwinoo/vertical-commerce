@@ -1,0 +1,11 @@
+id;customer_question;customer_question_on;supplier_answer;supplier_answer_on;active_ind
+1;../fake-data/blob/hipster.txt;2020-06-10T11:08:00;../fake-data/blob/hipster.txt;2020-06-09T21:35:13;true
+2;../fake-data/blob/hipster.txt;2020-06-10T12:04:16;../fake-data/blob/hipster.txt;2020-06-10T03:01:25;true
+3;../fake-data/blob/hipster.txt;2020-06-10T09:24:46;../fake-data/blob/hipster.txt;2020-06-09T17:28:10;false
+4;../fake-data/blob/hipster.txt;2020-06-10T06:26:32;../fake-data/blob/hipster.txt;2020-06-09T23:12:22;false
+5;../fake-data/blob/hipster.txt;2020-06-09T20:14:02;../fake-data/blob/hipster.txt;2020-06-10T09:12:53;false
+6;../fake-data/blob/hipster.txt;2020-06-10T00:10:36;../fake-data/blob/hipster.txt;2020-06-10T07:59:48;true
+7;../fake-data/blob/hipster.txt;2020-06-10T10:58:02;../fake-data/blob/hipster.txt;2020-06-09T23:44:38;false
+8;../fake-data/blob/hipster.txt;2020-06-10T00:05:57;../fake-data/blob/hipster.txt;2020-06-10T10:54:02;false
+9;../fake-data/blob/hipster.txt;2020-06-10T12:23:15;../fake-data/blob/hipster.txt;2020-06-10T00:30:26;false
+10;../fake-data/blob/hipster.txt;2020-06-09T20:32:42;../fake-data/blob/hipster.txt;2020-06-10T04:57:48;true

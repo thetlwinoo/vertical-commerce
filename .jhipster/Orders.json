@@ -1,0 +1,186 @@
+{
+  "name": "Orders",
+  "fields": [
+    {
+      "fieldName": "orderDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dueDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "expectedDeliveryDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "paymentStatus",
+      "fieldType": "PaymentStatus",
+      "fieldValues": "PENDING,PAID,CANCELLED,UNSUCCESSFUL"
+    },
+    {
+      "fieldName": "accountNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "subTotal",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "taxAmount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "frieight",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "totalDue",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "comments",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "deliveryInstructions",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "internalComments",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "pickingCompletedWhen",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "OrderStatus",
+      "fieldValues": "NEW_ORDER,COMPLETED,PENDING,CANCELLED,READY_TO_SHIP,SHIPPED,DELIVERED,RETURNED,REFUNDED",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "customerReviewedOn",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "sellerRating",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "sellerReview",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "deliveryRating",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "deliveryReview",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "reviewAsAnonymous",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "completedReview",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "orderLineString",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "lastEditedBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "lastEditedWhen",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "orderLines",
+      "otherEntityRelationshipName": "order",
+      "relationshipName": "orderLineList"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "customers",
+      "otherEntityRelationshipName": "orders",
+      "relationshipName": "customer",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "addresses",
+      "otherEntityRelationshipName": "orders",
+      "relationshipName": "shipToAddress",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "addresses",
+      "otherEntityRelationshipName": "orders",
+      "relationshipName": "billToAddress",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "shipMethod",
+      "otherEntityRelationshipName": "orders",
+      "relationshipName": "shipMethod",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "currencyRate",
+      "otherEntityRelationshipName": "orders",
+      "relationshipName": "currencyRate",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "paymentMethods",
+      "otherEntityRelationshipName": "orders",
+      "relationshipName": "paymentMethod",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "orderTracking",
+      "otherEntityRelationshipName": "order",
+      "relationshipName": "orderTracking",
+      "ownerSide": false
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "specialDeals",
+      "otherEntityRelationshipName": "orderList",
+      "relationshipName": "specialDeals",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20200610150245",
+  "entityTableName": "orders",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "vscommerce",
+  "applications": "*",
+  "microserviceName": "vscommerce"
+}

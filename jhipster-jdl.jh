@@ -1,0 +1,933 @@
+entity AddressTypes{
+	name String required
+    refer String
+}
+entity Culture{
+	code String required
+	name String required
+}
+
+entity Addresses{
+	contactPerson String required
+    contactNumber String required
+    contactEmailAddress String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+	addressLine1 String required
+    addressLine2 String
+    city String
+    postalCode String
+    defaultInd Boolean
+    activeInd Boolean
+}
+
+entity BusinessEntityAddress
+
+entity BusinessEntityContact
+
+entity PersonEmailAddress{
+	emailAddress String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    defaultInd Boolean
+    activeInd Boolean
+}
+entity PersonPhone{
+	phoneNumber String required
+    defaultInd Boolean
+    activeInd Boolean
+}
+entity PhoneNumberType{
+	name String required
+}
+
+entity ContactType{
+	name String required
+}
+
+entity Countries {
+    name String required
+    formalName String required
+    isoAplha3Code String
+    isoNumericCode Integer
+    countryType String
+    latestRecordedPopulation Long
+    continent String required
+    region String required
+    subregion String required
+    border String
+    validFrom Instant required
+    validTo Instant required
+}
+entity StateProvinces {
+    code String required
+    name String required
+    salesTerritory String required
+    border String
+    latestRecordedPopulation Long
+    validFrom Instant required
+    validTo Instant required
+}
+entity Cities {
+    name String required
+    location String
+    latestRecordedPopulation Long
+    validFrom Instant required
+    validTo Instant required
+}
+entity SystemParameters {
+    applicationSettings String required
+}
+entity TransactionTypes {
+    name String required
+    validFrom Instant required
+    validTo Instant required
+}
+entity People {
+    fullName String required
+    preferredName String required
+    searchName String required
+    gender Gender required
+    dateOfBirth Instant
+    isPermittedToLogon Boolean required
+    logonName String
+    isExternalLogonProvider Boolean required
+    isSystemUser Boolean required
+    isEmployee Boolean required
+    isSalesPerson Boolean required
+    isGuestUser Boolean required
+    emailPromotion Boolean required
+    userPreferences String
+    phoneNumber String
+    emailAddress String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    customFields String
+    otherLanguages String
+    userId String required
+    validFrom Instant required
+    validTo Instant required
+}
+
+enum Gender {
+    MALE,FEMALE,OTHER
+}
+
+entity DeliveryMethods {
+    name String required
+    validFrom Instant required
+    validTo Instant required
+}
+entity SupplierCategories {
+    name String required
+    validFrom Instant required
+    validTo Instant required
+}
+entity Suppliers{
+    name String required
+    supplierReference String
+    bankAccountName String
+    bankAccountBranch String
+    bankAccountCode String
+    bankAccountNumber String
+    bankInternationalCode String
+    paymentDays Integer required
+    internalComments String
+    phoneNumber String required
+    faxNumber String
+    websiteURL String
+    webServiceUrl String
+    creditRating Integer
+    activeFlag Boolean
+    thumbnailUrl String
+    validFrom Instant required
+    validTo Instant required
+}
+
+entity SupplierTransactions {
+    supplierInvoiceNumber String
+    transactionDate Instant required
+    amountExcludingTax BigDecimal required
+    taxAmount BigDecimal required
+    transactionAmount BigDecimal required
+    outstandingBalance BigDecimal required
+    finalizationDate Instant
+    isFinalized Boolean
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity SupplierTransactionStatus {
+    name String
+    label String
+    shortLabel String
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity CurrencyRate{
+	currencyRateDate Instant required
+    fromcode String
+    tocode String
+    averageRate BigDecimal
+    endOfDayRate BigDecimal
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+entity PurchaseOrders {
+    orderDate Instant required
+    expectedDeliveryDate Instant
+    supplierReference String
+    isOrderFinalized Integer required
+    comments String
+    internalComments String
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity PurchaseOrderLines {
+    orderedOuters Integer required
+    description String required
+    receivedOuters Integer required
+    expectedUnitPricePerOuter BigDecimal
+    lastReceiptDate Instant
+    isOrderLineFinalized Boolean required
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity BuyingGroups {
+    name String
+    validFrom Instant required
+    validTo Instant required
+}
+entity CustomerCategories {
+    name String
+    validFrom Instant required
+    validTo Instant required
+}
+entity Customers {
+    accountNumber String required
+    accountOpenedDate Instant required
+    standardDiscountPercentage BigDecimal required
+    isStatementSent Boolean required
+    isOnCreditHold Boolean required
+    paymentDays Integer required
+    deliveryRun String
+    runPosition String
+    lastEditedBy String required
+    validFrom Instant required
+    validTo Instant required
+}
+
+entity CustomerPayment{
+    amountExcludingTax BigDecimal required
+    taxAmount BigDecimal required
+    transactionAmount BigDecimal required
+    outstandingAmount BigDecimal
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity CustomerPaymentCreditCard{
+    creditCardNumber String required
+    creditCardExpiryMonth Integer required
+    creditCardExpiryYear Integer required
+    amount BigDecimal required
+    batchId String required
+    responseCode String required
+    approvalCode String required
+    responseData TextBlob
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity CustomerPaymentCreditCardExtended{
+    errorCode String required
+    errorMessage String
+    lastEditedBy String required
+    lastEditeWhen Instant required
+}
+
+entity CustomerPaymentVoucher{
+    serialNo String required
+    amount BigDecimal required
+    lastEdityBy String required
+    lastEditedWhen Instant required
+}
+
+entity CustomerPaymentBankTransfer{
+    receiptImageUrl String required
+    nameInBankAccount String required
+    dateOfTransfer Instant required
+    amountTransferred BigDecimal required
+    lastEdityBy String required
+    lastEditedWhen Instant required
+}
+
+entity CustomerPaymentPaypal{
+    paypalAccount String required
+    amount BigDecimal required
+    responseCode String required
+    approvalCode String required
+    responseData TextBlob
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity CustomerTransactions {
+    transactionDate Instant required
+    amountExcludingTax BigDecimal required
+    taxAmount BigDecimal required
+    transactionAmount BigDecimal required
+    outstandingBalance BigDecimal required
+    finalizationDate Instant
+    isFinalized Boolean
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity InvoiceLines {
+    description String required
+    quantity Integer required
+    unitPrice BigDecimal
+    taxRate BigDecimal required
+    taxAmount BigDecimal required
+    lineProfit BigDecimal required
+    extendedPrice BigDecimal required
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity Invoices{
+    invoiceDate Instant required
+    customerPurchaseOrderNumber String
+    isCreditNote Boolean required
+    creditNoteReason String
+    comments String
+    deliveryInstructions String
+    internalComments String
+    totalDryItems Integer required
+    totalChillerItems Integer required
+    deliveryRun String
+    runPosition String
+    returnedDeliveryData String
+    confirmedDeliveryTime Instant
+    confirmedReceivedBy String
+    status InvoiceStatus required
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity Receipts{
+    receiptNo String required
+    issuedDate Instant required
+    printCount Integer required
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+enum InvoiceStatus {
+    PAID, ISSUED, CANCELLED
+}
+
+entity PaymentMethods{
+    name String
+    code String
+    disabled Boolean
+    activeInd Boolean
+    sortOrder Integer
+    iconFont String
+}
+
+entity BankAccounts{
+    name String
+    branch String
+    code String
+    number String
+    type String
+    bank String
+    internationalCode String
+    lastEditedBy String required
+    validForm Instant required
+    validTo Instant required
+}
+
+entity Cards{
+    number String
+    modifiedDate Instant
+}
+
+entity CardTypeCreditCards{
+    name String
+    startNumber Integer
+    endNumber Integer
+    modifiedDate Instant
+}
+
+entity CardTypes{
+    name String
+    issuerId Long
+    modifiedDate Instant
+}
+
+entity CreditCardType{
+    name String
+    modifiedDate Instant
+}
+
+entity OrderLines {
+    description String
+    unitPrice BigDecimal
+    unitPriceDiscount BigDecimal
+    lineTotal BigDecimal
+    taxRate BigDecimal
+    quantity Integer required
+    pickedQuantity Integer
+    pickingCompletedWhen Instant
+    status OrderLineStatus required
+    thumbnailUrl String
+    lineRating Integer
+    lineReview TextBlob
+    customerReviewedOn Instant
+    supplierResponse TextBlob
+    supplierResponseOn Instant
+    likeCount Integer
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+enum OrderLineStatus {
+    AVAILABLE, OUT_OF_STOCK, BACK_ORDER
+}
+
+entity Orders {
+    orderDate Instant required
+    dueDate Instant
+    expectedDeliveryDate Instant
+    paymentStatus PaymentStatus
+    accountNumber String
+    subTotal BigDecimal
+    taxAmount BigDecimal
+    frieight BigDecimal
+    totalDue BigDecimal
+    comments String
+    deliveryInstructions String
+    internalComments String
+    pickingCompletedOn Instant
+    status OrderStatus required
+    customerReviewedOn Instant
+    sellerRating Integer
+    sellerReview TextBlob
+    deliveryRating Integer
+    deliveryReview TextBlob
+    reviewAsAnonymous Boolean
+    completedReview Boolean
+    orderLineString TextBlob
+    isUnderSupplyBackOrdered Boolean
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity OrderTracking{
+    carrierTrackingNumber String
+    eventDetails TextBlob required
+    eventDate Instant required
+}
+
+entity TrackingEvent{
+    name String required
+}
+
+enum OrderStatus {
+    NEW_ORDER, COMPLETED, PENDING, CANCELLED, READY_TO_SHIP, SHIPPED, DELIVERED, RETURNED, REFUNDED
+}
+
+enum PaymentStatus {
+    CASH_ON_DELIVERY, PENDING, PAID, CANCELLED, UNSUCCESSFUL
+}
+
+entity SpecialDeals{
+    dealDescription String required
+    startDate Instant required
+    endDate Instant required
+    discountAmount BigDecimal
+    discountPercentage BigDecimal
+    discountCode String
+    unitPrice BigDecimal
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity Discount{
+    name String required
+    description String
+    modifiedDate Instant required
+}
+
+entity DiscountDetails{
+    amount BigDecimal required
+    isPercentage Boolean required
+    isAllowCombinationDiscount Boolean required
+    isFinalBillDiscount Boolean required
+    name String required
+    startCount Integer required
+    endCount Integer
+    multiplyCount Integer required
+    modifiedDate Instant required
+}
+
+entity ColdRoomTemperatures {
+    coldRoomSensorNumber Integer required
+    recordedWhen Instant required
+    temperature BigDecimal required
+    validFrom Instant required
+    validTo Instant required
+}
+
+entity PackageTypes {
+    name String required
+    validFrom Instant required
+    validTo Instant required
+}
+
+entity Products {
+    name String required
+    handle String
+    searchDetails String
+    productNumber String
+    sellCount Integer
+    stockItemString TextBlob
+    totalWishlist Integer
+    totalStars Integer
+    discountedPercentage Integer
+    preferredInd Boolean
+    availableDeliveryInd Boolean
+    activeInd Boolean
+    questionsAboutProductInd Boolean
+    lastEditedBy String required
+    lastEditedWhen Instant required
+    releaseDate Instant required
+    availableDate Instant required
+}
+
+entity ProductListPriceHistory{
+    startDate Instant required
+    endDate Instant
+    listPrice BigDecimal required
+    modifiedDate Instant required
+}
+
+entity BarcodeTypes{
+	name String required
+}
+
+entity StockItems{
+	name String required
+    vendorCode String
+    vendorSKU String
+    generatedSKU String
+    barcode String
+    taxRate BigDecimal
+    unitPrice BigDecimal required
+    recommendedRetailPrice BigDecimal
+    typicalWeightPerUnit BigDecimal
+    quantityOnHand Integer required
+    shelf String
+    bin String
+    lastStockTakeQuantity Integer
+    lastCostPrice BigDecimal required
+    reorderLevel Integer
+    targetStockLevel Integer
+    leadTimeDays Integer
+    quantityPerOuter Integer
+    isChillerStock Boolean required
+    itemLength Integer
+    itemWidth Integer
+    itemHeight Integer
+    itemWeight BigDecimal
+    itemPackageLength Integer
+    itemPackageWidth Integer
+    itemPackageHeight Integer
+    itemPackageWeight BigDecimal
+    noOfPieces Integer
+    noOfItems Integer
+    manufacture String
+    marketingComments String
+    internalComments String
+    sellStartDate Instant
+    sellEndDate Instant
+    sellCount Integer
+    tags String
+    searchDetails String
+    customFields TextBlob
+    thumbnailUrl String
+    activeInd Boolean required
+    liveInd Boolean required
+    cashOnDeliveryInd Boolean required
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity UploadTransactions{
+    fileName String
+    importedTemplate Blob
+    importedFailedTemplate Blob
+    status Integer
+    generatedCode String
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity UploadActionTypes{
+	name String
+}
+
+entity StockItemTransactions{
+	transactionOccuredWhen Instant required
+    quantity BigDecimal
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity WarrantyTypes{
+	name String required
+}
+
+entity ProductAttribute{
+	value String required
+}
+
+entity ProductAttributeSet{
+	name String required
+}
+
+entity ProductOption{
+	value String required
+}
+
+entity ProductOptionSet{
+	value String required
+}
+
+entity ProductChoice{
+	isMultiply Boolean required
+}
+
+entity ProductSet{
+	name String required
+    noOfPerson Integer required
+    isExclusive Boolean required
+    modifinedDate Instant required
+}
+
+entity ProductSetDetails{
+	subGroupNo Integer
+    subGroupMinCount Integer
+    subGroupMinTotal BigDecimal required
+    minCount Integer
+    maxCount Integer
+    isOptional Boolean
+}
+
+entity ProductSetDetailPrice{
+	price BigDecimal required
+	startCount Integer required
+	endCount Integer
+	multiplyCount Integer
+	startDate Instant required
+	endDate Instant
+	modifiedDate Instant required
+}
+
+entity ProductDocument{
+    videoUrl String
+    highlights TextBlob
+    longDescription TextBlob
+    shortDescription TextBlob
+    whatInTheBox TextBlob
+    careInstructions TextBlob
+    productType String
+    modelName String
+    modelNumber String
+    fabricType String
+    specialFeatures TextBlob
+    productComplianceCertificate String
+    genuineAndLegal Boolean
+    countryOfOrigin String
+    usageAndSideEffects TextBlob
+    safetyWarnning TextBlob
+    warrantyPeriod String
+    warrantyPolicy String
+    dangerousGoods String
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity Materials{
+	name String required
+}
+
+entity ProductBrand{
+	name String required
+    shortLabel String
+    sortOrder Integer
+    iconFont String
+    thumbnailUrl String
+}
+
+entity ProductCategory{
+    name String required
+    shortLabel String
+    sortOrder Integer
+    iconFont String
+    justForYouInd Boolean
+    showInNavInd Boolean
+    activeInd Boolean
+}
+
+entity Campaign{
+    name String required
+    shortLabel String
+    sortOrder Integer
+    iconFont String
+    thumbnailUrl String
+}
+
+entity ProductCatalog
+
+entity Currency{
+	code String required
+    name String
+}
+
+entity Photos{
+    blobId String
+    thumbnailUrl String required
+    originalUrl String required
+    bannerTallUrl String
+    bannerWideUrl String
+    circleUrl String
+    sharpenedUrl String
+    squareUrl String
+    watermarkUrl String
+    priority Integer
+    defaultInd Boolean required
+}
+
+entity UnitMeasure{
+	code String required
+    name String required
+}
+
+entity VehicleTemperatures {
+    vehicleRegistration Integer required
+    chillerSensorNumber String required
+    recordedWhen Integer required
+    temperature BigDecimal required
+    isCompressed Boolean required
+    fullSensorData String
+    compressedSensorData String
+}
+
+entity ShoppingCarts{
+	totalPrice BigDecimal
+    totalCargoPrice BigDecimal
+    cartString TextBlob
+    dealString TextBlob
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity ShoppingCartItems{
+	quantity Integer
+	addToOrder Boolean
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity Wishlists
+
+entity WishlistLines
+
+entity Compares
+
+entity CompareLines
+
+entity Questions{
+    customerQuestion TextBlob required
+    customerQuestionOn Instant required
+    supplierAnswer TextBlob
+    supplierAnswerOn Instant
+    activeInd Boolean
+}
+
+entity ProductTags{
+	name String unique required
+}
+
+relationship ManyToOne {
+    Invoices{contactPerson(fullName)} to People
+    Invoices{salespersonPerson(fullName)} to People
+    Invoices{packedByPerson(fullName)} to People
+    Invoices{accountsPerson(fullName)} to People
+    Invoices{customer} to Customers
+    Invoices{billToCustomer} to Customers
+    Invoices{deliveryMethod(name)} to DeliveryMethods
+    Invoices{order} to Orders
+    Invoices{paymentMethod} to PaymentMethods
+    Customers{deliveryMethod(name)} to DeliveryMethods
+    Customers{deliveryAddress} to Addresses
+    PurchaseOrders{contactPerson(fullName)} to People
+    PurchaseOrders{supplier(name)} to Suppliers
+    PurchaseOrders{deliveryMethod(name)} to DeliveryMethods
+    PurchaseOrders{supplier(name)} to Suppliers
+    StateProvinces{country(name)} to Countries
+    Cities{stateProvince(name)} to StateProvinces
+    SystemParameters{deliveryCity(name)} to Cities
+    SystemParameters{postalCity(name)} to Cities
+    Suppliers{supplierCategory(name)} to SupplierCategories
+    Suppliers{deliveryMethod(name)} to DeliveryMethods
+    Suppliers{deliveryCity(name)} to Cities
+    Suppliers{postalCity(name)} to Cities
+    SpecialDeals{buyingGroup(name)} to BuyingGroups
+    SpecialDeals{customerCategory(name)} to CustomerCategories
+    SpecialDeals{customer} to Customers
+    SpecialDeals{productCategory(name)} to ProductCategory
+    Orders{customer} to Customers
+    Orders{shipToAddress} to Addresses
+    Orders{billToAddress} to Addresses
+    Orders{deliveryMethod(name)} to DeliveryMethods
+    Orders{currencyRate} to CurrencyRate
+    Orders{paymentMethod} to PaymentMethods
+    Orders{salePerson(fullName)} to People
+    Orders{backOrder} to Orders
+   	PurchaseOrderLines{packageType(name)} to PackageTypes
+    PurchaseOrderLines{stockItem(name)} to StockItems
+    CustomerTransactions{customer} to Customers
+    CustomerTransactions{paymentMethod} to PaymentMethods
+    CustomerTransactions{transactionType(name)} to TransactionTypes
+    CustomerTransactions{invoice} to Invoices
+    InvoiceLines{packageType(name)} to PackageTypes
+    InvoiceLines{stockItem(name)} to StockItems
+    PersonEmailAddress{person(fullName)} to People
+    PersonPhone{person(fullName)} to People
+    PersonPhone{phoneNumberType(name)} to PhoneNumberType
+    ProductAttribute{productAttributeSet(name)} to ProductAttributeSet
+    ProductAttribute{supplier(name)} to Suppliers
+    ProductAttributeSet{productOptionSet(value)} to ProductOptionSet
+    ProductOption{productOptionSet(value)} to ProductOptionSet
+    ProductOption{supplier(name)} to Suppliers
+    ProductChoice{productCategory(name)} to ProductCategory
+    ProductChoice{productAttributeSet(name)} to ProductAttributeSet
+    ProductChoice{productOptionSet(value)} to ProductOptionSet
+    ProductCatalog{productCategory(name)} to ProductCategory
+    ProductCatalog{product(name)} to Products
+    UploadTransactions{supplier(name)} to Suppliers
+    UploadTransactions{actionType(name)} to UploadActionTypes
+    Products{supplier(name)} to Suppliers
+    Products{productCategory(name)} to ProductCategory
+    Products{productBrand(name)} to ProductBrand
+    WishlistLines{stockItem(name)} to StockItems
+    CompareLines{stockItem(name)} to StockItems
+    ProductDocument{warrantyType(name)} to WarrantyTypes,
+    ProductDocument{culture(name)} to Culture
+    StockItems{itemLengthUnit(code)} to UnitMeasure
+    StockItems{itemWidthUnit(code)} to UnitMeasure
+    StockItems{itemHeightUnit(code)} to UnitMeasure
+    StockItems{packageLengthUnit(code)} to UnitMeasure
+    StockItems{packageWidthUnit(code)} to UnitMeasure
+    StockItems{packageHeightUnit(code)} to UnitMeasure
+    StockItems{itemPackageWeightUnit(code)} to UnitMeasure
+    StockItems{productAttribute(value)} to ProductAttribute
+    StockItems{productOption(value)} to ProductOption
+    StockItems{material(name)} to Materials
+    StockItems{currency(code)} to Currency
+    StockItems{barcodeType(name)} to BarcodeTypes
+    OrderLines{stockItem(name)} to StockItems
+    OrderLines{packageType(name)} to PackageTypes
+    ShoppingCarts{customer} to Customers
+    ShoppingCartItems{stockItem(name)} to StockItems
+    StockItemTransactions{stockItem(name)} to StockItems
+    StockItemTransactions{customer} to Customers
+    StockItemTransactions{invoice} to Invoices
+    StockItemTransactions{supplier(name)} to Suppliers
+    StockItemTransactions{transactionType(name)} to TransactionTypes
+    StockItemTransactions{supplier(name)} to Suppliers
+    StockItemTransactions{purchaseOrder} to PurchaseOrders
+    SupplierTransactions{supplier(name)} to Suppliers
+    SupplierTransactions{transactionType(name)} to TransactionTypes
+    SupplierTransactions{purchaseOrder} to PurchaseOrders
+    SupplierTransactions{order} to Orders
+    CustomerTransactions{order} to Orders
+    SupplierTransactions{invoice} to Invoices
+    Addresses{stateProvince(name)} to StateProvinces
+    Addresses{addressType(name)} to AddressTypes
+    Addresses{person} to People
+    BusinessEntityAddress{address} to Addresses
+    BusinessEntityAddress{person} to People
+    BusinessEntityAddress{addressType(name)} to AddressTypes
+    BusinessEntityContact{person} to People
+    BusinessEntityContact{contactType(name)} to ContactType
+    ProductCategory{parent(name)} to ProductCategory
+    ProductBrand{supplier(name)} to Suppliers
+    CustomerPayment{paymentMethod(name)} to PaymentMethods
+    CustomerPayment{currency(name)} to Currency
+    CustomerPayment{currencyRate} to CurrencyRate
+    CustomerPaymentCreditCard{currency(name)} to Currency
+    CustomerPaymentVoucher{currency(name)} to Currency
+    CustomerPaymentPaypal{currency(name)} to Currency
+    CustomerPaymentBankTransfer{currency(name)} to Currency
+    ProductListPriceHistory{product(name)} to Products
+    ProductSetDetails{productSet(name)} to ProductSet
+    ProductSetDetails{product(name)} to Products
+    ProductSetDetails{productCategory(name)} to ProductCategory
+    ProductSetDetailPrice{productSetDetail} to ProductSetDetails
+    OrderTracking{trackingEvent(name)} to TrackingEvent
+    Receipts{order} to Orders
+    Receipts{invoice} to Invoices
+    DiscountDetails{discount(name)} to Discount
+    DiscountDetails{product(name)} to Products
+    DiscountDetails{productCategory(name)} to ProductCategory
+    People{profile(thumbnailUrl)} to Photos
+    PaymentMethods{icon(thumbnailUrl)} to Photos
+    ProductCategory{icon(thumbnailUrl)} to Photos
+    Campaign{icon(thumbnailUrl)} to Photos
+    ProductBrand{icon(thumbnailUrl)} to Photos
+    OrderLines{reviewImage(thumbnailUrl)} to Photos
+    BankAccounts{logo(thumbnailUrl)} to Photos
+    Questions{supplier(name)} to Suppliers
+    Questions{person(fullName)} to People
+    Questions{product(name)} to Products
+    SupplierTransactions{status(name)} to SupplierTransactionStatus
+}
+
+relationship OneToMany{
+	ShoppingCarts{cartItemList} to ShoppingCartItems{cart}
+    Wishlists{wishlistLineList} to WishlistLines{wishlist}
+    Compares{compareLineList} to CompareLines{compare}
+    SpecialDeals{cartList} to ShoppingCarts
+    SpecialDeals{orderList} to Orders
+    Orders{orderLineList} to OrderLines{order}
+    Invoices{invoiceLineList} to InvoiceLines{invoice}
+    StockItems{photoList} to Photos{stockItem}
+    StockItems{specialDealList} to SpecialDeals{stockItem}
+    Products{stockItemList} to StockItems{product}
+    PurchaseOrders{purchaseOrderLineList} to PurchaseOrderLines{purchaseOrder}
+}
+
+relationship OneToOne{
+    Suppliers{people(fullName)} to People
+    Customers{people(fullName)} to People
+    ShoppingCarts{cartUser} to People{cart}
+    Wishlists{wishlistUser} to People{wishlist}
+    Compares{compareUser(fullName)} to People{compare}
+    CustomerPayment{customerTransaction} to CustomerTransactions{customerPayment}
+    CustomerPaymentCreditCard{customerPayment} to CustomerPayment{customerPaymentCreditCard}
+    CustomerPaymentVoucher{customerPayment} to CustomerPayment{customerPaymentVoucher}
+    CustomerPaymentBankTransfer{customerPayment} to CustomerPayment{customerPaymentBankTransfer}
+    CustomerPaymentPaypal{customerPayment} to CustomerPayment{customerPaymentPaypal}
+    OrderLines{supplier(name)} to Suppliers
+    Products{productDocument} to ProductDocument{product}
+    OrderTracking{order} to Orders{orderTracking}
+}
+
+//paginate JobHistory Employee with infinite-scroll
+paginate Products, StockItems, Orders with pagination
+dto * with mapstruct
+service all with serviceImpl
+filter *
