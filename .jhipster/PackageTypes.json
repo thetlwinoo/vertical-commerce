@@ -18,7 +18,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200610150945",
+  "changelogDate": "20200617162804",
   "entityTableName": "package_types",
   "dto": "mapstruct",
   "pagination": "no",

@@ -34,7 +34,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610143045",
+  "changelogDate": "20200617154604",
   "entityTableName": "cities",
   "dto": "mapstruct",
   "pagination": "no",

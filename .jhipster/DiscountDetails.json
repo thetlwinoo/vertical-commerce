@@ -2,6 +2,11 @@
   "name": "DiscountDetails",
   "fields": [
     {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "amount",
       "fieldType": "BigDecimal",
       "fieldValidateRules": ["required"]
@@ -22,14 +27,8 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "name",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "startCount",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Integer"
     },
     {
       "fieldName": "endCount",
@@ -37,8 +36,23 @@
     },
     {
       "fieldName": "multiplyCount",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "minAmount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "maxAmount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "minVolumeWeight",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "maxVolumeWeight",
+      "fieldType": "Integer"
     },
     {
       "fieldName": "modifiedDate",
@@ -56,9 +70,9 @@
     },
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "products",
+      "otherEntityName": "stockItems",
       "otherEntityRelationshipName": "discountDetails",
-      "relationshipName": "product",
+      "relationshipName": "stockItem",
       "otherEntityField": "name"
     },
     {
@@ -69,7 +83,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610150745",
+  "changelogDate": "20200617162604",
   "entityTableName": "discount_details",
   "dto": "mapstruct",
   "pagination": "no",

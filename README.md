@@ -121,4 +121,4 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v6.9.0/setting-up-ci/
 [openapi-generator]: https://openapi-generator.tech
 [swagger-editor]: https://editor.swagger.io
-[doing api-first development]: https://www.jhipster.tech/documentation-archive/v6.9.0/doing-api-first-development/
+[doing api-first development]: https://www.jhipster.tech/documentation-archive/v6.9.0/doing-api-first-development/ '# vertical-commerce'

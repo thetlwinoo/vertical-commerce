@@ -2,6 +2,10 @@
   "name": "Customers",
   "fields": [
     {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "accountNumber",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
@@ -38,6 +42,14 @@
     {
       "fieldName": "runPosition",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "thumbnailUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "billToAddressSameAsDeliveryAddress",
+      "fieldType": "Boolean"
     },
     {
       "fieldName": "lastEditedBy",
@@ -77,9 +89,16 @@
       "otherEntityRelationshipName": "customers",
       "relationshipName": "deliveryAddress",
       "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "addresses",
+      "otherEntityRelationshipName": "customers",
+      "relationshipName": "billToAddress",
+      "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610144445",
+  "changelogDate": "20200617160104",
   "entityTableName": "customers",
   "dto": "mapstruct",
   "pagination": "no",

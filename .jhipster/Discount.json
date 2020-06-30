@@ -11,13 +11,33 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "modifiedDate",
+      "fieldName": "validFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validTo",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     }
   ],
-  "relationships": [],
-  "changelogDate": "20200610150645",
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "suppliers",
+      "otherEntityRelationshipName": "discount",
+      "relationshipName": "supplier",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "discountTypes",
+      "otherEntityRelationshipName": "discount",
+      "relationshipName": "discountType",
+      "otherEntityField": "name"
+    }
+  ],
+  "changelogDate": "20200617162504",
   "entityTableName": "discount",
   "dto": "mapstruct",
   "pagination": "no",

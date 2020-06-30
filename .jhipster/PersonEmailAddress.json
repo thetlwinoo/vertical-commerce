@@ -25,7 +25,7 @@
       "otherEntityField": "fullName"
     }
   ],
-  "changelogDate": "20200610142445",
+  "changelogDate": "20200617154004",
   "entityTableName": "person_email_address",
   "dto": "mapstruct",
   "pagination": "no",

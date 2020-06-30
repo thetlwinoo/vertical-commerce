@@ -17,7 +17,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610142245",
+  "changelogDate": "20200617153904",
   "entityTableName": "business_entity_contact",
   "dto": "mapstruct",
   "pagination": "no",

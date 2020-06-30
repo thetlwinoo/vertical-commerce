@@ -67,7 +67,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610144045",
+  "changelogDate": "20200617155704",
   "entityTableName": "purchase_orders",
   "dto": "mapstruct",
   "pagination": "no",

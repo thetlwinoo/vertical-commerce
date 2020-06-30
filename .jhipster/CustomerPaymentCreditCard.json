@@ -69,7 +69,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610144645",
+  "changelogDate": "20200617160304",
   "entityTableName": "customer_payment_credit_card",
   "dto": "mapstruct",
   "pagination": "no",

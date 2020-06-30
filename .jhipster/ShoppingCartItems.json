@@ -6,7 +6,7 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "addToOrder",
+      "fieldName": "selectOrder",
       "fieldType": "Boolean"
     },
     {
@@ -30,13 +30,20 @@
     },
     {
       "relationshipType": "many-to-one",
+      "otherEntityName": "deliveryMethods",
+      "otherEntityRelationshipName": "shoppingCartItems",
+      "relationshipName": "deliveryMethod",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
       "otherEntityName": "shoppingCarts",
       "otherEntityRelationshipName": "cartItemList",
       "relationshipName": "cart",
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610153845",
+  "changelogDate": "20200617165604",
   "entityTableName": "shopping_cart_items",
   "dto": "mapstruct",
   "pagination": "no",

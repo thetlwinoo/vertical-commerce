@@ -34,7 +34,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200610143945",
+  "changelogDate": "20200617155604",
   "entityTableName": "currency_rate",
   "dto": "mapstruct",
   "pagination": "no",

@@ -8,7 +8,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200610154445",
+  "changelogDate": "20200617170204",
   "entityTableName": "product_tags",
   "dto": "mapstruct",
   "pagination": "no",

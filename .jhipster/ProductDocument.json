@@ -119,7 +119,7 @@
       "ownerSide": false
     }
   ],
-  "changelogDate": "20200610152745",
+  "changelogDate": "20200617164504",
   "entityTableName": "product_document",
   "dto": "mapstruct",
   "pagination": "no",

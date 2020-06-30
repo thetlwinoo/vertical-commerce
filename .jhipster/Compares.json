@@ -17,7 +17,7 @@
       "relationshipName": "compareLineList"
     }
   ],
-  "changelogDate": "20200610154145",
+  "changelogDate": "20200617165904",
   "entityTableName": "compares",
   "dto": "mapstruct",
   "pagination": "no",

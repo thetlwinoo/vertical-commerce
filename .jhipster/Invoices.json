@@ -51,7 +51,8 @@
     },
     {
       "fieldName": "returnedDeliveryData",
-      "fieldType": "String"
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
     },
     {
       "fieldName": "confirmedDeliveryTime",
@@ -96,7 +97,7 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "people",
       "otherEntityRelationshipName": "invoices",
-      "relationshipName": "salespersonPerson",
+      "relationshipName": "salesPerson",
       "otherEntityField": "fullName"
     },
     {
@@ -118,14 +119,14 @@
       "otherEntityName": "customers",
       "otherEntityRelationshipName": "invoices",
       "relationshipName": "customer",
-      "otherEntityField": "id"
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "customers",
       "otherEntityRelationshipName": "invoices",
       "relationshipName": "billToCustomer",
-      "otherEntityField": "id"
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
@@ -143,13 +144,20 @@
     },
     {
       "relationshipType": "many-to-one",
+      "otherEntityName": "orderPackages",
+      "otherEntityRelationshipName": "invoices",
+      "relationshipName": "orderPackage",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
       "otherEntityName": "paymentMethods",
       "otherEntityRelationshipName": "invoices",
       "relationshipName": "paymentMethod",
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610145345",
+  "changelogDate": "20200617161004",
   "entityTableName": "invoices",
   "dto": "mapstruct",
   "pagination": "no",

@@ -30,7 +30,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610151145",
+  "changelogDate": "20200617163004",
   "entityTableName": "product_list_price_history",
   "dto": "mapstruct",
   "pagination": "no",

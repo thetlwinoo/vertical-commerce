@@ -7,6 +7,30 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "thirdPartyName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "expectedMinArrivalDays",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "expectedMaxArrivalDays",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "activeInd",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "defaultInd",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "deliveryNote",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "validFrom",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
@@ -17,8 +41,17 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "relationships": [],
-  "changelogDate": "20200610143445",
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "suppliers",
+      "otherEntityRelationshipName": "deliveryMethod",
+      "relationshipName": "supplier",
+      "otherEntityField": "id",
+      "ownerSide": false
+    }
+  ],
+  "changelogDate": "20200617155104",
   "entityTableName": "delivery_methods",
   "dto": "mapstruct",
   "pagination": "no",

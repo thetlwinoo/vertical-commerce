@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity CustomerPayment.
+    -->
+    <changeSet id="20200617160204-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="customer_transaction_id"
+                                 baseTableName="customer_payment"
+                                 constraintName="fk_customer_payment_customer_transaction_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="customer_transactions"/>
+
+        <addForeignKeyConstraint baseColumnNames="payment_method_id"
+                                 baseTableName="customer_payment"
+                                 constraintName="fk_customer_payment_payment_method_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="payment_methods"/>
+
+        <addForeignKeyConstraint baseColumnNames="currency_id"
+                                 baseTableName="customer_payment"
+                                 constraintName="fk_customer_payment_currency_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="currency"/>
+
+        <addForeignKeyConstraint baseColumnNames="currency_rate_id"
+                                 baseTableName="customer_payment"
+                                 constraintName="fk_customer_payment_currency_rate_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="currency_rate"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -12,7 +12,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200610153345",
+  "changelogDate": "20200617165104",
   "entityTableName": "currency",
   "dto": "mapstruct",
   "pagination": "no",

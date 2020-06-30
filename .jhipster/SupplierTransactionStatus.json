@@ -25,7 +25,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200610143845",
+  "changelogDate": "20200617155504",
   "entityTableName": "supplier_transaction_status",
   "dto": "mapstruct",
   "pagination": "no",

@@ -12,7 +12,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200610141845",
+  "changelogDate": "20200617153304",
   "entityTableName": "address_types",
   "dto": "mapstruct",
   "pagination": "no",

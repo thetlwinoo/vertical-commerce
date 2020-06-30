@@ -51,7 +51,7 @@
       "otherEntityName": "customers",
       "otherEntityRelationshipName": "customerTransactions",
       "relationshipName": "customer",
-      "otherEntityField": "id"
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
@@ -89,7 +89,7 @@
       "ownerSide": false
     }
   ],
-  "changelogDate": "20200610145145",
+  "changelogDate": "20200617160804",
   "entityTableName": "customer_transactions",
   "dto": "mapstruct",
   "pagination": "no",

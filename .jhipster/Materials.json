@@ -8,7 +8,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200610152845",
+  "changelogDate": "20200617164604",
   "entityTableName": "materials",
   "dto": "mapstruct",
   "pagination": "no",

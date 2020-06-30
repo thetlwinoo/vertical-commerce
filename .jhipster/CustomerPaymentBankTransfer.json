@@ -49,7 +49,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610144945",
+  "changelogDate": "20200617160604",
   "entityTableName": "customer_payment_bank_transfer",
   "dto": "mapstruct",
   "pagination": "no",

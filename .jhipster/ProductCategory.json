@@ -47,7 +47,7 @@
       "otherEntityField": "thumbnailUrl"
     }
   ],
-  "changelogDate": "20200610153045",
+  "changelogDate": "20200617164804",
   "entityTableName": "product_category",
   "dto": "mapstruct",
   "pagination": "no",

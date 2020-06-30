@@ -6,8 +6,29 @@
       "fieldType": "BigDecimal"
     },
     {
-      "fieldName": "totalCargoPrice",
+      "fieldName": "subTotalPrice",
       "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "totalShippingFee",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "totalShippingFeeDiscount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "promotionTotal",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "voucherTotal",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "packageDetails",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
     },
     {
       "fieldName": "cartString",
@@ -36,7 +57,7 @@
       "otherEntityName": "people",
       "otherEntityRelationshipName": "cart",
       "relationshipName": "cartUser",
-      "otherEntityField": "id",
+      "otherEntityField": "fullName",
       "ownerSide": true
     },
     {
@@ -50,7 +71,7 @@
       "otherEntityName": "customers",
       "otherEntityRelationshipName": "shoppingCarts",
       "relationshipName": "customer",
-      "otherEntityField": "id"
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
@@ -60,7 +81,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610153745",
+  "changelogDate": "20200617165504",
   "entityTableName": "shopping_carts",
   "dto": "mapstruct",
   "pagination": "no",

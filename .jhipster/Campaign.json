@@ -32,7 +32,7 @@
       "otherEntityField": "thumbnailUrl"
     }
   ],
-  "changelogDate": "20200610153145",
+  "changelogDate": "20200617164904",
   "entityTableName": "campaign",
   "dto": "mapstruct",
   "pagination": "no",

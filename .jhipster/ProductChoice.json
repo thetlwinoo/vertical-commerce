@@ -30,7 +30,7 @@
       "otherEntityField": "value"
     }
   ],
-  "changelogDate": "20200610152345",
+  "changelogDate": "20200617164104",
   "entityTableName": "product_choice",
   "dto": "mapstruct",
   "pagination": "no",

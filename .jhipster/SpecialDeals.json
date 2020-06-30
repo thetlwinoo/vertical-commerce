@@ -57,6 +57,12 @@
       "relationshipName": "orderList"
     },
     {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "orderPackages",
+      "otherEntityRelationshipName": "specialDeals",
+      "relationshipName": "orderPackageList"
+    },
+    {
       "relationshipType": "many-to-one",
       "otherEntityName": "buyingGroups",
       "otherEntityRelationshipName": "specialDeals",
@@ -75,7 +81,7 @@
       "otherEntityName": "customers",
       "otherEntityRelationshipName": "specialDeals",
       "relationshipName": "customer",
-      "otherEntityField": "id"
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
@@ -92,7 +98,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610150545",
+  "changelogDate": "20200617162304",
   "entityTableName": "special_deals",
   "dto": "mapstruct",
   "pagination": "no",

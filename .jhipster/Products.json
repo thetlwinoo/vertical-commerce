@@ -11,11 +11,11 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "productNumber",
+      "fieldName": "searchDetails",
       "fieldType": "String"
     },
     {
-      "fieldName": "searchDetails",
+      "fieldName": "productNumber",
       "fieldType": "String"
     },
     {
@@ -23,7 +23,7 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "stockItemString",
+      "fieldName": "productDetails",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "text"
     },
@@ -113,7 +113,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610151045",
+  "changelogDate": "20200617162904",
   "entityTableName": "products",
   "dto": "mapstruct",
   "pagination": "pagination",

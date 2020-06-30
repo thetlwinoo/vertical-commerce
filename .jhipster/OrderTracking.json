@@ -34,7 +34,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610150345",
+  "changelogDate": "20200617162104",
   "entityTableName": "order_tracking",
   "dto": "mapstruct",
   "pagination": "no",

@@ -35,7 +35,7 @@
       "otherEntityField": "thumbnailUrl"
     }
   ],
-  "changelogDate": "20200610145545",
+  "changelogDate": "20200617161204",
   "entityTableName": "payment_methods",
   "dto": "mapstruct",
   "pagination": "no",

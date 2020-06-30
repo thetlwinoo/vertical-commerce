@@ -8,7 +8,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200610142645",
+  "changelogDate": "20200617154204",
   "entityTableName": "phone_number_type",
   "dto": "mapstruct",
   "pagination": "no",

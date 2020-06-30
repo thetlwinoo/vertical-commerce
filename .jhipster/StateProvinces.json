@@ -44,7 +44,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200610142945",
+  "changelogDate": "20200617154504",
   "entityTableName": "state_provinces",
   "dto": "mapstruct",
   "pagination": "no",

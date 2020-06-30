@@ -7,32 +7,27 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "dueDate",
-      "fieldType": "Instant"
-    },
-    {
-      "fieldName": "expectedDeliveryDate",
-      "fieldType": "Instant"
-    },
-    {
-      "fieldName": "paymentStatus",
-      "fieldType": "PaymentStatus",
-      "fieldValues": "PENDING,PAID,CANCELLED,UNSUCCESSFUL"
-    },
-    {
-      "fieldName": "accountNumber",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "subTotal",
       "fieldType": "BigDecimal"
     },
     {
-      "fieldName": "taxAmount",
+      "fieldName": "totalTaxAmount",
       "fieldType": "BigDecimal"
     },
     {
-      "fieldName": "frieight",
+      "fieldName": "totalShippingFee",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "totalShippingFeeDiscount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "totalVoucherDiscount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "totalPromtionDiscount",
       "fieldType": "BigDecimal"
     },
     {
@@ -40,20 +35,13 @@
       "fieldType": "BigDecimal"
     },
     {
-      "fieldName": "comments",
-      "fieldType": "String"
+      "fieldName": "paymentStatus",
+      "fieldType": "PaymentStatus",
+      "fieldValues": "CASH_ON_DELIVERY,PENDING,PAID,CANCELLED,UNSUCCESSFUL"
     },
     {
-      "fieldName": "deliveryInstructions",
+      "fieldName": "customerPurchaseOrderNumber",
       "fieldType": "String"
-    },
-    {
-      "fieldName": "internalComments",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "pickingCompletedWhen",
-      "fieldType": "Instant"
     },
     {
       "fieldName": "status",
@@ -62,39 +50,13 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "customerReviewedOn",
-      "fieldType": "Instant"
-    },
-    {
-      "fieldName": "sellerRating",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "sellerReview",
+      "fieldName": "orderDetails",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "text"
     },
     {
-      "fieldName": "deliveryRating",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "deliveryReview",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
-      "fieldName": "reviewAsAnonymous",
+      "fieldName": "isUnderSupplyBackOrdered",
       "fieldType": "Boolean"
-    },
-    {
-      "fieldName": "completedReview",
-      "fieldType": "Boolean"
-    },
-    {
-      "fieldName": "orderLineString",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
     },
     {
       "fieldName": "lastEditedBy",
@@ -110,16 +72,16 @@
   "relationships": [
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "orderLines",
+      "otherEntityName": "orderPackages",
       "otherEntityRelationshipName": "order",
-      "relationshipName": "orderLineList"
+      "relationshipName": "orderPackageList"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "customers",
       "otherEntityRelationshipName": "orders",
       "relationshipName": "customer",
-      "otherEntityField": "id"
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
@@ -137,13 +99,6 @@
     },
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "shipMethod",
-      "otherEntityRelationshipName": "orders",
-      "relationshipName": "shipMethod",
-      "otherEntityField": "name"
-    },
-    {
-      "relationshipType": "many-to-one",
       "otherEntityName": "currencyRate",
       "otherEntityRelationshipName": "orders",
       "relationshipName": "currencyRate",
@@ -154,7 +109,14 @@
       "otherEntityName": "paymentMethods",
       "otherEntityRelationshipName": "orders",
       "relationshipName": "paymentMethod",
-      "otherEntityField": "id"
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "people",
+      "otherEntityRelationshipName": "orders",
+      "relationshipName": "salePerson",
+      "otherEntityField": "fullName"
     },
     {
       "relationshipType": "one-to-one",
@@ -171,7 +133,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610150245",
+  "changelogDate": "20200617161904",
   "entityTableName": "orders",
   "dto": "mapstruct",
   "pagination": "pagination",

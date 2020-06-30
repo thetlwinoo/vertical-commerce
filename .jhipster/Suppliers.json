@@ -69,6 +69,10 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "pickupSameAsHeadOffice",
+      "fieldType": "Boolean"
+    },
+    {
       "fieldName": "validFrom",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
@@ -97,27 +101,28 @@
     },
     {
       "relationshipType": "many-to-one",
+      "otherEntityName": "addresses",
+      "otherEntityRelationshipName": "suppliers",
+      "relationshipName": "pickupAddress",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "addresses",
+      "otherEntityRelationshipName": "suppliers",
+      "relationshipName": "headOfficeAddress",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-many",
       "otherEntityName": "deliveryMethods",
-      "otherEntityRelationshipName": "suppliers",
+      "otherEntityRelationshipName": "supplier",
       "relationshipName": "deliveryMethod",
-      "otherEntityField": "name"
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "cities",
-      "otherEntityRelationshipName": "suppliers",
-      "relationshipName": "deliveryCity",
-      "otherEntityField": "name"
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "cities",
-      "otherEntityRelationshipName": "suppliers",
-      "relationshipName": "postalCity",
-      "otherEntityField": "name"
+      "otherEntityField": "name",
+      "ownerSide": true
     }
   ],
-  "changelogDate": "20200610143645",
+  "changelogDate": "20200617155304",
   "entityTableName": "suppliers",
   "dto": "mapstruct",
   "pagination": "no",

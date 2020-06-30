@@ -8,7 +8,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200610150445",
+  "changelogDate": "20200617162204",
   "entityTableName": "tracking_event",
   "dto": "mapstruct",
   "pagination": "no",

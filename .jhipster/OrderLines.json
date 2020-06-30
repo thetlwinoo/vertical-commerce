@@ -2,13 +2,17 @@
   "name": "OrderLines",
   "fields": [
     {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "quantity",
       "fieldType": "Integer",
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "description",
-      "fieldType": "String"
+      "fieldName": "taxRate",
+      "fieldType": "BigDecimal"
     },
     {
       "fieldName": "unitPrice",
@@ -16,14 +20,6 @@
     },
     {
       "fieldName": "unitPriceDiscount",
-      "fieldType": "BigDecimal"
-    },
-    {
-      "fieldName": "lineTotal",
-      "fieldType": "BigDecimal"
-    },
-    {
-      "fieldName": "taxRate",
       "fieldType": "BigDecimal"
     },
     {
@@ -83,14 +79,6 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-one",
-      "otherEntityName": "suppliers",
-      "otherEntityRelationshipName": "orderLines",
-      "relationshipName": "supplier",
-      "otherEntityField": "name",
-      "ownerSide": true
-    },
-    {
       "relationshipType": "many-to-one",
       "otherEntityName": "stockItems",
       "otherEntityRelationshipName": "orderLines",
@@ -113,13 +101,20 @@
     },
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "orders",
+      "otherEntityName": "suppliers",
+      "otherEntityRelationshipName": "orderLines",
+      "relationshipName": "supplier",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "orderPackages",
       "otherEntityRelationshipName": "orderLineList",
-      "relationshipName": "order",
+      "relationshipName": "orderPackage",
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610150145",
+  "changelogDate": "20200617161804",
   "entityTableName": "order_lines",
   "dto": "mapstruct",
   "pagination": "no",

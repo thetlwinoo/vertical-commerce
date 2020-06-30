@@ -7,7 +7,7 @@
       "otherEntityName": "people",
       "otherEntityRelationshipName": "wishlist",
       "relationshipName": "wishlistUser",
-      "otherEntityField": "id",
+      "otherEntityField": "fullName",
       "ownerSide": true
     },
     {
@@ -17,7 +17,7 @@
       "relationshipName": "wishlistLineList"
     }
   ],
-  "changelogDate": "20200610153945",
+  "changelogDate": "20200617165704",
   "entityTableName": "wishlists",
   "dto": "mapstruct",
   "pagination": "no",

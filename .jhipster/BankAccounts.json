@@ -54,7 +54,7 @@
       "otherEntityField": "thumbnailUrl"
     }
   ],
-  "changelogDate": "20200610145645",
+  "changelogDate": "20200617161304",
   "entityTableName": "bank_accounts",
   "dto": "mapstruct",
   "pagination": "no",

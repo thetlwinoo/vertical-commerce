@@ -34,7 +34,7 @@
       "otherEntityName": "customers",
       "otherEntityRelationshipName": "stockItemTransactions",
       "relationshipName": "customer",
-      "otherEntityField": "id"
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
@@ -65,7 +65,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610151645",
+  "changelogDate": "20200617163504",
   "entityTableName": "stock_item_transactions",
   "dto": "mapstruct",
   "pagination": "no",

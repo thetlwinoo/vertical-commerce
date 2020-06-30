@@ -58,7 +58,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610153445",
+  "changelogDate": "20200617165204",
   "entityTableName": "photos",
   "dto": "mapstruct",
   "pagination": "no",

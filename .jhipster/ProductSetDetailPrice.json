@@ -43,7 +43,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610152645",
+  "changelogDate": "20200617164404",
   "entityTableName": "product_set_detail_price",
   "dto": "mapstruct",
   "pagination": "no",

@@ -23,6 +23,10 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "taxRate",
+      "fieldType": "BigDecimal"
+    },
+    {
       "fieldName": "unitPrice",
       "fieldType": "BigDecimal",
       "fieldValidateRules": ["required"]
@@ -32,8 +36,50 @@
       "fieldType": "BigDecimal"
     },
     {
+      "fieldName": "typicalWeightPerUnit",
+      "fieldType": "BigDecimal"
+    },
+    {
       "fieldName": "quantityOnHand",
       "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "shelf",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "bin",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastStockTakeQuantity",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "lastCostPrice",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "reorderLevel",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "targetStockLevel",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "leadTimeDays",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "quantityPerOuter",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "isChillerStock",
+      "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
     },
     {
@@ -101,8 +147,17 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "customFields",
+      "fieldName": "tags",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "searchDetails",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "customFields",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
     },
     {
       "fieldName": "thumbnailUrl",
@@ -110,11 +165,18 @@
     },
     {
       "fieldName": "activeInd",
-      "fieldType": "Boolean"
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "liveInd",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "cashOnDeliveryInd",
-      "fieldType": "Boolean"
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "lastEditedBy",
@@ -130,15 +192,15 @@
   "relationships": [
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "photos",
-      "otherEntityRelationshipName": "stockItem",
-      "relationshipName": "photoList"
-    },
-    {
-      "relationshipType": "one-to-many",
       "otherEntityName": "specialDeals",
       "otherEntityRelationshipName": "stockItem",
       "relationshipName": "specialDealList"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "photos",
+      "otherEntityRelationshipName": "stockItem",
+      "relationshipName": "photoList"
     },
     {
       "relationshipType": "many-to-one",
@@ -225,13 +287,6 @@
       "otherEntityField": "name"
     },
     {
-      "relationshipType": "one-to-one",
-      "otherEntityName": "stockItemHoldings",
-      "otherEntityRelationshipName": "stockItem",
-      "relationshipName": "stockItemHolding",
-      "ownerSide": false
-    },
-    {
       "relationshipType": "many-to-one",
       "otherEntityName": "products",
       "otherEntityRelationshipName": "stockItemList",
@@ -239,7 +294,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200610151345",
+  "changelogDate": "20200617163204",
   "entityTableName": "stock_items",
   "dto": "mapstruct",
   "pagination": "pagination",
