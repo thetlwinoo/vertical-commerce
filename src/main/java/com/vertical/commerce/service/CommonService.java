@@ -2,6 +2,8 @@ package com.vertical.commerce.service;
 
 import com.vertical.commerce.domain.*;
 import com.vertical.commerce.service.dto.*;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 import java.security.Principal;
 
@@ -56,7 +58,29 @@ public interface CommonService {
 
     Customers getCustomerByPrincipal(Principal principal);
 
-    String getCartString(ShoppingCarts cart);
+    JSONArray getProductDetails(Products product);
 
-    String getOrderLineString(Orders order,OrderLines orderLines);
+    JSONArray getCartDetails(ShoppingCarts cart);
+
+    JSONObject getOrderDetails(Orders order);
+
+    DeliveryMethodsDTO getDeliveryMethods(String filter);
+
+    DeliveryMethods getDeliveryMethodsEntity(Long id,String filter);
+
+    PaymentMethodsDTO getPaymentMethods(String filter);
+
+    PaymentMethods getPaymentMethodsEntity(Long id,String filter);
+
+    TaxDTO getTaxByCode(String filter);
+
+    Tax getTaxByCodeEntity(Long id,String filter);
+
+    ZoneDTO getZone(String filter);
+
+    Zone getZoneEntity(Long id,String filter);
+
+    CitiesDTO getCities(String filter);
+
+    Cities getCitiesEntity(Long id,String filter);
 }

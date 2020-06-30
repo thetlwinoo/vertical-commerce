@@ -59,6 +59,8 @@ public class SuppliersCriteria implements Serializable, Criteria {
 
     private StringFilter thumbnailUrl;
 
+    private BooleanFilter pickupSameAsHeadOffice;
+
     private InstantFilter validFrom;
 
     private InstantFilter validTo;
@@ -67,11 +69,11 @@ public class SuppliersCriteria implements Serializable, Criteria {
 
     private LongFilter supplierCategoryId;
 
+    private LongFilter pickupAddressId;
+
+    private LongFilter headOfficeAddressId;
+
     private LongFilter deliveryMethodId;
-
-    private LongFilter deliveryCityId;
-
-    private LongFilter postalCityId;
 
     public SuppliersCriteria() {
     }
@@ -94,13 +96,14 @@ public class SuppliersCriteria implements Serializable, Criteria {
         this.creditRating = other.creditRating == null ? null : other.creditRating.copy();
         this.activeFlag = other.activeFlag == null ? null : other.activeFlag.copy();
         this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
+        this.pickupSameAsHeadOffice = other.pickupSameAsHeadOffice == null ? null : other.pickupSameAsHeadOffice.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.peopleId = other.peopleId == null ? null : other.peopleId.copy();
         this.supplierCategoryId = other.supplierCategoryId == null ? null : other.supplierCategoryId.copy();
+        this.pickupAddressId = other.pickupAddressId == null ? null : other.pickupAddressId.copy();
+        this.headOfficeAddressId = other.headOfficeAddressId == null ? null : other.headOfficeAddressId.copy();
         this.deliveryMethodId = other.deliveryMethodId == null ? null : other.deliveryMethodId.copy();
-        this.deliveryCityId = other.deliveryCityId == null ? null : other.deliveryCityId.copy();
-        this.postalCityId = other.postalCityId == null ? null : other.postalCityId.copy();
     }
 
     @Override
@@ -244,6 +247,14 @@ public class SuppliersCriteria implements Serializable, Criteria {
         this.thumbnailUrl = thumbnailUrl;
     }
 
+    public BooleanFilter getPickupSameAsHeadOffice() {
+        return pickupSameAsHeadOffice;
+    }
+
+    public void setPickupSameAsHeadOffice(BooleanFilter pickupSameAsHeadOffice) {
+        this.pickupSameAsHeadOffice = pickupSameAsHeadOffice;
+    }
+
     public InstantFilter getValidFrom() {
         return validFrom;
     }
@@ -276,28 +287,28 @@ public class SuppliersCriteria implements Serializable, Criteria {
         this.supplierCategoryId = supplierCategoryId;
     }
 
+    public LongFilter getPickupAddressId() {
+        return pickupAddressId;
+    }
+
+    public void setPickupAddressId(LongFilter pickupAddressId) {
+        this.pickupAddressId = pickupAddressId;
+    }
+
+    public LongFilter getHeadOfficeAddressId() {
+        return headOfficeAddressId;
+    }
+
+    public void setHeadOfficeAddressId(LongFilter headOfficeAddressId) {
+        this.headOfficeAddressId = headOfficeAddressId;
+    }
+
     public LongFilter getDeliveryMethodId() {
         return deliveryMethodId;
     }
 
     public void setDeliveryMethodId(LongFilter deliveryMethodId) {
         this.deliveryMethodId = deliveryMethodId;
-    }
-
-    public LongFilter getDeliveryCityId() {
-        return deliveryCityId;
-    }
-
-    public void setDeliveryCityId(LongFilter deliveryCityId) {
-        this.deliveryCityId = deliveryCityId;
-    }
-
-    public LongFilter getPostalCityId() {
-        return postalCityId;
-    }
-
-    public void setPostalCityId(LongFilter postalCityId) {
-        this.postalCityId = postalCityId;
     }
 
 
@@ -328,13 +339,14 @@ public class SuppliersCriteria implements Serializable, Criteria {
             Objects.equals(creditRating, that.creditRating) &&
             Objects.equals(activeFlag, that.activeFlag) &&
             Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
+            Objects.equals(pickupSameAsHeadOffice, that.pickupSameAsHeadOffice) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo) &&
             Objects.equals(peopleId, that.peopleId) &&
             Objects.equals(supplierCategoryId, that.supplierCategoryId) &&
-            Objects.equals(deliveryMethodId, that.deliveryMethodId) &&
-            Objects.equals(deliveryCityId, that.deliveryCityId) &&
-            Objects.equals(postalCityId, that.postalCityId);
+            Objects.equals(pickupAddressId, that.pickupAddressId) &&
+            Objects.equals(headOfficeAddressId, that.headOfficeAddressId) &&
+            Objects.equals(deliveryMethodId, that.deliveryMethodId);
     }
 
     @Override
@@ -357,13 +369,14 @@ public class SuppliersCriteria implements Serializable, Criteria {
         creditRating,
         activeFlag,
         thumbnailUrl,
+        pickupSameAsHeadOffice,
         validFrom,
         validTo,
         peopleId,
         supplierCategoryId,
-        deliveryMethodId,
-        deliveryCityId,
-        postalCityId
+        pickupAddressId,
+        headOfficeAddressId,
+        deliveryMethodId
         );
     }
 
@@ -388,13 +401,14 @@ public class SuppliersCriteria implements Serializable, Criteria {
                 (creditRating != null ? "creditRating=" + creditRating + ", " : "") +
                 (activeFlag != null ? "activeFlag=" + activeFlag + ", " : "") +
                 (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
+                (pickupSameAsHeadOffice != null ? "pickupSameAsHeadOffice=" + pickupSameAsHeadOffice + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (peopleId != null ? "peopleId=" + peopleId + ", " : "") +
                 (supplierCategoryId != null ? "supplierCategoryId=" + supplierCategoryId + ", " : "") +
+                (pickupAddressId != null ? "pickupAddressId=" + pickupAddressId + ", " : "") +
+                (headOfficeAddressId != null ? "headOfficeAddressId=" + headOfficeAddressId + ", " : "") +
                 (deliveryMethodId != null ? "deliveryMethodId=" + deliveryMethodId + ", " : "") +
-                (deliveryCityId != null ? "deliveryCityId=" + deliveryCityId + ", " : "") +
-                (postalCityId != null ? "postalCityId=" + postalCityId + ", " : "") +
             "}";
     }
 

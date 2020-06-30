@@ -13,6 +13,9 @@ public class DiscountDetailsDTO implements Serializable {
     private Long id;
 
     @NotNull
+    private String name;
+
+    @NotNull
     private BigDecimal amount;
 
     @NotNull
@@ -24,16 +27,19 @@ public class DiscountDetailsDTO implements Serializable {
     @NotNull
     private Boolean isFinalBillDiscount;
 
-    @NotNull
-    private String name;
-
-    @NotNull
     private Integer startCount;
 
     private Integer endCount;
 
-    @NotNull
     private Integer multiplyCount;
+
+    private BigDecimal minAmount;
+
+    private BigDecimal maxAmount;
+
+    private Integer minVolumeWeight;
+
+    private Integer maxVolumeWeight;
 
     @NotNull
     private Instant modifiedDate;
@@ -43,9 +49,9 @@ public class DiscountDetailsDTO implements Serializable {
 
     private String discountName;
 
-    private Long productId;
+    private Long stockItemId;
 
-    private String productName;
+    private String stockItemName;
 
     private Long productCategoryId;
 
@@ -57,6 +63,14 @@ public class DiscountDetailsDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public BigDecimal getAmount() {
@@ -91,14 +105,6 @@ public class DiscountDetailsDTO implements Serializable {
         this.isFinalBillDiscount = isFinalBillDiscount;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getStartCount() {
         return startCount;
     }
@@ -121,6 +127,38 @@ public class DiscountDetailsDTO implements Serializable {
 
     public void setMultiplyCount(Integer multiplyCount) {
         this.multiplyCount = multiplyCount;
+    }
+
+    public BigDecimal getMinAmount() {
+        return minAmount;
+    }
+
+    public void setMinAmount(BigDecimal minAmount) {
+        this.minAmount = minAmount;
+    }
+
+    public BigDecimal getMaxAmount() {
+        return maxAmount;
+    }
+
+    public void setMaxAmount(BigDecimal maxAmount) {
+        this.maxAmount = maxAmount;
+    }
+
+    public Integer getMinVolumeWeight() {
+        return minVolumeWeight;
+    }
+
+    public void setMinVolumeWeight(Integer minVolumeWeight) {
+        this.minVolumeWeight = minVolumeWeight;
+    }
+
+    public Integer getMaxVolumeWeight() {
+        return maxVolumeWeight;
+    }
+
+    public void setMaxVolumeWeight(Integer maxVolumeWeight) {
+        this.maxVolumeWeight = maxVolumeWeight;
     }
 
     public Instant getModifiedDate() {
@@ -147,20 +185,20 @@ public class DiscountDetailsDTO implements Serializable {
         this.discountName = discountName;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getStockItemId() {
+        return stockItemId;
     }
 
-    public void setProductId(Long productsId) {
-        this.productId = productsId;
+    public void setStockItemId(Long stockItemsId) {
+        this.stockItemId = stockItemsId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getStockItemName() {
+        return stockItemName;
     }
 
-    public void setProductName(String productsName) {
-        this.productName = productsName;
+    public void setStockItemName(String stockItemsName) {
+        this.stockItemName = stockItemsName;
     }
 
     public Long getProductCategoryId() {
@@ -201,19 +239,23 @@ public class DiscountDetailsDTO implements Serializable {
     public String toString() {
         return "DiscountDetailsDTO{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
             ", amount=" + getAmount() +
             ", isPercentage='" + isIsPercentage() + "'" +
             ", isAllowCombinationDiscount='" + isIsAllowCombinationDiscount() + "'" +
             ", isFinalBillDiscount='" + isIsFinalBillDiscount() + "'" +
-            ", name='" + getName() + "'" +
             ", startCount=" + getStartCount() +
             ", endCount=" + getEndCount() +
             ", multiplyCount=" + getMultiplyCount() +
+            ", minAmount=" + getMinAmount() +
+            ", maxAmount=" + getMaxAmount() +
+            ", minVolumeWeight=" + getMinVolumeWeight() +
+            ", maxVolumeWeight=" + getMaxVolumeWeight() +
             ", modifiedDate='" + getModifiedDate() + "'" +
             ", discountId=" + getDiscountId() +
             ", discountName='" + getDiscountName() + "'" +
-            ", productId=" + getProductId() +
-            ", productName='" + getProductName() + "'" +
+            ", stockItemId=" + getStockItemId() +
+            ", stockItemName='" + getStockItemName() + "'" +
             ", productCategoryId=" + getProductCategoryId() +
             ", productCategoryName='" + getProductCategoryName() + "'" +
             "}";

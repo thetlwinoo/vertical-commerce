@@ -13,6 +13,9 @@ import org.mapstruct.*;
 public interface DeliveryMethodsMapper extends EntityMapper<DeliveryMethodsDTO, DeliveryMethods> {
 
 
+    @Mapping(target = "suppliers", ignore = true)
+    @Mapping(target = "removeSupplier", ignore = true)
+    DeliveryMethods toEntity(DeliveryMethodsDTO deliveryMethodsDTO);
 
     default DeliveryMethods fromId(Long id) {
         if (id == null) {

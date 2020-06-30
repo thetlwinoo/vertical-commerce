@@ -10,6 +10,7 @@ import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+import io.github.jhipster.service.filter.BigDecimalFilter;
 import io.github.jhipster.service.filter.InstantFilter;
 
 /**
@@ -35,7 +36,21 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
 
     private StringFilter internalComments;
 
-    private StringFilter customerPurchaseOrderNumber;
+    private BigDecimalFilter packageShippingFee;
+
+    private BigDecimalFilter packageShippingFeeDiscount;
+
+    private BigDecimalFilter packagePrice;
+
+    private BigDecimalFilter packageSubTotal;
+
+    private BigDecimalFilter packageTaxAmount;
+
+    private BigDecimalFilter packageVoucherDiscount;
+
+    private BigDecimalFilter packagePromotionDiscount;
+
+    private InstantFilter pickingCompletedWhen;
 
     private InstantFilter customerReviewedOn;
 
@@ -55,6 +70,10 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
 
     private LongFilter supplierId;
 
+    private LongFilter deliveryMethodId;
+
+    private LongFilter specialDealsId;
+
     private LongFilter orderId;
 
     public OrderPackagesCriteria() {
@@ -66,7 +85,14 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
         this.comments = other.comments == null ? null : other.comments.copy();
         this.deliveryInstructions = other.deliveryInstructions == null ? null : other.deliveryInstructions.copy();
         this.internalComments = other.internalComments == null ? null : other.internalComments.copy();
-        this.customerPurchaseOrderNumber = other.customerPurchaseOrderNumber == null ? null : other.customerPurchaseOrderNumber.copy();
+        this.packageShippingFee = other.packageShippingFee == null ? null : other.packageShippingFee.copy();
+        this.packageShippingFeeDiscount = other.packageShippingFeeDiscount == null ? null : other.packageShippingFeeDiscount.copy();
+        this.packagePrice = other.packagePrice == null ? null : other.packagePrice.copy();
+        this.packageSubTotal = other.packageSubTotal == null ? null : other.packageSubTotal.copy();
+        this.packageTaxAmount = other.packageTaxAmount == null ? null : other.packageTaxAmount.copy();
+        this.packageVoucherDiscount = other.packageVoucherDiscount == null ? null : other.packageVoucherDiscount.copy();
+        this.packagePromotionDiscount = other.packagePromotionDiscount == null ? null : other.packagePromotionDiscount.copy();
+        this.pickingCompletedWhen = other.pickingCompletedWhen == null ? null : other.pickingCompletedWhen.copy();
         this.customerReviewedOn = other.customerReviewedOn == null ? null : other.customerReviewedOn.copy();
         this.sellerRating = other.sellerRating == null ? null : other.sellerRating.copy();
         this.deliveryRating = other.deliveryRating == null ? null : other.deliveryRating.copy();
@@ -76,6 +102,8 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
         this.orderLineListId = other.orderLineListId == null ? null : other.orderLineListId.copy();
         this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
+        this.deliveryMethodId = other.deliveryMethodId == null ? null : other.deliveryMethodId.copy();
+        this.specialDealsId = other.specialDealsId == null ? null : other.specialDealsId.copy();
         this.orderId = other.orderId == null ? null : other.orderId.copy();
     }
 
@@ -124,12 +152,68 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
         this.internalComments = internalComments;
     }
 
-    public StringFilter getCustomerPurchaseOrderNumber() {
-        return customerPurchaseOrderNumber;
+    public BigDecimalFilter getPackageShippingFee() {
+        return packageShippingFee;
     }
 
-    public void setCustomerPurchaseOrderNumber(StringFilter customerPurchaseOrderNumber) {
-        this.customerPurchaseOrderNumber = customerPurchaseOrderNumber;
+    public void setPackageShippingFee(BigDecimalFilter packageShippingFee) {
+        this.packageShippingFee = packageShippingFee;
+    }
+
+    public BigDecimalFilter getPackageShippingFeeDiscount() {
+        return packageShippingFeeDiscount;
+    }
+
+    public void setPackageShippingFeeDiscount(BigDecimalFilter packageShippingFeeDiscount) {
+        this.packageShippingFeeDiscount = packageShippingFeeDiscount;
+    }
+
+    public BigDecimalFilter getPackagePrice() {
+        return packagePrice;
+    }
+
+    public void setPackagePrice(BigDecimalFilter packagePrice) {
+        this.packagePrice = packagePrice;
+    }
+
+    public BigDecimalFilter getPackageSubTotal() {
+        return packageSubTotal;
+    }
+
+    public void setPackageSubTotal(BigDecimalFilter packageSubTotal) {
+        this.packageSubTotal = packageSubTotal;
+    }
+
+    public BigDecimalFilter getPackageTaxAmount() {
+        return packageTaxAmount;
+    }
+
+    public void setPackageTaxAmount(BigDecimalFilter packageTaxAmount) {
+        this.packageTaxAmount = packageTaxAmount;
+    }
+
+    public BigDecimalFilter getPackageVoucherDiscount() {
+        return packageVoucherDiscount;
+    }
+
+    public void setPackageVoucherDiscount(BigDecimalFilter packageVoucherDiscount) {
+        this.packageVoucherDiscount = packageVoucherDiscount;
+    }
+
+    public BigDecimalFilter getPackagePromotionDiscount() {
+        return packagePromotionDiscount;
+    }
+
+    public void setPackagePromotionDiscount(BigDecimalFilter packagePromotionDiscount) {
+        this.packagePromotionDiscount = packagePromotionDiscount;
+    }
+
+    public InstantFilter getPickingCompletedWhen() {
+        return pickingCompletedWhen;
+    }
+
+    public void setPickingCompletedWhen(InstantFilter pickingCompletedWhen) {
+        this.pickingCompletedWhen = pickingCompletedWhen;
     }
 
     public InstantFilter getCustomerReviewedOn() {
@@ -204,6 +288,22 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
         this.supplierId = supplierId;
     }
 
+    public LongFilter getDeliveryMethodId() {
+        return deliveryMethodId;
+    }
+
+    public void setDeliveryMethodId(LongFilter deliveryMethodId) {
+        this.deliveryMethodId = deliveryMethodId;
+    }
+
+    public LongFilter getSpecialDealsId() {
+        return specialDealsId;
+    }
+
+    public void setSpecialDealsId(LongFilter specialDealsId) {
+        this.specialDealsId = specialDealsId;
+    }
+
     public LongFilter getOrderId() {
         return orderId;
     }
@@ -228,7 +328,14 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
             Objects.equals(comments, that.comments) &&
             Objects.equals(deliveryInstructions, that.deliveryInstructions) &&
             Objects.equals(internalComments, that.internalComments) &&
-            Objects.equals(customerPurchaseOrderNumber, that.customerPurchaseOrderNumber) &&
+            Objects.equals(packageShippingFee, that.packageShippingFee) &&
+            Objects.equals(packageShippingFeeDiscount, that.packageShippingFeeDiscount) &&
+            Objects.equals(packagePrice, that.packagePrice) &&
+            Objects.equals(packageSubTotal, that.packageSubTotal) &&
+            Objects.equals(packageTaxAmount, that.packageTaxAmount) &&
+            Objects.equals(packageVoucherDiscount, that.packageVoucherDiscount) &&
+            Objects.equals(packagePromotionDiscount, that.packagePromotionDiscount) &&
+            Objects.equals(pickingCompletedWhen, that.pickingCompletedWhen) &&
             Objects.equals(customerReviewedOn, that.customerReviewedOn) &&
             Objects.equals(sellerRating, that.sellerRating) &&
             Objects.equals(deliveryRating, that.deliveryRating) &&
@@ -238,6 +345,8 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
             Objects.equals(orderLineListId, that.orderLineListId) &&
             Objects.equals(supplierId, that.supplierId) &&
+            Objects.equals(deliveryMethodId, that.deliveryMethodId) &&
+            Objects.equals(specialDealsId, that.specialDealsId) &&
             Objects.equals(orderId, that.orderId);
     }
 
@@ -249,7 +358,14 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
         comments,
         deliveryInstructions,
         internalComments,
-        customerPurchaseOrderNumber,
+        packageShippingFee,
+        packageShippingFeeDiscount,
+        packagePrice,
+        packageSubTotal,
+        packageTaxAmount,
+        packageVoucherDiscount,
+        packagePromotionDiscount,
+        pickingCompletedWhen,
         customerReviewedOn,
         sellerRating,
         deliveryRating,
@@ -259,6 +375,8 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
         lastEditedWhen,
         orderLineListId,
         supplierId,
+        deliveryMethodId,
+        specialDealsId,
         orderId
         );
     }
@@ -272,7 +390,14 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
                 (comments != null ? "comments=" + comments + ", " : "") +
                 (deliveryInstructions != null ? "deliveryInstructions=" + deliveryInstructions + ", " : "") +
                 (internalComments != null ? "internalComments=" + internalComments + ", " : "") +
-                (customerPurchaseOrderNumber != null ? "customerPurchaseOrderNumber=" + customerPurchaseOrderNumber + ", " : "") +
+                (packageShippingFee != null ? "packageShippingFee=" + packageShippingFee + ", " : "") +
+                (packageShippingFeeDiscount != null ? "packageShippingFeeDiscount=" + packageShippingFeeDiscount + ", " : "") +
+                (packagePrice != null ? "packagePrice=" + packagePrice + ", " : "") +
+                (packageSubTotal != null ? "packageSubTotal=" + packageSubTotal + ", " : "") +
+                (packageTaxAmount != null ? "packageTaxAmount=" + packageTaxAmount + ", " : "") +
+                (packageVoucherDiscount != null ? "packageVoucherDiscount=" + packageVoucherDiscount + ", " : "") +
+                (packagePromotionDiscount != null ? "packagePromotionDiscount=" + packagePromotionDiscount + ", " : "") +
+                (pickingCompletedWhen != null ? "pickingCompletedWhen=" + pickingCompletedWhen + ", " : "") +
                 (customerReviewedOn != null ? "customerReviewedOn=" + customerReviewedOn + ", " : "") +
                 (sellerRating != null ? "sellerRating=" + sellerRating + ", " : "") +
                 (deliveryRating != null ? "deliveryRating=" + deliveryRating + ", " : "") +
@@ -282,6 +407,8 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
                 (orderLineListId != null ? "orderLineListId=" + orderLineListId + ", " : "") +
                 (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
+                (deliveryMethodId != null ? "deliveryMethodId=" + deliveryMethodId + ", " : "") +
+                (specialDealsId != null ? "specialDealsId=" + specialDealsId + ", " : "") +
                 (orderId != null ? "orderId=" + orderId + ", " : "") +
             "}";
     }

@@ -102,27 +102,18 @@ class OrdersGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "orderDate":"2020-01-01T00:00:00.000Z"
-                , "dueDate":"2020-01-01T00:00:00.000Z"
-                , "expectedDeliveryDate":"2020-01-01T00:00:00.000Z"
-                , "paymentStatus":"PENDING"
-                , "accountNumber":"SAMPLE_TEXT"
                 , "subTotal":"0"
-                , "taxAmount":"0"
-                , "frieight":"0"
+                , "totalTaxAmount":"0"
+                , "totalShippingFee":"0"
+                , "totalShippingFeeDiscount":"0"
+                , "totalVoucherDiscount":"0"
+                , "totalPromtionDiscount":"0"
                 , "totalDue":"0"
-                , "comments":"SAMPLE_TEXT"
-                , "deliveryInstructions":"SAMPLE_TEXT"
-                , "internalComments":"SAMPLE_TEXT"
-                , "pickingCompletedWhen":"2020-01-01T00:00:00.000Z"
+                , "paymentStatus":"CASH_ON_DELIVERY"
+                , "customerPurchaseOrderNumber":"SAMPLE_TEXT"
                 , "status":"NEW_ORDER"
-                , "customerReviewedOn":"2020-01-01T00:00:00.000Z"
-                , "sellerRating":"0"
-                , "sellerReview":null
-                , "deliveryRating":"0"
-                , "deliveryReview":null
-                , "reviewAsAnonymous":null
-                , "completedReview":null
-                , "orderLineString":null
+                , "orderDetails":null
+                , "isUnderSupplyBackOrdered":null
                 , "lastEditedBy":"SAMPLE_TEXT"
                 , "lastEditedWhen":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

@@ -11,6 +11,8 @@ public class WishlistsDTO implements Serializable {
 
 
     private Long wishlistUserId;
+
+    private String wishlistUserFullName;
     
     public Long getId() {
         return id;
@@ -26,6 +28,14 @@ public class WishlistsDTO implements Serializable {
 
     public void setWishlistUserId(Long peopleId) {
         this.wishlistUserId = peopleId;
+    }
+
+    public String getWishlistUserFullName() {
+        return wishlistUserFullName;
+    }
+
+    public void setWishlistUserFullName(String peopleFullName) {
+        this.wishlistUserFullName = peopleFullName;
     }
 
     @Override
@@ -51,6 +61,7 @@ public class WishlistsDTO implements Serializable {
         return "WishlistsDTO{" +
             "id=" + getId() +
             ", wishlistUserId=" + getWishlistUserId() +
+            ", wishlistUserFullName='" + getWishlistUserFullName() + "'" +
             "}";
     }
 }

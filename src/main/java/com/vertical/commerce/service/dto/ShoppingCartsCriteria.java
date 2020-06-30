@@ -30,7 +30,15 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
 
     private BigDecimalFilter totalPrice;
 
-    private BigDecimalFilter totalCargoPrice;
+    private BigDecimalFilter subTotalPrice;
+
+    private BigDecimalFilter totalShippingFee;
+
+    private BigDecimalFilter totalShippingFeeDiscount;
+
+    private BigDecimalFilter promotionTotal;
+
+    private BigDecimalFilter voucherTotal;
 
     private StringFilter lastEditedBy;
 
@@ -50,7 +58,11 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
     public ShoppingCartsCriteria(ShoppingCartsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.totalPrice = other.totalPrice == null ? null : other.totalPrice.copy();
-        this.totalCargoPrice = other.totalCargoPrice == null ? null : other.totalCargoPrice.copy();
+        this.subTotalPrice = other.subTotalPrice == null ? null : other.subTotalPrice.copy();
+        this.totalShippingFee = other.totalShippingFee == null ? null : other.totalShippingFee.copy();
+        this.totalShippingFeeDiscount = other.totalShippingFeeDiscount == null ? null : other.totalShippingFeeDiscount.copy();
+        this.promotionTotal = other.promotionTotal == null ? null : other.promotionTotal.copy();
+        this.voucherTotal = other.voucherTotal == null ? null : other.voucherTotal.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
         this.cartUserId = other.cartUserId == null ? null : other.cartUserId.copy();
@@ -80,12 +92,44 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
         this.totalPrice = totalPrice;
     }
 
-    public BigDecimalFilter getTotalCargoPrice() {
-        return totalCargoPrice;
+    public BigDecimalFilter getSubTotalPrice() {
+        return subTotalPrice;
     }
 
-    public void setTotalCargoPrice(BigDecimalFilter totalCargoPrice) {
-        this.totalCargoPrice = totalCargoPrice;
+    public void setSubTotalPrice(BigDecimalFilter subTotalPrice) {
+        this.subTotalPrice = subTotalPrice;
+    }
+
+    public BigDecimalFilter getTotalShippingFee() {
+        return totalShippingFee;
+    }
+
+    public void setTotalShippingFee(BigDecimalFilter totalShippingFee) {
+        this.totalShippingFee = totalShippingFee;
+    }
+
+    public BigDecimalFilter getTotalShippingFeeDiscount() {
+        return totalShippingFeeDiscount;
+    }
+
+    public void setTotalShippingFeeDiscount(BigDecimalFilter totalShippingFeeDiscount) {
+        this.totalShippingFeeDiscount = totalShippingFeeDiscount;
+    }
+
+    public BigDecimalFilter getPromotionTotal() {
+        return promotionTotal;
+    }
+
+    public void setPromotionTotal(BigDecimalFilter promotionTotal) {
+        this.promotionTotal = promotionTotal;
+    }
+
+    public BigDecimalFilter getVoucherTotal() {
+        return voucherTotal;
+    }
+
+    public void setVoucherTotal(BigDecimalFilter voucherTotal) {
+        this.voucherTotal = voucherTotal;
     }
 
     public StringFilter getLastEditedBy() {
@@ -149,7 +193,11 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(totalPrice, that.totalPrice) &&
-            Objects.equals(totalCargoPrice, that.totalCargoPrice) &&
+            Objects.equals(subTotalPrice, that.subTotalPrice) &&
+            Objects.equals(totalShippingFee, that.totalShippingFee) &&
+            Objects.equals(totalShippingFeeDiscount, that.totalShippingFeeDiscount) &&
+            Objects.equals(promotionTotal, that.promotionTotal) &&
+            Objects.equals(voucherTotal, that.voucherTotal) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
             Objects.equals(cartUserId, that.cartUserId) &&
@@ -163,7 +211,11 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         totalPrice,
-        totalCargoPrice,
+        subTotalPrice,
+        totalShippingFee,
+        totalShippingFeeDiscount,
+        promotionTotal,
+        voucherTotal,
         lastEditedBy,
         lastEditedWhen,
         cartUserId,
@@ -179,7 +231,11 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
         return "ShoppingCartsCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (totalPrice != null ? "totalPrice=" + totalPrice + ", " : "") +
-                (totalCargoPrice != null ? "totalCargoPrice=" + totalCargoPrice + ", " : "") +
+                (subTotalPrice != null ? "subTotalPrice=" + subTotalPrice + ", " : "") +
+                (totalShippingFee != null ? "totalShippingFee=" + totalShippingFee + ", " : "") +
+                (totalShippingFeeDiscount != null ? "totalShippingFeeDiscount=" + totalShippingFeeDiscount + ", " : "") +
+                (promotionTotal != null ? "promotionTotal=" + promotionTotal + ", " : "") +
+                (voucherTotal != null ? "voucherTotal=" + voucherTotal + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
                 (cartUserId != null ? "cartUserId=" + cartUserId + ", " : "") +

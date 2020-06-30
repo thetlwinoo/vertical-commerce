@@ -2,6 +2,9 @@ package com.vertical.commerce.service;
 
 import com.vertical.commerce.service.dto.SuppliersDTO;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +27,13 @@ public interface SuppliersService {
      * @return the list of entities.
      */
     List<SuppliersDTO> findAll();
+
+    /**
+     * Get all the suppliers with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    Page<SuppliersDTO> findAllWithEagerRelationships(Pageable pageable);
 
 
     /**

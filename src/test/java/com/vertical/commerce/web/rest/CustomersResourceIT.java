@@ -42,6 +42,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class CustomersResourceIT {
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
     private static final String DEFAULT_ACCOUNT_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_ACCOUNT_NUMBER = "BBBBBBBBBB";
 
@@ -67,6 +70,12 @@ public class CustomersResourceIT {
 
     private static final String DEFAULT_RUN_POSITION = "AAAAAAAAAA";
     private static final String UPDATED_RUN_POSITION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_THUMBNAIL_URL = "AAAAAAAAAA";
+    private static final String UPDATED_THUMBNAIL_URL = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS = false;
+    private static final Boolean UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS = true;
 
     private static final String DEFAULT_LAST_EDITED_BY = "AAAAAAAAAA";
     private static final String UPDATED_LAST_EDITED_BY = "BBBBBBBBBB";
@@ -105,6 +114,7 @@ public class CustomersResourceIT {
      */
     public static Customers createEntity(EntityManager em) {
         Customers customers = new Customers()
+            .name(DEFAULT_NAME)
             .accountNumber(DEFAULT_ACCOUNT_NUMBER)
             .accountOpenedDate(DEFAULT_ACCOUNT_OPENED_DATE)
             .standardDiscountPercentage(DEFAULT_STANDARD_DISCOUNT_PERCENTAGE)
@@ -113,6 +123,8 @@ public class CustomersResourceIT {
             .paymentDays(DEFAULT_PAYMENT_DAYS)
             .deliveryRun(DEFAULT_DELIVERY_RUN)
             .runPosition(DEFAULT_RUN_POSITION)
+            .thumbnailUrl(DEFAULT_THUMBNAIL_URL)
+            .billToAddressSameAsDeliveryAddress(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
@@ -126,6 +138,7 @@ public class CustomersResourceIT {
      */
     public static Customers createUpdatedEntity(EntityManager em) {
         Customers customers = new Customers()
+            .name(UPDATED_NAME)
             .accountNumber(UPDATED_ACCOUNT_NUMBER)
             .accountOpenedDate(UPDATED_ACCOUNT_OPENED_DATE)
             .standardDiscountPercentage(UPDATED_STANDARD_DISCOUNT_PERCENTAGE)
@@ -134,6 +147,8 @@ public class CustomersResourceIT {
             .paymentDays(UPDATED_PAYMENT_DAYS)
             .deliveryRun(UPDATED_DELIVERY_RUN)
             .runPosition(UPDATED_RUN_POSITION)
+            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
+            .billToAddressSameAsDeliveryAddress(UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
@@ -160,6 +175,7 @@ public class CustomersResourceIT {
         List<Customers> customersList = customersRepository.findAll();
         assertThat(customersList).hasSize(databaseSizeBeforeCreate + 1);
         Customers testCustomers = customersList.get(customersList.size() - 1);
+        assertThat(testCustomers.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testCustomers.getAccountNumber()).isEqualTo(DEFAULT_ACCOUNT_NUMBER);
         assertThat(testCustomers.getAccountOpenedDate()).isEqualTo(DEFAULT_ACCOUNT_OPENED_DATE);
         assertThat(testCustomers.getStandardDiscountPercentage()).isEqualTo(DEFAULT_STANDARD_DISCOUNT_PERCENTAGE);
@@ -168,6 +184,8 @@ public class CustomersResourceIT {
         assertThat(testCustomers.getPaymentDays()).isEqualTo(DEFAULT_PAYMENT_DAYS);
         assertThat(testCustomers.getDeliveryRun()).isEqualTo(DEFAULT_DELIVERY_RUN);
         assertThat(testCustomers.getRunPosition()).isEqualTo(DEFAULT_RUN_POSITION);
+        assertThat(testCustomers.getThumbnailUrl()).isEqualTo(DEFAULT_THUMBNAIL_URL);
+        assertThat(testCustomers.isBillToAddressSameAsDeliveryAddress()).isEqualTo(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
         assertThat(testCustomers.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
         assertThat(testCustomers.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testCustomers.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
@@ -385,6 +403,7 @@ public class CustomersResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(customers.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].accountNumber").value(hasItem(DEFAULT_ACCOUNT_NUMBER)))
             .andExpect(jsonPath("$.[*].accountOpenedDate").value(hasItem(DEFAULT_ACCOUNT_OPENED_DATE.toString())))
             .andExpect(jsonPath("$.[*].standardDiscountPercentage").value(hasItem(DEFAULT_STANDARD_DISCOUNT_PERCENTAGE.intValue())))
@@ -393,6 +412,8 @@ public class CustomersResourceIT {
             .andExpect(jsonPath("$.[*].paymentDays").value(hasItem(DEFAULT_PAYMENT_DAYS)))
             .andExpect(jsonPath("$.[*].deliveryRun").value(hasItem(DEFAULT_DELIVERY_RUN)))
             .andExpect(jsonPath("$.[*].runPosition").value(hasItem(DEFAULT_RUN_POSITION)))
+            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
+            .andExpect(jsonPath("$.[*].billToAddressSameAsDeliveryAddress").value(hasItem(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
@@ -409,6 +430,7 @@ public class CustomersResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(customers.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.accountNumber").value(DEFAULT_ACCOUNT_NUMBER))
             .andExpect(jsonPath("$.accountOpenedDate").value(DEFAULT_ACCOUNT_OPENED_DATE.toString()))
             .andExpect(jsonPath("$.standardDiscountPercentage").value(DEFAULT_STANDARD_DISCOUNT_PERCENTAGE.intValue()))
@@ -417,6 +439,8 @@ public class CustomersResourceIT {
             .andExpect(jsonPath("$.paymentDays").value(DEFAULT_PAYMENT_DAYS))
             .andExpect(jsonPath("$.deliveryRun").value(DEFAULT_DELIVERY_RUN))
             .andExpect(jsonPath("$.runPosition").value(DEFAULT_RUN_POSITION))
+            .andExpect(jsonPath("$.thumbnailUrl").value(DEFAULT_THUMBNAIL_URL))
+            .andExpect(jsonPath("$.billToAddressSameAsDeliveryAddress").value(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS.booleanValue()))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
@@ -439,6 +463,84 @@ public class CustomersResourceIT {
 
         defaultCustomersShouldBeFound("id.lessThanOrEqual=" + id);
         defaultCustomersShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCustomersByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where name equals to DEFAULT_NAME
+        defaultCustomersShouldBeFound("name.equals=" + DEFAULT_NAME);
+
+        // Get all the customersList where name equals to UPDATED_NAME
+        defaultCustomersShouldNotBeFound("name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByNameIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where name not equals to DEFAULT_NAME
+        defaultCustomersShouldNotBeFound("name.notEquals=" + DEFAULT_NAME);
+
+        // Get all the customersList where name not equals to UPDATED_NAME
+        defaultCustomersShouldBeFound("name.notEquals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where name in DEFAULT_NAME or UPDATED_NAME
+        defaultCustomersShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+
+        // Get all the customersList where name equals to UPDATED_NAME
+        defaultCustomersShouldNotBeFound("name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where name is not null
+        defaultCustomersShouldBeFound("name.specified=true");
+
+        // Get all the customersList where name is null
+        defaultCustomersShouldNotBeFound("name.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllCustomersByNameContainsSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where name contains DEFAULT_NAME
+        defaultCustomersShouldBeFound("name.contains=" + DEFAULT_NAME);
+
+        // Get all the customersList where name contains UPDATED_NAME
+        defaultCustomersShouldNotBeFound("name.contains=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where name does not contain DEFAULT_NAME
+        defaultCustomersShouldNotBeFound("name.doesNotContain=" + DEFAULT_NAME);
+
+        // Get all the customersList where name does not contain UPDATED_NAME
+        defaultCustomersShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
     }
 
 
@@ -1044,6 +1146,136 @@ public class CustomersResourceIT {
 
     @Test
     @Transactional
+    public void getAllCustomersByThumbnailUrlIsEqualToSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where thumbnailUrl equals to DEFAULT_THUMBNAIL_URL
+        defaultCustomersShouldBeFound("thumbnailUrl.equals=" + DEFAULT_THUMBNAIL_URL);
+
+        // Get all the customersList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
+        defaultCustomersShouldNotBeFound("thumbnailUrl.equals=" + UPDATED_THUMBNAIL_URL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByThumbnailUrlIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where thumbnailUrl not equals to DEFAULT_THUMBNAIL_URL
+        defaultCustomersShouldNotBeFound("thumbnailUrl.notEquals=" + DEFAULT_THUMBNAIL_URL);
+
+        // Get all the customersList where thumbnailUrl not equals to UPDATED_THUMBNAIL_URL
+        defaultCustomersShouldBeFound("thumbnailUrl.notEquals=" + UPDATED_THUMBNAIL_URL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByThumbnailUrlIsInShouldWork() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where thumbnailUrl in DEFAULT_THUMBNAIL_URL or UPDATED_THUMBNAIL_URL
+        defaultCustomersShouldBeFound("thumbnailUrl.in=" + DEFAULT_THUMBNAIL_URL + "," + UPDATED_THUMBNAIL_URL);
+
+        // Get all the customersList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
+        defaultCustomersShouldNotBeFound("thumbnailUrl.in=" + UPDATED_THUMBNAIL_URL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByThumbnailUrlIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where thumbnailUrl is not null
+        defaultCustomersShouldBeFound("thumbnailUrl.specified=true");
+
+        // Get all the customersList where thumbnailUrl is null
+        defaultCustomersShouldNotBeFound("thumbnailUrl.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllCustomersByThumbnailUrlContainsSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where thumbnailUrl contains DEFAULT_THUMBNAIL_URL
+        defaultCustomersShouldBeFound("thumbnailUrl.contains=" + DEFAULT_THUMBNAIL_URL);
+
+        // Get all the customersList where thumbnailUrl contains UPDATED_THUMBNAIL_URL
+        defaultCustomersShouldNotBeFound("thumbnailUrl.contains=" + UPDATED_THUMBNAIL_URL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByThumbnailUrlNotContainsSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where thumbnailUrl does not contain DEFAULT_THUMBNAIL_URL
+        defaultCustomersShouldNotBeFound("thumbnailUrl.doesNotContain=" + DEFAULT_THUMBNAIL_URL);
+
+        // Get all the customersList where thumbnailUrl does not contain UPDATED_THUMBNAIL_URL
+        defaultCustomersShouldBeFound("thumbnailUrl.doesNotContain=" + UPDATED_THUMBNAIL_URL);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCustomersByBillToAddressSameAsDeliveryAddressIsEqualToSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where billToAddressSameAsDeliveryAddress equals to DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS
+        defaultCustomersShouldBeFound("billToAddressSameAsDeliveryAddress.equals=" + DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
+
+        // Get all the customersList where billToAddressSameAsDeliveryAddress equals to UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS
+        defaultCustomersShouldNotBeFound("billToAddressSameAsDeliveryAddress.equals=" + UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByBillToAddressSameAsDeliveryAddressIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where billToAddressSameAsDeliveryAddress not equals to DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS
+        defaultCustomersShouldNotBeFound("billToAddressSameAsDeliveryAddress.notEquals=" + DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
+
+        // Get all the customersList where billToAddressSameAsDeliveryAddress not equals to UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS
+        defaultCustomersShouldBeFound("billToAddressSameAsDeliveryAddress.notEquals=" + UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByBillToAddressSameAsDeliveryAddressIsInShouldWork() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where billToAddressSameAsDeliveryAddress in DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS or UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS
+        defaultCustomersShouldBeFound("billToAddressSameAsDeliveryAddress.in=" + DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS + "," + UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
+
+        // Get all the customersList where billToAddressSameAsDeliveryAddress equals to UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS
+        defaultCustomersShouldNotBeFound("billToAddressSameAsDeliveryAddress.in=" + UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByBillToAddressSameAsDeliveryAddressIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where billToAddressSameAsDeliveryAddress is not null
+        defaultCustomersShouldBeFound("billToAddressSameAsDeliveryAddress.specified=true");
+
+        // Get all the customersList where billToAddressSameAsDeliveryAddress is null
+        defaultCustomersShouldNotBeFound("billToAddressSameAsDeliveryAddress.specified=false");
+    }
+
+    @Test
+    @Transactional
     public void getAllCustomersByLastEditedByIsEqualToSomething() throws Exception {
         // Initialize the database
         customersRepository.saveAndFlush(customers);
@@ -1283,6 +1515,26 @@ public class CustomersResourceIT {
         defaultCustomersShouldNotBeFound("deliveryAddressId.equals=" + (deliveryAddressId + 1));
     }
 
+
+    @Test
+    @Transactional
+    public void getAllCustomersByBillToAddressIsEqualToSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+        Addresses billToAddress = AddressesResourceIT.createEntity(em);
+        em.persist(billToAddress);
+        em.flush();
+        customers.setBillToAddress(billToAddress);
+        customersRepository.saveAndFlush(customers);
+        Long billToAddressId = billToAddress.getId();
+
+        // Get all the customersList where billToAddress equals to billToAddressId
+        defaultCustomersShouldBeFound("billToAddressId.equals=" + billToAddressId);
+
+        // Get all the customersList where billToAddress equals to billToAddressId + 1
+        defaultCustomersShouldNotBeFound("billToAddressId.equals=" + (billToAddressId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -1291,6 +1543,7 @@ public class CustomersResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(customers.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].accountNumber").value(hasItem(DEFAULT_ACCOUNT_NUMBER)))
             .andExpect(jsonPath("$.[*].accountOpenedDate").value(hasItem(DEFAULT_ACCOUNT_OPENED_DATE.toString())))
             .andExpect(jsonPath("$.[*].standardDiscountPercentage").value(hasItem(DEFAULT_STANDARD_DISCOUNT_PERCENTAGE.intValue())))
@@ -1299,6 +1552,8 @@ public class CustomersResourceIT {
             .andExpect(jsonPath("$.[*].paymentDays").value(hasItem(DEFAULT_PAYMENT_DAYS)))
             .andExpect(jsonPath("$.[*].deliveryRun").value(hasItem(DEFAULT_DELIVERY_RUN)))
             .andExpect(jsonPath("$.[*].runPosition").value(hasItem(DEFAULT_RUN_POSITION)))
+            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
+            .andExpect(jsonPath("$.[*].billToAddressSameAsDeliveryAddress").value(hasItem(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
@@ -1348,6 +1603,7 @@ public class CustomersResourceIT {
         // Disconnect from session so that the updates on updatedCustomers are not directly saved in db
         em.detach(updatedCustomers);
         updatedCustomers
+            .name(UPDATED_NAME)
             .accountNumber(UPDATED_ACCOUNT_NUMBER)
             .accountOpenedDate(UPDATED_ACCOUNT_OPENED_DATE)
             .standardDiscountPercentage(UPDATED_STANDARD_DISCOUNT_PERCENTAGE)
@@ -1356,6 +1612,8 @@ public class CustomersResourceIT {
             .paymentDays(UPDATED_PAYMENT_DAYS)
             .deliveryRun(UPDATED_DELIVERY_RUN)
             .runPosition(UPDATED_RUN_POSITION)
+            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
+            .billToAddressSameAsDeliveryAddress(UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
@@ -1370,6 +1628,7 @@ public class CustomersResourceIT {
         List<Customers> customersList = customersRepository.findAll();
         assertThat(customersList).hasSize(databaseSizeBeforeUpdate);
         Customers testCustomers = customersList.get(customersList.size() - 1);
+        assertThat(testCustomers.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testCustomers.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
         assertThat(testCustomers.getAccountOpenedDate()).isEqualTo(UPDATED_ACCOUNT_OPENED_DATE);
         assertThat(testCustomers.getStandardDiscountPercentage()).isEqualTo(UPDATED_STANDARD_DISCOUNT_PERCENTAGE);
@@ -1378,6 +1637,8 @@ public class CustomersResourceIT {
         assertThat(testCustomers.getPaymentDays()).isEqualTo(UPDATED_PAYMENT_DAYS);
         assertThat(testCustomers.getDeliveryRun()).isEqualTo(UPDATED_DELIVERY_RUN);
         assertThat(testCustomers.getRunPosition()).isEqualTo(UPDATED_RUN_POSITION);
+        assertThat(testCustomers.getThumbnailUrl()).isEqualTo(UPDATED_THUMBNAIL_URL);
+        assertThat(testCustomers.isBillToAddressSameAsDeliveryAddress()).isEqualTo(UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
         assertThat(testCustomers.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
         assertThat(testCustomers.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testCustomers.getValidTo()).isEqualTo(UPDATED_VALID_TO);

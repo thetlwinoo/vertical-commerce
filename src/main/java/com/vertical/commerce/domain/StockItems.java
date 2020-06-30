@@ -1,9 +1,9 @@
 package com.vertical.commerce.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -45,6 +45,9 @@ public class StockItems implements Serializable {
     @Column(name = "barcode")
     private String barcode;
 
+    @Column(name = "tax_rate", precision = 21, scale = 2)
+    private BigDecimal taxRate;
+
     @NotNull
     @Column(name = "unit_price", precision = 21, scale = 2, nullable = false)
     private BigDecimal unitPrice;
@@ -52,9 +55,41 @@ public class StockItems implements Serializable {
     @Column(name = "recommended_retail_price", precision = 21, scale = 2)
     private BigDecimal recommendedRetailPrice;
 
+    @Column(name = "typical_weight_per_unit", precision = 21, scale = 2)
+    private BigDecimal typicalWeightPerUnit;
+
     @NotNull
     @Column(name = "quantity_on_hand", nullable = false)
     private Integer quantityOnHand;
+
+    @Column(name = "shelf")
+    private String shelf;
+
+    @Column(name = "bin")
+    private String bin;
+
+    @Column(name = "last_stock_take_quantity")
+    private Integer lastStockTakeQuantity;
+
+    @NotNull
+    @Column(name = "last_cost_price", precision = 21, scale = 2, nullable = false)
+    private BigDecimal lastCostPrice;
+
+    @Column(name = "reorder_level")
+    private Integer reorderLevel;
+
+    @Column(name = "target_stock_level")
+    private Integer targetStockLevel;
+
+    @Column(name = "lead_time_days")
+    private Integer leadTimeDays;
+
+    @Column(name = "quantity_per_outer")
+    private Integer quantityPerOuter;
+
+    @NotNull
+    @Column(name = "is_chiller_stock", nullable = false)
+    private Boolean isChillerStock;
 
     @Column(name = "item_length")
     private Integer itemLength;
@@ -104,16 +139,30 @@ public class StockItems implements Serializable {
     @Column(name = "sell_count")
     private Integer sellCount;
 
+    @Column(name = "tags")
+    private String tags;
+
+    @Column(name = "search_details")
+    private String searchDetails;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "custom_fields")
     private String customFields;
 
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
-    @Column(name = "active_ind")
+    @NotNull
+    @Column(name = "active_ind", nullable = false)
     private Boolean activeInd;
 
-    @Column(name = "cash_on_delivery_ind")
+    @NotNull
+    @Column(name = "live_ind", nullable = false)
+    private Boolean liveInd;
+
+    @NotNull
+    @Column(name = "cash_on_delivery_ind", nullable = false)
     private Boolean cashOnDeliveryInd;
 
     @NotNull
@@ -126,11 +175,11 @@ public class StockItems implements Serializable {
 
     @OneToMany(mappedBy = "stockItem")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Photos> photoLists = new HashSet<>();
+    private Set<SpecialDeals> specialDealLists = new HashSet<>();
 
     @OneToMany(mappedBy = "stockItem")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<SpecialDeals> specialDealLists = new HashSet<>();
+    private Set<Photos> photoLists = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = "stockItems", allowSetters = true)
@@ -179,10 +228,6 @@ public class StockItems implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "stockItems", allowSetters = true)
     private BarcodeTypes barcodeType;
-
-    @OneToOne(mappedBy = "stockItem")
-    @JsonIgnore
-    private StockItemHoldings stockItemHolding;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "stockItemLists", allowSetters = true)
@@ -262,6 +307,19 @@ public class StockItems implements Serializable {
         this.barcode = barcode;
     }
 
+    public BigDecimal getTaxRate() {
+        return taxRate;
+    }
+
+    public StockItems taxRate(BigDecimal taxRate) {
+        this.taxRate = taxRate;
+        return this;
+    }
+
+    public void setTaxRate(BigDecimal taxRate) {
+        this.taxRate = taxRate;
+    }
+
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
@@ -288,6 +346,19 @@ public class StockItems implements Serializable {
         this.recommendedRetailPrice = recommendedRetailPrice;
     }
 
+    public BigDecimal getTypicalWeightPerUnit() {
+        return typicalWeightPerUnit;
+    }
+
+    public StockItems typicalWeightPerUnit(BigDecimal typicalWeightPerUnit) {
+        this.typicalWeightPerUnit = typicalWeightPerUnit;
+        return this;
+    }
+
+    public void setTypicalWeightPerUnit(BigDecimal typicalWeightPerUnit) {
+        this.typicalWeightPerUnit = typicalWeightPerUnit;
+    }
+
     public Integer getQuantityOnHand() {
         return quantityOnHand;
     }
@@ -299,6 +370,123 @@ public class StockItems implements Serializable {
 
     public void setQuantityOnHand(Integer quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
+    }
+
+    public String getShelf() {
+        return shelf;
+    }
+
+    public StockItems shelf(String shelf) {
+        this.shelf = shelf;
+        return this;
+    }
+
+    public void setShelf(String shelf) {
+        this.shelf = shelf;
+    }
+
+    public String getBin() {
+        return bin;
+    }
+
+    public StockItems bin(String bin) {
+        this.bin = bin;
+        return this;
+    }
+
+    public void setBin(String bin) {
+        this.bin = bin;
+    }
+
+    public Integer getLastStockTakeQuantity() {
+        return lastStockTakeQuantity;
+    }
+
+    public StockItems lastStockTakeQuantity(Integer lastStockTakeQuantity) {
+        this.lastStockTakeQuantity = lastStockTakeQuantity;
+        return this;
+    }
+
+    public void setLastStockTakeQuantity(Integer lastStockTakeQuantity) {
+        this.lastStockTakeQuantity = lastStockTakeQuantity;
+    }
+
+    public BigDecimal getLastCostPrice() {
+        return lastCostPrice;
+    }
+
+    public StockItems lastCostPrice(BigDecimal lastCostPrice) {
+        this.lastCostPrice = lastCostPrice;
+        return this;
+    }
+
+    public void setLastCostPrice(BigDecimal lastCostPrice) {
+        this.lastCostPrice = lastCostPrice;
+    }
+
+    public Integer getReorderLevel() {
+        return reorderLevel;
+    }
+
+    public StockItems reorderLevel(Integer reorderLevel) {
+        this.reorderLevel = reorderLevel;
+        return this;
+    }
+
+    public void setReorderLevel(Integer reorderLevel) {
+        this.reorderLevel = reorderLevel;
+    }
+
+    public Integer getTargetStockLevel() {
+        return targetStockLevel;
+    }
+
+    public StockItems targetStockLevel(Integer targetStockLevel) {
+        this.targetStockLevel = targetStockLevel;
+        return this;
+    }
+
+    public void setTargetStockLevel(Integer targetStockLevel) {
+        this.targetStockLevel = targetStockLevel;
+    }
+
+    public Integer getLeadTimeDays() {
+        return leadTimeDays;
+    }
+
+    public StockItems leadTimeDays(Integer leadTimeDays) {
+        this.leadTimeDays = leadTimeDays;
+        return this;
+    }
+
+    public void setLeadTimeDays(Integer leadTimeDays) {
+        this.leadTimeDays = leadTimeDays;
+    }
+
+    public Integer getQuantityPerOuter() {
+        return quantityPerOuter;
+    }
+
+    public StockItems quantityPerOuter(Integer quantityPerOuter) {
+        this.quantityPerOuter = quantityPerOuter;
+        return this;
+    }
+
+    public void setQuantityPerOuter(Integer quantityPerOuter) {
+        this.quantityPerOuter = quantityPerOuter;
+    }
+
+    public Boolean isIsChillerStock() {
+        return isChillerStock;
+    }
+
+    public StockItems isChillerStock(Boolean isChillerStock) {
+        this.isChillerStock = isChillerStock;
+        return this;
+    }
+
+    public void setIsChillerStock(Boolean isChillerStock) {
+        this.isChillerStock = isChillerStock;
     }
 
     public Integer getItemLength() {
@@ -509,6 +697,32 @@ public class StockItems implements Serializable {
         this.sellCount = sellCount;
     }
 
+    public String getTags() {
+        return tags;
+    }
+
+    public StockItems tags(String tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getSearchDetails() {
+        return searchDetails;
+    }
+
+    public StockItems searchDetails(String searchDetails) {
+        this.searchDetails = searchDetails;
+        return this;
+    }
+
+    public void setSearchDetails(String searchDetails) {
+        this.searchDetails = searchDetails;
+    }
+
     public String getCustomFields() {
         return customFields;
     }
@@ -546,6 +760,19 @@ public class StockItems implements Serializable {
 
     public void setActiveInd(Boolean activeInd) {
         this.activeInd = activeInd;
+    }
+
+    public Boolean isLiveInd() {
+        return liveInd;
+    }
+
+    public StockItems liveInd(Boolean liveInd) {
+        this.liveInd = liveInd;
+        return this;
+    }
+
+    public void setLiveInd(Boolean liveInd) {
+        this.liveInd = liveInd;
     }
 
     public Boolean isCashOnDeliveryInd() {
@@ -587,31 +814,6 @@ public class StockItems implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public Set<Photos> getPhotoLists() {
-        return photoLists;
-    }
-
-    public StockItems photoLists(Set<Photos> photos) {
-        this.photoLists = photos;
-        return this;
-    }
-
-    public StockItems addPhotoList(Photos photos) {
-        this.photoLists.add(photos);
-        photos.setStockItem(this);
-        return this;
-    }
-
-    public StockItems removePhotoList(Photos photos) {
-        this.photoLists.remove(photos);
-        photos.setStockItem(null);
-        return this;
-    }
-
-    public void setPhotoLists(Set<Photos> photos) {
-        this.photoLists = photos;
-    }
-
     public Set<SpecialDeals> getSpecialDealLists() {
         return specialDealLists;
     }
@@ -635,6 +837,31 @@ public class StockItems implements Serializable {
 
     public void setSpecialDealLists(Set<SpecialDeals> specialDeals) {
         this.specialDealLists = specialDeals;
+    }
+
+    public Set<Photos> getPhotoLists() {
+        return photoLists;
+    }
+
+    public StockItems photoLists(Set<Photos> photos) {
+        this.photoLists = photos;
+        return this;
+    }
+
+    public StockItems addPhotoList(Photos photos) {
+        this.photoLists.add(photos);
+        photos.setStockItem(this);
+        return this;
+    }
+
+    public StockItems removePhotoList(Photos photos) {
+        this.photoLists.remove(photos);
+        photos.setStockItem(null);
+        return this;
+    }
+
+    public void setPhotoLists(Set<Photos> photos) {
+        this.photoLists = photos;
     }
 
     public UnitMeasure getItemLengthUnit() {
@@ -793,19 +1020,6 @@ public class StockItems implements Serializable {
         this.barcodeType = barcodeTypes;
     }
 
-    public StockItemHoldings getStockItemHolding() {
-        return stockItemHolding;
-    }
-
-    public StockItems stockItemHolding(StockItemHoldings stockItemHoldings) {
-        this.stockItemHolding = stockItemHoldings;
-        return this;
-    }
-
-    public void setStockItemHolding(StockItemHoldings stockItemHoldings) {
-        this.stockItemHolding = stockItemHoldings;
-    }
-
     public Products getProduct() {
         return product;
     }
@@ -846,9 +1060,20 @@ public class StockItems implements Serializable {
             ", vendorSKU='" + getVendorSKU() + "'" +
             ", generatedSKU='" + getGeneratedSKU() + "'" +
             ", barcode='" + getBarcode() + "'" +
+            ", taxRate=" + getTaxRate() +
             ", unitPrice=" + getUnitPrice() +
             ", recommendedRetailPrice=" + getRecommendedRetailPrice() +
+            ", typicalWeightPerUnit=" + getTypicalWeightPerUnit() +
             ", quantityOnHand=" + getQuantityOnHand() +
+            ", shelf='" + getShelf() + "'" +
+            ", bin='" + getBin() + "'" +
+            ", lastStockTakeQuantity=" + getLastStockTakeQuantity() +
+            ", lastCostPrice=" + getLastCostPrice() +
+            ", reorderLevel=" + getReorderLevel() +
+            ", targetStockLevel=" + getTargetStockLevel() +
+            ", leadTimeDays=" + getLeadTimeDays() +
+            ", quantityPerOuter=" + getQuantityPerOuter() +
+            ", isChillerStock='" + isIsChillerStock() + "'" +
             ", itemLength=" + getItemLength() +
             ", itemWidth=" + getItemWidth() +
             ", itemHeight=" + getItemHeight() +
@@ -865,9 +1090,12 @@ public class StockItems implements Serializable {
             ", sellStartDate='" + getSellStartDate() + "'" +
             ", sellEndDate='" + getSellEndDate() + "'" +
             ", sellCount=" + getSellCount() +
+            ", tags='" + getTags() + "'" +
+            ", searchDetails='" + getSearchDetails() + "'" +
             ", customFields='" + getCustomFields() + "'" +
             ", thumbnailUrl='" + getThumbnailUrl() + "'" +
             ", activeInd='" + isActiveInd() + "'" +
+            ", liveInd='" + isLiveInd() + "'" +
             ", cashOnDeliveryInd='" + isCashOnDeliveryInd() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +

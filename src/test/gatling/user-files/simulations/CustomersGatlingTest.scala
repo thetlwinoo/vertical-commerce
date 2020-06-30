@@ -101,6 +101,7 @@ class CustomersGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "id":null
+                , "name":"SAMPLE_TEXT"
                 , "accountNumber":"SAMPLE_TEXT"
                 , "accountOpenedDate":"2020-01-01T00:00:00.000Z"
                 , "standardDiscountPercentage":"0"
@@ -109,6 +110,8 @@ class CustomersGatlingTest extends Simulation {
                 , "paymentDays":"0"
                 , "deliveryRun":"SAMPLE_TEXT"
                 , "runPosition":"SAMPLE_TEXT"
+                , "thumbnailUrl":"SAMPLE_TEXT"
+                , "billToAddressSameAsDeliveryAddress":null
                 , "lastEditedBy":"SAMPLE_TEXT"
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"

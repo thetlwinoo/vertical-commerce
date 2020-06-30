@@ -15,6 +15,7 @@ public interface StockItemTransactionsMapper extends EntityMapper<StockItemTrans
     @Mapping(source = "stockItem.id", target = "stockItemId")
     @Mapping(source = "stockItem.name", target = "stockItemName")
     @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "customer.name", target = "customerName")
     @Mapping(source = "invoice.id", target = "invoiceId")
     @Mapping(source = "supplier.id", target = "supplierId")
     @Mapping(source = "supplier.name", target = "supplierName")

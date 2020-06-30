@@ -13,6 +13,7 @@ import org.mapstruct.*;
 public interface WishlistsMapper extends EntityMapper<WishlistsDTO, Wishlists> {
 
     @Mapping(source = "wishlistUser.id", target = "wishlistUserId")
+    @Mapping(source = "wishlistUser.fullName", target = "wishlistUserFullName")
     WishlistsDTO toDto(Wishlists wishlists);
 
     @Mapping(source = "wishlistUserId", target = "wishlistUser")

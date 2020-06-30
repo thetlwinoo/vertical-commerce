@@ -227,6 +227,7 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
             saveProduct.setSellCount(0);
             Suppliers suppliers = commonService.getSupplierByPrincipal(principal);
             saveProduct.setSupplier(suppliers);
+            saveProduct.setQuestionsAboutProductInd(true);
             ProductDocument productDocument = productDocumentRepository.getOne(productsDTO.getProductDocumentId());
             saveProduct.setProductDocument(productDocument);
             String prefixNumber = saveProduct.getName().replaceAll("[^a-zA-Z0-9]", "").toUpperCase();
@@ -244,5 +245,10 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
     @Override
     public List<Long> getProductIdsBySupplier(Long supplierId) {
         return productsExtendFilterRepository.findIdsBySupplier(supplierId);
+    }
+
+    @Override
+    public String getProductDetails(Long productId) {
+        return productsExtendFilterRepository.getProductDetails(productId);
     }
 }

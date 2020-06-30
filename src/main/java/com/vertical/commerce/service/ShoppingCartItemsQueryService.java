@@ -94,8 +94,8 @@ public class ShoppingCartItemsQueryService extends QueryService<ShoppingCartItem
             if (criteria.getQuantity() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getQuantity(), ShoppingCartItems_.quantity));
             }
-            if (criteria.getAddToOrder() != null) {
-                specification = specification.and(buildSpecification(criteria.getAddToOrder(), ShoppingCartItems_.addToOrder));
+            if (criteria.getSelectOrder() != null) {
+                specification = specification.and(buildSpecification(criteria.getSelectOrder(), ShoppingCartItems_.selectOrder));
             }
             if (criteria.getLastEditedBy() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLastEditedBy(), ShoppingCartItems_.lastEditedBy));
@@ -106,6 +106,10 @@ public class ShoppingCartItemsQueryService extends QueryService<ShoppingCartItem
             if (criteria.getStockItemId() != null) {
                 specification = specification.and(buildSpecification(criteria.getStockItemId(),
                     root -> root.join(ShoppingCartItems_.stockItem, JoinType.LEFT).get(StockItems_.id)));
+            }
+            if (criteria.getDeliveryMethodId() != null) {
+                specification = specification.and(buildSpecification(criteria.getDeliveryMethodId(),
+                    root -> root.join(ShoppingCartItems_.deliveryMethod, JoinType.LEFT).get(DeliveryMethods_.id)));
             }
             if (criteria.getCartId() != null) {
                 specification = specification.and(buildSpecification(criteria.getCartId(),

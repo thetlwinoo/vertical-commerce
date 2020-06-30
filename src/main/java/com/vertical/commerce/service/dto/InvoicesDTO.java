@@ -3,6 +3,7 @@ package com.vertical.commerce.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.Lob;
 import com.vertical.commerce.domain.enumeration.InvoiceStatus;
 
 /**
@@ -38,6 +39,7 @@ public class InvoicesDTO implements Serializable {
 
     private String runPosition;
 
+    @Lob
     private String returnedDeliveryData;
 
     private Instant confirmedDeliveryTime;
@@ -58,9 +60,9 @@ public class InvoicesDTO implements Serializable {
 
     private String contactPersonFullName;
 
-    private Long salespersonPersonId;
+    private Long salesPersonId;
 
-    private String salespersonPersonFullName;
+    private String salesPersonFullName;
 
     private Long packedByPersonId;
 
@@ -72,13 +74,19 @@ public class InvoicesDTO implements Serializable {
 
     private Long customerId;
 
+    private String customerName;
+
     private Long billToCustomerId;
+
+    private String billToCustomerName;
 
     private Long deliveryMethodId;
 
     private String deliveryMethodName;
 
     private Long orderId;
+
+    private Long orderPackageId;
 
     private Long paymentMethodId;
     
@@ -242,20 +250,20 @@ public class InvoicesDTO implements Serializable {
         this.contactPersonFullName = peopleFullName;
     }
 
-    public Long getSalespersonPersonId() {
-        return salespersonPersonId;
+    public Long getSalesPersonId() {
+        return salesPersonId;
     }
 
-    public void setSalespersonPersonId(Long peopleId) {
-        this.salespersonPersonId = peopleId;
+    public void setSalesPersonId(Long peopleId) {
+        this.salesPersonId = peopleId;
     }
 
-    public String getSalespersonPersonFullName() {
-        return salespersonPersonFullName;
+    public String getSalesPersonFullName() {
+        return salesPersonFullName;
     }
 
-    public void setSalespersonPersonFullName(String peopleFullName) {
-        this.salespersonPersonFullName = peopleFullName;
+    public void setSalesPersonFullName(String peopleFullName) {
+        this.salesPersonFullName = peopleFullName;
     }
 
     public Long getPackedByPersonId() {
@@ -298,12 +306,28 @@ public class InvoicesDTO implements Serializable {
         this.customerId = customersId;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customersName) {
+        this.customerName = customersName;
+    }
+
     public Long getBillToCustomerId() {
         return billToCustomerId;
     }
 
     public void setBillToCustomerId(Long customersId) {
         this.billToCustomerId = customersId;
+    }
+
+    public String getBillToCustomerName() {
+        return billToCustomerName;
+    }
+
+    public void setBillToCustomerName(String customersName) {
+        this.billToCustomerName = customersName;
     }
 
     public Long getDeliveryMethodId() {
@@ -328,6 +352,14 @@ public class InvoicesDTO implements Serializable {
 
     public void setOrderId(Long ordersId) {
         this.orderId = ordersId;
+    }
+
+    public Long getOrderPackageId() {
+        return orderPackageId;
+    }
+
+    public void setOrderPackageId(Long orderPackagesId) {
+        this.orderPackageId = orderPackagesId;
     }
 
     public Long getPaymentMethodId() {
@@ -379,17 +411,20 @@ public class InvoicesDTO implements Serializable {
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", contactPersonId=" + getContactPersonId() +
             ", contactPersonFullName='" + getContactPersonFullName() + "'" +
-            ", salespersonPersonId=" + getSalespersonPersonId() +
-            ", salespersonPersonFullName='" + getSalespersonPersonFullName() + "'" +
+            ", salesPersonId=" + getSalesPersonId() +
+            ", salesPersonFullName='" + getSalesPersonFullName() + "'" +
             ", packedByPersonId=" + getPackedByPersonId() +
             ", packedByPersonFullName='" + getPackedByPersonFullName() + "'" +
             ", accountsPersonId=" + getAccountsPersonId() +
             ", accountsPersonFullName='" + getAccountsPersonFullName() + "'" +
             ", customerId=" + getCustomerId() +
+            ", customerName='" + getCustomerName() + "'" +
             ", billToCustomerId=" + getBillToCustomerId() +
+            ", billToCustomerName='" + getBillToCustomerName() + "'" +
             ", deliveryMethodId=" + getDeliveryMethodId() +
             ", deliveryMethodName='" + getDeliveryMethodName() + "'" +
             ", orderId=" + getOrderId() +
+            ", orderPackageId=" + getOrderPackageId() +
             ", paymentMethodId=" + getPaymentMethodId() +
             "}";
     }

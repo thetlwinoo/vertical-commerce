@@ -31,9 +31,9 @@ public class ProductsCriteria implements Serializable, Criteria {
 
     private StringFilter handle;
 
-    private StringFilter productNumber;
-
     private StringFilter searchDetails;
+
+    private StringFilter productNumber;
 
     private IntegerFilter sellCount;
 
@@ -76,8 +76,8 @@ public class ProductsCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.handle = other.handle == null ? null : other.handle.copy();
-        this.productNumber = other.productNumber == null ? null : other.productNumber.copy();
         this.searchDetails = other.searchDetails == null ? null : other.searchDetails.copy();
+        this.productNumber = other.productNumber == null ? null : other.productNumber.copy();
         this.sellCount = other.sellCount == null ? null : other.sellCount.copy();
         this.totalWishlist = other.totalWishlist == null ? null : other.totalWishlist.copy();
         this.totalStars = other.totalStars == null ? null : other.totalStars.copy();
@@ -126,20 +126,20 @@ public class ProductsCriteria implements Serializable, Criteria {
         this.handle = handle;
     }
 
-    public StringFilter getProductNumber() {
-        return productNumber;
-    }
-
-    public void setProductNumber(StringFilter productNumber) {
-        this.productNumber = productNumber;
-    }
-
     public StringFilter getSearchDetails() {
         return searchDetails;
     }
 
     public void setSearchDetails(StringFilter searchDetails) {
         this.searchDetails = searchDetails;
+    }
+
+    public StringFilter getProductNumber() {
+        return productNumber;
+    }
+
+    public void setProductNumber(StringFilter productNumber) {
+        this.productNumber = productNumber;
     }
 
     public IntegerFilter getSellCount() {
@@ -292,8 +292,8 @@ public class ProductsCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
             Objects.equals(handle, that.handle) &&
-            Objects.equals(productNumber, that.productNumber) &&
             Objects.equals(searchDetails, that.searchDetails) &&
+            Objects.equals(productNumber, that.productNumber) &&
             Objects.equals(sellCount, that.sellCount) &&
             Objects.equals(totalWishlist, that.totalWishlist) &&
             Objects.equals(totalStars, that.totalStars) &&
@@ -319,8 +319,8 @@ public class ProductsCriteria implements Serializable, Criteria {
         id,
         name,
         handle,
-        productNumber,
         searchDetails,
+        productNumber,
         sellCount,
         totalWishlist,
         totalStars,
@@ -348,8 +348,8 @@ public class ProductsCriteria implements Serializable, Criteria {
                 (id != null ? "id=" + id + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
                 (handle != null ? "handle=" + handle + ", " : "") +
-                (productNumber != null ? "productNumber=" + productNumber + ", " : "") +
                 (searchDetails != null ? "searchDetails=" + searchDetails + ", " : "") +
+                (productNumber != null ? "productNumber=" + productNumber + ", " : "") +
                 (sellCount != null ? "sellCount=" + sellCount + ", " : "") +
                 (totalWishlist != null ? "totalWishlist=" + totalWishlist + ", " : "") +
                 (totalStars != null ? "totalStars=" + totalStars + ", " : "") +

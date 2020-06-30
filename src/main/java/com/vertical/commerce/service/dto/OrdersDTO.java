@@ -18,51 +18,31 @@ public class OrdersDTO implements Serializable {
     @NotNull
     private Instant orderDate;
 
-    private Instant dueDate;
-
-    private Instant expectedDeliveryDate;
-
-    private PaymentStatus paymentStatus;
-
-    private String accountNumber;
-
     private BigDecimal subTotal;
 
-    private BigDecimal taxAmount;
+    private BigDecimal totalTaxAmount;
 
-    private BigDecimal frieight;
+    private BigDecimal totalShippingFee;
+
+    private BigDecimal totalShippingFeeDiscount;
+
+    private BigDecimal totalVoucherDiscount;
+
+    private BigDecimal totalPromtionDiscount;
 
     private BigDecimal totalDue;
 
-    private String comments;
+    private PaymentStatus paymentStatus;
 
-    private String deliveryInstructions;
-
-    private String internalComments;
-
-    private Instant pickingCompletedWhen;
+    private String customerPurchaseOrderNumber;
 
     @NotNull
     private OrderStatus status;
 
-    private Instant customerReviewedOn;
-
-    private Integer sellerRating;
-
     @Lob
-    private String sellerReview;
+    private String orderDetails;
 
-    private Integer deliveryRating;
-
-    @Lob
-    private String deliveryReview;
-
-    private Boolean reviewAsAnonymous;
-
-    private Boolean completedReview;
-
-    @Lob
-    private String orderLineString;
+    private Boolean isUnderSupplyBackOrdered;
 
     @NotNull
     private String lastEditedBy;
@@ -73,17 +53,21 @@ public class OrdersDTO implements Serializable {
 
     private Long customerId;
 
+    private String customerName;
+
     private Long shipToAddressId;
 
     private Long billToAddressId;
 
-    private Long shipMethodId;
-
-    private String shipMethodName;
-
     private Long currencyRateId;
 
     private Long paymentMethodId;
+
+    private String paymentMethodName;
+
+    private Long salePersonId;
+
+    private String salePersonFullName;
 
     private Long specialDealsId;
     
@@ -103,38 +87,6 @@ public class OrdersDTO implements Serializable {
         this.orderDate = orderDate;
     }
 
-    public Instant getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(Instant dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public Instant getExpectedDeliveryDate() {
-        return expectedDeliveryDate;
-    }
-
-    public void setExpectedDeliveryDate(Instant expectedDeliveryDate) {
-        this.expectedDeliveryDate = expectedDeliveryDate;
-    }
-
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
     public BigDecimal getSubTotal() {
         return subTotal;
     }
@@ -143,20 +95,44 @@ public class OrdersDTO implements Serializable {
         this.subTotal = subTotal;
     }
 
-    public BigDecimal getTaxAmount() {
-        return taxAmount;
+    public BigDecimal getTotalTaxAmount() {
+        return totalTaxAmount;
     }
 
-    public void setTaxAmount(BigDecimal taxAmount) {
-        this.taxAmount = taxAmount;
+    public void setTotalTaxAmount(BigDecimal totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
     }
 
-    public BigDecimal getFrieight() {
-        return frieight;
+    public BigDecimal getTotalShippingFee() {
+        return totalShippingFee;
     }
 
-    public void setFrieight(BigDecimal frieight) {
-        this.frieight = frieight;
+    public void setTotalShippingFee(BigDecimal totalShippingFee) {
+        this.totalShippingFee = totalShippingFee;
+    }
+
+    public BigDecimal getTotalShippingFeeDiscount() {
+        return totalShippingFeeDiscount;
+    }
+
+    public void setTotalShippingFeeDiscount(BigDecimal totalShippingFeeDiscount) {
+        this.totalShippingFeeDiscount = totalShippingFeeDiscount;
+    }
+
+    public BigDecimal getTotalVoucherDiscount() {
+        return totalVoucherDiscount;
+    }
+
+    public void setTotalVoucherDiscount(BigDecimal totalVoucherDiscount) {
+        this.totalVoucherDiscount = totalVoucherDiscount;
+    }
+
+    public BigDecimal getTotalPromtionDiscount() {
+        return totalPromtionDiscount;
+    }
+
+    public void setTotalPromtionDiscount(BigDecimal totalPromtionDiscount) {
+        this.totalPromtionDiscount = totalPromtionDiscount;
     }
 
     public BigDecimal getTotalDue() {
@@ -167,36 +143,20 @@ public class OrdersDTO implements Serializable {
         this.totalDue = totalDue;
     }
 
-    public String getComments() {
-        return comments;
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
-    public String getDeliveryInstructions() {
-        return deliveryInstructions;
+    public String getCustomerPurchaseOrderNumber() {
+        return customerPurchaseOrderNumber;
     }
 
-    public void setDeliveryInstructions(String deliveryInstructions) {
-        this.deliveryInstructions = deliveryInstructions;
-    }
-
-    public String getInternalComments() {
-        return internalComments;
-    }
-
-    public void setInternalComments(String internalComments) {
-        this.internalComments = internalComments;
-    }
-
-    public Instant getPickingCompletedWhen() {
-        return pickingCompletedWhen;
-    }
-
-    public void setPickingCompletedWhen(Instant pickingCompletedWhen) {
-        this.pickingCompletedWhen = pickingCompletedWhen;
+    public void setCustomerPurchaseOrderNumber(String customerPurchaseOrderNumber) {
+        this.customerPurchaseOrderNumber = customerPurchaseOrderNumber;
     }
 
     public OrderStatus getStatus() {
@@ -207,68 +167,20 @@ public class OrdersDTO implements Serializable {
         this.status = status;
     }
 
-    public Instant getCustomerReviewedOn() {
-        return customerReviewedOn;
+    public String getOrderDetails() {
+        return orderDetails;
     }
 
-    public void setCustomerReviewedOn(Instant customerReviewedOn) {
-        this.customerReviewedOn = customerReviewedOn;
+    public void setOrderDetails(String orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
-    public Integer getSellerRating() {
-        return sellerRating;
+    public Boolean isIsUnderSupplyBackOrdered() {
+        return isUnderSupplyBackOrdered;
     }
 
-    public void setSellerRating(Integer sellerRating) {
-        this.sellerRating = sellerRating;
-    }
-
-    public String getSellerReview() {
-        return sellerReview;
-    }
-
-    public void setSellerReview(String sellerReview) {
-        this.sellerReview = sellerReview;
-    }
-
-    public Integer getDeliveryRating() {
-        return deliveryRating;
-    }
-
-    public void setDeliveryRating(Integer deliveryRating) {
-        this.deliveryRating = deliveryRating;
-    }
-
-    public String getDeliveryReview() {
-        return deliveryReview;
-    }
-
-    public void setDeliveryReview(String deliveryReview) {
-        this.deliveryReview = deliveryReview;
-    }
-
-    public Boolean isReviewAsAnonymous() {
-        return reviewAsAnonymous;
-    }
-
-    public void setReviewAsAnonymous(Boolean reviewAsAnonymous) {
-        this.reviewAsAnonymous = reviewAsAnonymous;
-    }
-
-    public Boolean isCompletedReview() {
-        return completedReview;
-    }
-
-    public void setCompletedReview(Boolean completedReview) {
-        this.completedReview = completedReview;
-    }
-
-    public String getOrderLineString() {
-        return orderLineString;
-    }
-
-    public void setOrderLineString(String orderLineString) {
-        this.orderLineString = orderLineString;
+    public void setIsUnderSupplyBackOrdered(Boolean isUnderSupplyBackOrdered) {
+        this.isUnderSupplyBackOrdered = isUnderSupplyBackOrdered;
     }
 
     public String getLastEditedBy() {
@@ -295,6 +207,14 @@ public class OrdersDTO implements Serializable {
         this.customerId = customersId;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customersName) {
+        this.customerName = customersName;
+    }
+
     public Long getShipToAddressId() {
         return shipToAddressId;
     }
@@ -311,22 +231,6 @@ public class OrdersDTO implements Serializable {
         this.billToAddressId = addressesId;
     }
 
-    public Long getShipMethodId() {
-        return shipMethodId;
-    }
-
-    public void setShipMethodId(Long shipMethodId) {
-        this.shipMethodId = shipMethodId;
-    }
-
-    public String getShipMethodName() {
-        return shipMethodName;
-    }
-
-    public void setShipMethodName(String shipMethodName) {
-        this.shipMethodName = shipMethodName;
-    }
-
     public Long getCurrencyRateId() {
         return currencyRateId;
     }
@@ -341,6 +245,30 @@ public class OrdersDTO implements Serializable {
 
     public void setPaymentMethodId(Long paymentMethodsId) {
         this.paymentMethodId = paymentMethodsId;
+    }
+
+    public String getPaymentMethodName() {
+        return paymentMethodName;
+    }
+
+    public void setPaymentMethodName(String paymentMethodsName) {
+        this.paymentMethodName = paymentMethodsName;
+    }
+
+    public Long getSalePersonId() {
+        return salePersonId;
+    }
+
+    public void setSalePersonId(Long peopleId) {
+        this.salePersonId = peopleId;
+    }
+
+    public String getSalePersonFullName() {
+        return salePersonFullName;
+    }
+
+    public void setSalePersonFullName(String peopleFullName) {
+        this.salePersonFullName = peopleFullName;
     }
 
     public Long getSpecialDealsId() {
@@ -374,36 +302,29 @@ public class OrdersDTO implements Serializable {
         return "OrdersDTO{" +
             "id=" + getId() +
             ", orderDate='" + getOrderDate() + "'" +
-            ", dueDate='" + getDueDate() + "'" +
-            ", expectedDeliveryDate='" + getExpectedDeliveryDate() + "'" +
-            ", paymentStatus='" + getPaymentStatus() + "'" +
-            ", accountNumber='" + getAccountNumber() + "'" +
             ", subTotal=" + getSubTotal() +
-            ", taxAmount=" + getTaxAmount() +
-            ", frieight=" + getFrieight() +
+            ", totalTaxAmount=" + getTotalTaxAmount() +
+            ", totalShippingFee=" + getTotalShippingFee() +
+            ", totalShippingFeeDiscount=" + getTotalShippingFeeDiscount() +
+            ", totalVoucherDiscount=" + getTotalVoucherDiscount() +
+            ", totalPromtionDiscount=" + getTotalPromtionDiscount() +
             ", totalDue=" + getTotalDue() +
-            ", comments='" + getComments() + "'" +
-            ", deliveryInstructions='" + getDeliveryInstructions() + "'" +
-            ", internalComments='" + getInternalComments() + "'" +
-            ", pickingCompletedWhen='" + getPickingCompletedWhen() + "'" +
+            ", paymentStatus='" + getPaymentStatus() + "'" +
+            ", customerPurchaseOrderNumber='" + getCustomerPurchaseOrderNumber() + "'" +
             ", status='" + getStatus() + "'" +
-            ", customerReviewedOn='" + getCustomerReviewedOn() + "'" +
-            ", sellerRating=" + getSellerRating() +
-            ", sellerReview='" + getSellerReview() + "'" +
-            ", deliveryRating=" + getDeliveryRating() +
-            ", deliveryReview='" + getDeliveryReview() + "'" +
-            ", reviewAsAnonymous='" + isReviewAsAnonymous() + "'" +
-            ", completedReview='" + isCompletedReview() + "'" +
-            ", orderLineString='" + getOrderLineString() + "'" +
+            ", orderDetails='" + getOrderDetails() + "'" +
+            ", isUnderSupplyBackOrdered='" + isIsUnderSupplyBackOrdered() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", customerId=" + getCustomerId() +
+            ", customerName='" + getCustomerName() + "'" +
             ", shipToAddressId=" + getShipToAddressId() +
             ", billToAddressId=" + getBillToAddressId() +
-            ", shipMethodId=" + getShipMethodId() +
-            ", shipMethodName='" + getShipMethodName() + "'" +
             ", currencyRateId=" + getCurrencyRateId() +
             ", paymentMethodId=" + getPaymentMethodId() +
+            ", paymentMethodName='" + getPaymentMethodName() + "'" +
+            ", salePersonId=" + getSalePersonId() +
+            ", salePersonFullName='" + getSalePersonFullName() + "'" +
             ", specialDealsId=" + getSpecialDealsId() +
             "}";
     }

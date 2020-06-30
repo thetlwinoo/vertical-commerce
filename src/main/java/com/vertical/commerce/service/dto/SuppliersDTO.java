@@ -3,6 +3,8 @@ package com.vertical.commerce.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A DTO for the {@link com.vertical.commerce.domain.Suppliers} entity.
@@ -46,6 +48,8 @@ public class SuppliersDTO implements Serializable {
 
     private String thumbnailUrl;
 
+    private Boolean pickupSameAsHeadOffice;
+
     @NotNull
     private Instant validFrom;
 
@@ -61,17 +65,10 @@ public class SuppliersDTO implements Serializable {
 
     private String supplierCategoryName;
 
-    private Long deliveryMethodId;
+    private Long pickupAddressId;
 
-    private String deliveryMethodName;
-
-    private Long deliveryCityId;
-
-    private String deliveryCityName;
-
-    private Long postalCityId;
-
-    private String postalCityName;
+    private Long headOfficeAddressId;
+    private Set<DeliveryMethodsDTO> deliveryMethods = new HashSet<>();
     
     public Long getId() {
         return id;
@@ -209,6 +206,14 @@ public class SuppliersDTO implements Serializable {
         this.thumbnailUrl = thumbnailUrl;
     }
 
+    public Boolean isPickupSameAsHeadOffice() {
+        return pickupSameAsHeadOffice;
+    }
+
+    public void setPickupSameAsHeadOffice(Boolean pickupSameAsHeadOffice) {
+        this.pickupSameAsHeadOffice = pickupSameAsHeadOffice;
+    }
+
     public Instant getValidFrom() {
         return validFrom;
     }
@@ -257,52 +262,28 @@ public class SuppliersDTO implements Serializable {
         this.supplierCategoryName = supplierCategoriesName;
     }
 
-    public Long getDeliveryMethodId() {
-        return deliveryMethodId;
+    public Long getPickupAddressId() {
+        return pickupAddressId;
     }
 
-    public void setDeliveryMethodId(Long deliveryMethodsId) {
-        this.deliveryMethodId = deliveryMethodsId;
+    public void setPickupAddressId(Long addressesId) {
+        this.pickupAddressId = addressesId;
     }
 
-    public String getDeliveryMethodName() {
-        return deliveryMethodName;
+    public Long getHeadOfficeAddressId() {
+        return headOfficeAddressId;
     }
 
-    public void setDeliveryMethodName(String deliveryMethodsName) {
-        this.deliveryMethodName = deliveryMethodsName;
+    public void setHeadOfficeAddressId(Long addressesId) {
+        this.headOfficeAddressId = addressesId;
     }
 
-    public Long getDeliveryCityId() {
-        return deliveryCityId;
+    public Set<DeliveryMethodsDTO> getDeliveryMethods() {
+        return deliveryMethods;
     }
 
-    public void setDeliveryCityId(Long citiesId) {
-        this.deliveryCityId = citiesId;
-    }
-
-    public String getDeliveryCityName() {
-        return deliveryCityName;
-    }
-
-    public void setDeliveryCityName(String citiesName) {
-        this.deliveryCityName = citiesName;
-    }
-
-    public Long getPostalCityId() {
-        return postalCityId;
-    }
-
-    public void setPostalCityId(Long citiesId) {
-        this.postalCityId = citiesId;
-    }
-
-    public String getPostalCityName() {
-        return postalCityName;
-    }
-
-    public void setPostalCityName(String citiesName) {
-        this.postalCityName = citiesName;
+    public void setDeliveryMethods(Set<DeliveryMethodsDTO> deliveryMethods) {
+        this.deliveryMethods = deliveryMethods;
     }
 
     @Override
@@ -343,18 +324,16 @@ public class SuppliersDTO implements Serializable {
             ", creditRating=" + getCreditRating() +
             ", activeFlag='" + isActiveFlag() + "'" +
             ", thumbnailUrl='" + getThumbnailUrl() + "'" +
+            ", pickupSameAsHeadOffice='" + isPickupSameAsHeadOffice() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             ", peopleId=" + getPeopleId() +
             ", peopleFullName='" + getPeopleFullName() + "'" +
             ", supplierCategoryId=" + getSupplierCategoryId() +
             ", supplierCategoryName='" + getSupplierCategoryName() + "'" +
-            ", deliveryMethodId=" + getDeliveryMethodId() +
-            ", deliveryMethodName='" + getDeliveryMethodName() + "'" +
-            ", deliveryCityId=" + getDeliveryCityId() +
-            ", deliveryCityName='" + getDeliveryCityName() + "'" +
-            ", postalCityId=" + getPostalCityId() +
-            ", postalCityName='" + getPostalCityName() + "'" +
+            ", pickupAddressId=" + getPickupAddressId() +
+            ", headOfficeAddressId=" + getHeadOfficeAddressId() +
+            ", deliveryMethods='" + getDeliveryMethods() + "'" +
             "}";
     }
 }

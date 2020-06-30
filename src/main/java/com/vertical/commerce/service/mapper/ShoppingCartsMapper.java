@@ -13,7 +13,9 @@ import org.mapstruct.*;
 public interface ShoppingCartsMapper extends EntityMapper<ShoppingCartsDTO, ShoppingCarts> {
 
     @Mapping(source = "cartUser.id", target = "cartUserId")
+    @Mapping(source = "cartUser.fullName", target = "cartUserFullName")
     @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "customer.name", target = "customerName")
     @Mapping(source = "specialDeals.id", target = "specialDealsId")
     ShoppingCartsDTO toDto(ShoppingCarts shoppingCarts);
 

@@ -68,47 +68,33 @@ public class OrdersCriteria implements Serializable, Criteria {
 
     private InstantFilter orderDate;
 
-    private InstantFilter dueDate;
-
-    private InstantFilter expectedDeliveryDate;
-
-    private PaymentStatusFilter paymentStatus;
-
-    private StringFilter accountNumber;
-
     private BigDecimalFilter subTotal;
 
-    private BigDecimalFilter taxAmount;
+    private BigDecimalFilter totalTaxAmount;
 
-    private BigDecimalFilter frieight;
+    private BigDecimalFilter totalShippingFee;
+
+    private BigDecimalFilter totalShippingFeeDiscount;
+
+    private BigDecimalFilter totalVoucherDiscount;
+
+    private BigDecimalFilter totalPromtionDiscount;
 
     private BigDecimalFilter totalDue;
 
-    private StringFilter comments;
+    private PaymentStatusFilter paymentStatus;
 
-    private StringFilter deliveryInstructions;
-
-    private StringFilter internalComments;
-
-    private InstantFilter pickingCompletedWhen;
+    private StringFilter customerPurchaseOrderNumber;
 
     private OrderStatusFilter status;
 
-    private InstantFilter customerReviewedOn;
-
-    private IntegerFilter sellerRating;
-
-    private IntegerFilter deliveryRating;
-
-    private BooleanFilter reviewAsAnonymous;
-
-    private BooleanFilter completedReview;
+    private BooleanFilter isUnderSupplyBackOrdered;
 
     private StringFilter lastEditedBy;
 
     private InstantFilter lastEditedWhen;
 
-    private LongFilter orderLineListId;
+    private LongFilter orderPackageListId;
 
     private LongFilter customerId;
 
@@ -116,11 +102,11 @@ public class OrdersCriteria implements Serializable, Criteria {
 
     private LongFilter billToAddressId;
 
-    private LongFilter shipMethodId;
-
     private LongFilter currencyRateId;
 
     private LongFilter paymentMethodId;
+
+    private LongFilter salePersonId;
 
     private LongFilter orderTrackingId;
 
@@ -132,33 +118,26 @@ public class OrdersCriteria implements Serializable, Criteria {
     public OrdersCriteria(OrdersCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.orderDate = other.orderDate == null ? null : other.orderDate.copy();
-        this.dueDate = other.dueDate == null ? null : other.dueDate.copy();
-        this.expectedDeliveryDate = other.expectedDeliveryDate == null ? null : other.expectedDeliveryDate.copy();
-        this.paymentStatus = other.paymentStatus == null ? null : other.paymentStatus.copy();
-        this.accountNumber = other.accountNumber == null ? null : other.accountNumber.copy();
         this.subTotal = other.subTotal == null ? null : other.subTotal.copy();
-        this.taxAmount = other.taxAmount == null ? null : other.taxAmount.copy();
-        this.frieight = other.frieight == null ? null : other.frieight.copy();
+        this.totalTaxAmount = other.totalTaxAmount == null ? null : other.totalTaxAmount.copy();
+        this.totalShippingFee = other.totalShippingFee == null ? null : other.totalShippingFee.copy();
+        this.totalShippingFeeDiscount = other.totalShippingFeeDiscount == null ? null : other.totalShippingFeeDiscount.copy();
+        this.totalVoucherDiscount = other.totalVoucherDiscount == null ? null : other.totalVoucherDiscount.copy();
+        this.totalPromtionDiscount = other.totalPromtionDiscount == null ? null : other.totalPromtionDiscount.copy();
         this.totalDue = other.totalDue == null ? null : other.totalDue.copy();
-        this.comments = other.comments == null ? null : other.comments.copy();
-        this.deliveryInstructions = other.deliveryInstructions == null ? null : other.deliveryInstructions.copy();
-        this.internalComments = other.internalComments == null ? null : other.internalComments.copy();
-        this.pickingCompletedWhen = other.pickingCompletedWhen == null ? null : other.pickingCompletedWhen.copy();
+        this.paymentStatus = other.paymentStatus == null ? null : other.paymentStatus.copy();
+        this.customerPurchaseOrderNumber = other.customerPurchaseOrderNumber == null ? null : other.customerPurchaseOrderNumber.copy();
         this.status = other.status == null ? null : other.status.copy();
-        this.customerReviewedOn = other.customerReviewedOn == null ? null : other.customerReviewedOn.copy();
-        this.sellerRating = other.sellerRating == null ? null : other.sellerRating.copy();
-        this.deliveryRating = other.deliveryRating == null ? null : other.deliveryRating.copy();
-        this.reviewAsAnonymous = other.reviewAsAnonymous == null ? null : other.reviewAsAnonymous.copy();
-        this.completedReview = other.completedReview == null ? null : other.completedReview.copy();
+        this.isUnderSupplyBackOrdered = other.isUnderSupplyBackOrdered == null ? null : other.isUnderSupplyBackOrdered.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
-        this.orderLineListId = other.orderLineListId == null ? null : other.orderLineListId.copy();
+        this.orderPackageListId = other.orderPackageListId == null ? null : other.orderPackageListId.copy();
         this.customerId = other.customerId == null ? null : other.customerId.copy();
         this.shipToAddressId = other.shipToAddressId == null ? null : other.shipToAddressId.copy();
         this.billToAddressId = other.billToAddressId == null ? null : other.billToAddressId.copy();
-        this.shipMethodId = other.shipMethodId == null ? null : other.shipMethodId.copy();
         this.currencyRateId = other.currencyRateId == null ? null : other.currencyRateId.copy();
         this.paymentMethodId = other.paymentMethodId == null ? null : other.paymentMethodId.copy();
+        this.salePersonId = other.salePersonId == null ? null : other.salePersonId.copy();
         this.orderTrackingId = other.orderTrackingId == null ? null : other.orderTrackingId.copy();
         this.specialDealsId = other.specialDealsId == null ? null : other.specialDealsId.copy();
     }
@@ -184,38 +163,6 @@ public class OrdersCriteria implements Serializable, Criteria {
         this.orderDate = orderDate;
     }
 
-    public InstantFilter getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(InstantFilter dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public InstantFilter getExpectedDeliveryDate() {
-        return expectedDeliveryDate;
-    }
-
-    public void setExpectedDeliveryDate(InstantFilter expectedDeliveryDate) {
-        this.expectedDeliveryDate = expectedDeliveryDate;
-    }
-
-    public PaymentStatusFilter getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(PaymentStatusFilter paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public StringFilter getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(StringFilter accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
     public BigDecimalFilter getSubTotal() {
         return subTotal;
     }
@@ -224,20 +171,44 @@ public class OrdersCriteria implements Serializable, Criteria {
         this.subTotal = subTotal;
     }
 
-    public BigDecimalFilter getTaxAmount() {
-        return taxAmount;
+    public BigDecimalFilter getTotalTaxAmount() {
+        return totalTaxAmount;
     }
 
-    public void setTaxAmount(BigDecimalFilter taxAmount) {
-        this.taxAmount = taxAmount;
+    public void setTotalTaxAmount(BigDecimalFilter totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
     }
 
-    public BigDecimalFilter getFrieight() {
-        return frieight;
+    public BigDecimalFilter getTotalShippingFee() {
+        return totalShippingFee;
     }
 
-    public void setFrieight(BigDecimalFilter frieight) {
-        this.frieight = frieight;
+    public void setTotalShippingFee(BigDecimalFilter totalShippingFee) {
+        this.totalShippingFee = totalShippingFee;
+    }
+
+    public BigDecimalFilter getTotalShippingFeeDiscount() {
+        return totalShippingFeeDiscount;
+    }
+
+    public void setTotalShippingFeeDiscount(BigDecimalFilter totalShippingFeeDiscount) {
+        this.totalShippingFeeDiscount = totalShippingFeeDiscount;
+    }
+
+    public BigDecimalFilter getTotalVoucherDiscount() {
+        return totalVoucherDiscount;
+    }
+
+    public void setTotalVoucherDiscount(BigDecimalFilter totalVoucherDiscount) {
+        this.totalVoucherDiscount = totalVoucherDiscount;
+    }
+
+    public BigDecimalFilter getTotalPromtionDiscount() {
+        return totalPromtionDiscount;
+    }
+
+    public void setTotalPromtionDiscount(BigDecimalFilter totalPromtionDiscount) {
+        this.totalPromtionDiscount = totalPromtionDiscount;
     }
 
     public BigDecimalFilter getTotalDue() {
@@ -248,36 +219,20 @@ public class OrdersCriteria implements Serializable, Criteria {
         this.totalDue = totalDue;
     }
 
-    public StringFilter getComments() {
-        return comments;
+    public PaymentStatusFilter getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setComments(StringFilter comments) {
-        this.comments = comments;
+    public void setPaymentStatus(PaymentStatusFilter paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
-    public StringFilter getDeliveryInstructions() {
-        return deliveryInstructions;
+    public StringFilter getCustomerPurchaseOrderNumber() {
+        return customerPurchaseOrderNumber;
     }
 
-    public void setDeliveryInstructions(StringFilter deliveryInstructions) {
-        this.deliveryInstructions = deliveryInstructions;
-    }
-
-    public StringFilter getInternalComments() {
-        return internalComments;
-    }
-
-    public void setInternalComments(StringFilter internalComments) {
-        this.internalComments = internalComments;
-    }
-
-    public InstantFilter getPickingCompletedWhen() {
-        return pickingCompletedWhen;
-    }
-
-    public void setPickingCompletedWhen(InstantFilter pickingCompletedWhen) {
-        this.pickingCompletedWhen = pickingCompletedWhen;
+    public void setCustomerPurchaseOrderNumber(StringFilter customerPurchaseOrderNumber) {
+        this.customerPurchaseOrderNumber = customerPurchaseOrderNumber;
     }
 
     public OrderStatusFilter getStatus() {
@@ -288,44 +243,12 @@ public class OrdersCriteria implements Serializable, Criteria {
         this.status = status;
     }
 
-    public InstantFilter getCustomerReviewedOn() {
-        return customerReviewedOn;
+    public BooleanFilter getIsUnderSupplyBackOrdered() {
+        return isUnderSupplyBackOrdered;
     }
 
-    public void setCustomerReviewedOn(InstantFilter customerReviewedOn) {
-        this.customerReviewedOn = customerReviewedOn;
-    }
-
-    public IntegerFilter getSellerRating() {
-        return sellerRating;
-    }
-
-    public void setSellerRating(IntegerFilter sellerRating) {
-        this.sellerRating = sellerRating;
-    }
-
-    public IntegerFilter getDeliveryRating() {
-        return deliveryRating;
-    }
-
-    public void setDeliveryRating(IntegerFilter deliveryRating) {
-        this.deliveryRating = deliveryRating;
-    }
-
-    public BooleanFilter getReviewAsAnonymous() {
-        return reviewAsAnonymous;
-    }
-
-    public void setReviewAsAnonymous(BooleanFilter reviewAsAnonymous) {
-        this.reviewAsAnonymous = reviewAsAnonymous;
-    }
-
-    public BooleanFilter getCompletedReview() {
-        return completedReview;
-    }
-
-    public void setCompletedReview(BooleanFilter completedReview) {
-        this.completedReview = completedReview;
+    public void setIsUnderSupplyBackOrdered(BooleanFilter isUnderSupplyBackOrdered) {
+        this.isUnderSupplyBackOrdered = isUnderSupplyBackOrdered;
     }
 
     public StringFilter getLastEditedBy() {
@@ -344,12 +267,12 @@ public class OrdersCriteria implements Serializable, Criteria {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public LongFilter getOrderLineListId() {
-        return orderLineListId;
+    public LongFilter getOrderPackageListId() {
+        return orderPackageListId;
     }
 
-    public void setOrderLineListId(LongFilter orderLineListId) {
-        this.orderLineListId = orderLineListId;
+    public void setOrderPackageListId(LongFilter orderPackageListId) {
+        this.orderPackageListId = orderPackageListId;
     }
 
     public LongFilter getCustomerId() {
@@ -376,14 +299,6 @@ public class OrdersCriteria implements Serializable, Criteria {
         this.billToAddressId = billToAddressId;
     }
 
-    public LongFilter getShipMethodId() {
-        return shipMethodId;
-    }
-
-    public void setShipMethodId(LongFilter shipMethodId) {
-        this.shipMethodId = shipMethodId;
-    }
-
     public LongFilter getCurrencyRateId() {
         return currencyRateId;
     }
@@ -398,6 +313,14 @@ public class OrdersCriteria implements Serializable, Criteria {
 
     public void setPaymentMethodId(LongFilter paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
+    }
+
+    public LongFilter getSalePersonId() {
+        return salePersonId;
+    }
+
+    public void setSalePersonId(LongFilter salePersonId) {
+        this.salePersonId = salePersonId;
     }
 
     public LongFilter getOrderTrackingId() {
@@ -429,33 +352,26 @@ public class OrdersCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(orderDate, that.orderDate) &&
-            Objects.equals(dueDate, that.dueDate) &&
-            Objects.equals(expectedDeliveryDate, that.expectedDeliveryDate) &&
-            Objects.equals(paymentStatus, that.paymentStatus) &&
-            Objects.equals(accountNumber, that.accountNumber) &&
             Objects.equals(subTotal, that.subTotal) &&
-            Objects.equals(taxAmount, that.taxAmount) &&
-            Objects.equals(frieight, that.frieight) &&
+            Objects.equals(totalTaxAmount, that.totalTaxAmount) &&
+            Objects.equals(totalShippingFee, that.totalShippingFee) &&
+            Objects.equals(totalShippingFeeDiscount, that.totalShippingFeeDiscount) &&
+            Objects.equals(totalVoucherDiscount, that.totalVoucherDiscount) &&
+            Objects.equals(totalPromtionDiscount, that.totalPromtionDiscount) &&
             Objects.equals(totalDue, that.totalDue) &&
-            Objects.equals(comments, that.comments) &&
-            Objects.equals(deliveryInstructions, that.deliveryInstructions) &&
-            Objects.equals(internalComments, that.internalComments) &&
-            Objects.equals(pickingCompletedWhen, that.pickingCompletedWhen) &&
+            Objects.equals(paymentStatus, that.paymentStatus) &&
+            Objects.equals(customerPurchaseOrderNumber, that.customerPurchaseOrderNumber) &&
             Objects.equals(status, that.status) &&
-            Objects.equals(customerReviewedOn, that.customerReviewedOn) &&
-            Objects.equals(sellerRating, that.sellerRating) &&
-            Objects.equals(deliveryRating, that.deliveryRating) &&
-            Objects.equals(reviewAsAnonymous, that.reviewAsAnonymous) &&
-            Objects.equals(completedReview, that.completedReview) &&
+            Objects.equals(isUnderSupplyBackOrdered, that.isUnderSupplyBackOrdered) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
-            Objects.equals(orderLineListId, that.orderLineListId) &&
+            Objects.equals(orderPackageListId, that.orderPackageListId) &&
             Objects.equals(customerId, that.customerId) &&
             Objects.equals(shipToAddressId, that.shipToAddressId) &&
             Objects.equals(billToAddressId, that.billToAddressId) &&
-            Objects.equals(shipMethodId, that.shipMethodId) &&
             Objects.equals(currencyRateId, that.currencyRateId) &&
             Objects.equals(paymentMethodId, that.paymentMethodId) &&
+            Objects.equals(salePersonId, that.salePersonId) &&
             Objects.equals(orderTrackingId, that.orderTrackingId) &&
             Objects.equals(specialDealsId, that.specialDealsId);
     }
@@ -465,33 +381,26 @@ public class OrdersCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         orderDate,
-        dueDate,
-        expectedDeliveryDate,
-        paymentStatus,
-        accountNumber,
         subTotal,
-        taxAmount,
-        frieight,
+        totalTaxAmount,
+        totalShippingFee,
+        totalShippingFeeDiscount,
+        totalVoucherDiscount,
+        totalPromtionDiscount,
         totalDue,
-        comments,
-        deliveryInstructions,
-        internalComments,
-        pickingCompletedWhen,
+        paymentStatus,
+        customerPurchaseOrderNumber,
         status,
-        customerReviewedOn,
-        sellerRating,
-        deliveryRating,
-        reviewAsAnonymous,
-        completedReview,
+        isUnderSupplyBackOrdered,
         lastEditedBy,
         lastEditedWhen,
-        orderLineListId,
+        orderPackageListId,
         customerId,
         shipToAddressId,
         billToAddressId,
-        shipMethodId,
         currencyRateId,
         paymentMethodId,
+        salePersonId,
         orderTrackingId,
         specialDealsId
         );
@@ -503,33 +412,26 @@ public class OrdersCriteria implements Serializable, Criteria {
         return "OrdersCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (orderDate != null ? "orderDate=" + orderDate + ", " : "") +
-                (dueDate != null ? "dueDate=" + dueDate + ", " : "") +
-                (expectedDeliveryDate != null ? "expectedDeliveryDate=" + expectedDeliveryDate + ", " : "") +
-                (paymentStatus != null ? "paymentStatus=" + paymentStatus + ", " : "") +
-                (accountNumber != null ? "accountNumber=" + accountNumber + ", " : "") +
                 (subTotal != null ? "subTotal=" + subTotal + ", " : "") +
-                (taxAmount != null ? "taxAmount=" + taxAmount + ", " : "") +
-                (frieight != null ? "frieight=" + frieight + ", " : "") +
+                (totalTaxAmount != null ? "totalTaxAmount=" + totalTaxAmount + ", " : "") +
+                (totalShippingFee != null ? "totalShippingFee=" + totalShippingFee + ", " : "") +
+                (totalShippingFeeDiscount != null ? "totalShippingFeeDiscount=" + totalShippingFeeDiscount + ", " : "") +
+                (totalVoucherDiscount != null ? "totalVoucherDiscount=" + totalVoucherDiscount + ", " : "") +
+                (totalPromtionDiscount != null ? "totalPromtionDiscount=" + totalPromtionDiscount + ", " : "") +
                 (totalDue != null ? "totalDue=" + totalDue + ", " : "") +
-                (comments != null ? "comments=" + comments + ", " : "") +
-                (deliveryInstructions != null ? "deliveryInstructions=" + deliveryInstructions + ", " : "") +
-                (internalComments != null ? "internalComments=" + internalComments + ", " : "") +
-                (pickingCompletedWhen != null ? "pickingCompletedWhen=" + pickingCompletedWhen + ", " : "") +
+                (paymentStatus != null ? "paymentStatus=" + paymentStatus + ", " : "") +
+                (customerPurchaseOrderNumber != null ? "customerPurchaseOrderNumber=" + customerPurchaseOrderNumber + ", " : "") +
                 (status != null ? "status=" + status + ", " : "") +
-                (customerReviewedOn != null ? "customerReviewedOn=" + customerReviewedOn + ", " : "") +
-                (sellerRating != null ? "sellerRating=" + sellerRating + ", " : "") +
-                (deliveryRating != null ? "deliveryRating=" + deliveryRating + ", " : "") +
-                (reviewAsAnonymous != null ? "reviewAsAnonymous=" + reviewAsAnonymous + ", " : "") +
-                (completedReview != null ? "completedReview=" + completedReview + ", " : "") +
+                (isUnderSupplyBackOrdered != null ? "isUnderSupplyBackOrdered=" + isUnderSupplyBackOrdered + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
-                (orderLineListId != null ? "orderLineListId=" + orderLineListId + ", " : "") +
+                (orderPackageListId != null ? "orderPackageListId=" + orderPackageListId + ", " : "") +
                 (customerId != null ? "customerId=" + customerId + ", " : "") +
                 (shipToAddressId != null ? "shipToAddressId=" + shipToAddressId + ", " : "") +
                 (billToAddressId != null ? "billToAddressId=" + billToAddressId + ", " : "") +
-                (shipMethodId != null ? "shipMethodId=" + shipMethodId + ", " : "") +
                 (currencyRateId != null ? "currencyRateId=" + currencyRateId + ", " : "") +
                 (paymentMethodId != null ? "paymentMethodId=" + paymentMethodId + ", " : "") +
+                (salePersonId != null ? "salePersonId=" + salePersonId + ", " : "") +
                 (orderTrackingId != null ? "orderTrackingId=" + orderTrackingId + ", " : "") +
                 (specialDealsId != null ? "specialDealsId=" + specialDealsId + ", " : "") +
             "}";

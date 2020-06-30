@@ -94,59 +94,38 @@ public class OrdersQueryService extends QueryService<Orders> {
             if (criteria.getOrderDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getOrderDate(), Orders_.orderDate));
             }
-            if (criteria.getDueDate() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getDueDate(), Orders_.dueDate));
-            }
-            if (criteria.getExpectedDeliveryDate() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getExpectedDeliveryDate(), Orders_.expectedDeliveryDate));
-            }
-            if (criteria.getPaymentStatus() != null) {
-                specification = specification.and(buildSpecification(criteria.getPaymentStatus(), Orders_.paymentStatus));
-            }
-            if (criteria.getAccountNumber() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getAccountNumber(), Orders_.accountNumber));
-            }
             if (criteria.getSubTotal() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getSubTotal(), Orders_.subTotal));
             }
-            if (criteria.getTaxAmount() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getTaxAmount(), Orders_.taxAmount));
+            if (criteria.getTotalTaxAmount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalTaxAmount(), Orders_.totalTaxAmount));
             }
-            if (criteria.getFrieight() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getFrieight(), Orders_.frieight));
+            if (criteria.getTotalShippingFee() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalShippingFee(), Orders_.totalShippingFee));
+            }
+            if (criteria.getTotalShippingFeeDiscount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalShippingFeeDiscount(), Orders_.totalShippingFeeDiscount));
+            }
+            if (criteria.getTotalVoucherDiscount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalVoucherDiscount(), Orders_.totalVoucherDiscount));
+            }
+            if (criteria.getTotalPromtionDiscount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalPromtionDiscount(), Orders_.totalPromtionDiscount));
             }
             if (criteria.getTotalDue() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getTotalDue(), Orders_.totalDue));
             }
-            if (criteria.getComments() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getComments(), Orders_.comments));
+            if (criteria.getPaymentStatus() != null) {
+                specification = specification.and(buildSpecification(criteria.getPaymentStatus(), Orders_.paymentStatus));
             }
-            if (criteria.getDeliveryInstructions() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getDeliveryInstructions(), Orders_.deliveryInstructions));
-            }
-            if (criteria.getInternalComments() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getInternalComments(), Orders_.internalComments));
-            }
-            if (criteria.getPickingCompletedWhen() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getPickingCompletedWhen(), Orders_.pickingCompletedWhen));
+            if (criteria.getCustomerPurchaseOrderNumber() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getCustomerPurchaseOrderNumber(), Orders_.customerPurchaseOrderNumber));
             }
             if (criteria.getStatus() != null) {
                 specification = specification.and(buildSpecification(criteria.getStatus(), Orders_.status));
             }
-            if (criteria.getCustomerReviewedOn() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getCustomerReviewedOn(), Orders_.customerReviewedOn));
-            }
-            if (criteria.getSellerRating() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getSellerRating(), Orders_.sellerRating));
-            }
-            if (criteria.getDeliveryRating() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getDeliveryRating(), Orders_.deliveryRating));
-            }
-            if (criteria.getReviewAsAnonymous() != null) {
-                specification = specification.and(buildSpecification(criteria.getReviewAsAnonymous(), Orders_.reviewAsAnonymous));
-            }
-            if (criteria.getCompletedReview() != null) {
-                specification = specification.and(buildSpecification(criteria.getCompletedReview(), Orders_.completedReview));
+            if (criteria.getIsUnderSupplyBackOrdered() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsUnderSupplyBackOrdered(), Orders_.isUnderSupplyBackOrdered));
             }
             if (criteria.getLastEditedBy() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLastEditedBy(), Orders_.lastEditedBy));
@@ -154,9 +133,9 @@ public class OrdersQueryService extends QueryService<Orders> {
             if (criteria.getLastEditedWhen() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastEditedWhen(), Orders_.lastEditedWhen));
             }
-            if (criteria.getOrderLineListId() != null) {
-                specification = specification.and(buildSpecification(criteria.getOrderLineListId(),
-                    root -> root.join(Orders_.orderLineLists, JoinType.LEFT).get(OrderLines_.id)));
+            if (criteria.getOrderPackageListId() != null) {
+                specification = specification.and(buildSpecification(criteria.getOrderPackageListId(),
+                    root -> root.join(Orders_.orderPackageLists, JoinType.LEFT).get(OrderPackages_.id)));
             }
             if (criteria.getCustomerId() != null) {
                 specification = specification.and(buildSpecification(criteria.getCustomerId(),
@@ -170,10 +149,6 @@ public class OrdersQueryService extends QueryService<Orders> {
                 specification = specification.and(buildSpecification(criteria.getBillToAddressId(),
                     root -> root.join(Orders_.billToAddress, JoinType.LEFT).get(Addresses_.id)));
             }
-            if (criteria.getShipMethodId() != null) {
-                specification = specification.and(buildSpecification(criteria.getShipMethodId(),
-                    root -> root.join(Orders_.shipMethod, JoinType.LEFT).get(ShipMethod_.id)));
-            }
             if (criteria.getCurrencyRateId() != null) {
                 specification = specification.and(buildSpecification(criteria.getCurrencyRateId(),
                     root -> root.join(Orders_.currencyRate, JoinType.LEFT).get(CurrencyRate_.id)));
@@ -181,6 +156,10 @@ public class OrdersQueryService extends QueryService<Orders> {
             if (criteria.getPaymentMethodId() != null) {
                 specification = specification.and(buildSpecification(criteria.getPaymentMethodId(),
                     root -> root.join(Orders_.paymentMethod, JoinType.LEFT).get(PaymentMethods_.id)));
+            }
+            if (criteria.getSalePersonId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSalePersonId(),
+                    root -> root.join(Orders_.salePerson, JoinType.LEFT).get(People_.id)));
             }
             if (criteria.getOrderTrackingId() != null) {
                 specification = specification.and(buildSpecification(criteria.getOrderTrackingId(),

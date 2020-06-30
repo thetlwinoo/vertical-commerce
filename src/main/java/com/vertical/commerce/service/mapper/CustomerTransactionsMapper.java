@@ -13,6 +13,7 @@ import org.mapstruct.*;
 public interface CustomerTransactionsMapper extends EntityMapper<CustomerTransactionsDTO, CustomerTransactions> {
 
     @Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "customer.name", target = "customerName")
     @Mapping(source = "paymentMethod.id", target = "paymentMethodId")
     @Mapping(source = "transactionType.id", target = "transactionTypeId")
     @Mapping(source = "transactionType.name", target = "transactionTypeName")

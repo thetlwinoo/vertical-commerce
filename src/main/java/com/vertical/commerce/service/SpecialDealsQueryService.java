@@ -126,6 +126,10 @@ public class SpecialDealsQueryService extends QueryService<SpecialDeals> {
                 specification = specification.and(buildSpecification(criteria.getOrderListId(),
                     root -> root.join(SpecialDeals_.orderLists, JoinType.LEFT).get(Orders_.id)));
             }
+            if (criteria.getOrderPackageListId() != null) {
+                specification = specification.and(buildSpecification(criteria.getOrderPackageListId(),
+                    root -> root.join(SpecialDeals_.orderPackageLists, JoinType.LEFT).get(OrderPackages_.id)));
+            }
             if (criteria.getBuyingGroupId() != null) {
                 specification = specification.and(buildSpecification(criteria.getBuyingGroupId(),
                     root -> root.join(SpecialDeals_.buyingGroup, JoinType.LEFT).get(BuyingGroups_.id)));

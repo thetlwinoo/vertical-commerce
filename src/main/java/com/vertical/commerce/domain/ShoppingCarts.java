@@ -32,8 +32,25 @@ public class ShoppingCarts implements Serializable {
     @Column(name = "total_price", precision = 21, scale = 2)
     private BigDecimal totalPrice;
 
-    @Column(name = "total_cargo_price", precision = 21, scale = 2)
-    private BigDecimal totalCargoPrice;
+    @Column(name = "sub_total_price", precision = 21, scale = 2)
+    private BigDecimal subTotalPrice;
+
+    @Column(name = "total_shipping_fee", precision = 21, scale = 2)
+    private BigDecimal totalShippingFee;
+
+    @Column(name = "total_shipping_fee_discount", precision = 21, scale = 2)
+    private BigDecimal totalShippingFeeDiscount;
+
+    @Column(name = "promotion_total", precision = 21, scale = 2)
+    private BigDecimal promotionTotal;
+
+    @Column(name = "voucher_total", precision = 21, scale = 2)
+    private BigDecimal voucherTotal;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "package_details")
+    private String packageDetails;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
@@ -91,17 +108,82 @@ public class ShoppingCarts implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public BigDecimal getTotalCargoPrice() {
-        return totalCargoPrice;
+    public BigDecimal getSubTotalPrice() {
+        return subTotalPrice;
     }
 
-    public ShoppingCarts totalCargoPrice(BigDecimal totalCargoPrice) {
-        this.totalCargoPrice = totalCargoPrice;
+    public ShoppingCarts subTotalPrice(BigDecimal subTotalPrice) {
+        this.subTotalPrice = subTotalPrice;
         return this;
     }
 
-    public void setTotalCargoPrice(BigDecimal totalCargoPrice) {
-        this.totalCargoPrice = totalCargoPrice;
+    public void setSubTotalPrice(BigDecimal subTotalPrice) {
+        this.subTotalPrice = subTotalPrice;
+    }
+
+    public BigDecimal getTotalShippingFee() {
+        return totalShippingFee;
+    }
+
+    public ShoppingCarts totalShippingFee(BigDecimal totalShippingFee) {
+        this.totalShippingFee = totalShippingFee;
+        return this;
+    }
+
+    public void setTotalShippingFee(BigDecimal totalShippingFee) {
+        this.totalShippingFee = totalShippingFee;
+    }
+
+    public BigDecimal getTotalShippingFeeDiscount() {
+        return totalShippingFeeDiscount;
+    }
+
+    public ShoppingCarts totalShippingFeeDiscount(BigDecimal totalShippingFeeDiscount) {
+        this.totalShippingFeeDiscount = totalShippingFeeDiscount;
+        return this;
+    }
+
+    public void setTotalShippingFeeDiscount(BigDecimal totalShippingFeeDiscount) {
+        this.totalShippingFeeDiscount = totalShippingFeeDiscount;
+    }
+
+    public BigDecimal getPromotionTotal() {
+        return promotionTotal;
+    }
+
+    public ShoppingCarts promotionTotal(BigDecimal promotionTotal) {
+        this.promotionTotal = promotionTotal;
+        return this;
+    }
+
+    public void setPromotionTotal(BigDecimal promotionTotal) {
+        this.promotionTotal = promotionTotal;
+    }
+
+    public BigDecimal getVoucherTotal() {
+        return voucherTotal;
+    }
+
+    public ShoppingCarts voucherTotal(BigDecimal voucherTotal) {
+        this.voucherTotal = voucherTotal;
+        return this;
+    }
+
+    public void setVoucherTotal(BigDecimal voucherTotal) {
+        this.voucherTotal = voucherTotal;
+    }
+
+    public String getPackageDetails() {
+        return packageDetails;
+    }
+
+    public ShoppingCarts packageDetails(String packageDetails) {
+        this.packageDetails = packageDetails;
+        return this;
+    }
+
+    public void setPackageDetails(String packageDetails) {
+        this.packageDetails = packageDetails;
     }
 
     public String getCartString() {
@@ -243,7 +325,12 @@ public class ShoppingCarts implements Serializable {
         return "ShoppingCarts{" +
             "id=" + getId() +
             ", totalPrice=" + getTotalPrice() +
-            ", totalCargoPrice=" + getTotalCargoPrice() +
+            ", subTotalPrice=" + getSubTotalPrice() +
+            ", totalShippingFee=" + getTotalShippingFee() +
+            ", totalShippingFeeDiscount=" + getTotalShippingFeeDiscount() +
+            ", promotionTotal=" + getPromotionTotal() +
+            ", voucherTotal=" + getVoucherTotal() +
+            ", packageDetails='" + getPackageDetails() + "'" +
             ", cartString='" + getCartString() + "'" +
             ", dealString='" + getDealString() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +

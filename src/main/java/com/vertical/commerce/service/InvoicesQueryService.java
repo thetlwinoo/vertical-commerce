@@ -124,9 +124,6 @@ public class InvoicesQueryService extends QueryService<Invoices> {
             if (criteria.getRunPosition() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getRunPosition(), Invoices_.runPosition));
             }
-            if (criteria.getReturnedDeliveryData() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getReturnedDeliveryData(), Invoices_.returnedDeliveryData));
-            }
             if (criteria.getConfirmedDeliveryTime() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getConfirmedDeliveryTime(), Invoices_.confirmedDeliveryTime));
             }
@@ -150,9 +147,9 @@ public class InvoicesQueryService extends QueryService<Invoices> {
                 specification = specification.and(buildSpecification(criteria.getContactPersonId(),
                     root -> root.join(Invoices_.contactPerson, JoinType.LEFT).get(People_.id)));
             }
-            if (criteria.getSalespersonPersonId() != null) {
-                specification = specification.and(buildSpecification(criteria.getSalespersonPersonId(),
-                    root -> root.join(Invoices_.salespersonPerson, JoinType.LEFT).get(People_.id)));
+            if (criteria.getSalesPersonId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSalesPersonId(),
+                    root -> root.join(Invoices_.salesPerson, JoinType.LEFT).get(People_.id)));
             }
             if (criteria.getPackedByPersonId() != null) {
                 specification = specification.and(buildSpecification(criteria.getPackedByPersonId(),
@@ -177,6 +174,10 @@ public class InvoicesQueryService extends QueryService<Invoices> {
             if (criteria.getOrderId() != null) {
                 specification = specification.and(buildSpecification(criteria.getOrderId(),
                     root -> root.join(Invoices_.order, JoinType.LEFT).get(Orders_.id)));
+            }
+            if (criteria.getOrderPackageId() != null) {
+                specification = specification.and(buildSpecification(criteria.getOrderPackageId(),
+                    root -> root.join(Invoices_.orderPackage, JoinType.LEFT).get(OrderPackages_.id)));
             }
             if (criteria.getPaymentMethodId() != null) {
                 specification = specification.and(buildSpecification(criteria.getPaymentMethodId(),

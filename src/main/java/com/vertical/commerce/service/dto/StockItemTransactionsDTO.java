@@ -30,6 +30,8 @@ public class StockItemTransactionsDTO implements Serializable {
 
     private Long customerId;
 
+    private String customerName;
+
     private Long invoiceId;
 
     private Long supplierId;
@@ -104,6 +106,14 @@ public class StockItemTransactionsDTO implements Serializable {
 
     public void setCustomerId(Long customersId) {
         this.customerId = customersId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customersName) {
+        this.customerName = customersName;
     }
 
     public Long getInvoiceId() {
@@ -183,6 +193,7 @@ public class StockItemTransactionsDTO implements Serializable {
             ", stockItemId=" + getStockItemId() +
             ", stockItemName='" + getStockItemName() + "'" +
             ", customerId=" + getCustomerId() +
+            ", customerName='" + getCustomerName() + "'" +
             ", invoiceId=" + getInvoiceId() +
             ", supplierId=" + getSupplierId() +
             ", supplierName='" + getSupplierName() + "'" +

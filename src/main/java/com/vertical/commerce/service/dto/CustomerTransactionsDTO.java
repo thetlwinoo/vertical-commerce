@@ -40,6 +40,8 @@ public class CustomerTransactionsDTO implements Serializable {
 
     private Long customerId;
 
+    private String customerName;
+
     private Long paymentMethodId;
 
     private Long transactionTypeId;
@@ -138,6 +140,14 @@ public class CustomerTransactionsDTO implements Serializable {
         this.customerId = customersId;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customersName) {
+        this.customerName = customersName;
+    }
+
     public Long getPaymentMethodId() {
         return paymentMethodId;
     }
@@ -210,6 +220,7 @@ public class CustomerTransactionsDTO implements Serializable {
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", customerId=" + getCustomerId() +
+            ", customerName='" + getCustomerName() + "'" +
             ", paymentMethodId=" + getPaymentMethodId() +
             ", transactionTypeId=" + getTransactionTypeId() +
             ", transactionTypeName='" + getTransactionTypeName() + "'" +

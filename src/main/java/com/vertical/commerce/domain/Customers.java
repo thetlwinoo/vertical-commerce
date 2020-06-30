@@ -26,6 +26,9 @@ public class Customers implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @Column(name = "name")
+    private String name;
+
     @NotNull
     @Column(name = "account_number", nullable = false)
     private String accountNumber;
@@ -56,6 +59,12 @@ public class Customers implements Serializable {
     @Column(name = "run_position")
     private String runPosition;
 
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
+
+    @Column(name = "bill_to_address_same_as_delivery_address")
+    private Boolean billToAddressSameAsDeliveryAddress;
+
     @NotNull
     @Column(name = "last_edited_by", nullable = false)
     private String lastEditedBy;
@@ -80,6 +89,10 @@ public class Customers implements Serializable {
     @JsonIgnoreProperties(value = "customers", allowSetters = true)
     private Addresses deliveryAddress;
 
+    @ManyToOne
+    @JsonIgnoreProperties(value = "customers", allowSetters = true)
+    private Addresses billToAddress;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -87,6 +100,19 @@ public class Customers implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Customers name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAccountNumber() {
@@ -193,6 +219,32 @@ public class Customers implements Serializable {
         this.runPosition = runPosition;
     }
 
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public Customers thumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+        return this;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public Boolean isBillToAddressSameAsDeliveryAddress() {
+        return billToAddressSameAsDeliveryAddress;
+    }
+
+    public Customers billToAddressSameAsDeliveryAddress(Boolean billToAddressSameAsDeliveryAddress) {
+        this.billToAddressSameAsDeliveryAddress = billToAddressSameAsDeliveryAddress;
+        return this;
+    }
+
+    public void setBillToAddressSameAsDeliveryAddress(Boolean billToAddressSameAsDeliveryAddress) {
+        this.billToAddressSameAsDeliveryAddress = billToAddressSameAsDeliveryAddress;
+    }
+
     public String getLastEditedBy() {
         return lastEditedBy;
     }
@@ -270,6 +322,19 @@ public class Customers implements Serializable {
     public void setDeliveryAddress(Addresses addresses) {
         this.deliveryAddress = addresses;
     }
+
+    public Addresses getBillToAddress() {
+        return billToAddress;
+    }
+
+    public Customers billToAddress(Addresses addresses) {
+        this.billToAddress = addresses;
+        return this;
+    }
+
+    public void setBillToAddress(Addresses addresses) {
+        this.billToAddress = addresses;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -293,6 +358,7 @@ public class Customers implements Serializable {
     public String toString() {
         return "Customers{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
             ", accountNumber='" + getAccountNumber() + "'" +
             ", accountOpenedDate='" + getAccountOpenedDate() + "'" +
             ", standardDiscountPercentage=" + getStandardDiscountPercentage() +
@@ -301,6 +367,8 @@ public class Customers implements Serializable {
             ", paymentDays=" + getPaymentDays() +
             ", deliveryRun='" + getDeliveryRun() + "'" +
             ", runPosition='" + getRunPosition() + "'" +
+            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
+            ", billToAddressSameAsDeliveryAddress='" + isBillToAddressSameAsDeliveryAddress() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +

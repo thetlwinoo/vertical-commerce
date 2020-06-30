@@ -50,6 +50,8 @@ public class SpecialDealsCriteria implements Serializable, Criteria {
 
     private LongFilter orderListId;
 
+    private LongFilter orderPackageListId;
+
     private LongFilter buyingGroupId;
 
     private LongFilter customerCategoryId;
@@ -76,6 +78,7 @@ public class SpecialDealsCriteria implements Serializable, Criteria {
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
         this.cartListId = other.cartListId == null ? null : other.cartListId.copy();
         this.orderListId = other.orderListId == null ? null : other.orderListId.copy();
+        this.orderPackageListId = other.orderPackageListId == null ? null : other.orderPackageListId.copy();
         this.buyingGroupId = other.buyingGroupId == null ? null : other.buyingGroupId.copy();
         this.customerCategoryId = other.customerCategoryId == null ? null : other.customerCategoryId.copy();
         this.customerId = other.customerId == null ? null : other.customerId.copy();
@@ -184,6 +187,14 @@ public class SpecialDealsCriteria implements Serializable, Criteria {
         this.orderListId = orderListId;
     }
 
+    public LongFilter getOrderPackageListId() {
+        return orderPackageListId;
+    }
+
+    public void setOrderPackageListId(LongFilter orderPackageListId) {
+        this.orderPackageListId = orderPackageListId;
+    }
+
     public LongFilter getBuyingGroupId() {
         return buyingGroupId;
     }
@@ -247,6 +258,7 @@ public class SpecialDealsCriteria implements Serializable, Criteria {
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
             Objects.equals(cartListId, that.cartListId) &&
             Objects.equals(orderListId, that.orderListId) &&
+            Objects.equals(orderPackageListId, that.orderPackageListId) &&
             Objects.equals(buyingGroupId, that.buyingGroupId) &&
             Objects.equals(customerCategoryId, that.customerCategoryId) &&
             Objects.equals(customerId, that.customerId) &&
@@ -269,6 +281,7 @@ public class SpecialDealsCriteria implements Serializable, Criteria {
         lastEditedWhen,
         cartListId,
         orderListId,
+        orderPackageListId,
         buyingGroupId,
         customerCategoryId,
         customerId,
@@ -293,6 +306,7 @@ public class SpecialDealsCriteria implements Serializable, Criteria {
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
                 (cartListId != null ? "cartListId=" + cartListId + ", " : "") +
                 (orderListId != null ? "orderListId=" + orderListId + ", " : "") +
+                (orderPackageListId != null ? "orderPackageListId=" + orderPackageListId + ", " : "") +
                 (buyingGroupId != null ? "buyingGroupId=" + buyingGroupId + ", " : "") +
                 (customerCategoryId != null ? "customerCategoryId=" + customerCategoryId + ", " : "") +
                 (customerId != null ? "customerId=" + customerId + ", " : "") +

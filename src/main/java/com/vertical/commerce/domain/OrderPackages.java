@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -40,8 +41,29 @@ public class OrderPackages implements Serializable {
     @Column(name = "internal_comments")
     private String internalComments;
 
-    @Column(name = "customer_purchase_order_number")
-    private String customerPurchaseOrderNumber;
+    @Column(name = "package_shipping_fee", precision = 21, scale = 2)
+    private BigDecimal packageShippingFee;
+
+    @Column(name = "package_shipping_fee_discount", precision = 21, scale = 2)
+    private BigDecimal packageShippingFeeDiscount;
+
+    @Column(name = "package_price", precision = 21, scale = 2)
+    private BigDecimal packagePrice;
+
+    @Column(name = "package_sub_total", precision = 21, scale = 2)
+    private BigDecimal packageSubTotal;
+
+    @Column(name = "package_tax_amount", precision = 21, scale = 2)
+    private BigDecimal packageTaxAmount;
+
+    @Column(name = "package_voucher_discount", precision = 21, scale = 2)
+    private BigDecimal packageVoucherDiscount;
+
+    @Column(name = "package_promotion_discount", precision = 21, scale = 2)
+    private BigDecimal packagePromotionDiscount;
+
+    @Column(name = "picking_completed_when")
+    private Instant pickingCompletedWhen;
 
     @Column(name = "customer_reviewed_on")
     private Instant customerReviewedOn;
@@ -88,6 +110,14 @@ public class OrderPackages implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "orderPackages", allowSetters = true)
     private Suppliers supplier;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "orderPackages", allowSetters = true)
+    private DeliveryMethods deliveryMethod;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "orderPackageLists", allowSetters = true)
+    private SpecialDeals specialDeals;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "orderPackageLists", allowSetters = true)
@@ -154,17 +184,108 @@ public class OrderPackages implements Serializable {
         this.internalComments = internalComments;
     }
 
-    public String getCustomerPurchaseOrderNumber() {
-        return customerPurchaseOrderNumber;
+    public BigDecimal getPackageShippingFee() {
+        return packageShippingFee;
     }
 
-    public OrderPackages customerPurchaseOrderNumber(String customerPurchaseOrderNumber) {
-        this.customerPurchaseOrderNumber = customerPurchaseOrderNumber;
+    public OrderPackages packageShippingFee(BigDecimal packageShippingFee) {
+        this.packageShippingFee = packageShippingFee;
         return this;
     }
 
-    public void setCustomerPurchaseOrderNumber(String customerPurchaseOrderNumber) {
-        this.customerPurchaseOrderNumber = customerPurchaseOrderNumber;
+    public void setPackageShippingFee(BigDecimal packageShippingFee) {
+        this.packageShippingFee = packageShippingFee;
+    }
+
+    public BigDecimal getPackageShippingFeeDiscount() {
+        return packageShippingFeeDiscount;
+    }
+
+    public OrderPackages packageShippingFeeDiscount(BigDecimal packageShippingFeeDiscount) {
+        this.packageShippingFeeDiscount = packageShippingFeeDiscount;
+        return this;
+    }
+
+    public void setPackageShippingFeeDiscount(BigDecimal packageShippingFeeDiscount) {
+        this.packageShippingFeeDiscount = packageShippingFeeDiscount;
+    }
+
+    public BigDecimal getPackagePrice() {
+        return packagePrice;
+    }
+
+    public OrderPackages packagePrice(BigDecimal packagePrice) {
+        this.packagePrice = packagePrice;
+        return this;
+    }
+
+    public void setPackagePrice(BigDecimal packagePrice) {
+        this.packagePrice = packagePrice;
+    }
+
+    public BigDecimal getPackageSubTotal() {
+        return packageSubTotal;
+    }
+
+    public OrderPackages packageSubTotal(BigDecimal packageSubTotal) {
+        this.packageSubTotal = packageSubTotal;
+        return this;
+    }
+
+    public void setPackageSubTotal(BigDecimal packageSubTotal) {
+        this.packageSubTotal = packageSubTotal;
+    }
+
+    public BigDecimal getPackageTaxAmount() {
+        return packageTaxAmount;
+    }
+
+    public OrderPackages packageTaxAmount(BigDecimal packageTaxAmount) {
+        this.packageTaxAmount = packageTaxAmount;
+        return this;
+    }
+
+    public void setPackageTaxAmount(BigDecimal packageTaxAmount) {
+        this.packageTaxAmount = packageTaxAmount;
+    }
+
+    public BigDecimal getPackageVoucherDiscount() {
+        return packageVoucherDiscount;
+    }
+
+    public OrderPackages packageVoucherDiscount(BigDecimal packageVoucherDiscount) {
+        this.packageVoucherDiscount = packageVoucherDiscount;
+        return this;
+    }
+
+    public void setPackageVoucherDiscount(BigDecimal packageVoucherDiscount) {
+        this.packageVoucherDiscount = packageVoucherDiscount;
+    }
+
+    public BigDecimal getPackagePromotionDiscount() {
+        return packagePromotionDiscount;
+    }
+
+    public OrderPackages packagePromotionDiscount(BigDecimal packagePromotionDiscount) {
+        this.packagePromotionDiscount = packagePromotionDiscount;
+        return this;
+    }
+
+    public void setPackagePromotionDiscount(BigDecimal packagePromotionDiscount) {
+        this.packagePromotionDiscount = packagePromotionDiscount;
+    }
+
+    public Instant getPickingCompletedWhen() {
+        return pickingCompletedWhen;
+    }
+
+    public OrderPackages pickingCompletedWhen(Instant pickingCompletedWhen) {
+        this.pickingCompletedWhen = pickingCompletedWhen;
+        return this;
+    }
+
+    public void setPickingCompletedWhen(Instant pickingCompletedWhen) {
+        this.pickingCompletedWhen = pickingCompletedWhen;
     }
 
     public Instant getCustomerReviewedOn() {
@@ -335,6 +456,32 @@ public class OrderPackages implements Serializable {
         this.supplier = suppliers;
     }
 
+    public DeliveryMethods getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public OrderPackages deliveryMethod(DeliveryMethods deliveryMethods) {
+        this.deliveryMethod = deliveryMethods;
+        return this;
+    }
+
+    public void setDeliveryMethod(DeliveryMethods deliveryMethods) {
+        this.deliveryMethod = deliveryMethods;
+    }
+
+    public SpecialDeals getSpecialDeals() {
+        return specialDeals;
+    }
+
+    public OrderPackages specialDeals(SpecialDeals specialDeals) {
+        this.specialDeals = specialDeals;
+        return this;
+    }
+
+    public void setSpecialDeals(SpecialDeals specialDeals) {
+        this.specialDeals = specialDeals;
+    }
+
     public Orders getOrder() {
         return order;
     }
@@ -374,7 +521,14 @@ public class OrderPackages implements Serializable {
             ", comments='" + getComments() + "'" +
             ", deliveryInstructions='" + getDeliveryInstructions() + "'" +
             ", internalComments='" + getInternalComments() + "'" +
-            ", customerPurchaseOrderNumber='" + getCustomerPurchaseOrderNumber() + "'" +
+            ", packageShippingFee=" + getPackageShippingFee() +
+            ", packageShippingFeeDiscount=" + getPackageShippingFeeDiscount() +
+            ", packagePrice=" + getPackagePrice() +
+            ", packageSubTotal=" + getPackageSubTotal() +
+            ", packageTaxAmount=" + getPackageTaxAmount() +
+            ", packageVoucherDiscount=" + getPackageVoucherDiscount() +
+            ", packagePromotionDiscount=" + getPackagePromotionDiscount() +
+            ", pickingCompletedWhen='" + getPickingCompletedWhen() + "'" +
             ", customerReviewedOn='" + getCustomerReviewedOn() + "'" +
             ", sellerRating=" + getSellerRating() +
             ", sellerReview='" + getSellerReview() + "'" +

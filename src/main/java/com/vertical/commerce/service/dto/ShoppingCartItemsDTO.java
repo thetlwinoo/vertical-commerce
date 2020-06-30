@@ -13,7 +13,7 @@ public class ShoppingCartItemsDTO implements Serializable {
 
     private Integer quantity;
 
-    private Boolean addToOrder;
+    private Boolean selectOrder;
 
     @NotNull
     private String lastEditedBy;
@@ -25,6 +25,10 @@ public class ShoppingCartItemsDTO implements Serializable {
     private Long stockItemId;
 
     private String stockItemName;
+
+    private Long deliveryMethodId;
+
+    private String deliveryMethodName;
 
     private Long cartId;
     
@@ -44,12 +48,12 @@ public class ShoppingCartItemsDTO implements Serializable {
         this.quantity = quantity;
     }
 
-    public Boolean isAddToOrder() {
-        return addToOrder;
+    public Boolean isSelectOrder() {
+        return selectOrder;
     }
 
-    public void setAddToOrder(Boolean addToOrder) {
-        this.addToOrder = addToOrder;
+    public void setSelectOrder(Boolean selectOrder) {
+        this.selectOrder = selectOrder;
     }
 
     public String getLastEditedBy() {
@@ -84,6 +88,22 @@ public class ShoppingCartItemsDTO implements Serializable {
         this.stockItemName = stockItemsName;
     }
 
+    public Long getDeliveryMethodId() {
+        return deliveryMethodId;
+    }
+
+    public void setDeliveryMethodId(Long deliveryMethodsId) {
+        this.deliveryMethodId = deliveryMethodsId;
+    }
+
+    public String getDeliveryMethodName() {
+        return deliveryMethodName;
+    }
+
+    public void setDeliveryMethodName(String deliveryMethodsName) {
+        this.deliveryMethodName = deliveryMethodsName;
+    }
+
     public Long getCartId() {
         return cartId;
     }
@@ -115,11 +135,13 @@ public class ShoppingCartItemsDTO implements Serializable {
         return "ShoppingCartItemsDTO{" +
             "id=" + getId() +
             ", quantity=" + getQuantity() +
-            ", addToOrder='" + isAddToOrder() + "'" +
+            ", selectOrder='" + isSelectOrder() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", stockItemId=" + getStockItemId() +
             ", stockItemName='" + getStockItemName() + "'" +
+            ", deliveryMethodId=" + getDeliveryMethodId() +
+            ", deliveryMethodName='" + getDeliveryMethodName() + "'" +
             ", cartId=" + getCartId() +
             "}";
     }

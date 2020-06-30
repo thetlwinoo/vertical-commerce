@@ -3,6 +3,7 @@ package com.vertical.commerce.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -66,6 +67,8 @@ public class Invoices implements Serializable {
     @Column(name = "run_position")
     private String runPosition;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "returned_delivery_data")
     private String returnedDeliveryData;
 
@@ -98,7 +101,7 @@ public class Invoices implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "invoices", allowSetters = true)
-    private People salespersonPerson;
+    private People salesPerson;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "invoices", allowSetters = true)
@@ -123,6 +126,10 @@ public class Invoices implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "invoices", allowSetters = true)
     private Orders order;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "invoices", allowSetters = true)
+    private OrderPackages orderPackage;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "invoices", allowSetters = true)
@@ -396,17 +403,17 @@ public class Invoices implements Serializable {
         this.contactPerson = people;
     }
 
-    public People getSalespersonPerson() {
-        return salespersonPerson;
+    public People getSalesPerson() {
+        return salesPerson;
     }
 
-    public Invoices salespersonPerson(People people) {
-        this.salespersonPerson = people;
+    public Invoices salesPerson(People people) {
+        this.salesPerson = people;
         return this;
     }
 
-    public void setSalespersonPerson(People people) {
-        this.salespersonPerson = people;
+    public void setSalesPerson(People people) {
+        this.salesPerson = people;
     }
 
     public People getPackedByPerson() {
@@ -485,6 +492,19 @@ public class Invoices implements Serializable {
 
     public void setOrder(Orders orders) {
         this.order = orders;
+    }
+
+    public OrderPackages getOrderPackage() {
+        return orderPackage;
+    }
+
+    public Invoices orderPackage(OrderPackages orderPackages) {
+        this.orderPackage = orderPackages;
+        return this;
+    }
+
+    public void setOrderPackage(OrderPackages orderPackages) {
+        this.orderPackage = orderPackages;
     }
 
     public PaymentMethods getPaymentMethod() {

@@ -5,6 +5,7 @@ import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.SpecialDeals;
 import com.vertical.commerce.domain.ShoppingCarts;
 import com.vertical.commerce.domain.Orders;
+import com.vertical.commerce.domain.OrderPackages;
 import com.vertical.commerce.domain.BuyingGroups;
 import com.vertical.commerce.domain.CustomerCategories;
 import com.vertical.commerce.domain.Customers;
@@ -1093,6 +1094,26 @@ public class SpecialDealsResourceIT {
 
         // Get all the specialDealsList where orderList equals to orderListId + 1
         defaultSpecialDealsShouldNotBeFound("orderListId.equals=" + (orderListId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSpecialDealsByOrderPackageListIsEqualToSomething() throws Exception {
+        // Initialize the database
+        specialDealsRepository.saveAndFlush(specialDeals);
+        OrderPackages orderPackageList = OrderPackagesResourceIT.createEntity(em);
+        em.persist(orderPackageList);
+        em.flush();
+        specialDeals.addOrderPackageList(orderPackageList);
+        specialDealsRepository.saveAndFlush(specialDeals);
+        Long orderPackageListId = orderPackageList.getId();
+
+        // Get all the specialDealsList where orderPackageList equals to orderPackageListId
+        defaultSpecialDealsShouldBeFound("orderPackageListId.equals=" + orderPackageListId);
+
+        // Get all the specialDealsList where orderPackageList equals to orderPackageListId + 1
+        defaultSpecialDealsShouldNotBeFound("orderPackageListId.equals=" + (orderPackageListId + 1));
     }
 
 

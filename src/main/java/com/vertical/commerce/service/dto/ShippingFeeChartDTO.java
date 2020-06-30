@@ -37,9 +37,13 @@ public class ShippingFeeChartDTO implements Serializable {
     private Instant lastEditedWhen;
 
 
-    private Long zoneId;
+    private Long sourceZoneId;
 
-    private String zoneCode;
+    private String sourceZoneCode;
+
+    private Long destinationZoneId;
+
+    private String destinationZoneCode;
 
     private Long deliveryMethodId;
 
@@ -117,20 +121,36 @@ public class ShippingFeeChartDTO implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public Long getZoneId() {
-        return zoneId;
+    public Long getSourceZoneId() {
+        return sourceZoneId;
     }
 
-    public void setZoneId(Long zoneId) {
-        this.zoneId = zoneId;
+    public void setSourceZoneId(Long zoneId) {
+        this.sourceZoneId = zoneId;
     }
 
-    public String getZoneCode() {
-        return zoneCode;
+    public String getSourceZoneCode() {
+        return sourceZoneCode;
     }
 
-    public void setZoneCode(String zoneCode) {
-        this.zoneCode = zoneCode;
+    public void setSourceZoneCode(String zoneCode) {
+        this.sourceZoneCode = zoneCode;
+    }
+
+    public Long getDestinationZoneId() {
+        return destinationZoneId;
+    }
+
+    public void setDestinationZoneId(Long zoneId) {
+        this.destinationZoneId = zoneId;
+    }
+
+    public String getDestinationZoneCode() {
+        return destinationZoneCode;
+    }
+
+    public void setDestinationZoneCode(String zoneCode) {
+        this.destinationZoneCode = zoneCode;
     }
 
     public Long getDeliveryMethodId() {
@@ -179,8 +199,10 @@ public class ShippingFeeChartDTO implements Serializable {
             ", price=" + getPrice() +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
-            ", zoneId=" + getZoneId() +
-            ", zoneCode='" + getZoneCode() + "'" +
+            ", sourceZoneId=" + getSourceZoneId() +
+            ", sourceZoneCode='" + getSourceZoneCode() + "'" +
+            ", destinationZoneId=" + getDestinationZoneId() +
+            ", destinationZoneCode='" + getDestinationZoneCode() + "'" +
             ", deliveryMethodId=" + getDeliveryMethodId() +
             ", deliveryMethodName='" + getDeliveryMethodName() + "'" +
             "}";

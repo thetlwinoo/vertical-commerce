@@ -9,6 +9,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Suppliers.
@@ -76,6 +78,9 @@ public class Suppliers implements Serializable {
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
+    @Column(name = "pickup_same_as_head_office")
+    private Boolean pickupSameAsHeadOffice;
+
     @NotNull
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
@@ -94,15 +99,18 @@ public class Suppliers implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "suppliers", allowSetters = true)
-    private DeliveryMethods deliveryMethod;
+    private Addresses pickupAddress;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "suppliers", allowSetters = true)
-    private Cities deliveryCity;
+    private Addresses headOfficeAddress;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "suppliers", allowSetters = true)
-    private Cities postalCity;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "suppliers_delivery_method",
+               joinColumns = @JoinColumn(name = "suppliers_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "delivery_method_id", referencedColumnName = "id"))
+    private Set<DeliveryMethods> deliveryMethods = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -321,6 +329,19 @@ public class Suppliers implements Serializable {
         this.thumbnailUrl = thumbnailUrl;
     }
 
+    public Boolean isPickupSameAsHeadOffice() {
+        return pickupSameAsHeadOffice;
+    }
+
+    public Suppliers pickupSameAsHeadOffice(Boolean pickupSameAsHeadOffice) {
+        this.pickupSameAsHeadOffice = pickupSameAsHeadOffice;
+        return this;
+    }
+
+    public void setPickupSameAsHeadOffice(Boolean pickupSameAsHeadOffice) {
+        this.pickupSameAsHeadOffice = pickupSameAsHeadOffice;
+    }
+
     public Instant getValidFrom() {
         return validFrom;
     }
@@ -373,43 +394,55 @@ public class Suppliers implements Serializable {
         this.supplierCategory = supplierCategories;
     }
 
-    public DeliveryMethods getDeliveryMethod() {
-        return deliveryMethod;
+    public Addresses getPickupAddress() {
+        return pickupAddress;
     }
 
-    public Suppliers deliveryMethod(DeliveryMethods deliveryMethods) {
-        this.deliveryMethod = deliveryMethods;
+    public Suppliers pickupAddress(Addresses addresses) {
+        this.pickupAddress = addresses;
         return this;
     }
 
-    public void setDeliveryMethod(DeliveryMethods deliveryMethods) {
-        this.deliveryMethod = deliveryMethods;
+    public void setPickupAddress(Addresses addresses) {
+        this.pickupAddress = addresses;
     }
 
-    public Cities getDeliveryCity() {
-        return deliveryCity;
+    public Addresses getHeadOfficeAddress() {
+        return headOfficeAddress;
     }
 
-    public Suppliers deliveryCity(Cities cities) {
-        this.deliveryCity = cities;
+    public Suppliers headOfficeAddress(Addresses addresses) {
+        this.headOfficeAddress = addresses;
         return this;
     }
 
-    public void setDeliveryCity(Cities cities) {
-        this.deliveryCity = cities;
+    public void setHeadOfficeAddress(Addresses addresses) {
+        this.headOfficeAddress = addresses;
     }
 
-    public Cities getPostalCity() {
-        return postalCity;
+    public Set<DeliveryMethods> getDeliveryMethods() {
+        return deliveryMethods;
     }
 
-    public Suppliers postalCity(Cities cities) {
-        this.postalCity = cities;
+    public Suppliers deliveryMethods(Set<DeliveryMethods> deliveryMethods) {
+        this.deliveryMethods = deliveryMethods;
         return this;
     }
 
-    public void setPostalCity(Cities cities) {
-        this.postalCity = cities;
+    public Suppliers addDeliveryMethod(DeliveryMethods deliveryMethods) {
+        this.deliveryMethods.add(deliveryMethods);
+        deliveryMethods.getSuppliers().add(this);
+        return this;
+    }
+
+    public Suppliers removeDeliveryMethod(DeliveryMethods deliveryMethods) {
+        this.deliveryMethods.remove(deliveryMethods);
+        deliveryMethods.getSuppliers().remove(this);
+        return this;
+    }
+
+    public void setDeliveryMethods(Set<DeliveryMethods> deliveryMethods) {
+        this.deliveryMethods = deliveryMethods;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -450,6 +483,7 @@ public class Suppliers implements Serializable {
             ", creditRating=" + getCreditRating() +
             ", activeFlag='" + isActiveFlag() + "'" +
             ", thumbnailUrl='" + getThumbnailUrl() + "'" +
+            ", pickupSameAsHeadOffice='" + isPickupSameAsHeadOffice() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

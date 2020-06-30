@@ -9,17 +9,17 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Addresses} and its DTO {@link AddressesDTO}.
  */
-@Mapper(componentModel = "spring", uses = {StateProvincesMapper.class, AddressTypesMapper.class, PeopleMapper.class})
+@Mapper(componentModel = "spring", uses = {ZoneMapper.class, AddressTypesMapper.class, PeopleMapper.class})
 public interface AddressesMapper extends EntityMapper<AddressesDTO, Addresses> {
 
-    @Mapping(source = "stateProvince.id", target = "stateProvinceId")
-    @Mapping(source = "stateProvince.name", target = "stateProvinceName")
+    @Mapping(source = "zone.id", target = "zoneId")
+    @Mapping(source = "zone.code", target = "zoneCode")
     @Mapping(source = "addressType.id", target = "addressTypeId")
     @Mapping(source = "addressType.name", target = "addressTypeName")
     @Mapping(source = "person.id", target = "personId")
     AddressesDTO toDto(Addresses addresses);
 
-    @Mapping(source = "stateProvinceId", target = "stateProvince")
+    @Mapping(source = "zoneId", target = "zone")
     @Mapping(source = "addressTypeId", target = "addressType")
     @Mapping(source = "personId", target = "person")
     Addresses toEntity(AddressesDTO addressesDTO);

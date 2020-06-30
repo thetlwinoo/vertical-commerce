@@ -9,15 +9,18 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ShoppingCartItems} and its DTO {@link ShoppingCartItemsDTO}.
  */
-@Mapper(componentModel = "spring", uses = {StockItemsMapper.class, ShoppingCartsMapper.class})
+@Mapper(componentModel = "spring", uses = {StockItemsMapper.class, DeliveryMethodsMapper.class, ShoppingCartsMapper.class})
 public interface ShoppingCartItemsMapper extends EntityMapper<ShoppingCartItemsDTO, ShoppingCartItems> {
 
     @Mapping(source = "stockItem.id", target = "stockItemId")
     @Mapping(source = "stockItem.name", target = "stockItemName")
+    @Mapping(source = "deliveryMethod.id", target = "deliveryMethodId")
+    @Mapping(source = "deliveryMethod.name", target = "deliveryMethodName")
     @Mapping(source = "cart.id", target = "cartId")
     ShoppingCartItemsDTO toDto(ShoppingCartItems shoppingCartItems);
 
     @Mapping(source = "stockItemId", target = "stockItem")
+    @Mapping(source = "deliveryMethodId", target = "deliveryMethod")
     @Mapping(source = "cartId", target = "cart")
     ShoppingCartItems toEntity(ShoppingCartItemsDTO shoppingCartItemsDTO);
 

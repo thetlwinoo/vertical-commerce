@@ -38,77 +38,46 @@ public class Orders implements Serializable {
     @Column(name = "order_date", nullable = false)
     private Instant orderDate;
 
-    @Column(name = "due_date")
-    private Instant dueDate;
+    @Column(name = "sub_total", precision = 21, scale = 2)
+    private BigDecimal subTotal;
 
-    @Column(name = "expected_delivery_date")
-    private Instant expectedDeliveryDate;
+    @Column(name = "total_tax_amount", precision = 21, scale = 2)
+    private BigDecimal totalTaxAmount;
+
+    @Column(name = "total_shipping_fee", precision = 21, scale = 2)
+    private BigDecimal totalShippingFee;
+
+    @Column(name = "total_shipping_fee_discount", precision = 21, scale = 2)
+    private BigDecimal totalShippingFeeDiscount;
+
+    @Column(name = "total_voucher_discount", precision = 21, scale = 2)
+    private BigDecimal totalVoucherDiscount;
+
+    @Column(name = "total_promtion_discount", precision = 21, scale = 2)
+    private BigDecimal totalPromtionDiscount;
+
+    @Column(name = "total_due", precision = 21, scale = 2)
+    private BigDecimal totalDue;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status")
     private PaymentStatus paymentStatus;
 
-    @Column(name = "account_number")
-    private String accountNumber;
-
-    @Column(name = "sub_total", precision = 21, scale = 2)
-    private BigDecimal subTotal;
-
-    @Column(name = "tax_amount", precision = 21, scale = 2)
-    private BigDecimal taxAmount;
-
-    @Column(name = "frieight", precision = 21, scale = 2)
-    private BigDecimal frieight;
-
-    @Column(name = "total_due", precision = 21, scale = 2)
-    private BigDecimal totalDue;
-
-    @Column(name = "comments")
-    private String comments;
-
-    @Column(name = "delivery_instructions")
-    private String deliveryInstructions;
-
-    @Column(name = "internal_comments")
-    private String internalComments;
-
-    @Column(name = "picking_completed_when")
-    private Instant pickingCompletedWhen;
+    @Column(name = "customer_purchase_order_number")
+    private String customerPurchaseOrderNumber;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private OrderStatus status;
 
-    @Column(name = "customer_reviewed_on")
-    private Instant customerReviewedOn;
-
-    @Column(name = "seller_rating")
-    private Integer sellerRating;
-
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "seller_review")
-    private String sellerReview;
+    @Column(name = "order_details")
+    private String orderDetails;
 
-    @Column(name = "delivery_rating")
-    private Integer deliveryRating;
-
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "delivery_review")
-    private String deliveryReview;
-
-    @Column(name = "review_as_anonymous")
-    private Boolean reviewAsAnonymous;
-
-    @Column(name = "completed_review")
-    private Boolean completedReview;
-
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "order_line_string")
-    private String orderLineString;
+    @Column(name = "is_under_supply_back_ordered")
+    private Boolean isUnderSupplyBackOrdered;
 
     @NotNull
     @Column(name = "last_edited_by", nullable = false)
@@ -120,7 +89,7 @@ public class Orders implements Serializable {
 
     @OneToMany(mappedBy = "order")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<OrderLines> orderLineLists = new HashSet<>();
+    private Set<OrderPackages> orderPackageLists = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = "orders", allowSetters = true)
@@ -136,15 +105,15 @@ public class Orders implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "orders", allowSetters = true)
-    private ShipMethod shipMethod;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "orders", allowSetters = true)
     private CurrencyRate currencyRate;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "orders", allowSetters = true)
     private PaymentMethods paymentMethod;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "orders", allowSetters = true)
+    private People salePerson;
 
     @OneToOne(mappedBy = "order")
     @JsonIgnore
@@ -176,58 +145,6 @@ public class Orders implements Serializable {
         this.orderDate = orderDate;
     }
 
-    public Instant getDueDate() {
-        return dueDate;
-    }
-
-    public Orders dueDate(Instant dueDate) {
-        this.dueDate = dueDate;
-        return this;
-    }
-
-    public void setDueDate(Instant dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public Instant getExpectedDeliveryDate() {
-        return expectedDeliveryDate;
-    }
-
-    public Orders expectedDeliveryDate(Instant expectedDeliveryDate) {
-        this.expectedDeliveryDate = expectedDeliveryDate;
-        return this;
-    }
-
-    public void setExpectedDeliveryDate(Instant expectedDeliveryDate) {
-        this.expectedDeliveryDate = expectedDeliveryDate;
-    }
-
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public Orders paymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
-        return this;
-    }
-
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public Orders accountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-        return this;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
     public BigDecimal getSubTotal() {
         return subTotal;
     }
@@ -241,30 +158,69 @@ public class Orders implements Serializable {
         this.subTotal = subTotal;
     }
 
-    public BigDecimal getTaxAmount() {
-        return taxAmount;
+    public BigDecimal getTotalTaxAmount() {
+        return totalTaxAmount;
     }
 
-    public Orders taxAmount(BigDecimal taxAmount) {
-        this.taxAmount = taxAmount;
+    public Orders totalTaxAmount(BigDecimal totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
         return this;
     }
 
-    public void setTaxAmount(BigDecimal taxAmount) {
-        this.taxAmount = taxAmount;
+    public void setTotalTaxAmount(BigDecimal totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
     }
 
-    public BigDecimal getFrieight() {
-        return frieight;
+    public BigDecimal getTotalShippingFee() {
+        return totalShippingFee;
     }
 
-    public Orders frieight(BigDecimal frieight) {
-        this.frieight = frieight;
+    public Orders totalShippingFee(BigDecimal totalShippingFee) {
+        this.totalShippingFee = totalShippingFee;
         return this;
     }
 
-    public void setFrieight(BigDecimal frieight) {
-        this.frieight = frieight;
+    public void setTotalShippingFee(BigDecimal totalShippingFee) {
+        this.totalShippingFee = totalShippingFee;
+    }
+
+    public BigDecimal getTotalShippingFeeDiscount() {
+        return totalShippingFeeDiscount;
+    }
+
+    public Orders totalShippingFeeDiscount(BigDecimal totalShippingFeeDiscount) {
+        this.totalShippingFeeDiscount = totalShippingFeeDiscount;
+        return this;
+    }
+
+    public void setTotalShippingFeeDiscount(BigDecimal totalShippingFeeDiscount) {
+        this.totalShippingFeeDiscount = totalShippingFeeDiscount;
+    }
+
+    public BigDecimal getTotalVoucherDiscount() {
+        return totalVoucherDiscount;
+    }
+
+    public Orders totalVoucherDiscount(BigDecimal totalVoucherDiscount) {
+        this.totalVoucherDiscount = totalVoucherDiscount;
+        return this;
+    }
+
+    public void setTotalVoucherDiscount(BigDecimal totalVoucherDiscount) {
+        this.totalVoucherDiscount = totalVoucherDiscount;
+    }
+
+    public BigDecimal getTotalPromtionDiscount() {
+        return totalPromtionDiscount;
+    }
+
+    public Orders totalPromtionDiscount(BigDecimal totalPromtionDiscount) {
+        this.totalPromtionDiscount = totalPromtionDiscount;
+        return this;
+    }
+
+    public void setTotalPromtionDiscount(BigDecimal totalPromtionDiscount) {
+        this.totalPromtionDiscount = totalPromtionDiscount;
     }
 
     public BigDecimal getTotalDue() {
@@ -280,56 +236,30 @@ public class Orders implements Serializable {
         this.totalDue = totalDue;
     }
 
-    public String getComments() {
-        return comments;
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public Orders comments(String comments) {
-        this.comments = comments;
+    public Orders paymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
         return this;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
-    public String getDeliveryInstructions() {
-        return deliveryInstructions;
+    public String getCustomerPurchaseOrderNumber() {
+        return customerPurchaseOrderNumber;
     }
 
-    public Orders deliveryInstructions(String deliveryInstructions) {
-        this.deliveryInstructions = deliveryInstructions;
+    public Orders customerPurchaseOrderNumber(String customerPurchaseOrderNumber) {
+        this.customerPurchaseOrderNumber = customerPurchaseOrderNumber;
         return this;
     }
 
-    public void setDeliveryInstructions(String deliveryInstructions) {
-        this.deliveryInstructions = deliveryInstructions;
-    }
-
-    public String getInternalComments() {
-        return internalComments;
-    }
-
-    public Orders internalComments(String internalComments) {
-        this.internalComments = internalComments;
-        return this;
-    }
-
-    public void setInternalComments(String internalComments) {
-        this.internalComments = internalComments;
-    }
-
-    public Instant getPickingCompletedWhen() {
-        return pickingCompletedWhen;
-    }
-
-    public Orders pickingCompletedWhen(Instant pickingCompletedWhen) {
-        this.pickingCompletedWhen = pickingCompletedWhen;
-        return this;
-    }
-
-    public void setPickingCompletedWhen(Instant pickingCompletedWhen) {
-        this.pickingCompletedWhen = pickingCompletedWhen;
+    public void setCustomerPurchaseOrderNumber(String customerPurchaseOrderNumber) {
+        this.customerPurchaseOrderNumber = customerPurchaseOrderNumber;
     }
 
     public OrderStatus getStatus() {
@@ -345,108 +275,30 @@ public class Orders implements Serializable {
         this.status = status;
     }
 
-    public Instant getCustomerReviewedOn() {
-        return customerReviewedOn;
+    public String getOrderDetails() {
+        return orderDetails;
     }
 
-    public Orders customerReviewedOn(Instant customerReviewedOn) {
-        this.customerReviewedOn = customerReviewedOn;
+    public Orders orderDetails(String orderDetails) {
+        this.orderDetails = orderDetails;
         return this;
     }
 
-    public void setCustomerReviewedOn(Instant customerReviewedOn) {
-        this.customerReviewedOn = customerReviewedOn;
+    public void setOrderDetails(String orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
-    public Integer getSellerRating() {
-        return sellerRating;
+    public Boolean isIsUnderSupplyBackOrdered() {
+        return isUnderSupplyBackOrdered;
     }
 
-    public Orders sellerRating(Integer sellerRating) {
-        this.sellerRating = sellerRating;
+    public Orders isUnderSupplyBackOrdered(Boolean isUnderSupplyBackOrdered) {
+        this.isUnderSupplyBackOrdered = isUnderSupplyBackOrdered;
         return this;
     }
 
-    public void setSellerRating(Integer sellerRating) {
-        this.sellerRating = sellerRating;
-    }
-
-    public String getSellerReview() {
-        return sellerReview;
-    }
-
-    public Orders sellerReview(String sellerReview) {
-        this.sellerReview = sellerReview;
-        return this;
-    }
-
-    public void setSellerReview(String sellerReview) {
-        this.sellerReview = sellerReview;
-    }
-
-    public Integer getDeliveryRating() {
-        return deliveryRating;
-    }
-
-    public Orders deliveryRating(Integer deliveryRating) {
-        this.deliveryRating = deliveryRating;
-        return this;
-    }
-
-    public void setDeliveryRating(Integer deliveryRating) {
-        this.deliveryRating = deliveryRating;
-    }
-
-    public String getDeliveryReview() {
-        return deliveryReview;
-    }
-
-    public Orders deliveryReview(String deliveryReview) {
-        this.deliveryReview = deliveryReview;
-        return this;
-    }
-
-    public void setDeliveryReview(String deliveryReview) {
-        this.deliveryReview = deliveryReview;
-    }
-
-    public Boolean isReviewAsAnonymous() {
-        return reviewAsAnonymous;
-    }
-
-    public Orders reviewAsAnonymous(Boolean reviewAsAnonymous) {
-        this.reviewAsAnonymous = reviewAsAnonymous;
-        return this;
-    }
-
-    public void setReviewAsAnonymous(Boolean reviewAsAnonymous) {
-        this.reviewAsAnonymous = reviewAsAnonymous;
-    }
-
-    public Boolean isCompletedReview() {
-        return completedReview;
-    }
-
-    public Orders completedReview(Boolean completedReview) {
-        this.completedReview = completedReview;
-        return this;
-    }
-
-    public void setCompletedReview(Boolean completedReview) {
-        this.completedReview = completedReview;
-    }
-
-    public String getOrderLineString() {
-        return orderLineString;
-    }
-
-    public Orders orderLineString(String orderLineString) {
-        this.orderLineString = orderLineString;
-        return this;
-    }
-
-    public void setOrderLineString(String orderLineString) {
-        this.orderLineString = orderLineString;
+    public void setIsUnderSupplyBackOrdered(Boolean isUnderSupplyBackOrdered) {
+        this.isUnderSupplyBackOrdered = isUnderSupplyBackOrdered;
     }
 
     public String getLastEditedBy() {
@@ -475,29 +327,29 @@ public class Orders implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public Set<OrderLines> getOrderLineLists() {
-        return orderLineLists;
+    public Set<OrderPackages> getOrderPackageLists() {
+        return orderPackageLists;
     }
 
-    public Orders orderLineLists(Set<OrderLines> orderLines) {
-        this.orderLineLists = orderLines;
+    public Orders orderPackageLists(Set<OrderPackages> orderPackages) {
+        this.orderPackageLists = orderPackages;
         return this;
     }
 
-    public Orders addOrderLineList(OrderLines orderLines) {
-        this.orderLineLists.add(orderLines);
-        orderLines.setOrder(this);
+    public Orders addOrderPackageList(OrderPackages orderPackages) {
+        this.orderPackageLists.add(orderPackages);
+        orderPackages.setOrder(this);
         return this;
     }
 
-    public Orders removeOrderLineList(OrderLines orderLines) {
-        this.orderLineLists.remove(orderLines);
-        orderLines.setOrder(null);
+    public Orders removeOrderPackageList(OrderPackages orderPackages) {
+        this.orderPackageLists.remove(orderPackages);
+        orderPackages.setOrder(null);
         return this;
     }
 
-    public void setOrderLineLists(Set<OrderLines> orderLines) {
-        this.orderLineLists = orderLines;
+    public void setOrderPackageLists(Set<OrderPackages> orderPackages) {
+        this.orderPackageLists = orderPackages;
     }
 
     public Customers getCustomer() {
@@ -539,19 +391,6 @@ public class Orders implements Serializable {
         this.billToAddress = addresses;
     }
 
-    public ShipMethod getShipMethod() {
-        return shipMethod;
-    }
-
-    public Orders shipMethod(ShipMethod shipMethod) {
-        this.shipMethod = shipMethod;
-        return this;
-    }
-
-    public void setShipMethod(ShipMethod shipMethod) {
-        this.shipMethod = shipMethod;
-    }
-
     public CurrencyRate getCurrencyRate() {
         return currencyRate;
     }
@@ -576,6 +415,19 @@ public class Orders implements Serializable {
 
     public void setPaymentMethod(PaymentMethods paymentMethods) {
         this.paymentMethod = paymentMethods;
+    }
+
+    public People getSalePerson() {
+        return salePerson;
+    }
+
+    public Orders salePerson(People people) {
+        this.salePerson = people;
+        return this;
+    }
+
+    public void setSalePerson(People people) {
+        this.salePerson = people;
     }
 
     public OrderTracking getOrderTracking() {
@@ -627,27 +479,18 @@ public class Orders implements Serializable {
         return "Orders{" +
             "id=" + getId() +
             ", orderDate='" + getOrderDate() + "'" +
-            ", dueDate='" + getDueDate() + "'" +
-            ", expectedDeliveryDate='" + getExpectedDeliveryDate() + "'" +
-            ", paymentStatus='" + getPaymentStatus() + "'" +
-            ", accountNumber='" + getAccountNumber() + "'" +
             ", subTotal=" + getSubTotal() +
-            ", taxAmount=" + getTaxAmount() +
-            ", frieight=" + getFrieight() +
+            ", totalTaxAmount=" + getTotalTaxAmount() +
+            ", totalShippingFee=" + getTotalShippingFee() +
+            ", totalShippingFeeDiscount=" + getTotalShippingFeeDiscount() +
+            ", totalVoucherDiscount=" + getTotalVoucherDiscount() +
+            ", totalPromtionDiscount=" + getTotalPromtionDiscount() +
             ", totalDue=" + getTotalDue() +
-            ", comments='" + getComments() + "'" +
-            ", deliveryInstructions='" + getDeliveryInstructions() + "'" +
-            ", internalComments='" + getInternalComments() + "'" +
-            ", pickingCompletedWhen='" + getPickingCompletedWhen() + "'" +
+            ", paymentStatus='" + getPaymentStatus() + "'" +
+            ", customerPurchaseOrderNumber='" + getCustomerPurchaseOrderNumber() + "'" +
             ", status='" + getStatus() + "'" +
-            ", customerReviewedOn='" + getCustomerReviewedOn() + "'" +
-            ", sellerRating=" + getSellerRating() +
-            ", sellerReview='" + getSellerReview() + "'" +
-            ", deliveryRating=" + getDeliveryRating() +
-            ", deliveryReview='" + getDeliveryReview() + "'" +
-            ", reviewAsAnonymous='" + isReviewAsAnonymous() + "'" +
-            ", completedReview='" + isCompletedReview() + "'" +
-            ", orderLineString='" + getOrderLineString() + "'" +
+            ", orderDetails='" + getOrderDetails() + "'" +
+            ", isUnderSupplyBackOrdered='" + isIsUnderSupplyBackOrdered() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             "}";

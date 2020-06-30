@@ -103,10 +103,10 @@ class ProductsGatlingTest extends Simulation {
                 "id":null
                 , "name":"SAMPLE_TEXT"
                 , "handle":"SAMPLE_TEXT"
-                , "productNumber":"SAMPLE_TEXT"
                 , "searchDetails":"SAMPLE_TEXT"
+                , "productNumber":"SAMPLE_TEXT"
                 , "sellCount":"0"
-                , "stockItemString":null
+                , "productDetails":null
                 , "totalWishlist":"0"
                 , "totalStars":"0"
                 , "discountedPercentage":"0"

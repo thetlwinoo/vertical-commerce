@@ -3,12 +3,12 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.Orders;
-import com.vertical.commerce.domain.OrderLines;
+import com.vertical.commerce.domain.OrderPackages;
 import com.vertical.commerce.domain.Customers;
 import com.vertical.commerce.domain.Addresses;
-import com.vertical.commerce.domain.ShipMethod;
 import com.vertical.commerce.domain.CurrencyRate;
 import com.vertical.commerce.domain.PaymentMethods;
+import com.vertical.commerce.domain.People;
 import com.vertical.commerce.domain.OrderTracking;
 import com.vertical.commerce.domain.SpecialDeals;
 import com.vertical.commerce.repository.OrdersRepository;
@@ -53,74 +53,48 @@ public class OrdersResourceIT {
     private static final Instant DEFAULT_ORDER_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_ORDER_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final Instant DEFAULT_DUE_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_DUE_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
-    private static final Instant DEFAULT_EXPECTED_DELIVERY_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_EXPECTED_DELIVERY_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-
-    private static final PaymentStatus DEFAULT_PAYMENT_STATUS = PaymentStatus.PENDING;
-    private static final PaymentStatus UPDATED_PAYMENT_STATUS = PaymentStatus.PAID;
-
-    private static final String DEFAULT_ACCOUNT_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_ACCOUNT_NUMBER = "BBBBBBBBBB";
-
     private static final BigDecimal DEFAULT_SUB_TOTAL = new BigDecimal(1);
     private static final BigDecimal UPDATED_SUB_TOTAL = new BigDecimal(2);
     private static final BigDecimal SMALLER_SUB_TOTAL = new BigDecimal(1 - 1);
 
-    private static final BigDecimal DEFAULT_TAX_AMOUNT = new BigDecimal(1);
-    private static final BigDecimal UPDATED_TAX_AMOUNT = new BigDecimal(2);
-    private static final BigDecimal SMALLER_TAX_AMOUNT = new BigDecimal(1 - 1);
+    private static final BigDecimal DEFAULT_TOTAL_TAX_AMOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_TAX_AMOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TOTAL_TAX_AMOUNT = new BigDecimal(1 - 1);
 
-    private static final BigDecimal DEFAULT_FRIEIGHT = new BigDecimal(1);
-    private static final BigDecimal UPDATED_FRIEIGHT = new BigDecimal(2);
-    private static final BigDecimal SMALLER_FRIEIGHT = new BigDecimal(1 - 1);
+    private static final BigDecimal DEFAULT_TOTAL_SHIPPING_FEE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_SHIPPING_FEE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TOTAL_SHIPPING_FEE = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_TOTAL_VOUCHER_DISCOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_VOUCHER_DISCOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TOTAL_VOUCHER_DISCOUNT = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_TOTAL_PROMTION_DISCOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_PROMTION_DISCOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TOTAL_PROMTION_DISCOUNT = new BigDecimal(1 - 1);
 
     private static final BigDecimal DEFAULT_TOTAL_DUE = new BigDecimal(1);
     private static final BigDecimal UPDATED_TOTAL_DUE = new BigDecimal(2);
     private static final BigDecimal SMALLER_TOTAL_DUE = new BigDecimal(1 - 1);
 
-    private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
-    private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
+    private static final PaymentStatus DEFAULT_PAYMENT_STATUS = PaymentStatus.PENDING;
+    private static final PaymentStatus UPDATED_PAYMENT_STATUS = PaymentStatus.PENDING;
 
-    private static final String DEFAULT_DELIVERY_INSTRUCTIONS = "AAAAAAAAAA";
-    private static final String UPDATED_DELIVERY_INSTRUCTIONS = "BBBBBBBBBB";
-
-    private static final String DEFAULT_INTERNAL_COMMENTS = "AAAAAAAAAA";
-    private static final String UPDATED_INTERNAL_COMMENTS = "BBBBBBBBBB";
-
-    private static final Instant DEFAULT_PICKING_COMPLETED_WHEN = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_PICKING_COMPLETED_WHEN = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final String DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER = "BBBBBBBBBB";
 
     private static final OrderStatus DEFAULT_STATUS = OrderStatus.NEW_ORDER;
     private static final OrderStatus UPDATED_STATUS = OrderStatus.COMPLETED;
 
-    private static final Instant DEFAULT_CUSTOMER_REVIEWED_ON = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_CUSTOMER_REVIEWED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final String DEFAULT_ORDER_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_ORDER_DETAILS = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_SELLER_RATING = 1;
-    private static final Integer UPDATED_SELLER_RATING = 2;
-    private static final Integer SMALLER_SELLER_RATING = 1 - 1;
-
-    private static final String DEFAULT_SELLER_REVIEW = "AAAAAAAAAA";
-    private static final String UPDATED_SELLER_REVIEW = "BBBBBBBBBB";
-
-    private static final Integer DEFAULT_DELIVERY_RATING = 1;
-    private static final Integer UPDATED_DELIVERY_RATING = 2;
-    private static final Integer SMALLER_DELIVERY_RATING = 1 - 1;
-
-    private static final String DEFAULT_DELIVERY_REVIEW = "AAAAAAAAAA";
-    private static final String UPDATED_DELIVERY_REVIEW = "BBBBBBBBBB";
-
-    private static final Boolean DEFAULT_REVIEW_AS_ANONYMOUS = false;
-    private static final Boolean UPDATED_REVIEW_AS_ANONYMOUS = true;
-
-    private static final Boolean DEFAULT_COMPLETED_REVIEW = false;
-    private static final Boolean UPDATED_COMPLETED_REVIEW = true;
-
-    private static final String DEFAULT_ORDER_LINE_STRING = "AAAAAAAAAA";
-    private static final String UPDATED_ORDER_LINE_STRING = "BBBBBBBBBB";
+    private static final Boolean DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED = false;
+    private static final Boolean UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED = true;
 
     private static final String DEFAULT_LAST_EDITED_BY = "AAAAAAAAAA";
     private static final String UPDATED_LAST_EDITED_BY = "BBBBBBBBBB";
@@ -157,27 +131,18 @@ public class OrdersResourceIT {
     public static Orders createEntity(EntityManager em) {
         Orders orders = new Orders()
             .orderDate(DEFAULT_ORDER_DATE)
-            .dueDate(DEFAULT_DUE_DATE)
-            .expectedDeliveryDate(DEFAULT_EXPECTED_DELIVERY_DATE)
-            .paymentStatus(DEFAULT_PAYMENT_STATUS)
-            .accountNumber(DEFAULT_ACCOUNT_NUMBER)
             .subTotal(DEFAULT_SUB_TOTAL)
-            .taxAmount(DEFAULT_TAX_AMOUNT)
-            .frieight(DEFAULT_FRIEIGHT)
+            .totalTaxAmount(DEFAULT_TOTAL_TAX_AMOUNT)
+            .totalShippingFee(DEFAULT_TOTAL_SHIPPING_FEE)
+            .totalShippingFeeDiscount(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT)
+            .totalVoucherDiscount(DEFAULT_TOTAL_VOUCHER_DISCOUNT)
+            .totalPromtionDiscount(DEFAULT_TOTAL_PROMTION_DISCOUNT)
             .totalDue(DEFAULT_TOTAL_DUE)
-            .comments(DEFAULT_COMMENTS)
-            .deliveryInstructions(DEFAULT_DELIVERY_INSTRUCTIONS)
-            .internalComments(DEFAULT_INTERNAL_COMMENTS)
-            .pickingCompletedWhen(DEFAULT_PICKING_COMPLETED_WHEN)
+            .paymentStatus(DEFAULT_PAYMENT_STATUS)
+            .customerPurchaseOrderNumber(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER)
             .status(DEFAULT_STATUS)
-            .customerReviewedOn(DEFAULT_CUSTOMER_REVIEWED_ON)
-            .sellerRating(DEFAULT_SELLER_RATING)
-            .sellerReview(DEFAULT_SELLER_REVIEW)
-            .deliveryRating(DEFAULT_DELIVERY_RATING)
-            .deliveryReview(DEFAULT_DELIVERY_REVIEW)
-            .reviewAsAnonymous(DEFAULT_REVIEW_AS_ANONYMOUS)
-            .completedReview(DEFAULT_COMPLETED_REVIEW)
-            .orderLineString(DEFAULT_ORDER_LINE_STRING)
+            .orderDetails(DEFAULT_ORDER_DETAILS)
+            .isUnderSupplyBackOrdered(DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
             .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN);
         return orders;
@@ -191,27 +156,18 @@ public class OrdersResourceIT {
     public static Orders createUpdatedEntity(EntityManager em) {
         Orders orders = new Orders()
             .orderDate(UPDATED_ORDER_DATE)
-            .dueDate(UPDATED_DUE_DATE)
-            .expectedDeliveryDate(UPDATED_EXPECTED_DELIVERY_DATE)
-            .paymentStatus(UPDATED_PAYMENT_STATUS)
-            .accountNumber(UPDATED_ACCOUNT_NUMBER)
             .subTotal(UPDATED_SUB_TOTAL)
-            .taxAmount(UPDATED_TAX_AMOUNT)
-            .frieight(UPDATED_FRIEIGHT)
+            .totalTaxAmount(UPDATED_TOTAL_TAX_AMOUNT)
+            .totalShippingFee(UPDATED_TOTAL_SHIPPING_FEE)
+            .totalShippingFeeDiscount(UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT)
+            .totalVoucherDiscount(UPDATED_TOTAL_VOUCHER_DISCOUNT)
+            .totalPromtionDiscount(UPDATED_TOTAL_PROMTION_DISCOUNT)
             .totalDue(UPDATED_TOTAL_DUE)
-            .comments(UPDATED_COMMENTS)
-            .deliveryInstructions(UPDATED_DELIVERY_INSTRUCTIONS)
-            .internalComments(UPDATED_INTERNAL_COMMENTS)
-            .pickingCompletedWhen(UPDATED_PICKING_COMPLETED_WHEN)
+            .paymentStatus(UPDATED_PAYMENT_STATUS)
+            .customerPurchaseOrderNumber(UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER)
             .status(UPDATED_STATUS)
-            .customerReviewedOn(UPDATED_CUSTOMER_REVIEWED_ON)
-            .sellerRating(UPDATED_SELLER_RATING)
-            .sellerReview(UPDATED_SELLER_REVIEW)
-            .deliveryRating(UPDATED_DELIVERY_RATING)
-            .deliveryReview(UPDATED_DELIVERY_REVIEW)
-            .reviewAsAnonymous(UPDATED_REVIEW_AS_ANONYMOUS)
-            .completedReview(UPDATED_COMPLETED_REVIEW)
-            .orderLineString(UPDATED_ORDER_LINE_STRING)
+            .orderDetails(UPDATED_ORDER_DETAILS)
+            .isUnderSupplyBackOrdered(UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
         return orders;
@@ -238,27 +194,18 @@ public class OrdersResourceIT {
         assertThat(ordersList).hasSize(databaseSizeBeforeCreate + 1);
         Orders testOrders = ordersList.get(ordersList.size() - 1);
         assertThat(testOrders.getOrderDate()).isEqualTo(DEFAULT_ORDER_DATE);
-        assertThat(testOrders.getDueDate()).isEqualTo(DEFAULT_DUE_DATE);
-        assertThat(testOrders.getExpectedDeliveryDate()).isEqualTo(DEFAULT_EXPECTED_DELIVERY_DATE);
-        assertThat(testOrders.getPaymentStatus()).isEqualTo(DEFAULT_PAYMENT_STATUS);
-        assertThat(testOrders.getAccountNumber()).isEqualTo(DEFAULT_ACCOUNT_NUMBER);
         assertThat(testOrders.getSubTotal()).isEqualTo(DEFAULT_SUB_TOTAL);
-        assertThat(testOrders.getTaxAmount()).isEqualTo(DEFAULT_TAX_AMOUNT);
-        assertThat(testOrders.getFrieight()).isEqualTo(DEFAULT_FRIEIGHT);
+        assertThat(testOrders.getTotalTaxAmount()).isEqualTo(DEFAULT_TOTAL_TAX_AMOUNT);
+        assertThat(testOrders.getTotalShippingFee()).isEqualTo(DEFAULT_TOTAL_SHIPPING_FEE);
+        assertThat(testOrders.getTotalShippingFeeDiscount()).isEqualTo(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+        assertThat(testOrders.getTotalVoucherDiscount()).isEqualTo(DEFAULT_TOTAL_VOUCHER_DISCOUNT);
+        assertThat(testOrders.getTotalPromtionDiscount()).isEqualTo(DEFAULT_TOTAL_PROMTION_DISCOUNT);
         assertThat(testOrders.getTotalDue()).isEqualTo(DEFAULT_TOTAL_DUE);
-        assertThat(testOrders.getComments()).isEqualTo(DEFAULT_COMMENTS);
-        assertThat(testOrders.getDeliveryInstructions()).isEqualTo(DEFAULT_DELIVERY_INSTRUCTIONS);
-        assertThat(testOrders.getInternalComments()).isEqualTo(DEFAULT_INTERNAL_COMMENTS);
-        assertThat(testOrders.getPickingCompletedWhen()).isEqualTo(DEFAULT_PICKING_COMPLETED_WHEN);
+        assertThat(testOrders.getPaymentStatus()).isEqualTo(DEFAULT_PAYMENT_STATUS);
+        assertThat(testOrders.getCustomerPurchaseOrderNumber()).isEqualTo(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
         assertThat(testOrders.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testOrders.getCustomerReviewedOn()).isEqualTo(DEFAULT_CUSTOMER_REVIEWED_ON);
-        assertThat(testOrders.getSellerRating()).isEqualTo(DEFAULT_SELLER_RATING);
-        assertThat(testOrders.getSellerReview()).isEqualTo(DEFAULT_SELLER_REVIEW);
-        assertThat(testOrders.getDeliveryRating()).isEqualTo(DEFAULT_DELIVERY_RATING);
-        assertThat(testOrders.getDeliveryReview()).isEqualTo(DEFAULT_DELIVERY_REVIEW);
-        assertThat(testOrders.isReviewAsAnonymous()).isEqualTo(DEFAULT_REVIEW_AS_ANONYMOUS);
-        assertThat(testOrders.isCompletedReview()).isEqualTo(DEFAULT_COMPLETED_REVIEW);
-        assertThat(testOrders.getOrderLineString()).isEqualTo(DEFAULT_ORDER_LINE_STRING);
+        assertThat(testOrders.getOrderDetails()).isEqualTo(DEFAULT_ORDER_DETAILS);
+        assertThat(testOrders.isIsUnderSupplyBackOrdered()).isEqualTo(DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED);
         assertThat(testOrders.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
         assertThat(testOrders.getLastEditedWhen()).isEqualTo(DEFAULT_LAST_EDITED_WHEN);
     }
@@ -376,31 +323,22 @@ public class OrdersResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(orders.getId().intValue())))
             .andExpect(jsonPath("$.[*].orderDate").value(hasItem(DEFAULT_ORDER_DATE.toString())))
-            .andExpect(jsonPath("$.[*].dueDate").value(hasItem(DEFAULT_DUE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].expectedDeliveryDate").value(hasItem(DEFAULT_EXPECTED_DELIVERY_DATE.toString())))
-            .andExpect(jsonPath("$.[*].paymentStatus").value(hasItem(DEFAULT_PAYMENT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].accountNumber").value(hasItem(DEFAULT_ACCOUNT_NUMBER)))
             .andExpect(jsonPath("$.[*].subTotal").value(hasItem(DEFAULT_SUB_TOTAL.intValue())))
-            .andExpect(jsonPath("$.[*].taxAmount").value(hasItem(DEFAULT_TAX_AMOUNT.intValue())))
-            .andExpect(jsonPath("$.[*].frieight").value(hasItem(DEFAULT_FRIEIGHT.intValue())))
+            .andExpect(jsonPath("$.[*].totalTaxAmount").value(hasItem(DEFAULT_TOTAL_TAX_AMOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].totalShippingFee").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE.intValue())))
+            .andExpect(jsonPath("$.[*].totalShippingFeeDiscount").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].totalVoucherDiscount").value(hasItem(DEFAULT_TOTAL_VOUCHER_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].totalPromtionDiscount").value(hasItem(DEFAULT_TOTAL_PROMTION_DISCOUNT.intValue())))
             .andExpect(jsonPath("$.[*].totalDue").value(hasItem(DEFAULT_TOTAL_DUE.intValue())))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
-            .andExpect(jsonPath("$.[*].deliveryInstructions").value(hasItem(DEFAULT_DELIVERY_INSTRUCTIONS)))
-            .andExpect(jsonPath("$.[*].internalComments").value(hasItem(DEFAULT_INTERNAL_COMMENTS)))
-            .andExpect(jsonPath("$.[*].pickingCompletedWhen").value(hasItem(DEFAULT_PICKING_COMPLETED_WHEN.toString())))
+            .andExpect(jsonPath("$.[*].paymentStatus").value(hasItem(DEFAULT_PAYMENT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].customerPurchaseOrderNumber").value(hasItem(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].customerReviewedOn").value(hasItem(DEFAULT_CUSTOMER_REVIEWED_ON.toString())))
-            .andExpect(jsonPath("$.[*].sellerRating").value(hasItem(DEFAULT_SELLER_RATING)))
-            .andExpect(jsonPath("$.[*].sellerReview").value(hasItem(DEFAULT_SELLER_REVIEW.toString())))
-            .andExpect(jsonPath("$.[*].deliveryRating").value(hasItem(DEFAULT_DELIVERY_RATING)))
-            .andExpect(jsonPath("$.[*].deliveryReview").value(hasItem(DEFAULT_DELIVERY_REVIEW.toString())))
-            .andExpect(jsonPath("$.[*].reviewAsAnonymous").value(hasItem(DEFAULT_REVIEW_AS_ANONYMOUS.booleanValue())))
-            .andExpect(jsonPath("$.[*].completedReview").value(hasItem(DEFAULT_COMPLETED_REVIEW.booleanValue())))
-            .andExpect(jsonPath("$.[*].orderLineString").value(hasItem(DEFAULT_ORDER_LINE_STRING.toString())))
+            .andExpect(jsonPath("$.[*].orderDetails").value(hasItem(DEFAULT_ORDER_DETAILS.toString())))
+            .andExpect(jsonPath("$.[*].isUnderSupplyBackOrdered").value(hasItem(DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getOrders() throws Exception {
@@ -413,27 +351,18 @@ public class OrdersResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(orders.getId().intValue()))
             .andExpect(jsonPath("$.orderDate").value(DEFAULT_ORDER_DATE.toString()))
-            .andExpect(jsonPath("$.dueDate").value(DEFAULT_DUE_DATE.toString()))
-            .andExpect(jsonPath("$.expectedDeliveryDate").value(DEFAULT_EXPECTED_DELIVERY_DATE.toString()))
-            .andExpect(jsonPath("$.paymentStatus").value(DEFAULT_PAYMENT_STATUS.toString()))
-            .andExpect(jsonPath("$.accountNumber").value(DEFAULT_ACCOUNT_NUMBER))
             .andExpect(jsonPath("$.subTotal").value(DEFAULT_SUB_TOTAL.intValue()))
-            .andExpect(jsonPath("$.taxAmount").value(DEFAULT_TAX_AMOUNT.intValue()))
-            .andExpect(jsonPath("$.frieight").value(DEFAULT_FRIEIGHT.intValue()))
+            .andExpect(jsonPath("$.totalTaxAmount").value(DEFAULT_TOTAL_TAX_AMOUNT.intValue()))
+            .andExpect(jsonPath("$.totalShippingFee").value(DEFAULT_TOTAL_SHIPPING_FEE.intValue()))
+            .andExpect(jsonPath("$.totalShippingFeeDiscount").value(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT.intValue()))
+            .andExpect(jsonPath("$.totalVoucherDiscount").value(DEFAULT_TOTAL_VOUCHER_DISCOUNT.intValue()))
+            .andExpect(jsonPath("$.totalPromtionDiscount").value(DEFAULT_TOTAL_PROMTION_DISCOUNT.intValue()))
             .andExpect(jsonPath("$.totalDue").value(DEFAULT_TOTAL_DUE.intValue()))
-            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS))
-            .andExpect(jsonPath("$.deliveryInstructions").value(DEFAULT_DELIVERY_INSTRUCTIONS))
-            .andExpect(jsonPath("$.internalComments").value(DEFAULT_INTERNAL_COMMENTS))
-            .andExpect(jsonPath("$.pickingCompletedWhen").value(DEFAULT_PICKING_COMPLETED_WHEN.toString()))
+            .andExpect(jsonPath("$.paymentStatus").value(DEFAULT_PAYMENT_STATUS.toString()))
+            .andExpect(jsonPath("$.customerPurchaseOrderNumber").value(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
-            .andExpect(jsonPath("$.customerReviewedOn").value(DEFAULT_CUSTOMER_REVIEWED_ON.toString()))
-            .andExpect(jsonPath("$.sellerRating").value(DEFAULT_SELLER_RATING))
-            .andExpect(jsonPath("$.sellerReview").value(DEFAULT_SELLER_REVIEW.toString()))
-            .andExpect(jsonPath("$.deliveryRating").value(DEFAULT_DELIVERY_RATING))
-            .andExpect(jsonPath("$.deliveryReview").value(DEFAULT_DELIVERY_REVIEW.toString()))
-            .andExpect(jsonPath("$.reviewAsAnonymous").value(DEFAULT_REVIEW_AS_ANONYMOUS.booleanValue()))
-            .andExpect(jsonPath("$.completedReview").value(DEFAULT_COMPLETED_REVIEW.booleanValue()))
-            .andExpect(jsonPath("$.orderLineString").value(DEFAULT_ORDER_LINE_STRING.toString()))
+            .andExpect(jsonPath("$.orderDetails").value(DEFAULT_ORDER_DETAILS.toString()))
+            .andExpect(jsonPath("$.isUnderSupplyBackOrdered").value(DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED.booleanValue()))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
             .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()));
     }
@@ -509,240 +438,6 @@ public class OrdersResourceIT {
         // Get all the ordersList where orderDate is null
         defaultOrdersShouldNotBeFound("orderDate.specified=false");
     }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDueDateIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where dueDate equals to DEFAULT_DUE_DATE
-        defaultOrdersShouldBeFound("dueDate.equals=" + DEFAULT_DUE_DATE);
-
-        // Get all the ordersList where dueDate equals to UPDATED_DUE_DATE
-        defaultOrdersShouldNotBeFound("dueDate.equals=" + UPDATED_DUE_DATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDueDateIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where dueDate not equals to DEFAULT_DUE_DATE
-        defaultOrdersShouldNotBeFound("dueDate.notEquals=" + DEFAULT_DUE_DATE);
-
-        // Get all the ordersList where dueDate not equals to UPDATED_DUE_DATE
-        defaultOrdersShouldBeFound("dueDate.notEquals=" + UPDATED_DUE_DATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDueDateIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where dueDate in DEFAULT_DUE_DATE or UPDATED_DUE_DATE
-        defaultOrdersShouldBeFound("dueDate.in=" + DEFAULT_DUE_DATE + "," + UPDATED_DUE_DATE);
-
-        // Get all the ordersList where dueDate equals to UPDATED_DUE_DATE
-        defaultOrdersShouldNotBeFound("dueDate.in=" + UPDATED_DUE_DATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDueDateIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where dueDate is not null
-        defaultOrdersShouldBeFound("dueDate.specified=true");
-
-        // Get all the ordersList where dueDate is null
-        defaultOrdersShouldNotBeFound("dueDate.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByExpectedDeliveryDateIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where expectedDeliveryDate equals to DEFAULT_EXPECTED_DELIVERY_DATE
-        defaultOrdersShouldBeFound("expectedDeliveryDate.equals=" + DEFAULT_EXPECTED_DELIVERY_DATE);
-
-        // Get all the ordersList where expectedDeliveryDate equals to UPDATED_EXPECTED_DELIVERY_DATE
-        defaultOrdersShouldNotBeFound("expectedDeliveryDate.equals=" + UPDATED_EXPECTED_DELIVERY_DATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByExpectedDeliveryDateIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where expectedDeliveryDate not equals to DEFAULT_EXPECTED_DELIVERY_DATE
-        defaultOrdersShouldNotBeFound("expectedDeliveryDate.notEquals=" + DEFAULT_EXPECTED_DELIVERY_DATE);
-
-        // Get all the ordersList where expectedDeliveryDate not equals to UPDATED_EXPECTED_DELIVERY_DATE
-        defaultOrdersShouldBeFound("expectedDeliveryDate.notEquals=" + UPDATED_EXPECTED_DELIVERY_DATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByExpectedDeliveryDateIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where expectedDeliveryDate in DEFAULT_EXPECTED_DELIVERY_DATE or UPDATED_EXPECTED_DELIVERY_DATE
-        defaultOrdersShouldBeFound("expectedDeliveryDate.in=" + DEFAULT_EXPECTED_DELIVERY_DATE + "," + UPDATED_EXPECTED_DELIVERY_DATE);
-
-        // Get all the ordersList where expectedDeliveryDate equals to UPDATED_EXPECTED_DELIVERY_DATE
-        defaultOrdersShouldNotBeFound("expectedDeliveryDate.in=" + UPDATED_EXPECTED_DELIVERY_DATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByExpectedDeliveryDateIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where expectedDeliveryDate is not null
-        defaultOrdersShouldBeFound("expectedDeliveryDate.specified=true");
-
-        // Get all the ordersList where expectedDeliveryDate is null
-        defaultOrdersShouldNotBeFound("expectedDeliveryDate.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByPaymentStatusIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where paymentStatus equals to DEFAULT_PAYMENT_STATUS
-        defaultOrdersShouldBeFound("paymentStatus.equals=" + DEFAULT_PAYMENT_STATUS);
-
-        // Get all the ordersList where paymentStatus equals to UPDATED_PAYMENT_STATUS
-        defaultOrdersShouldNotBeFound("paymentStatus.equals=" + UPDATED_PAYMENT_STATUS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByPaymentStatusIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where paymentStatus not equals to DEFAULT_PAYMENT_STATUS
-        defaultOrdersShouldNotBeFound("paymentStatus.notEquals=" + DEFAULT_PAYMENT_STATUS);
-
-        // Get all the ordersList where paymentStatus not equals to UPDATED_PAYMENT_STATUS
-        defaultOrdersShouldBeFound("paymentStatus.notEquals=" + UPDATED_PAYMENT_STATUS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByPaymentStatusIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where paymentStatus in DEFAULT_PAYMENT_STATUS or UPDATED_PAYMENT_STATUS
-        defaultOrdersShouldBeFound("paymentStatus.in=" + DEFAULT_PAYMENT_STATUS + "," + UPDATED_PAYMENT_STATUS);
-
-        // Get all the ordersList where paymentStatus equals to UPDATED_PAYMENT_STATUS
-        defaultOrdersShouldNotBeFound("paymentStatus.in=" + UPDATED_PAYMENT_STATUS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByPaymentStatusIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where paymentStatus is not null
-        defaultOrdersShouldBeFound("paymentStatus.specified=true");
-
-        // Get all the ordersList where paymentStatus is null
-        defaultOrdersShouldNotBeFound("paymentStatus.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByAccountNumberIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where accountNumber equals to DEFAULT_ACCOUNT_NUMBER
-        defaultOrdersShouldBeFound("accountNumber.equals=" + DEFAULT_ACCOUNT_NUMBER);
-
-        // Get all the ordersList where accountNumber equals to UPDATED_ACCOUNT_NUMBER
-        defaultOrdersShouldNotBeFound("accountNumber.equals=" + UPDATED_ACCOUNT_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByAccountNumberIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where accountNumber not equals to DEFAULT_ACCOUNT_NUMBER
-        defaultOrdersShouldNotBeFound("accountNumber.notEquals=" + DEFAULT_ACCOUNT_NUMBER);
-
-        // Get all the ordersList where accountNumber not equals to UPDATED_ACCOUNT_NUMBER
-        defaultOrdersShouldBeFound("accountNumber.notEquals=" + UPDATED_ACCOUNT_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByAccountNumberIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where accountNumber in DEFAULT_ACCOUNT_NUMBER or UPDATED_ACCOUNT_NUMBER
-        defaultOrdersShouldBeFound("accountNumber.in=" + DEFAULT_ACCOUNT_NUMBER + "," + UPDATED_ACCOUNT_NUMBER);
-
-        // Get all the ordersList where accountNumber equals to UPDATED_ACCOUNT_NUMBER
-        defaultOrdersShouldNotBeFound("accountNumber.in=" + UPDATED_ACCOUNT_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByAccountNumberIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where accountNumber is not null
-        defaultOrdersShouldBeFound("accountNumber.specified=true");
-
-        // Get all the ordersList where accountNumber is null
-        defaultOrdersShouldNotBeFound("accountNumber.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllOrdersByAccountNumberContainsSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where accountNumber contains DEFAULT_ACCOUNT_NUMBER
-        defaultOrdersShouldBeFound("accountNumber.contains=" + DEFAULT_ACCOUNT_NUMBER);
-
-        // Get all the ordersList where accountNumber contains UPDATED_ACCOUNT_NUMBER
-        defaultOrdersShouldNotBeFound("accountNumber.contains=" + UPDATED_ACCOUNT_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByAccountNumberNotContainsSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where accountNumber does not contain DEFAULT_ACCOUNT_NUMBER
-        defaultOrdersShouldNotBeFound("accountNumber.doesNotContain=" + DEFAULT_ACCOUNT_NUMBER);
-
-        // Get all the ordersList where accountNumber does not contain UPDATED_ACCOUNT_NUMBER
-        defaultOrdersShouldBeFound("accountNumber.doesNotContain=" + UPDATED_ACCOUNT_NUMBER);
-    }
-
 
     @Test
     @Transactional
@@ -851,211 +546,526 @@ public class OrdersResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrdersByTaxAmountIsEqualToSomething() throws Exception {
+    public void getAllOrdersByTotalTaxAmountIsEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where taxAmount equals to DEFAULT_TAX_AMOUNT
-        defaultOrdersShouldBeFound("taxAmount.equals=" + DEFAULT_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount equals to DEFAULT_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldBeFound("totalTaxAmount.equals=" + DEFAULT_TOTAL_TAX_AMOUNT);
 
-        // Get all the ordersList where taxAmount equals to UPDATED_TAX_AMOUNT
-        defaultOrdersShouldNotBeFound("taxAmount.equals=" + UPDATED_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount equals to UPDATED_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldNotBeFound("totalTaxAmount.equals=" + UPDATED_TOTAL_TAX_AMOUNT);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByTaxAmountIsNotEqualToSomething() throws Exception {
+    public void getAllOrdersByTotalTaxAmountIsNotEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where taxAmount not equals to DEFAULT_TAX_AMOUNT
-        defaultOrdersShouldNotBeFound("taxAmount.notEquals=" + DEFAULT_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount not equals to DEFAULT_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldNotBeFound("totalTaxAmount.notEquals=" + DEFAULT_TOTAL_TAX_AMOUNT);
 
-        // Get all the ordersList where taxAmount not equals to UPDATED_TAX_AMOUNT
-        defaultOrdersShouldBeFound("taxAmount.notEquals=" + UPDATED_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount not equals to UPDATED_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldBeFound("totalTaxAmount.notEquals=" + UPDATED_TOTAL_TAX_AMOUNT);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByTaxAmountIsInShouldWork() throws Exception {
+    public void getAllOrdersByTotalTaxAmountIsInShouldWork() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where taxAmount in DEFAULT_TAX_AMOUNT or UPDATED_TAX_AMOUNT
-        defaultOrdersShouldBeFound("taxAmount.in=" + DEFAULT_TAX_AMOUNT + "," + UPDATED_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount in DEFAULT_TOTAL_TAX_AMOUNT or UPDATED_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldBeFound("totalTaxAmount.in=" + DEFAULT_TOTAL_TAX_AMOUNT + "," + UPDATED_TOTAL_TAX_AMOUNT);
 
-        // Get all the ordersList where taxAmount equals to UPDATED_TAX_AMOUNT
-        defaultOrdersShouldNotBeFound("taxAmount.in=" + UPDATED_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount equals to UPDATED_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldNotBeFound("totalTaxAmount.in=" + UPDATED_TOTAL_TAX_AMOUNT);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByTaxAmountIsNullOrNotNull() throws Exception {
+    public void getAllOrdersByTotalTaxAmountIsNullOrNotNull() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where taxAmount is not null
-        defaultOrdersShouldBeFound("taxAmount.specified=true");
+        // Get all the ordersList where totalTaxAmount is not null
+        defaultOrdersShouldBeFound("totalTaxAmount.specified=true");
 
-        // Get all the ordersList where taxAmount is null
-        defaultOrdersShouldNotBeFound("taxAmount.specified=false");
+        // Get all the ordersList where totalTaxAmount is null
+        defaultOrdersShouldNotBeFound("totalTaxAmount.specified=false");
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByTaxAmountIsGreaterThanOrEqualToSomething() throws Exception {
+    public void getAllOrdersByTotalTaxAmountIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where taxAmount is greater than or equal to DEFAULT_TAX_AMOUNT
-        defaultOrdersShouldBeFound("taxAmount.greaterThanOrEqual=" + DEFAULT_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount is greater than or equal to DEFAULT_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldBeFound("totalTaxAmount.greaterThanOrEqual=" + DEFAULT_TOTAL_TAX_AMOUNT);
 
-        // Get all the ordersList where taxAmount is greater than or equal to UPDATED_TAX_AMOUNT
-        defaultOrdersShouldNotBeFound("taxAmount.greaterThanOrEqual=" + UPDATED_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount is greater than or equal to UPDATED_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldNotBeFound("totalTaxAmount.greaterThanOrEqual=" + UPDATED_TOTAL_TAX_AMOUNT);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByTaxAmountIsLessThanOrEqualToSomething() throws Exception {
+    public void getAllOrdersByTotalTaxAmountIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where taxAmount is less than or equal to DEFAULT_TAX_AMOUNT
-        defaultOrdersShouldBeFound("taxAmount.lessThanOrEqual=" + DEFAULT_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount is less than or equal to DEFAULT_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldBeFound("totalTaxAmount.lessThanOrEqual=" + DEFAULT_TOTAL_TAX_AMOUNT);
 
-        // Get all the ordersList where taxAmount is less than or equal to SMALLER_TAX_AMOUNT
-        defaultOrdersShouldNotBeFound("taxAmount.lessThanOrEqual=" + SMALLER_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount is less than or equal to SMALLER_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldNotBeFound("totalTaxAmount.lessThanOrEqual=" + SMALLER_TOTAL_TAX_AMOUNT);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByTaxAmountIsLessThanSomething() throws Exception {
+    public void getAllOrdersByTotalTaxAmountIsLessThanSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where taxAmount is less than DEFAULT_TAX_AMOUNT
-        defaultOrdersShouldNotBeFound("taxAmount.lessThan=" + DEFAULT_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount is less than DEFAULT_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldNotBeFound("totalTaxAmount.lessThan=" + DEFAULT_TOTAL_TAX_AMOUNT);
 
-        // Get all the ordersList where taxAmount is less than UPDATED_TAX_AMOUNT
-        defaultOrdersShouldBeFound("taxAmount.lessThan=" + UPDATED_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount is less than UPDATED_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldBeFound("totalTaxAmount.lessThan=" + UPDATED_TOTAL_TAX_AMOUNT);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByTaxAmountIsGreaterThanSomething() throws Exception {
+    public void getAllOrdersByTotalTaxAmountIsGreaterThanSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where taxAmount is greater than DEFAULT_TAX_AMOUNT
-        defaultOrdersShouldNotBeFound("taxAmount.greaterThan=" + DEFAULT_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount is greater than DEFAULT_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldNotBeFound("totalTaxAmount.greaterThan=" + DEFAULT_TOTAL_TAX_AMOUNT);
 
-        // Get all the ordersList where taxAmount is greater than SMALLER_TAX_AMOUNT
-        defaultOrdersShouldBeFound("taxAmount.greaterThan=" + SMALLER_TAX_AMOUNT);
+        // Get all the ordersList where totalTaxAmount is greater than SMALLER_TOTAL_TAX_AMOUNT
+        defaultOrdersShouldBeFound("totalTaxAmount.greaterThan=" + SMALLER_TOTAL_TAX_AMOUNT);
     }
 
 
     @Test
     @Transactional
-    public void getAllOrdersByFrieightIsEqualToSomething() throws Exception {
+    public void getAllOrdersByTotalShippingFeeIsEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where frieight equals to DEFAULT_FRIEIGHT
-        defaultOrdersShouldBeFound("frieight.equals=" + DEFAULT_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee equals to DEFAULT_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldBeFound("totalShippingFee.equals=" + DEFAULT_TOTAL_SHIPPING_FEE);
 
-        // Get all the ordersList where frieight equals to UPDATED_FRIEIGHT
-        defaultOrdersShouldNotBeFound("frieight.equals=" + UPDATED_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee equals to UPDATED_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldNotBeFound("totalShippingFee.equals=" + UPDATED_TOTAL_SHIPPING_FEE);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByFrieightIsNotEqualToSomething() throws Exception {
+    public void getAllOrdersByTotalShippingFeeIsNotEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where frieight not equals to DEFAULT_FRIEIGHT
-        defaultOrdersShouldNotBeFound("frieight.notEquals=" + DEFAULT_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee not equals to DEFAULT_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldNotBeFound("totalShippingFee.notEquals=" + DEFAULT_TOTAL_SHIPPING_FEE);
 
-        // Get all the ordersList where frieight not equals to UPDATED_FRIEIGHT
-        defaultOrdersShouldBeFound("frieight.notEquals=" + UPDATED_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee not equals to UPDATED_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldBeFound("totalShippingFee.notEquals=" + UPDATED_TOTAL_SHIPPING_FEE);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByFrieightIsInShouldWork() throws Exception {
+    public void getAllOrdersByTotalShippingFeeIsInShouldWork() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where frieight in DEFAULT_FRIEIGHT or UPDATED_FRIEIGHT
-        defaultOrdersShouldBeFound("frieight.in=" + DEFAULT_FRIEIGHT + "," + UPDATED_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee in DEFAULT_TOTAL_SHIPPING_FEE or UPDATED_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldBeFound("totalShippingFee.in=" + DEFAULT_TOTAL_SHIPPING_FEE + "," + UPDATED_TOTAL_SHIPPING_FEE);
 
-        // Get all the ordersList where frieight equals to UPDATED_FRIEIGHT
-        defaultOrdersShouldNotBeFound("frieight.in=" + UPDATED_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee equals to UPDATED_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldNotBeFound("totalShippingFee.in=" + UPDATED_TOTAL_SHIPPING_FEE);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByFrieightIsNullOrNotNull() throws Exception {
+    public void getAllOrdersByTotalShippingFeeIsNullOrNotNull() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where frieight is not null
-        defaultOrdersShouldBeFound("frieight.specified=true");
+        // Get all the ordersList where totalShippingFee is not null
+        defaultOrdersShouldBeFound("totalShippingFee.specified=true");
 
-        // Get all the ordersList where frieight is null
-        defaultOrdersShouldNotBeFound("frieight.specified=false");
+        // Get all the ordersList where totalShippingFee is null
+        defaultOrdersShouldNotBeFound("totalShippingFee.specified=false");
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByFrieightIsGreaterThanOrEqualToSomething() throws Exception {
+    public void getAllOrdersByTotalShippingFeeIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where frieight is greater than or equal to DEFAULT_FRIEIGHT
-        defaultOrdersShouldBeFound("frieight.greaterThanOrEqual=" + DEFAULT_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee is greater than or equal to DEFAULT_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldBeFound("totalShippingFee.greaterThanOrEqual=" + DEFAULT_TOTAL_SHIPPING_FEE);
 
-        // Get all the ordersList where frieight is greater than or equal to UPDATED_FRIEIGHT
-        defaultOrdersShouldNotBeFound("frieight.greaterThanOrEqual=" + UPDATED_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee is greater than or equal to UPDATED_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldNotBeFound("totalShippingFee.greaterThanOrEqual=" + UPDATED_TOTAL_SHIPPING_FEE);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByFrieightIsLessThanOrEqualToSomething() throws Exception {
+    public void getAllOrdersByTotalShippingFeeIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where frieight is less than or equal to DEFAULT_FRIEIGHT
-        defaultOrdersShouldBeFound("frieight.lessThanOrEqual=" + DEFAULT_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee is less than or equal to DEFAULT_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldBeFound("totalShippingFee.lessThanOrEqual=" + DEFAULT_TOTAL_SHIPPING_FEE);
 
-        // Get all the ordersList where frieight is less than or equal to SMALLER_FRIEIGHT
-        defaultOrdersShouldNotBeFound("frieight.lessThanOrEqual=" + SMALLER_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee is less than or equal to SMALLER_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldNotBeFound("totalShippingFee.lessThanOrEqual=" + SMALLER_TOTAL_SHIPPING_FEE);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByFrieightIsLessThanSomething() throws Exception {
+    public void getAllOrdersByTotalShippingFeeIsLessThanSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where frieight is less than DEFAULT_FRIEIGHT
-        defaultOrdersShouldNotBeFound("frieight.lessThan=" + DEFAULT_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee is less than DEFAULT_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldNotBeFound("totalShippingFee.lessThan=" + DEFAULT_TOTAL_SHIPPING_FEE);
 
-        // Get all the ordersList where frieight is less than UPDATED_FRIEIGHT
-        defaultOrdersShouldBeFound("frieight.lessThan=" + UPDATED_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee is less than UPDATED_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldBeFound("totalShippingFee.lessThan=" + UPDATED_TOTAL_SHIPPING_FEE);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByFrieightIsGreaterThanSomething() throws Exception {
+    public void getAllOrdersByTotalShippingFeeIsGreaterThanSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where frieight is greater than DEFAULT_FRIEIGHT
-        defaultOrdersShouldNotBeFound("frieight.greaterThan=" + DEFAULT_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee is greater than DEFAULT_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldNotBeFound("totalShippingFee.greaterThan=" + DEFAULT_TOTAL_SHIPPING_FEE);
 
-        // Get all the ordersList where frieight is greater than SMALLER_FRIEIGHT
-        defaultOrdersShouldBeFound("frieight.greaterThan=" + SMALLER_FRIEIGHT);
+        // Get all the ordersList where totalShippingFee is greater than SMALLER_TOTAL_SHIPPING_FEE
+        defaultOrdersShouldBeFound("totalShippingFee.greaterThan=" + SMALLER_TOTAL_SHIPPING_FEE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalShippingFeeDiscountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalShippingFeeDiscount equals to DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldBeFound("totalShippingFeeDiscount.equals=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the ordersList where totalShippingFeeDiscount equals to UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalShippingFeeDiscount.equals=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalShippingFeeDiscountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalShippingFeeDiscount not equals to DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalShippingFeeDiscount.notEquals=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the ordersList where totalShippingFeeDiscount not equals to UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldBeFound("totalShippingFeeDiscount.notEquals=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalShippingFeeDiscountIsInShouldWork() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalShippingFeeDiscount in DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT or UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldBeFound("totalShippingFeeDiscount.in=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT + "," + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the ordersList where totalShippingFeeDiscount equals to UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalShippingFeeDiscount.in=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalShippingFeeDiscountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalShippingFeeDiscount is not null
+        defaultOrdersShouldBeFound("totalShippingFeeDiscount.specified=true");
+
+        // Get all the ordersList where totalShippingFeeDiscount is null
+        defaultOrdersShouldNotBeFound("totalShippingFeeDiscount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalShippingFeeDiscountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalShippingFeeDiscount is greater than or equal to DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldBeFound("totalShippingFeeDiscount.greaterThanOrEqual=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the ordersList where totalShippingFeeDiscount is greater than or equal to UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalShippingFeeDiscount.greaterThanOrEqual=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalShippingFeeDiscountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalShippingFeeDiscount is less than or equal to DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldBeFound("totalShippingFeeDiscount.lessThanOrEqual=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the ordersList where totalShippingFeeDiscount is less than or equal to SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalShippingFeeDiscount.lessThanOrEqual=" + SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalShippingFeeDiscountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalShippingFeeDiscount is less than DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalShippingFeeDiscount.lessThan=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the ordersList where totalShippingFeeDiscount is less than UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldBeFound("totalShippingFeeDiscount.lessThan=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalShippingFeeDiscountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalShippingFeeDiscount is greater than DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalShippingFeeDiscount.greaterThan=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the ordersList where totalShippingFeeDiscount is greater than SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultOrdersShouldBeFound("totalShippingFeeDiscount.greaterThan=" + SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalVoucherDiscountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalVoucherDiscount equals to DEFAULT_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldBeFound("totalVoucherDiscount.equals=" + DEFAULT_TOTAL_VOUCHER_DISCOUNT);
+
+        // Get all the ordersList where totalVoucherDiscount equals to UPDATED_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalVoucherDiscount.equals=" + UPDATED_TOTAL_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalVoucherDiscountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalVoucherDiscount not equals to DEFAULT_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalVoucherDiscount.notEquals=" + DEFAULT_TOTAL_VOUCHER_DISCOUNT);
+
+        // Get all the ordersList where totalVoucherDiscount not equals to UPDATED_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldBeFound("totalVoucherDiscount.notEquals=" + UPDATED_TOTAL_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalVoucherDiscountIsInShouldWork() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalVoucherDiscount in DEFAULT_TOTAL_VOUCHER_DISCOUNT or UPDATED_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldBeFound("totalVoucherDiscount.in=" + DEFAULT_TOTAL_VOUCHER_DISCOUNT + "," + UPDATED_TOTAL_VOUCHER_DISCOUNT);
+
+        // Get all the ordersList where totalVoucherDiscount equals to UPDATED_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalVoucherDiscount.in=" + UPDATED_TOTAL_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalVoucherDiscountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalVoucherDiscount is not null
+        defaultOrdersShouldBeFound("totalVoucherDiscount.specified=true");
+
+        // Get all the ordersList where totalVoucherDiscount is null
+        defaultOrdersShouldNotBeFound("totalVoucherDiscount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalVoucherDiscountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalVoucherDiscount is greater than or equal to DEFAULT_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldBeFound("totalVoucherDiscount.greaterThanOrEqual=" + DEFAULT_TOTAL_VOUCHER_DISCOUNT);
+
+        // Get all the ordersList where totalVoucherDiscount is greater than or equal to UPDATED_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalVoucherDiscount.greaterThanOrEqual=" + UPDATED_TOTAL_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalVoucherDiscountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalVoucherDiscount is less than or equal to DEFAULT_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldBeFound("totalVoucherDiscount.lessThanOrEqual=" + DEFAULT_TOTAL_VOUCHER_DISCOUNT);
+
+        // Get all the ordersList where totalVoucherDiscount is less than or equal to SMALLER_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalVoucherDiscount.lessThanOrEqual=" + SMALLER_TOTAL_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalVoucherDiscountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalVoucherDiscount is less than DEFAULT_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalVoucherDiscount.lessThan=" + DEFAULT_TOTAL_VOUCHER_DISCOUNT);
+
+        // Get all the ordersList where totalVoucherDiscount is less than UPDATED_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldBeFound("totalVoucherDiscount.lessThan=" + UPDATED_TOTAL_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalVoucherDiscountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalVoucherDiscount is greater than DEFAULT_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalVoucherDiscount.greaterThan=" + DEFAULT_TOTAL_VOUCHER_DISCOUNT);
+
+        // Get all the ordersList where totalVoucherDiscount is greater than SMALLER_TOTAL_VOUCHER_DISCOUNT
+        defaultOrdersShouldBeFound("totalVoucherDiscount.greaterThan=" + SMALLER_TOTAL_VOUCHER_DISCOUNT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalPromtionDiscountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalPromtionDiscount equals to DEFAULT_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldBeFound("totalPromtionDiscount.equals=" + DEFAULT_TOTAL_PROMTION_DISCOUNT);
+
+        // Get all the ordersList where totalPromtionDiscount equals to UPDATED_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalPromtionDiscount.equals=" + UPDATED_TOTAL_PROMTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalPromtionDiscountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalPromtionDiscount not equals to DEFAULT_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalPromtionDiscount.notEquals=" + DEFAULT_TOTAL_PROMTION_DISCOUNT);
+
+        // Get all the ordersList where totalPromtionDiscount not equals to UPDATED_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldBeFound("totalPromtionDiscount.notEquals=" + UPDATED_TOTAL_PROMTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalPromtionDiscountIsInShouldWork() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalPromtionDiscount in DEFAULT_TOTAL_PROMTION_DISCOUNT or UPDATED_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldBeFound("totalPromtionDiscount.in=" + DEFAULT_TOTAL_PROMTION_DISCOUNT + "," + UPDATED_TOTAL_PROMTION_DISCOUNT);
+
+        // Get all the ordersList where totalPromtionDiscount equals to UPDATED_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalPromtionDiscount.in=" + UPDATED_TOTAL_PROMTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalPromtionDiscountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalPromtionDiscount is not null
+        defaultOrdersShouldBeFound("totalPromtionDiscount.specified=true");
+
+        // Get all the ordersList where totalPromtionDiscount is null
+        defaultOrdersShouldNotBeFound("totalPromtionDiscount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalPromtionDiscountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalPromtionDiscount is greater than or equal to DEFAULT_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldBeFound("totalPromtionDiscount.greaterThanOrEqual=" + DEFAULT_TOTAL_PROMTION_DISCOUNT);
+
+        // Get all the ordersList where totalPromtionDiscount is greater than or equal to UPDATED_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalPromtionDiscount.greaterThanOrEqual=" + UPDATED_TOTAL_PROMTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalPromtionDiscountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalPromtionDiscount is less than or equal to DEFAULT_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldBeFound("totalPromtionDiscount.lessThanOrEqual=" + DEFAULT_TOTAL_PROMTION_DISCOUNT);
+
+        // Get all the ordersList where totalPromtionDiscount is less than or equal to SMALLER_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalPromtionDiscount.lessThanOrEqual=" + SMALLER_TOTAL_PROMTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalPromtionDiscountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalPromtionDiscount is less than DEFAULT_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalPromtionDiscount.lessThan=" + DEFAULT_TOTAL_PROMTION_DISCOUNT);
+
+        // Get all the ordersList where totalPromtionDiscount is less than UPDATED_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldBeFound("totalPromtionDiscount.lessThan=" + UPDATED_TOTAL_PROMTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByTotalPromtionDiscountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where totalPromtionDiscount is greater than DEFAULT_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldNotBeFound("totalPromtionDiscount.greaterThan=" + DEFAULT_TOTAL_PROMTION_DISCOUNT);
+
+        // Get all the ordersList where totalPromtionDiscount is greater than SMALLER_TOTAL_PROMTION_DISCOUNT
+        defaultOrdersShouldBeFound("totalPromtionDiscount.greaterThan=" + SMALLER_TOTAL_PROMTION_DISCOUNT);
     }
 
 
@@ -1166,289 +1176,133 @@ public class OrdersResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrdersByCommentsIsEqualToSomething() throws Exception {
+    public void getAllOrdersByPaymentStatusIsEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where comments equals to DEFAULT_COMMENTS
-        defaultOrdersShouldBeFound("comments.equals=" + DEFAULT_COMMENTS);
+        // Get all the ordersList where paymentStatus equals to DEFAULT_PAYMENT_STATUS
+        defaultOrdersShouldBeFound("paymentStatus.equals=" + DEFAULT_PAYMENT_STATUS);
 
-        // Get all the ordersList where comments equals to UPDATED_COMMENTS
-        defaultOrdersShouldNotBeFound("comments.equals=" + UPDATED_COMMENTS);
+        // Get all the ordersList where paymentStatus equals to UPDATED_PAYMENT_STATUS
+        defaultOrdersShouldNotBeFound("paymentStatus.equals=" + UPDATED_PAYMENT_STATUS);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByCommentsIsNotEqualToSomething() throws Exception {
+    public void getAllOrdersByPaymentStatusIsNotEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where comments not equals to DEFAULT_COMMENTS
-        defaultOrdersShouldNotBeFound("comments.notEquals=" + DEFAULT_COMMENTS);
+        // Get all the ordersList where paymentStatus not equals to DEFAULT_PAYMENT_STATUS
+        defaultOrdersShouldNotBeFound("paymentStatus.notEquals=" + DEFAULT_PAYMENT_STATUS);
 
-        // Get all the ordersList where comments not equals to UPDATED_COMMENTS
-        defaultOrdersShouldBeFound("comments.notEquals=" + UPDATED_COMMENTS);
+        // Get all the ordersList where paymentStatus not equals to UPDATED_PAYMENT_STATUS
+        defaultOrdersShouldBeFound("paymentStatus.notEquals=" + UPDATED_PAYMENT_STATUS);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByCommentsIsInShouldWork() throws Exception {
+    public void getAllOrdersByPaymentStatusIsInShouldWork() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where comments in DEFAULT_COMMENTS or UPDATED_COMMENTS
-        defaultOrdersShouldBeFound("comments.in=" + DEFAULT_COMMENTS + "," + UPDATED_COMMENTS);
+        // Get all the ordersList where paymentStatus in DEFAULT_PAYMENT_STATUS or UPDATED_PAYMENT_STATUS
+        defaultOrdersShouldBeFound("paymentStatus.in=" + DEFAULT_PAYMENT_STATUS + "," + UPDATED_PAYMENT_STATUS);
 
-        // Get all the ordersList where comments equals to UPDATED_COMMENTS
-        defaultOrdersShouldNotBeFound("comments.in=" + UPDATED_COMMENTS);
+        // Get all the ordersList where paymentStatus equals to UPDATED_PAYMENT_STATUS
+        defaultOrdersShouldNotBeFound("paymentStatus.in=" + UPDATED_PAYMENT_STATUS);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByCommentsIsNullOrNotNull() throws Exception {
+    public void getAllOrdersByPaymentStatusIsNullOrNotNull() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where comments is not null
-        defaultOrdersShouldBeFound("comments.specified=true");
+        // Get all the ordersList where paymentStatus is not null
+        defaultOrdersShouldBeFound("paymentStatus.specified=true");
 
-        // Get all the ordersList where comments is null
-        defaultOrdersShouldNotBeFound("comments.specified=false");
+        // Get all the ordersList where paymentStatus is null
+        defaultOrdersShouldNotBeFound("paymentStatus.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByCustomerPurchaseOrderNumberIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where customerPurchaseOrderNumber equals to DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldBeFound("customerPurchaseOrderNumber.equals=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
+
+        // Get all the ordersList where customerPurchaseOrderNumber equals to UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldNotBeFound("customerPurchaseOrderNumber.equals=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByCustomerPurchaseOrderNumberIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where customerPurchaseOrderNumber not equals to DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldNotBeFound("customerPurchaseOrderNumber.notEquals=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
+
+        // Get all the ordersList where customerPurchaseOrderNumber not equals to UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldBeFound("customerPurchaseOrderNumber.notEquals=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByCustomerPurchaseOrderNumberIsInShouldWork() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where customerPurchaseOrderNumber in DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER or UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldBeFound("customerPurchaseOrderNumber.in=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER + "," + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+
+        // Get all the ordersList where customerPurchaseOrderNumber equals to UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldNotBeFound("customerPurchaseOrderNumber.in=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrdersByCustomerPurchaseOrderNumberIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+
+        // Get all the ordersList where customerPurchaseOrderNumber is not null
+        defaultOrdersShouldBeFound("customerPurchaseOrderNumber.specified=true");
+
+        // Get all the ordersList where customerPurchaseOrderNumber is null
+        defaultOrdersShouldNotBeFound("customerPurchaseOrderNumber.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllOrdersByCommentsContainsSomething() throws Exception {
+    public void getAllOrdersByCustomerPurchaseOrderNumberContainsSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where comments contains DEFAULT_COMMENTS
-        defaultOrdersShouldBeFound("comments.contains=" + DEFAULT_COMMENTS);
+        // Get all the ordersList where customerPurchaseOrderNumber contains DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldBeFound("customerPurchaseOrderNumber.contains=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
 
-        // Get all the ordersList where comments contains UPDATED_COMMENTS
-        defaultOrdersShouldNotBeFound("comments.contains=" + UPDATED_COMMENTS);
+        // Get all the ordersList where customerPurchaseOrderNumber contains UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldNotBeFound("customerPurchaseOrderNumber.contains=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByCommentsNotContainsSomething() throws Exception {
+    public void getAllOrdersByCustomerPurchaseOrderNumberNotContainsSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where comments does not contain DEFAULT_COMMENTS
-        defaultOrdersShouldNotBeFound("comments.doesNotContain=" + DEFAULT_COMMENTS);
+        // Get all the ordersList where customerPurchaseOrderNumber does not contain DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldNotBeFound("customerPurchaseOrderNumber.doesNotContain=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
 
-        // Get all the ordersList where comments does not contain UPDATED_COMMENTS
-        defaultOrdersShouldBeFound("comments.doesNotContain=" + UPDATED_COMMENTS);
+        // Get all the ordersList where customerPurchaseOrderNumber does not contain UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
+        defaultOrdersShouldBeFound("customerPurchaseOrderNumber.doesNotContain=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
     }
 
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryInstructionsIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryInstructions equals to DEFAULT_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldBeFound("deliveryInstructions.equals=" + DEFAULT_DELIVERY_INSTRUCTIONS);
-
-        // Get all the ordersList where deliveryInstructions equals to UPDATED_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldNotBeFound("deliveryInstructions.equals=" + UPDATED_DELIVERY_INSTRUCTIONS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryInstructionsIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryInstructions not equals to DEFAULT_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldNotBeFound("deliveryInstructions.notEquals=" + DEFAULT_DELIVERY_INSTRUCTIONS);
-
-        // Get all the ordersList where deliveryInstructions not equals to UPDATED_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldBeFound("deliveryInstructions.notEquals=" + UPDATED_DELIVERY_INSTRUCTIONS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryInstructionsIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryInstructions in DEFAULT_DELIVERY_INSTRUCTIONS or UPDATED_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldBeFound("deliveryInstructions.in=" + DEFAULT_DELIVERY_INSTRUCTIONS + "," + UPDATED_DELIVERY_INSTRUCTIONS);
-
-        // Get all the ordersList where deliveryInstructions equals to UPDATED_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldNotBeFound("deliveryInstructions.in=" + UPDATED_DELIVERY_INSTRUCTIONS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryInstructionsIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryInstructions is not null
-        defaultOrdersShouldBeFound("deliveryInstructions.specified=true");
-
-        // Get all the ordersList where deliveryInstructions is null
-        defaultOrdersShouldNotBeFound("deliveryInstructions.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllOrdersByDeliveryInstructionsContainsSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryInstructions contains DEFAULT_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldBeFound("deliveryInstructions.contains=" + DEFAULT_DELIVERY_INSTRUCTIONS);
-
-        // Get all the ordersList where deliveryInstructions contains UPDATED_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldNotBeFound("deliveryInstructions.contains=" + UPDATED_DELIVERY_INSTRUCTIONS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryInstructionsNotContainsSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryInstructions does not contain DEFAULT_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldNotBeFound("deliveryInstructions.doesNotContain=" + DEFAULT_DELIVERY_INSTRUCTIONS);
-
-        // Get all the ordersList where deliveryInstructions does not contain UPDATED_DELIVERY_INSTRUCTIONS
-        defaultOrdersShouldBeFound("deliveryInstructions.doesNotContain=" + UPDATED_DELIVERY_INSTRUCTIONS);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllOrdersByInternalCommentsIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where internalComments equals to DEFAULT_INTERNAL_COMMENTS
-        defaultOrdersShouldBeFound("internalComments.equals=" + DEFAULT_INTERNAL_COMMENTS);
-
-        // Get all the ordersList where internalComments equals to UPDATED_INTERNAL_COMMENTS
-        defaultOrdersShouldNotBeFound("internalComments.equals=" + UPDATED_INTERNAL_COMMENTS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByInternalCommentsIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where internalComments not equals to DEFAULT_INTERNAL_COMMENTS
-        defaultOrdersShouldNotBeFound("internalComments.notEquals=" + DEFAULT_INTERNAL_COMMENTS);
-
-        // Get all the ordersList where internalComments not equals to UPDATED_INTERNAL_COMMENTS
-        defaultOrdersShouldBeFound("internalComments.notEquals=" + UPDATED_INTERNAL_COMMENTS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByInternalCommentsIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where internalComments in DEFAULT_INTERNAL_COMMENTS or UPDATED_INTERNAL_COMMENTS
-        defaultOrdersShouldBeFound("internalComments.in=" + DEFAULT_INTERNAL_COMMENTS + "," + UPDATED_INTERNAL_COMMENTS);
-
-        // Get all the ordersList where internalComments equals to UPDATED_INTERNAL_COMMENTS
-        defaultOrdersShouldNotBeFound("internalComments.in=" + UPDATED_INTERNAL_COMMENTS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByInternalCommentsIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where internalComments is not null
-        defaultOrdersShouldBeFound("internalComments.specified=true");
-
-        // Get all the ordersList where internalComments is null
-        defaultOrdersShouldNotBeFound("internalComments.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllOrdersByInternalCommentsContainsSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where internalComments contains DEFAULT_INTERNAL_COMMENTS
-        defaultOrdersShouldBeFound("internalComments.contains=" + DEFAULT_INTERNAL_COMMENTS);
-
-        // Get all the ordersList where internalComments contains UPDATED_INTERNAL_COMMENTS
-        defaultOrdersShouldNotBeFound("internalComments.contains=" + UPDATED_INTERNAL_COMMENTS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByInternalCommentsNotContainsSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where internalComments does not contain DEFAULT_INTERNAL_COMMENTS
-        defaultOrdersShouldNotBeFound("internalComments.doesNotContain=" + DEFAULT_INTERNAL_COMMENTS);
-
-        // Get all the ordersList where internalComments does not contain UPDATED_INTERNAL_COMMENTS
-        defaultOrdersShouldBeFound("internalComments.doesNotContain=" + UPDATED_INTERNAL_COMMENTS);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllOrdersByPickingCompletedWhenIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where pickingCompletedWhen equals to DEFAULT_PICKING_COMPLETED_WHEN
-        defaultOrdersShouldBeFound("pickingCompletedWhen.equals=" + DEFAULT_PICKING_COMPLETED_WHEN);
-
-        // Get all the ordersList where pickingCompletedWhen equals to UPDATED_PICKING_COMPLETED_WHEN
-        defaultOrdersShouldNotBeFound("pickingCompletedWhen.equals=" + UPDATED_PICKING_COMPLETED_WHEN);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByPickingCompletedWhenIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where pickingCompletedWhen not equals to DEFAULT_PICKING_COMPLETED_WHEN
-        defaultOrdersShouldNotBeFound("pickingCompletedWhen.notEquals=" + DEFAULT_PICKING_COMPLETED_WHEN);
-
-        // Get all the ordersList where pickingCompletedWhen not equals to UPDATED_PICKING_COMPLETED_WHEN
-        defaultOrdersShouldBeFound("pickingCompletedWhen.notEquals=" + UPDATED_PICKING_COMPLETED_WHEN);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByPickingCompletedWhenIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where pickingCompletedWhen in DEFAULT_PICKING_COMPLETED_WHEN or UPDATED_PICKING_COMPLETED_WHEN
-        defaultOrdersShouldBeFound("pickingCompletedWhen.in=" + DEFAULT_PICKING_COMPLETED_WHEN + "," + UPDATED_PICKING_COMPLETED_WHEN);
-
-        // Get all the ordersList where pickingCompletedWhen equals to UPDATED_PICKING_COMPLETED_WHEN
-        defaultOrdersShouldNotBeFound("pickingCompletedWhen.in=" + UPDATED_PICKING_COMPLETED_WHEN);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByPickingCompletedWhenIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where pickingCompletedWhen is not null
-        defaultOrdersShouldBeFound("pickingCompletedWhen.specified=true");
-
-        // Get all the ordersList where pickingCompletedWhen is null
-        defaultOrdersShouldNotBeFound("pickingCompletedWhen.specified=false");
-    }
 
     @Test
     @Transactional
@@ -1504,368 +1358,54 @@ public class OrdersResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrdersByCustomerReviewedOnIsEqualToSomething() throws Exception {
+    public void getAllOrdersByIsUnderSupplyBackOrderedIsEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where customerReviewedOn equals to DEFAULT_CUSTOMER_REVIEWED_ON
-        defaultOrdersShouldBeFound("customerReviewedOn.equals=" + DEFAULT_CUSTOMER_REVIEWED_ON);
+        // Get all the ordersList where isUnderSupplyBackOrdered equals to DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED
+        defaultOrdersShouldBeFound("isUnderSupplyBackOrdered.equals=" + DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED);
 
-        // Get all the ordersList where customerReviewedOn equals to UPDATED_CUSTOMER_REVIEWED_ON
-        defaultOrdersShouldNotBeFound("customerReviewedOn.equals=" + UPDATED_CUSTOMER_REVIEWED_ON);
+        // Get all the ordersList where isUnderSupplyBackOrdered equals to UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED
+        defaultOrdersShouldNotBeFound("isUnderSupplyBackOrdered.equals=" + UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByCustomerReviewedOnIsNotEqualToSomething() throws Exception {
+    public void getAllOrdersByIsUnderSupplyBackOrderedIsNotEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where customerReviewedOn not equals to DEFAULT_CUSTOMER_REVIEWED_ON
-        defaultOrdersShouldNotBeFound("customerReviewedOn.notEquals=" + DEFAULT_CUSTOMER_REVIEWED_ON);
+        // Get all the ordersList where isUnderSupplyBackOrdered not equals to DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED
+        defaultOrdersShouldNotBeFound("isUnderSupplyBackOrdered.notEquals=" + DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED);
 
-        // Get all the ordersList where customerReviewedOn not equals to UPDATED_CUSTOMER_REVIEWED_ON
-        defaultOrdersShouldBeFound("customerReviewedOn.notEquals=" + UPDATED_CUSTOMER_REVIEWED_ON);
+        // Get all the ordersList where isUnderSupplyBackOrdered not equals to UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED
+        defaultOrdersShouldBeFound("isUnderSupplyBackOrdered.notEquals=" + UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByCustomerReviewedOnIsInShouldWork() throws Exception {
+    public void getAllOrdersByIsUnderSupplyBackOrderedIsInShouldWork() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where customerReviewedOn in DEFAULT_CUSTOMER_REVIEWED_ON or UPDATED_CUSTOMER_REVIEWED_ON
-        defaultOrdersShouldBeFound("customerReviewedOn.in=" + DEFAULT_CUSTOMER_REVIEWED_ON + "," + UPDATED_CUSTOMER_REVIEWED_ON);
+        // Get all the ordersList where isUnderSupplyBackOrdered in DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED or UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED
+        defaultOrdersShouldBeFound("isUnderSupplyBackOrdered.in=" + DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED + "," + UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED);
 
-        // Get all the ordersList where customerReviewedOn equals to UPDATED_CUSTOMER_REVIEWED_ON
-        defaultOrdersShouldNotBeFound("customerReviewedOn.in=" + UPDATED_CUSTOMER_REVIEWED_ON);
+        // Get all the ordersList where isUnderSupplyBackOrdered equals to UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED
+        defaultOrdersShouldNotBeFound("isUnderSupplyBackOrdered.in=" + UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED);
     }
 
     @Test
     @Transactional
-    public void getAllOrdersByCustomerReviewedOnIsNullOrNotNull() throws Exception {
+    public void getAllOrdersByIsUnderSupplyBackOrderedIsNullOrNotNull() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
 
-        // Get all the ordersList where customerReviewedOn is not null
-        defaultOrdersShouldBeFound("customerReviewedOn.specified=true");
-
-        // Get all the ordersList where customerReviewedOn is null
-        defaultOrdersShouldNotBeFound("customerReviewedOn.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersBySellerRatingIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where sellerRating equals to DEFAULT_SELLER_RATING
-        defaultOrdersShouldBeFound("sellerRating.equals=" + DEFAULT_SELLER_RATING);
-
-        // Get all the ordersList where sellerRating equals to UPDATED_SELLER_RATING
-        defaultOrdersShouldNotBeFound("sellerRating.equals=" + UPDATED_SELLER_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersBySellerRatingIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where sellerRating not equals to DEFAULT_SELLER_RATING
-        defaultOrdersShouldNotBeFound("sellerRating.notEquals=" + DEFAULT_SELLER_RATING);
-
-        // Get all the ordersList where sellerRating not equals to UPDATED_SELLER_RATING
-        defaultOrdersShouldBeFound("sellerRating.notEquals=" + UPDATED_SELLER_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersBySellerRatingIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where sellerRating in DEFAULT_SELLER_RATING or UPDATED_SELLER_RATING
-        defaultOrdersShouldBeFound("sellerRating.in=" + DEFAULT_SELLER_RATING + "," + UPDATED_SELLER_RATING);
-
-        // Get all the ordersList where sellerRating equals to UPDATED_SELLER_RATING
-        defaultOrdersShouldNotBeFound("sellerRating.in=" + UPDATED_SELLER_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersBySellerRatingIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where sellerRating is not null
-        defaultOrdersShouldBeFound("sellerRating.specified=true");
-
-        // Get all the ordersList where sellerRating is null
-        defaultOrdersShouldNotBeFound("sellerRating.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersBySellerRatingIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where sellerRating is greater than or equal to DEFAULT_SELLER_RATING
-        defaultOrdersShouldBeFound("sellerRating.greaterThanOrEqual=" + DEFAULT_SELLER_RATING);
-
-        // Get all the ordersList where sellerRating is greater than or equal to UPDATED_SELLER_RATING
-        defaultOrdersShouldNotBeFound("sellerRating.greaterThanOrEqual=" + UPDATED_SELLER_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersBySellerRatingIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where sellerRating is less than or equal to DEFAULT_SELLER_RATING
-        defaultOrdersShouldBeFound("sellerRating.lessThanOrEqual=" + DEFAULT_SELLER_RATING);
-
-        // Get all the ordersList where sellerRating is less than or equal to SMALLER_SELLER_RATING
-        defaultOrdersShouldNotBeFound("sellerRating.lessThanOrEqual=" + SMALLER_SELLER_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersBySellerRatingIsLessThanSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where sellerRating is less than DEFAULT_SELLER_RATING
-        defaultOrdersShouldNotBeFound("sellerRating.lessThan=" + DEFAULT_SELLER_RATING);
-
-        // Get all the ordersList where sellerRating is less than UPDATED_SELLER_RATING
-        defaultOrdersShouldBeFound("sellerRating.lessThan=" + UPDATED_SELLER_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersBySellerRatingIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where sellerRating is greater than DEFAULT_SELLER_RATING
-        defaultOrdersShouldNotBeFound("sellerRating.greaterThan=" + DEFAULT_SELLER_RATING);
-
-        // Get all the ordersList where sellerRating is greater than SMALLER_SELLER_RATING
-        defaultOrdersShouldBeFound("sellerRating.greaterThan=" + SMALLER_SELLER_RATING);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryRatingIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryRating equals to DEFAULT_DELIVERY_RATING
-        defaultOrdersShouldBeFound("deliveryRating.equals=" + DEFAULT_DELIVERY_RATING);
-
-        // Get all the ordersList where deliveryRating equals to UPDATED_DELIVERY_RATING
-        defaultOrdersShouldNotBeFound("deliveryRating.equals=" + UPDATED_DELIVERY_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryRatingIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryRating not equals to DEFAULT_DELIVERY_RATING
-        defaultOrdersShouldNotBeFound("deliveryRating.notEquals=" + DEFAULT_DELIVERY_RATING);
-
-        // Get all the ordersList where deliveryRating not equals to UPDATED_DELIVERY_RATING
-        defaultOrdersShouldBeFound("deliveryRating.notEquals=" + UPDATED_DELIVERY_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryRatingIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryRating in DEFAULT_DELIVERY_RATING or UPDATED_DELIVERY_RATING
-        defaultOrdersShouldBeFound("deliveryRating.in=" + DEFAULT_DELIVERY_RATING + "," + UPDATED_DELIVERY_RATING);
-
-        // Get all the ordersList where deliveryRating equals to UPDATED_DELIVERY_RATING
-        defaultOrdersShouldNotBeFound("deliveryRating.in=" + UPDATED_DELIVERY_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryRatingIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryRating is not null
-        defaultOrdersShouldBeFound("deliveryRating.specified=true");
-
-        // Get all the ordersList where deliveryRating is null
-        defaultOrdersShouldNotBeFound("deliveryRating.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryRatingIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryRating is greater than or equal to DEFAULT_DELIVERY_RATING
-        defaultOrdersShouldBeFound("deliveryRating.greaterThanOrEqual=" + DEFAULT_DELIVERY_RATING);
-
-        // Get all the ordersList where deliveryRating is greater than or equal to UPDATED_DELIVERY_RATING
-        defaultOrdersShouldNotBeFound("deliveryRating.greaterThanOrEqual=" + UPDATED_DELIVERY_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryRatingIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryRating is less than or equal to DEFAULT_DELIVERY_RATING
-        defaultOrdersShouldBeFound("deliveryRating.lessThanOrEqual=" + DEFAULT_DELIVERY_RATING);
-
-        // Get all the ordersList where deliveryRating is less than or equal to SMALLER_DELIVERY_RATING
-        defaultOrdersShouldNotBeFound("deliveryRating.lessThanOrEqual=" + SMALLER_DELIVERY_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryRatingIsLessThanSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryRating is less than DEFAULT_DELIVERY_RATING
-        defaultOrdersShouldNotBeFound("deliveryRating.lessThan=" + DEFAULT_DELIVERY_RATING);
-
-        // Get all the ordersList where deliveryRating is less than UPDATED_DELIVERY_RATING
-        defaultOrdersShouldBeFound("deliveryRating.lessThan=" + UPDATED_DELIVERY_RATING);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByDeliveryRatingIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where deliveryRating is greater than DEFAULT_DELIVERY_RATING
-        defaultOrdersShouldNotBeFound("deliveryRating.greaterThan=" + DEFAULT_DELIVERY_RATING);
-
-        // Get all the ordersList where deliveryRating is greater than SMALLER_DELIVERY_RATING
-        defaultOrdersShouldBeFound("deliveryRating.greaterThan=" + SMALLER_DELIVERY_RATING);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllOrdersByReviewAsAnonymousIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where reviewAsAnonymous equals to DEFAULT_REVIEW_AS_ANONYMOUS
-        defaultOrdersShouldBeFound("reviewAsAnonymous.equals=" + DEFAULT_REVIEW_AS_ANONYMOUS);
-
-        // Get all the ordersList where reviewAsAnonymous equals to UPDATED_REVIEW_AS_ANONYMOUS
-        defaultOrdersShouldNotBeFound("reviewAsAnonymous.equals=" + UPDATED_REVIEW_AS_ANONYMOUS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByReviewAsAnonymousIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where reviewAsAnonymous not equals to DEFAULT_REVIEW_AS_ANONYMOUS
-        defaultOrdersShouldNotBeFound("reviewAsAnonymous.notEquals=" + DEFAULT_REVIEW_AS_ANONYMOUS);
-
-        // Get all the ordersList where reviewAsAnonymous not equals to UPDATED_REVIEW_AS_ANONYMOUS
-        defaultOrdersShouldBeFound("reviewAsAnonymous.notEquals=" + UPDATED_REVIEW_AS_ANONYMOUS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByReviewAsAnonymousIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where reviewAsAnonymous in DEFAULT_REVIEW_AS_ANONYMOUS or UPDATED_REVIEW_AS_ANONYMOUS
-        defaultOrdersShouldBeFound("reviewAsAnonymous.in=" + DEFAULT_REVIEW_AS_ANONYMOUS + "," + UPDATED_REVIEW_AS_ANONYMOUS);
-
-        // Get all the ordersList where reviewAsAnonymous equals to UPDATED_REVIEW_AS_ANONYMOUS
-        defaultOrdersShouldNotBeFound("reviewAsAnonymous.in=" + UPDATED_REVIEW_AS_ANONYMOUS);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByReviewAsAnonymousIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where reviewAsAnonymous is not null
-        defaultOrdersShouldBeFound("reviewAsAnonymous.specified=true");
-
-        // Get all the ordersList where reviewAsAnonymous is null
-        defaultOrdersShouldNotBeFound("reviewAsAnonymous.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByCompletedReviewIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where completedReview equals to DEFAULT_COMPLETED_REVIEW
-        defaultOrdersShouldBeFound("completedReview.equals=" + DEFAULT_COMPLETED_REVIEW);
-
-        // Get all the ordersList where completedReview equals to UPDATED_COMPLETED_REVIEW
-        defaultOrdersShouldNotBeFound("completedReview.equals=" + UPDATED_COMPLETED_REVIEW);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByCompletedReviewIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where completedReview not equals to DEFAULT_COMPLETED_REVIEW
-        defaultOrdersShouldNotBeFound("completedReview.notEquals=" + DEFAULT_COMPLETED_REVIEW);
-
-        // Get all the ordersList where completedReview not equals to UPDATED_COMPLETED_REVIEW
-        defaultOrdersShouldBeFound("completedReview.notEquals=" + UPDATED_COMPLETED_REVIEW);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByCompletedReviewIsInShouldWork() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where completedReview in DEFAULT_COMPLETED_REVIEW or UPDATED_COMPLETED_REVIEW
-        defaultOrdersShouldBeFound("completedReview.in=" + DEFAULT_COMPLETED_REVIEW + "," + UPDATED_COMPLETED_REVIEW);
-
-        // Get all the ordersList where completedReview equals to UPDATED_COMPLETED_REVIEW
-        defaultOrdersShouldNotBeFound("completedReview.in=" + UPDATED_COMPLETED_REVIEW);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrdersByCompletedReviewIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-
-        // Get all the ordersList where completedReview is not null
-        defaultOrdersShouldBeFound("completedReview.specified=true");
-
-        // Get all the ordersList where completedReview is null
-        defaultOrdersShouldNotBeFound("completedReview.specified=false");
+        // Get all the ordersList where isUnderSupplyBackOrdered is not null
+        defaultOrdersShouldBeFound("isUnderSupplyBackOrdered.specified=true");
+
+        // Get all the ordersList where isUnderSupplyBackOrdered is null
+        defaultOrdersShouldNotBeFound("isUnderSupplyBackOrdered.specified=false");
     }
 
     @Test
@@ -2000,21 +1540,21 @@ public class OrdersResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrdersByOrderLineListIsEqualToSomething() throws Exception {
+    public void getAllOrdersByOrderPackageListIsEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
-        OrderLines orderLineList = OrderLinesResourceIT.createEntity(em);
-        em.persist(orderLineList);
+        OrderPackages orderPackageList = OrderPackagesResourceIT.createEntity(em);
+        em.persist(orderPackageList);
         em.flush();
-        orders.addOrderLineList(orderLineList);
+        orders.addOrderPackageList(orderPackageList);
         ordersRepository.saveAndFlush(orders);
-        Long orderLineListId = orderLineList.getId();
+        Long orderPackageListId = orderPackageList.getId();
 
-        // Get all the ordersList where orderLineList equals to orderLineListId
-        defaultOrdersShouldBeFound("orderLineListId.equals=" + orderLineListId);
+        // Get all the ordersList where orderPackageList equals to orderPackageListId
+        defaultOrdersShouldBeFound("orderPackageListId.equals=" + orderPackageListId);
 
-        // Get all the ordersList where orderLineList equals to orderLineListId + 1
-        defaultOrdersShouldNotBeFound("orderLineListId.equals=" + (orderLineListId + 1));
+        // Get all the ordersList where orderPackageList equals to orderPackageListId + 1
+        defaultOrdersShouldNotBeFound("orderPackageListId.equals=" + (orderPackageListId + 1));
     }
 
 
@@ -2080,26 +1620,6 @@ public class OrdersResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrdersByShipMethodIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ordersRepository.saveAndFlush(orders);
-        ShipMethod shipMethod = ShipMethodResourceIT.createEntity(em);
-        em.persist(shipMethod);
-        em.flush();
-        orders.setShipMethod(shipMethod);
-        ordersRepository.saveAndFlush(orders);
-        Long shipMethodId = shipMethod.getId();
-
-        // Get all the ordersList where shipMethod equals to shipMethodId
-        defaultOrdersShouldBeFound("shipMethodId.equals=" + shipMethodId);
-
-        // Get all the ordersList where shipMethod equals to shipMethodId + 1
-        defaultOrdersShouldNotBeFound("shipMethodId.equals=" + (shipMethodId + 1));
-    }
-
-
-    @Test
-    @Transactional
     public void getAllOrdersByCurrencyRateIsEqualToSomething() throws Exception {
         // Initialize the database
         ordersRepository.saveAndFlush(orders);
@@ -2135,6 +1655,26 @@ public class OrdersResourceIT {
 
         // Get all the ordersList where paymentMethod equals to paymentMethodId + 1
         defaultOrdersShouldNotBeFound("paymentMethodId.equals=" + (paymentMethodId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrdersBySalePersonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ordersRepository.saveAndFlush(orders);
+        People salePerson = PeopleResourceIT.createEntity(em);
+        em.persist(salePerson);
+        em.flush();
+        orders.setSalePerson(salePerson);
+        ordersRepository.saveAndFlush(orders);
+        Long salePersonId = salePerson.getId();
+
+        // Get all the ordersList where salePerson equals to salePersonId
+        defaultOrdersShouldBeFound("salePersonId.equals=" + salePersonId);
+
+        // Get all the ordersList where salePerson equals to salePersonId + 1
+        defaultOrdersShouldNotBeFound("salePersonId.equals=" + (salePersonId + 1));
     }
 
 
@@ -2187,27 +1727,18 @@ public class OrdersResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(orders.getId().intValue())))
             .andExpect(jsonPath("$.[*].orderDate").value(hasItem(DEFAULT_ORDER_DATE.toString())))
-            .andExpect(jsonPath("$.[*].dueDate").value(hasItem(DEFAULT_DUE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].expectedDeliveryDate").value(hasItem(DEFAULT_EXPECTED_DELIVERY_DATE.toString())))
-            .andExpect(jsonPath("$.[*].paymentStatus").value(hasItem(DEFAULT_PAYMENT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].accountNumber").value(hasItem(DEFAULT_ACCOUNT_NUMBER)))
             .andExpect(jsonPath("$.[*].subTotal").value(hasItem(DEFAULT_SUB_TOTAL.intValue())))
-            .andExpect(jsonPath("$.[*].taxAmount").value(hasItem(DEFAULT_TAX_AMOUNT.intValue())))
-            .andExpect(jsonPath("$.[*].frieight").value(hasItem(DEFAULT_FRIEIGHT.intValue())))
+            .andExpect(jsonPath("$.[*].totalTaxAmount").value(hasItem(DEFAULT_TOTAL_TAX_AMOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].totalShippingFee").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE.intValue())))
+            .andExpect(jsonPath("$.[*].totalShippingFeeDiscount").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].totalVoucherDiscount").value(hasItem(DEFAULT_TOTAL_VOUCHER_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].totalPromtionDiscount").value(hasItem(DEFAULT_TOTAL_PROMTION_DISCOUNT.intValue())))
             .andExpect(jsonPath("$.[*].totalDue").value(hasItem(DEFAULT_TOTAL_DUE.intValue())))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
-            .andExpect(jsonPath("$.[*].deliveryInstructions").value(hasItem(DEFAULT_DELIVERY_INSTRUCTIONS)))
-            .andExpect(jsonPath("$.[*].internalComments").value(hasItem(DEFAULT_INTERNAL_COMMENTS)))
-            .andExpect(jsonPath("$.[*].pickingCompletedWhen").value(hasItem(DEFAULT_PICKING_COMPLETED_WHEN.toString())))
+            .andExpect(jsonPath("$.[*].paymentStatus").value(hasItem(DEFAULT_PAYMENT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].customerPurchaseOrderNumber").value(hasItem(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].customerReviewedOn").value(hasItem(DEFAULT_CUSTOMER_REVIEWED_ON.toString())))
-            .andExpect(jsonPath("$.[*].sellerRating").value(hasItem(DEFAULT_SELLER_RATING)))
-            .andExpect(jsonPath("$.[*].sellerReview").value(hasItem(DEFAULT_SELLER_REVIEW.toString())))
-            .andExpect(jsonPath("$.[*].deliveryRating").value(hasItem(DEFAULT_DELIVERY_RATING)))
-            .andExpect(jsonPath("$.[*].deliveryReview").value(hasItem(DEFAULT_DELIVERY_REVIEW.toString())))
-            .andExpect(jsonPath("$.[*].reviewAsAnonymous").value(hasItem(DEFAULT_REVIEW_AS_ANONYMOUS.booleanValue())))
-            .andExpect(jsonPath("$.[*].completedReview").value(hasItem(DEFAULT_COMPLETED_REVIEW.booleanValue())))
-            .andExpect(jsonPath("$.[*].orderLineString").value(hasItem(DEFAULT_ORDER_LINE_STRING.toString())))
+            .andExpect(jsonPath("$.[*].orderDetails").value(hasItem(DEFAULT_ORDER_DETAILS.toString())))
+            .andExpect(jsonPath("$.[*].isUnderSupplyBackOrdered").value(hasItem(DEFAULT_IS_UNDER_SUPPLY_BACK_ORDERED.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
 
@@ -2257,27 +1788,18 @@ public class OrdersResourceIT {
         em.detach(updatedOrders);
         updatedOrders
             .orderDate(UPDATED_ORDER_DATE)
-            .dueDate(UPDATED_DUE_DATE)
-            .expectedDeliveryDate(UPDATED_EXPECTED_DELIVERY_DATE)
-            .paymentStatus(UPDATED_PAYMENT_STATUS)
-            .accountNumber(UPDATED_ACCOUNT_NUMBER)
             .subTotal(UPDATED_SUB_TOTAL)
-            .taxAmount(UPDATED_TAX_AMOUNT)
-            .frieight(UPDATED_FRIEIGHT)
+            .totalTaxAmount(UPDATED_TOTAL_TAX_AMOUNT)
+            .totalShippingFee(UPDATED_TOTAL_SHIPPING_FEE)
+            .totalShippingFeeDiscount(UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT)
+            .totalVoucherDiscount(UPDATED_TOTAL_VOUCHER_DISCOUNT)
+            .totalPromtionDiscount(UPDATED_TOTAL_PROMTION_DISCOUNT)
             .totalDue(UPDATED_TOTAL_DUE)
-            .comments(UPDATED_COMMENTS)
-            .deliveryInstructions(UPDATED_DELIVERY_INSTRUCTIONS)
-            .internalComments(UPDATED_INTERNAL_COMMENTS)
-            .pickingCompletedWhen(UPDATED_PICKING_COMPLETED_WHEN)
+            .paymentStatus(UPDATED_PAYMENT_STATUS)
+            .customerPurchaseOrderNumber(UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER)
             .status(UPDATED_STATUS)
-            .customerReviewedOn(UPDATED_CUSTOMER_REVIEWED_ON)
-            .sellerRating(UPDATED_SELLER_RATING)
-            .sellerReview(UPDATED_SELLER_REVIEW)
-            .deliveryRating(UPDATED_DELIVERY_RATING)
-            .deliveryReview(UPDATED_DELIVERY_REVIEW)
-            .reviewAsAnonymous(UPDATED_REVIEW_AS_ANONYMOUS)
-            .completedReview(UPDATED_COMPLETED_REVIEW)
-            .orderLineString(UPDATED_ORDER_LINE_STRING)
+            .orderDetails(UPDATED_ORDER_DETAILS)
+            .isUnderSupplyBackOrdered(UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
         OrdersDTO ordersDTO = ordersMapper.toDto(updatedOrders);
@@ -2292,27 +1814,18 @@ public class OrdersResourceIT {
         assertThat(ordersList).hasSize(databaseSizeBeforeUpdate);
         Orders testOrders = ordersList.get(ordersList.size() - 1);
         assertThat(testOrders.getOrderDate()).isEqualTo(UPDATED_ORDER_DATE);
-        assertThat(testOrders.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
-        assertThat(testOrders.getExpectedDeliveryDate()).isEqualTo(UPDATED_EXPECTED_DELIVERY_DATE);
-        assertThat(testOrders.getPaymentStatus()).isEqualTo(UPDATED_PAYMENT_STATUS);
-        assertThat(testOrders.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
         assertThat(testOrders.getSubTotal()).isEqualTo(UPDATED_SUB_TOTAL);
-        assertThat(testOrders.getTaxAmount()).isEqualTo(UPDATED_TAX_AMOUNT);
-        assertThat(testOrders.getFrieight()).isEqualTo(UPDATED_FRIEIGHT);
+        assertThat(testOrders.getTotalTaxAmount()).isEqualTo(UPDATED_TOTAL_TAX_AMOUNT);
+        assertThat(testOrders.getTotalShippingFee()).isEqualTo(UPDATED_TOTAL_SHIPPING_FEE);
+        assertThat(testOrders.getTotalShippingFeeDiscount()).isEqualTo(UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+        assertThat(testOrders.getTotalVoucherDiscount()).isEqualTo(UPDATED_TOTAL_VOUCHER_DISCOUNT);
+        assertThat(testOrders.getTotalPromtionDiscount()).isEqualTo(UPDATED_TOTAL_PROMTION_DISCOUNT);
         assertThat(testOrders.getTotalDue()).isEqualTo(UPDATED_TOTAL_DUE);
-        assertThat(testOrders.getComments()).isEqualTo(UPDATED_COMMENTS);
-        assertThat(testOrders.getDeliveryInstructions()).isEqualTo(UPDATED_DELIVERY_INSTRUCTIONS);
-        assertThat(testOrders.getInternalComments()).isEqualTo(UPDATED_INTERNAL_COMMENTS);
-        assertThat(testOrders.getPickingCompletedWhen()).isEqualTo(UPDATED_PICKING_COMPLETED_WHEN);
+        assertThat(testOrders.getPaymentStatus()).isEqualTo(UPDATED_PAYMENT_STATUS);
+        assertThat(testOrders.getCustomerPurchaseOrderNumber()).isEqualTo(UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
         assertThat(testOrders.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testOrders.getCustomerReviewedOn()).isEqualTo(UPDATED_CUSTOMER_REVIEWED_ON);
-        assertThat(testOrders.getSellerRating()).isEqualTo(UPDATED_SELLER_RATING);
-        assertThat(testOrders.getSellerReview()).isEqualTo(UPDATED_SELLER_REVIEW);
-        assertThat(testOrders.getDeliveryRating()).isEqualTo(UPDATED_DELIVERY_RATING);
-        assertThat(testOrders.getDeliveryReview()).isEqualTo(UPDATED_DELIVERY_REVIEW);
-        assertThat(testOrders.isReviewAsAnonymous()).isEqualTo(UPDATED_REVIEW_AS_ANONYMOUS);
-        assertThat(testOrders.isCompletedReview()).isEqualTo(UPDATED_COMPLETED_REVIEW);
-        assertThat(testOrders.getOrderLineString()).isEqualTo(UPDATED_ORDER_LINE_STRING);
+        assertThat(testOrders.getOrderDetails()).isEqualTo(UPDATED_ORDER_DETAILS);
+        assertThat(testOrders.isIsUnderSupplyBackOrdered()).isEqualTo(UPDATED_IS_UNDER_SUPPLY_BACK_ORDERED);
         assertThat(testOrders.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
         assertThat(testOrders.getLastEditedWhen()).isEqualTo(UPDATED_LAST_EDITED_WHEN);
     }

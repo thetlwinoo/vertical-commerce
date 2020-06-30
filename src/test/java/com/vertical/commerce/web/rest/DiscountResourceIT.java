@@ -3,6 +3,8 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.Discount;
+import com.vertical.commerce.domain.Suppliers;
+import com.vertical.commerce.domain.DiscountTypes;
 import com.vertical.commerce.repository.DiscountRepository;
 import com.vertical.commerce.service.DiscountService;
 import com.vertical.commerce.service.dto.DiscountDTO;
@@ -44,8 +46,11 @@ public class DiscountResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final Instant DEFAULT_MODIFIED_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_MODIFIED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private DiscountRepository discountRepository;
@@ -77,7 +82,8 @@ public class DiscountResourceIT {
         Discount discount = new Discount()
             .name(DEFAULT_NAME)
             .description(DEFAULT_DESCRIPTION)
-            .modifiedDate(DEFAULT_MODIFIED_DATE);
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return discount;
     }
     /**
@@ -90,7 +96,8 @@ public class DiscountResourceIT {
         Discount discount = new Discount()
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
-            .modifiedDate(UPDATED_MODIFIED_DATE);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return discount;
     }
 
@@ -116,7 +123,8 @@ public class DiscountResourceIT {
         Discount testDiscount = discountList.get(discountList.size() - 1);
         assertThat(testDiscount.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testDiscount.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testDiscount.getModifiedDate()).isEqualTo(DEFAULT_MODIFIED_DATE);
+        assertThat(testDiscount.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testDiscount.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -162,10 +170,30 @@ public class DiscountResourceIT {
 
     @Test
     @Transactional
-    public void checkModifiedDateIsRequired() throws Exception {
+    public void checkValidFromIsRequired() throws Exception {
         int databaseSizeBeforeTest = discountRepository.findAll().size();
         // set the field null
-        discount.setModifiedDate(null);
+        discount.setValidFrom(null);
+
+        // Create the Discount, which fails.
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
+
+
+        restDiscountMockMvc.perform(post("/api/discounts").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(discountDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Discount> discountList = discountRepository.findAll();
+        assertThat(discountList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkValidToIsRequired() throws Exception {
+        int databaseSizeBeforeTest = discountRepository.findAll().size();
+        // set the field null
+        discount.setValidTo(null);
 
         // Create the Discount, which fails.
         DiscountDTO discountDTO = discountMapper.toDto(discount);
@@ -193,7 +221,8 @@ public class DiscountResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(discount.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].modifiedDate").value(hasItem(DEFAULT_MODIFIED_DATE.toString())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -209,7 +238,8 @@ public class DiscountResourceIT {
             .andExpect(jsonPath("$.id").value(discount.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
-            .andExpect(jsonPath("$.modifiedDate").value(DEFAULT_MODIFIED_DATE.toString()));
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -390,55 +420,147 @@ public class DiscountResourceIT {
 
     @Test
     @Transactional
-    public void getAllDiscountsByModifiedDateIsEqualToSomething() throws Exception {
+    public void getAllDiscountsByValidFromIsEqualToSomething() throws Exception {
         // Initialize the database
         discountRepository.saveAndFlush(discount);
 
-        // Get all the discountList where modifiedDate equals to DEFAULT_MODIFIED_DATE
-        defaultDiscountShouldBeFound("modifiedDate.equals=" + DEFAULT_MODIFIED_DATE);
+        // Get all the discountList where validFrom equals to DEFAULT_VALID_FROM
+        defaultDiscountShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
 
-        // Get all the discountList where modifiedDate equals to UPDATED_MODIFIED_DATE
-        defaultDiscountShouldNotBeFound("modifiedDate.equals=" + UPDATED_MODIFIED_DATE);
+        // Get all the discountList where validFrom equals to UPDATED_VALID_FROM
+        defaultDiscountShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllDiscountsByModifiedDateIsNotEqualToSomething() throws Exception {
+    public void getAllDiscountsByValidFromIsNotEqualToSomething() throws Exception {
         // Initialize the database
         discountRepository.saveAndFlush(discount);
 
-        // Get all the discountList where modifiedDate not equals to DEFAULT_MODIFIED_DATE
-        defaultDiscountShouldNotBeFound("modifiedDate.notEquals=" + DEFAULT_MODIFIED_DATE);
+        // Get all the discountList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultDiscountShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
 
-        // Get all the discountList where modifiedDate not equals to UPDATED_MODIFIED_DATE
-        defaultDiscountShouldBeFound("modifiedDate.notEquals=" + UPDATED_MODIFIED_DATE);
+        // Get all the discountList where validFrom not equals to UPDATED_VALID_FROM
+        defaultDiscountShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllDiscountsByModifiedDateIsInShouldWork() throws Exception {
+    public void getAllDiscountsByValidFromIsInShouldWork() throws Exception {
         // Initialize the database
         discountRepository.saveAndFlush(discount);
 
-        // Get all the discountList where modifiedDate in DEFAULT_MODIFIED_DATE or UPDATED_MODIFIED_DATE
-        defaultDiscountShouldBeFound("modifiedDate.in=" + DEFAULT_MODIFIED_DATE + "," + UPDATED_MODIFIED_DATE);
+        // Get all the discountList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultDiscountShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
 
-        // Get all the discountList where modifiedDate equals to UPDATED_MODIFIED_DATE
-        defaultDiscountShouldNotBeFound("modifiedDate.in=" + UPDATED_MODIFIED_DATE);
+        // Get all the discountList where validFrom equals to UPDATED_VALID_FROM
+        defaultDiscountShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllDiscountsByModifiedDateIsNullOrNotNull() throws Exception {
+    public void getAllDiscountsByValidFromIsNullOrNotNull() throws Exception {
         // Initialize the database
         discountRepository.saveAndFlush(discount);
 
-        // Get all the discountList where modifiedDate is not null
-        defaultDiscountShouldBeFound("modifiedDate.specified=true");
+        // Get all the discountList where validFrom is not null
+        defaultDiscountShouldBeFound("validFrom.specified=true");
 
-        // Get all the discountList where modifiedDate is null
-        defaultDiscountShouldNotBeFound("modifiedDate.specified=false");
+        // Get all the discountList where validFrom is null
+        defaultDiscountShouldNotBeFound("validFrom.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllDiscountsByValidToIsEqualToSomething() throws Exception {
+        // Initialize the database
+        discountRepository.saveAndFlush(discount);
+
+        // Get all the discountList where validTo equals to DEFAULT_VALID_TO
+        defaultDiscountShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the discountList where validTo equals to UPDATED_VALID_TO
+        defaultDiscountShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountsByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        discountRepository.saveAndFlush(discount);
+
+        // Get all the discountList where validTo not equals to DEFAULT_VALID_TO
+        defaultDiscountShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the discountList where validTo not equals to UPDATED_VALID_TO
+        defaultDiscountShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountsByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        discountRepository.saveAndFlush(discount);
+
+        // Get all the discountList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultDiscountShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the discountList where validTo equals to UPDATED_VALID_TO
+        defaultDiscountShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountsByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        discountRepository.saveAndFlush(discount);
+
+        // Get all the discountList where validTo is not null
+        defaultDiscountShouldBeFound("validTo.specified=true");
+
+        // Get all the discountList where validTo is null
+        defaultDiscountShouldNotBeFound("validTo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountsBySupplierIsEqualToSomething() throws Exception {
+        // Initialize the database
+        discountRepository.saveAndFlush(discount);
+        Suppliers supplier = SuppliersResourceIT.createEntity(em);
+        em.persist(supplier);
+        em.flush();
+        discount.setSupplier(supplier);
+        discountRepository.saveAndFlush(discount);
+        Long supplierId = supplier.getId();
+
+        // Get all the discountList where supplier equals to supplierId
+        defaultDiscountShouldBeFound("supplierId.equals=" + supplierId);
+
+        // Get all the discountList where supplier equals to supplierId + 1
+        defaultDiscountShouldNotBeFound("supplierId.equals=" + (supplierId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllDiscountsByDiscountTypeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        discountRepository.saveAndFlush(discount);
+        DiscountTypes discountType = DiscountTypesResourceIT.createEntity(em);
+        em.persist(discountType);
+        em.flush();
+        discount.setDiscountType(discountType);
+        discountRepository.saveAndFlush(discount);
+        Long discountTypeId = discountType.getId();
+
+        // Get all the discountList where discountType equals to discountTypeId
+        defaultDiscountShouldBeFound("discountTypeId.equals=" + discountTypeId);
+
+        // Get all the discountList where discountType equals to discountTypeId + 1
+        defaultDiscountShouldNotBeFound("discountTypeId.equals=" + (discountTypeId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -449,7 +571,8 @@ public class DiscountResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(discount.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].modifiedDate").value(hasItem(DEFAULT_MODIFIED_DATE.toString())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restDiscountMockMvc.perform(get("/api/discounts/count?sort=id,desc&" + filter))
@@ -498,7 +621,8 @@ public class DiscountResourceIT {
         updatedDiscount
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
-            .modifiedDate(UPDATED_MODIFIED_DATE);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         DiscountDTO discountDTO = discountMapper.toDto(updatedDiscount);
 
         restDiscountMockMvc.perform(put("/api/discounts").with(csrf())
@@ -512,7 +636,8 @@ public class DiscountResourceIT {
         Discount testDiscount = discountList.get(discountList.size() - 1);
         assertThat(testDiscount.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDiscount.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testDiscount.getModifiedDate()).isEqualTo(UPDATED_MODIFIED_DATE);
+        assertThat(testDiscount.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testDiscount.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

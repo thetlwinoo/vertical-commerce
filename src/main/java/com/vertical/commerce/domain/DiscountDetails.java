@@ -27,6 +27,10 @@ public class DiscountDetails implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @NotNull
     @Column(name = "amount", precision = 21, scale = 2, nullable = false)
     private BigDecimal amount;
 
@@ -42,20 +46,26 @@ public class DiscountDetails implements Serializable {
     @Column(name = "is_final_bill_discount", nullable = false)
     private Boolean isFinalBillDiscount;
 
-    @NotNull
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @NotNull
-    @Column(name = "start_count", nullable = false)
+    @Column(name = "start_count")
     private Integer startCount;
 
     @Column(name = "end_count")
     private Integer endCount;
 
-    @NotNull
-    @Column(name = "multiply_count", nullable = false)
+    @Column(name = "multiply_count")
     private Integer multiplyCount;
+
+    @Column(name = "min_amount", precision = 21, scale = 2)
+    private BigDecimal minAmount;
+
+    @Column(name = "max_amount", precision = 21, scale = 2)
+    private BigDecimal maxAmount;
+
+    @Column(name = "min_volume_weight")
+    private Integer minVolumeWeight;
+
+    @Column(name = "max_volume_weight")
+    private Integer maxVolumeWeight;
 
     @NotNull
     @Column(name = "modified_date", nullable = false)
@@ -67,7 +77,7 @@ public class DiscountDetails implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "discountDetails", allowSetters = true)
-    private Products product;
+    private StockItems stockItem;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "discountDetails", allowSetters = true)
@@ -80,6 +90,19 @@ public class DiscountDetails implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public DiscountDetails name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public BigDecimal getAmount() {
@@ -134,19 +157,6 @@ public class DiscountDetails implements Serializable {
         this.isFinalBillDiscount = isFinalBillDiscount;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public DiscountDetails name(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Integer getStartCount() {
         return startCount;
     }
@@ -186,6 +196,58 @@ public class DiscountDetails implements Serializable {
         this.multiplyCount = multiplyCount;
     }
 
+    public BigDecimal getMinAmount() {
+        return minAmount;
+    }
+
+    public DiscountDetails minAmount(BigDecimal minAmount) {
+        this.minAmount = minAmount;
+        return this;
+    }
+
+    public void setMinAmount(BigDecimal minAmount) {
+        this.minAmount = minAmount;
+    }
+
+    public BigDecimal getMaxAmount() {
+        return maxAmount;
+    }
+
+    public DiscountDetails maxAmount(BigDecimal maxAmount) {
+        this.maxAmount = maxAmount;
+        return this;
+    }
+
+    public void setMaxAmount(BigDecimal maxAmount) {
+        this.maxAmount = maxAmount;
+    }
+
+    public Integer getMinVolumeWeight() {
+        return minVolumeWeight;
+    }
+
+    public DiscountDetails minVolumeWeight(Integer minVolumeWeight) {
+        this.minVolumeWeight = minVolumeWeight;
+        return this;
+    }
+
+    public void setMinVolumeWeight(Integer minVolumeWeight) {
+        this.minVolumeWeight = minVolumeWeight;
+    }
+
+    public Integer getMaxVolumeWeight() {
+        return maxVolumeWeight;
+    }
+
+    public DiscountDetails maxVolumeWeight(Integer maxVolumeWeight) {
+        this.maxVolumeWeight = maxVolumeWeight;
+        return this;
+    }
+
+    public void setMaxVolumeWeight(Integer maxVolumeWeight) {
+        this.maxVolumeWeight = maxVolumeWeight;
+    }
+
     public Instant getModifiedDate() {
         return modifiedDate;
     }
@@ -212,17 +274,17 @@ public class DiscountDetails implements Serializable {
         this.discount = discount;
     }
 
-    public Products getProduct() {
-        return product;
+    public StockItems getStockItem() {
+        return stockItem;
     }
 
-    public DiscountDetails product(Products products) {
-        this.product = products;
+    public DiscountDetails stockItem(StockItems stockItems) {
+        this.stockItem = stockItems;
         return this;
     }
 
-    public void setProduct(Products products) {
-        this.product = products;
+    public void setStockItem(StockItems stockItems) {
+        this.stockItem = stockItems;
     }
 
     public ProductCategory getProductCategory() {
@@ -260,14 +322,18 @@ public class DiscountDetails implements Serializable {
     public String toString() {
         return "DiscountDetails{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
             ", amount=" + getAmount() +
             ", isPercentage='" + isIsPercentage() + "'" +
             ", isAllowCombinationDiscount='" + isIsAllowCombinationDiscount() + "'" +
             ", isFinalBillDiscount='" + isIsFinalBillDiscount() + "'" +
-            ", name='" + getName() + "'" +
             ", startCount=" + getStartCount() +
             ", endCount=" + getEndCount() +
             ", multiplyCount=" + getMultiplyCount() +
+            ", minAmount=" + getMinAmount() +
+            ", maxAmount=" + getMaxAmount() +
+            ", minVolumeWeight=" + getMinVolumeWeight() +
+            ", maxVolumeWeight=" + getMaxVolumeWeight() +
             ", modifiedDate='" + getModifiedDate() + "'" +
             "}";
     }

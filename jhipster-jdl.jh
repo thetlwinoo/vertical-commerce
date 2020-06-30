@@ -2,9 +2,22 @@ entity AddressTypes{
 	name String required
     refer String
 }
+
 entity Culture{
 	code String required
 	name String required
+}
+
+entity Tax{
+    code String
+    name String required
+    rate Double required
+    modifiedDate Instant required
+}
+
+entity TaxClass{
+    code String
+    name String
 }
 
 entity Addresses{
@@ -28,6 +41,7 @@ entity PersonEmailAddress{
     defaultInd Boolean
     activeInd Boolean
 }
+
 entity PersonPhone{
 	phoneNumber String required
     defaultInd Boolean
@@ -55,6 +69,7 @@ entity Countries {
     validFrom Instant required
     validTo Instant required
 }
+
 entity StateProvinces {
     code String required
     name String required
@@ -64,6 +79,7 @@ entity StateProvinces {
     validFrom Instant required
     validTo Instant required
 }
+
 entity Cities {
     name String required
     location String
@@ -71,14 +87,24 @@ entity Cities {
     validFrom Instant required
     validTo Instant required
 }
+
+entity Zone{
+    code String required
+    name String required
+    validFrom Instant required
+    validTo Instant required
+}
+
 entity SystemParameters {
     applicationSettings String required
 }
+
 entity TransactionTypes {
     name String required
     validFrom Instant required
     validTo Instant required
 }
+
 entity People {
     fullName String required
     preferredName String required
@@ -109,9 +135,16 @@ enum Gender {
 
 entity DeliveryMethods {
     name String required
+    thirdPartyName String
+    expectedMinArrivalDays Integer
+    expectedMaxArrivalDays Integer
+    activeInd Boolean
+    defaultInd Boolean
+    deliveryNote String
     validFrom Instant required
     validTo Instant required
 }
+
 entity SupplierCategories {
     name String required
     validFrom Instant required
@@ -134,6 +167,7 @@ entity Suppliers{
     creditRating Integer
     activeFlag Boolean
     thumbnailUrl String
+    pickupSameAsHeadOffice Boolean
     validFrom Instant required
     validTo Instant required
 }
@@ -168,6 +202,7 @@ entity CurrencyRate{
     lastEditedBy String required
     lastEditedWhen Instant required
 }
+
 entity PurchaseOrders {
     orderDate Instant required
     expectedDeliveryDate Instant
@@ -195,12 +230,15 @@ entity BuyingGroups {
     validFrom Instant required
     validTo Instant required
 }
+
 entity CustomerCategories {
     name String
     validFrom Instant required
     validTo Instant required
 }
+
 entity Customers {
+    name String
     accountNumber String required
     accountOpenedDate Instant required
     standardDiscountPercentage BigDecimal required
@@ -209,6 +247,8 @@ entity Customers {
     paymentDays Integer required
     deliveryRun String
     runPosition String
+    thumbnailUrl String
+    billToAddressSameAsDeliveryAddress Boolean
     lastEditedBy String required
     validFrom Instant required
     validTo Instant required
@@ -255,7 +295,8 @@ entity CustomerPaymentBankTransfer{
     nameInBankAccount String required
     dateOfTransfer Instant required
     amountTransferred BigDecimal required
-    lastEdityBy String required
+    bankName String
+    lastEditedBy String required
     lastEditedWhen Instant required
 }
 
@@ -305,7 +346,7 @@ entity Invoices{
     totalChillerItems Integer required
     deliveryRun String
     runPosition String
-    returnedDeliveryData String
+    returnedDeliveryData TextBlob
     confirmedDeliveryTime Instant
     confirmedReceivedBy String
     status InvoiceStatus required
@@ -372,11 +413,10 @@ entity CreditCardType{
 
 entity OrderLines {
     description String
+    quantity Integer required
+    taxRate BigDecimal
     unitPrice BigDecimal
     unitPriceDiscount BigDecimal
-    lineTotal BigDecimal
-    taxRate BigDecimal
-    quantity Integer required
     pickedQuantity Integer
     pickingCompletedWhen Instant
     status OrderLineStatus required
@@ -397,19 +437,36 @@ enum OrderLineStatus {
 
 entity Orders {
     orderDate Instant required
-    dueDate Instant
-    expectedDeliveryDate Instant
-    paymentStatus PaymentStatus
-    accountNumber String
     subTotal BigDecimal
-    taxAmount BigDecimal
-    frieight BigDecimal
+    totalTaxAmount BigDecimal
+    totalShippingFee BigDecimal
+    totalShippingFeeDiscount BigDecimal
+    totalVoucherDiscount BigDecimal
+    totalPromtionDiscount BigDecimal
     totalDue BigDecimal
+    paymentStatus PaymentStatus
+    customerPurchaseOrderNumber String
+    status OrderStatus required
+    orderDetails TextBlob
+    isUnderSupplyBackOrdered Boolean
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity OrderPackages{
+    expectedDeliveryDate Instant
     comments String
     deliveryInstructions String
+    comments String
     internalComments String
-    pickingCompletedOn Instant
-    status OrderStatus required
+    packageShippingFee BigDecimal
+    packageShippingFeeDiscount BigDecimal
+    packagePrice BigDecimal
+    packageSubTotal BigDecimal
+    packageTaxAmount BigDecimal
+    packageVoucherDiscount BigDecimal
+    packagePromotionDiscount BigDecimal
+    pickingCompletedWhen Instant
     customerReviewedOn Instant
     sellerRating Integer
     sellerReview TextBlob
@@ -417,8 +474,7 @@ entity Orders {
     deliveryReview TextBlob
     reviewAsAnonymous Boolean
     completedReview Boolean
-    orderLineString TextBlob
-    isUnderSupplyBackOrdered Boolean
+    orderPackageDetails TextBlob
     lastEditedBy String required
     lastEditedWhen Instant required
 }
@@ -438,7 +494,7 @@ enum OrderStatus {
 }
 
 enum PaymentStatus {
-    CASH_ON_DELIVERY, PENDING, PAID, CANCELLED, UNSUCCESSFUL
+    PENDING, TO_CHECK, PAID, CANCELLED, UNSUCCESSFUL
 }
 
 entity SpecialDeals{
@@ -453,21 +509,31 @@ entity SpecialDeals{
     lastEditedWhen Instant required
 }
 
-entity Discount{
+entity DiscountTypes{
     name String required
-    description String
     modifiedDate Instant required
 }
 
+entity Discount{
+    name String required
+    description String
+    validFrom Instant required
+    validTo Instant required
+}
+
 entity DiscountDetails{
+    name String required
     amount BigDecimal required
     isPercentage Boolean required
     isAllowCombinationDiscount Boolean required
     isFinalBillDiscount Boolean required
-    name String required
-    startCount Integer required
+    startCount Integer
     endCount Integer
-    multiplyCount Integer required
+    multiplyCount Integer
+    minAmount BigDecimal
+    maxAmount BigDecimal
+    minVolumeWeight Integer
+    maxVolumeWeight Integer
     modifiedDate Instant required
 }
 
@@ -491,7 +557,7 @@ entity Products {
     searchDetails String
     productNumber String
     sellCount Integer
-    stockItemString TextBlob
+    productDetails TextBlob
     totalWishlist Integer
     totalStars Integer
     discountedPercentage Integer
@@ -726,16 +792,22 @@ entity VehicleTemperatures {
 
 entity ShoppingCarts{
 	totalPrice BigDecimal
-    totalCargoPrice BigDecimal
-    cartString TextBlob
-    dealString TextBlob
+	totalTaxAmount BigDecimal
+	subTotalPrice BigDecimal
+    totalShippingFee BigDecimal
+    totalShippingFeeDiscount BigDecimal
+    promotionTotal BigDecimal
+    voucherTotal BigDecimal
+    packageDetails TextBlob
+    cartDetails TextBlob
+    dealDetails TextBlob
     lastEditedBy String required
     lastEditedWhen Instant required
 }
 
 entity ShoppingCartItems{
 	quantity Integer
-	addToOrder Boolean
+	selectOrder Boolean
     lastEditedBy String required
     lastEditedWhen Instant required
 }
@@ -760,45 +832,71 @@ entity ProductTags{
 	name String unique required
 }
 
+entity Logistics{
+    name String required
+    activeInd Boolean required
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity ShippingFeeChart{
+    sizeOfPercel String required
+    minVolumeWeight Integer required
+    maxVolumeWeight Integer required
+    minActualWeight Integer required
+    maxActualWeight Integer required
+    price BigDecimal required
+    lastEditedBy String required
+    lastEditedWhen Instant required
+}
+
+entity Subscriptions{
+    emailAddress String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/) required
+    subscribedOn Instant required
+}
+
 relationship ManyToOne {
     Invoices{contactPerson(fullName)} to People
-    Invoices{salespersonPerson(fullName)} to People
+    Invoices{salesPerson(fullName)} to People
     Invoices{packedByPerson(fullName)} to People
     Invoices{accountsPerson(fullName)} to People
-    Invoices{customer} to Customers
-    Invoices{billToCustomer} to Customers
+    Invoices{customer(name)} to Customers
+    Invoices{billToCustomer(name)} to Customers
     Invoices{deliveryMethod(name)} to DeliveryMethods
     Invoices{order} to Orders
+    Invoices{orderPackage} to OrderPackages
     Invoices{paymentMethod} to PaymentMethods
     Customers{deliveryMethod(name)} to DeliveryMethods
     Customers{deliveryAddress} to Addresses
+    Customers{billToAddress} to Addresses
     PurchaseOrders{contactPerson(fullName)} to People
     PurchaseOrders{supplier(name)} to Suppliers
     PurchaseOrders{deliveryMethod(name)} to DeliveryMethods
     PurchaseOrders{supplier(name)} to Suppliers
     StateProvinces{country(name)} to Countries
     Cities{stateProvince(name)} to StateProvinces
+    Zone{city(name)} to Cities
+    ShippingFeeChart{sourceZone(code)} to Zone
+    ShippingFeeChart{destinationZone(code)} to Zone
+    ShippingFeeChart{deliveryMethod(name)} to DeliveryMethods
     SystemParameters{deliveryCity(name)} to Cities
     SystemParameters{postalCity(name)} to Cities
     Suppliers{supplierCategory(name)} to SupplierCategories
-    Suppliers{deliveryMethod(name)} to DeliveryMethods
-    Suppliers{deliveryCity(name)} to Cities
-    Suppliers{postalCity(name)} to Cities
+    Suppliers{pickupAddress} to Addresses
+    Suppliers{headOfficeAddress} to Addresses
     SpecialDeals{buyingGroup(name)} to BuyingGroups
     SpecialDeals{customerCategory(name)} to CustomerCategories
-    SpecialDeals{customer} to Customers
+    SpecialDeals{customer(name)} to Customers
     SpecialDeals{productCategory(name)} to ProductCategory
-    Orders{customer} to Customers
+    Orders{customer(name)} to Customers
     Orders{shipToAddress} to Addresses
     Orders{billToAddress} to Addresses
-    Orders{deliveryMethod(name)} to DeliveryMethods
     Orders{currencyRate} to CurrencyRate
-    Orders{paymentMethod} to PaymentMethods
+    Orders{paymentMethod(name)} to PaymentMethods
     Orders{salePerson(fullName)} to People
-    Orders{backOrder} to Orders
    	PurchaseOrderLines{packageType(name)} to PackageTypes
     PurchaseOrderLines{stockItem(name)} to StockItems
-    CustomerTransactions{customer} to Customers
+    CustomerTransactions{customer(name)} to Customers
     CustomerTransactions{paymentMethod} to PaymentMethods
     CustomerTransactions{transactionType(name)} to TransactionTypes
     CustomerTransactions{invoice} to Invoices
@@ -840,10 +938,11 @@ relationship ManyToOne {
     StockItems{barcodeType(name)} to BarcodeTypes
     OrderLines{stockItem(name)} to StockItems
     OrderLines{packageType(name)} to PackageTypes
-    ShoppingCarts{customer} to Customers
+    ShoppingCarts{customer(name)} to Customers
     ShoppingCartItems{stockItem(name)} to StockItems
+    ShoppingCartItems{deliveryMethod(name)} to DeliveryMethods
     StockItemTransactions{stockItem(name)} to StockItems
-    StockItemTransactions{customer} to Customers
+    StockItemTransactions{customer(name)} to Customers
     StockItemTransactions{invoice} to Invoices
     StockItemTransactions{supplier(name)} to Suppliers
     StockItemTransactions{transactionType(name)} to TransactionTypes
@@ -855,7 +954,7 @@ relationship ManyToOne {
     SupplierTransactions{order} to Orders
     CustomerTransactions{order} to Orders
     SupplierTransactions{invoice} to Invoices
-    Addresses{stateProvince(name)} to StateProvinces
+    Addresses{zone(code)} to Zone
     Addresses{addressType(name)} to AddressTypes
     Addresses{person} to People
     BusinessEntityAddress{address} to Addresses
@@ -881,19 +980,25 @@ relationship ManyToOne {
     Receipts{order} to Orders
     Receipts{invoice} to Invoices
     DiscountDetails{discount(name)} to Discount
-    DiscountDetails{product(name)} to Products
+    DiscountDetails{stockItem(name)} to StockItems
     DiscountDetails{productCategory(name)} to ProductCategory
-    People{profile(thumbnailUrl)} to Photos
-    PaymentMethods{icon(thumbnailUrl)} to Photos
-    ProductCategory{icon(thumbnailUrl)} to Photos
-    Campaign{icon(thumbnailUrl)} to Photos
-    ProductBrand{icon(thumbnailUrl)} to Photos
-    OrderLines{reviewImage(thumbnailUrl)} to Photos
-    BankAccounts{logo(thumbnailUrl)} to Photos
+    Discount{supplier(name)} to Suppliers
+    Discount{discountType(name)} to DiscountTypes
+    People{profile(blobId)} to Photos
+    PaymentMethods{icon(blobId)} to Photos
+    ProductCategory{icon(blobId)} to Photos
+    Campaign{icon(blobId)} to Photos
+    ProductBrand{icon(blobId)} to Photos
+    OrderLines{reviewImage(blobId)} to Photos
+    BankAccounts{logo(blobId)} to Photos
     Questions{supplier(name)} to Suppliers
     Questions{person(fullName)} to People
     Questions{product(name)} to Products
     SupplierTransactions{status(name)} to SupplierTransactionStatus
+    Tax{taxClass(name)} to TaxClass
+    OrderLines{supplier(name)} to Suppliers
+    OrderPackages{supplier(name)} to Suppliers
+    OrderPackages{deliveryMethod(name)} to DeliveryMethods
 }
 
 relationship OneToMany{
@@ -902,28 +1007,33 @@ relationship OneToMany{
     Compares{compareLineList} to CompareLines{compare}
     SpecialDeals{cartList} to ShoppingCarts
     SpecialDeals{orderList} to Orders
-    Orders{orderLineList} to OrderLines{order}
+    SpecialDeals{orderPackageList} to OrderPackages
+    Orders{orderPackageList} to OrderPackages{order}
+    OrderPackages{orderLineList} to OrderLines{orderPackage}
     Invoices{invoiceLineList} to InvoiceLines{invoice}
-    StockItems{photoList} to Photos{stockItem}
     StockItems{specialDealList} to SpecialDeals{stockItem}
     Products{stockItemList} to StockItems{product}
     PurchaseOrders{purchaseOrderLineList} to PurchaseOrderLines{purchaseOrder}
+    StockItems{photoList} to Photos{stockItem}
 }
 
 relationship OneToOne{
     Suppliers{people(fullName)} to People
     Customers{people(fullName)} to People
-    ShoppingCarts{cartUser} to People{cart}
-    Wishlists{wishlistUser} to People{wishlist}
+    ShoppingCarts{cartUser(fullName)} to People{cart}
+    Wishlists{wishlistUser(fullName)} to People{wishlist}
     Compares{compareUser(fullName)} to People{compare}
     CustomerPayment{customerTransaction} to CustomerTransactions{customerPayment}
     CustomerPaymentCreditCard{customerPayment} to CustomerPayment{customerPaymentCreditCard}
     CustomerPaymentVoucher{customerPayment} to CustomerPayment{customerPaymentVoucher}
     CustomerPaymentBankTransfer{customerPayment} to CustomerPayment{customerPaymentBankTransfer}
     CustomerPaymentPaypal{customerPayment} to CustomerPayment{customerPaymentPaypal}
-    OrderLines{supplier(name)} to Suppliers
     Products{productDocument} to ProductDocument{product}
     OrderTracking{order} to Orders{orderTracking}
+}
+
+relationship ManyToMany{
+    Suppliers{deliveryMethod(name)} to DeliveryMethods{supplier}
 }
 
 //paginate JobHistory Employee with infinite-scroll

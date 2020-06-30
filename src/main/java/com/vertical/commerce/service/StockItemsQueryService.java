@@ -106,14 +106,47 @@ public class StockItemsQueryService extends QueryService<StockItems> {
             if (criteria.getBarcode() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getBarcode(), StockItems_.barcode));
             }
+            if (criteria.getTaxRate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTaxRate(), StockItems_.taxRate));
+            }
             if (criteria.getUnitPrice() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUnitPrice(), StockItems_.unitPrice));
             }
             if (criteria.getRecommendedRetailPrice() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getRecommendedRetailPrice(), StockItems_.recommendedRetailPrice));
             }
+            if (criteria.getTypicalWeightPerUnit() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTypicalWeightPerUnit(), StockItems_.typicalWeightPerUnit));
+            }
             if (criteria.getQuantityOnHand() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getQuantityOnHand(), StockItems_.quantityOnHand));
+            }
+            if (criteria.getShelf() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getShelf(), StockItems_.shelf));
+            }
+            if (criteria.getBin() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getBin(), StockItems_.bin));
+            }
+            if (criteria.getLastStockTakeQuantity() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getLastStockTakeQuantity(), StockItems_.lastStockTakeQuantity));
+            }
+            if (criteria.getLastCostPrice() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getLastCostPrice(), StockItems_.lastCostPrice));
+            }
+            if (criteria.getReorderLevel() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getReorderLevel(), StockItems_.reorderLevel));
+            }
+            if (criteria.getTargetStockLevel() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTargetStockLevel(), StockItems_.targetStockLevel));
+            }
+            if (criteria.getLeadTimeDays() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getLeadTimeDays(), StockItems_.leadTimeDays));
+            }
+            if (criteria.getQuantityPerOuter() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getQuantityPerOuter(), StockItems_.quantityPerOuter));
+            }
+            if (criteria.getIsChillerStock() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsChillerStock(), StockItems_.isChillerStock));
             }
             if (criteria.getItemLength() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getItemLength(), StockItems_.itemLength));
@@ -163,14 +196,20 @@ public class StockItemsQueryService extends QueryService<StockItems> {
             if (criteria.getSellCount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getSellCount(), StockItems_.sellCount));
             }
-            if (criteria.getCustomFields() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getCustomFields(), StockItems_.customFields));
+            if (criteria.getTags() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTags(), StockItems_.tags));
+            }
+            if (criteria.getSearchDetails() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getSearchDetails(), StockItems_.searchDetails));
             }
             if (criteria.getThumbnailUrl() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), StockItems_.thumbnailUrl));
             }
             if (criteria.getActiveInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getActiveInd(), StockItems_.activeInd));
+            }
+            if (criteria.getLiveInd() != null) {
+                specification = specification.and(buildSpecification(criteria.getLiveInd(), StockItems_.liveInd));
             }
             if (criteria.getCashOnDeliveryInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getCashOnDeliveryInd(), StockItems_.cashOnDeliveryInd));
@@ -181,13 +220,13 @@ public class StockItemsQueryService extends QueryService<StockItems> {
             if (criteria.getLastEditedWhen() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastEditedWhen(), StockItems_.lastEditedWhen));
             }
-            if (criteria.getPhotoListId() != null) {
-                specification = specification.and(buildSpecification(criteria.getPhotoListId(),
-                    root -> root.join(StockItems_.photoLists, JoinType.LEFT).get(Photos_.id)));
-            }
             if (criteria.getSpecialDealListId() != null) {
                 specification = specification.and(buildSpecification(criteria.getSpecialDealListId(),
                     root -> root.join(StockItems_.specialDealLists, JoinType.LEFT).get(SpecialDeals_.id)));
+            }
+            if (criteria.getPhotoListId() != null) {
+                specification = specification.and(buildSpecification(criteria.getPhotoListId(),
+                    root -> root.join(StockItems_.photoLists, JoinType.LEFT).get(Photos_.id)));
             }
             if (criteria.getItemLengthUnitId() != null) {
                 specification = specification.and(buildSpecification(criteria.getItemLengthUnitId(),
@@ -236,10 +275,6 @@ public class StockItemsQueryService extends QueryService<StockItems> {
             if (criteria.getBarcodeTypeId() != null) {
                 specification = specification.and(buildSpecification(criteria.getBarcodeTypeId(),
                     root -> root.join(StockItems_.barcodeType, JoinType.LEFT).get(BarcodeTypes_.id)));
-            }
-            if (criteria.getStockItemHoldingId() != null) {
-                specification = specification.and(buildSpecification(criteria.getStockItemHoldingId(),
-                    root -> root.join(StockItems_.stockItemHolding, JoinType.LEFT).get(StockItemHoldings_.id)));
             }
             if (criteria.getProductId() != null) {
                 specification = specification.and(buildSpecification(criteria.getProductId(),

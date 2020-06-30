@@ -102,6 +102,12 @@ class DeliveryMethodsGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
+                , "thirdPartyName":"SAMPLE_TEXT"
+                , "expectedMinArrivalDays":"0"
+                , "expectedMaxArrivalDays":"0"
+                , "activeInd":null
+                , "defaultInd":null
+                , "deliveryNote":"SAMPLE_TEXT"
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

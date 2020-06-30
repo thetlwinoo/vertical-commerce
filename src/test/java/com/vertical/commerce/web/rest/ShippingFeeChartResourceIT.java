@@ -1135,21 +1135,41 @@ public class ShippingFeeChartResourceIT {
 
     @Test
     @Transactional
-    public void getAllShippingFeeChartsByZoneIsEqualToSomething() throws Exception {
+    public void getAllShippingFeeChartsBySourceZoneIsEqualToSomething() throws Exception {
         // Initialize the database
         shippingFeeChartRepository.saveAndFlush(shippingFeeChart);
-        Zone zone = ZoneResourceIT.createEntity(em);
-        em.persist(zone);
+        Zone sourceZone = ZoneResourceIT.createEntity(em);
+        em.persist(sourceZone);
         em.flush();
-        shippingFeeChart.setZone(zone);
+        shippingFeeChart.setSourceZone(sourceZone);
         shippingFeeChartRepository.saveAndFlush(shippingFeeChart);
-        Long zoneId = zone.getId();
+        Long sourceZoneId = sourceZone.getId();
 
-        // Get all the shippingFeeChartList where zone equals to zoneId
-        defaultShippingFeeChartShouldBeFound("zoneId.equals=" + zoneId);
+        // Get all the shippingFeeChartList where sourceZone equals to sourceZoneId
+        defaultShippingFeeChartShouldBeFound("sourceZoneId.equals=" + sourceZoneId);
 
-        // Get all the shippingFeeChartList where zone equals to zoneId + 1
-        defaultShippingFeeChartShouldNotBeFound("zoneId.equals=" + (zoneId + 1));
+        // Get all the shippingFeeChartList where sourceZone equals to sourceZoneId + 1
+        defaultShippingFeeChartShouldNotBeFound("sourceZoneId.equals=" + (sourceZoneId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllShippingFeeChartsByDestinationZoneIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shippingFeeChartRepository.saveAndFlush(shippingFeeChart);
+        Zone destinationZone = ZoneResourceIT.createEntity(em);
+        em.persist(destinationZone);
+        em.flush();
+        shippingFeeChart.setDestinationZone(destinationZone);
+        shippingFeeChartRepository.saveAndFlush(shippingFeeChart);
+        Long destinationZoneId = destinationZone.getId();
+
+        // Get all the shippingFeeChartList where destinationZone equals to destinationZoneId
+        defaultShippingFeeChartShouldBeFound("destinationZoneId.equals=" + destinationZoneId);
+
+        // Get all the shippingFeeChartList where destinationZone equals to destinationZoneId + 1
+        defaultShippingFeeChartShouldNotBeFound("destinationZoneId.equals=" + (destinationZoneId + 1));
     }
 
 

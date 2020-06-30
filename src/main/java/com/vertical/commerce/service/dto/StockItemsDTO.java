@@ -4,6 +4,7 @@ import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.vertical.commerce.domain.StockItems} entity.
@@ -23,13 +24,37 @@ public class StockItemsDTO implements Serializable {
 
     private String barcode;
 
+    private BigDecimal taxRate;
+
     @NotNull
     private BigDecimal unitPrice;
 
     private BigDecimal recommendedRetailPrice;
 
+    private BigDecimal typicalWeightPerUnit;
+
     @NotNull
     private Integer quantityOnHand;
+
+    private String shelf;
+
+    private String bin;
+
+    private Integer lastStockTakeQuantity;
+
+    @NotNull
+    private BigDecimal lastCostPrice;
+
+    private Integer reorderLevel;
+
+    private Integer targetStockLevel;
+
+    private Integer leadTimeDays;
+
+    private Integer quantityPerOuter;
+
+    @NotNull
+    private Boolean isChillerStock;
 
     private Integer itemLength;
 
@@ -63,12 +88,22 @@ public class StockItemsDTO implements Serializable {
 
     private Integer sellCount;
 
+    private String tags;
+
+    private String searchDetails;
+
+    @Lob
     private String customFields;
 
     private String thumbnailUrl;
 
+    @NotNull
     private Boolean activeInd;
 
+    @NotNull
+    private Boolean liveInd;
+
+    @NotNull
     private Boolean cashOnDeliveryInd;
 
     @NotNull
@@ -176,6 +211,14 @@ public class StockItemsDTO implements Serializable {
         this.barcode = barcode;
     }
 
+    public BigDecimal getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(BigDecimal taxRate) {
+        this.taxRate = taxRate;
+    }
+
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
@@ -192,12 +235,92 @@ public class StockItemsDTO implements Serializable {
         this.recommendedRetailPrice = recommendedRetailPrice;
     }
 
+    public BigDecimal getTypicalWeightPerUnit() {
+        return typicalWeightPerUnit;
+    }
+
+    public void setTypicalWeightPerUnit(BigDecimal typicalWeightPerUnit) {
+        this.typicalWeightPerUnit = typicalWeightPerUnit;
+    }
+
     public Integer getQuantityOnHand() {
         return quantityOnHand;
     }
 
     public void setQuantityOnHand(Integer quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
+    }
+
+    public String getShelf() {
+        return shelf;
+    }
+
+    public void setShelf(String shelf) {
+        this.shelf = shelf;
+    }
+
+    public String getBin() {
+        return bin;
+    }
+
+    public void setBin(String bin) {
+        this.bin = bin;
+    }
+
+    public Integer getLastStockTakeQuantity() {
+        return lastStockTakeQuantity;
+    }
+
+    public void setLastStockTakeQuantity(Integer lastStockTakeQuantity) {
+        this.lastStockTakeQuantity = lastStockTakeQuantity;
+    }
+
+    public BigDecimal getLastCostPrice() {
+        return lastCostPrice;
+    }
+
+    public void setLastCostPrice(BigDecimal lastCostPrice) {
+        this.lastCostPrice = lastCostPrice;
+    }
+
+    public Integer getReorderLevel() {
+        return reorderLevel;
+    }
+
+    public void setReorderLevel(Integer reorderLevel) {
+        this.reorderLevel = reorderLevel;
+    }
+
+    public Integer getTargetStockLevel() {
+        return targetStockLevel;
+    }
+
+    public void setTargetStockLevel(Integer targetStockLevel) {
+        this.targetStockLevel = targetStockLevel;
+    }
+
+    public Integer getLeadTimeDays() {
+        return leadTimeDays;
+    }
+
+    public void setLeadTimeDays(Integer leadTimeDays) {
+        this.leadTimeDays = leadTimeDays;
+    }
+
+    public Integer getQuantityPerOuter() {
+        return quantityPerOuter;
+    }
+
+    public void setQuantityPerOuter(Integer quantityPerOuter) {
+        this.quantityPerOuter = quantityPerOuter;
+    }
+
+    public Boolean isIsChillerStock() {
+        return isChillerStock;
+    }
+
+    public void setIsChillerStock(Boolean isChillerStock) {
+        this.isChillerStock = isChillerStock;
     }
 
     public Integer getItemLength() {
@@ -328,6 +451,22 @@ public class StockItemsDTO implements Serializable {
         this.sellCount = sellCount;
     }
 
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getSearchDetails() {
+        return searchDetails;
+    }
+
+    public void setSearchDetails(String searchDetails) {
+        this.searchDetails = searchDetails;
+    }
+
     public String getCustomFields() {
         return customFields;
     }
@@ -350,6 +489,14 @@ public class StockItemsDTO implements Serializable {
 
     public void setActiveInd(Boolean activeInd) {
         this.activeInd = activeInd;
+    }
+
+    public Boolean isLiveInd() {
+        return liveInd;
+    }
+
+    public void setLiveInd(Boolean liveInd) {
+        this.liveInd = liveInd;
     }
 
     public Boolean isCashOnDeliveryInd() {
@@ -603,9 +750,20 @@ public class StockItemsDTO implements Serializable {
             ", vendorSKU='" + getVendorSKU() + "'" +
             ", generatedSKU='" + getGeneratedSKU() + "'" +
             ", barcode='" + getBarcode() + "'" +
+            ", taxRate=" + getTaxRate() +
             ", unitPrice=" + getUnitPrice() +
             ", recommendedRetailPrice=" + getRecommendedRetailPrice() +
+            ", typicalWeightPerUnit=" + getTypicalWeightPerUnit() +
             ", quantityOnHand=" + getQuantityOnHand() +
+            ", shelf='" + getShelf() + "'" +
+            ", bin='" + getBin() + "'" +
+            ", lastStockTakeQuantity=" + getLastStockTakeQuantity() +
+            ", lastCostPrice=" + getLastCostPrice() +
+            ", reorderLevel=" + getReorderLevel() +
+            ", targetStockLevel=" + getTargetStockLevel() +
+            ", leadTimeDays=" + getLeadTimeDays() +
+            ", quantityPerOuter=" + getQuantityPerOuter() +
+            ", isChillerStock='" + isIsChillerStock() + "'" +
             ", itemLength=" + getItemLength() +
             ", itemWidth=" + getItemWidth() +
             ", itemHeight=" + getItemHeight() +
@@ -622,9 +780,12 @@ public class StockItemsDTO implements Serializable {
             ", sellStartDate='" + getSellStartDate() + "'" +
             ", sellEndDate='" + getSellEndDate() + "'" +
             ", sellCount=" + getSellCount() +
+            ", tags='" + getTags() + "'" +
+            ", searchDetails='" + getSearchDetails() + "'" +
             ", customFields='" + getCustomFields() + "'" +
             ", thumbnailUrl='" + getThumbnailUrl() + "'" +
             ", activeInd='" + isActiveInd() + "'" +
+            ", liveInd='" + isLiveInd() + "'" +
             ", cashOnDeliveryInd='" + isCashOnDeliveryInd() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +

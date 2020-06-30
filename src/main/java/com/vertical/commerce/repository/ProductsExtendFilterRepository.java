@@ -31,4 +31,7 @@ public interface ProductsExtendFilterRepository extends JpaRepository<ProductCat
 
     @Query(value = "SELECT A.product_id FROM stock_items A INNER JOIN product_attribute B ON A.product_attribute_id = B.id WHERE B.value in (:colors) ", nativeQuery = true)
     List<Long> getIdsByColors(@Param("colors") String[] colors);
+
+    @Query(value = "SELECT * FROM get_product_details(:productId)", nativeQuery = true)
+    String getProductDetails(@Param("productId") Long productId);
 }

@@ -103,8 +103,29 @@ public class OrderPackagesQueryService extends QueryService<OrderPackages> {
             if (criteria.getInternalComments() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getInternalComments(), OrderPackages_.internalComments));
             }
-            if (criteria.getCustomerPurchaseOrderNumber() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getCustomerPurchaseOrderNumber(), OrderPackages_.customerPurchaseOrderNumber));
+            if (criteria.getPackageShippingFee() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPackageShippingFee(), OrderPackages_.packageShippingFee));
+            }
+            if (criteria.getPackageShippingFeeDiscount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPackageShippingFeeDiscount(), OrderPackages_.packageShippingFeeDiscount));
+            }
+            if (criteria.getPackagePrice() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPackagePrice(), OrderPackages_.packagePrice));
+            }
+            if (criteria.getPackageSubTotal() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPackageSubTotal(), OrderPackages_.packageSubTotal));
+            }
+            if (criteria.getPackageTaxAmount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPackageTaxAmount(), OrderPackages_.packageTaxAmount));
+            }
+            if (criteria.getPackageVoucherDiscount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPackageVoucherDiscount(), OrderPackages_.packageVoucherDiscount));
+            }
+            if (criteria.getPackagePromotionDiscount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPackagePromotionDiscount(), OrderPackages_.packagePromotionDiscount));
+            }
+            if (criteria.getPickingCompletedWhen() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPickingCompletedWhen(), OrderPackages_.pickingCompletedWhen));
             }
             if (criteria.getCustomerReviewedOn() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCustomerReviewedOn(), OrderPackages_.customerReviewedOn));
@@ -134,6 +155,14 @@ public class OrderPackagesQueryService extends QueryService<OrderPackages> {
             if (criteria.getSupplierId() != null) {
                 specification = specification.and(buildSpecification(criteria.getSupplierId(),
                     root -> root.join(OrderPackages_.supplier, JoinType.LEFT).get(Suppliers_.id)));
+            }
+            if (criteria.getDeliveryMethodId() != null) {
+                specification = specification.and(buildSpecification(criteria.getDeliveryMethodId(),
+                    root -> root.join(OrderPackages_.deliveryMethod, JoinType.LEFT).get(DeliveryMethods_.id)));
+            }
+            if (criteria.getSpecialDealsId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSpecialDealsId(),
+                    root -> root.join(OrderPackages_.specialDeals, JoinType.LEFT).get(SpecialDeals_.id)));
             }
             if (criteria.getOrderId() != null) {
                 specification = specification.and(buildSpecification(criteria.getOrderId(),

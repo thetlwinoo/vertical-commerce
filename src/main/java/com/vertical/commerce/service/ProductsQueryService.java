@@ -97,11 +97,11 @@ public class ProductsQueryService extends QueryService<Products> {
             if (criteria.getHandle() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getHandle(), Products_.handle));
             }
-            if (criteria.getProductNumber() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getProductNumber(), Products_.productNumber));
-            }
             if (criteria.getSearchDetails() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getSearchDetails(), Products_.searchDetails));
+            }
+            if (criteria.getProductNumber() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getProductNumber(), Products_.productNumber));
             }
             if (criteria.getSellCount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getSellCount(), Products_.sellCount));

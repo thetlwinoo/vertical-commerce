@@ -50,18 +50,18 @@ public class ProductsResourceIT {
     private static final String DEFAULT_HANDLE = "AAAAAAAAAA";
     private static final String UPDATED_HANDLE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PRODUCT_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_PRODUCT_NUMBER = "BBBBBBBBBB";
-
     private static final String DEFAULT_SEARCH_DETAILS = "AAAAAAAAAA";
     private static final String UPDATED_SEARCH_DETAILS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PRODUCT_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_PRODUCT_NUMBER = "BBBBBBBBBB";
 
     private static final Integer DEFAULT_SELL_COUNT = 1;
     private static final Integer UPDATED_SELL_COUNT = 2;
     private static final Integer SMALLER_SELL_COUNT = 1 - 1;
 
-    private static final String DEFAULT_STOCK_ITEM_STRING = "AAAAAAAAAA";
-    private static final String UPDATED_STOCK_ITEM_STRING = "BBBBBBBBBB";
+    private static final String DEFAULT_PRODUCT_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_PRODUCT_DETAILS = "BBBBBBBBBB";
 
     private static final Integer DEFAULT_TOTAL_WISHLIST = 1;
     private static final Integer UPDATED_TOTAL_WISHLIST = 2;
@@ -129,10 +129,10 @@ public class ProductsResourceIT {
         Products products = new Products()
             .name(DEFAULT_NAME)
             .handle(DEFAULT_HANDLE)
-            .productNumber(DEFAULT_PRODUCT_NUMBER)
             .searchDetails(DEFAULT_SEARCH_DETAILS)
+            .productNumber(DEFAULT_PRODUCT_NUMBER)
             .sellCount(DEFAULT_SELL_COUNT)
-            .stockItemString(DEFAULT_STOCK_ITEM_STRING)
+            .productDetails(DEFAULT_PRODUCT_DETAILS)
             .totalWishlist(DEFAULT_TOTAL_WISHLIST)
             .totalStars(DEFAULT_TOTAL_STARS)
             .discountedPercentage(DEFAULT_DISCOUNTED_PERCENTAGE)
@@ -156,10 +156,10 @@ public class ProductsResourceIT {
         Products products = new Products()
             .name(UPDATED_NAME)
             .handle(UPDATED_HANDLE)
-            .productNumber(UPDATED_PRODUCT_NUMBER)
             .searchDetails(UPDATED_SEARCH_DETAILS)
+            .productNumber(UPDATED_PRODUCT_NUMBER)
             .sellCount(UPDATED_SELL_COUNT)
-            .stockItemString(UPDATED_STOCK_ITEM_STRING)
+            .productDetails(UPDATED_PRODUCT_DETAILS)
             .totalWishlist(UPDATED_TOTAL_WISHLIST)
             .totalStars(UPDATED_TOTAL_STARS)
             .discountedPercentage(UPDATED_DISCOUNTED_PERCENTAGE)
@@ -196,10 +196,10 @@ public class ProductsResourceIT {
         Products testProducts = productsList.get(productsList.size() - 1);
         assertThat(testProducts.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testProducts.getHandle()).isEqualTo(DEFAULT_HANDLE);
-        assertThat(testProducts.getProductNumber()).isEqualTo(DEFAULT_PRODUCT_NUMBER);
         assertThat(testProducts.getSearchDetails()).isEqualTo(DEFAULT_SEARCH_DETAILS);
+        assertThat(testProducts.getProductNumber()).isEqualTo(DEFAULT_PRODUCT_NUMBER);
         assertThat(testProducts.getSellCount()).isEqualTo(DEFAULT_SELL_COUNT);
-        assertThat(testProducts.getStockItemString()).isEqualTo(DEFAULT_STOCK_ITEM_STRING);
+        assertThat(testProducts.getProductDetails()).isEqualTo(DEFAULT_PRODUCT_DETAILS);
         assertThat(testProducts.getTotalWishlist()).isEqualTo(DEFAULT_TOTAL_WISHLIST);
         assertThat(testProducts.getTotalStars()).isEqualTo(DEFAULT_TOTAL_STARS);
         assertThat(testProducts.getDiscountedPercentage()).isEqualTo(DEFAULT_DISCOUNTED_PERCENTAGE);
@@ -347,10 +347,10 @@ public class ProductsResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(products.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
-            .andExpect(jsonPath("$.[*].productNumber").value(hasItem(DEFAULT_PRODUCT_NUMBER)))
             .andExpect(jsonPath("$.[*].searchDetails").value(hasItem(DEFAULT_SEARCH_DETAILS)))
+            .andExpect(jsonPath("$.[*].productNumber").value(hasItem(DEFAULT_PRODUCT_NUMBER)))
             .andExpect(jsonPath("$.[*].sellCount").value(hasItem(DEFAULT_SELL_COUNT)))
-            .andExpect(jsonPath("$.[*].stockItemString").value(hasItem(DEFAULT_STOCK_ITEM_STRING.toString())))
+            .andExpect(jsonPath("$.[*].productDetails").value(hasItem(DEFAULT_PRODUCT_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].totalWishlist").value(hasItem(DEFAULT_TOTAL_WISHLIST)))
             .andExpect(jsonPath("$.[*].totalStars").value(hasItem(DEFAULT_TOTAL_STARS)))
             .andExpect(jsonPath("$.[*].discountedPercentage").value(hasItem(DEFAULT_DISCOUNTED_PERCENTAGE)))
@@ -377,10 +377,10 @@ public class ProductsResourceIT {
             .andExpect(jsonPath("$.id").value(products.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.handle").value(DEFAULT_HANDLE))
-            .andExpect(jsonPath("$.productNumber").value(DEFAULT_PRODUCT_NUMBER))
             .andExpect(jsonPath("$.searchDetails").value(DEFAULT_SEARCH_DETAILS))
+            .andExpect(jsonPath("$.productNumber").value(DEFAULT_PRODUCT_NUMBER))
             .andExpect(jsonPath("$.sellCount").value(DEFAULT_SELL_COUNT))
-            .andExpect(jsonPath("$.stockItemString").value(DEFAULT_STOCK_ITEM_STRING.toString()))
+            .andExpect(jsonPath("$.productDetails").value(DEFAULT_PRODUCT_DETAILS.toString()))
             .andExpect(jsonPath("$.totalWishlist").value(DEFAULT_TOTAL_WISHLIST))
             .andExpect(jsonPath("$.totalStars").value(DEFAULT_TOTAL_STARS))
             .andExpect(jsonPath("$.discountedPercentage").value(DEFAULT_DISCOUNTED_PERCENTAGE))
@@ -572,84 +572,6 @@ public class ProductsResourceIT {
 
     @Test
     @Transactional
-    public void getAllProductsByProductNumberIsEqualToSomething() throws Exception {
-        // Initialize the database
-        productsRepository.saveAndFlush(products);
-
-        // Get all the productsList where productNumber equals to DEFAULT_PRODUCT_NUMBER
-        defaultProductsShouldBeFound("productNumber.equals=" + DEFAULT_PRODUCT_NUMBER);
-
-        // Get all the productsList where productNumber equals to UPDATED_PRODUCT_NUMBER
-        defaultProductsShouldNotBeFound("productNumber.equals=" + UPDATED_PRODUCT_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllProductsByProductNumberIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        productsRepository.saveAndFlush(products);
-
-        // Get all the productsList where productNumber not equals to DEFAULT_PRODUCT_NUMBER
-        defaultProductsShouldNotBeFound("productNumber.notEquals=" + DEFAULT_PRODUCT_NUMBER);
-
-        // Get all the productsList where productNumber not equals to UPDATED_PRODUCT_NUMBER
-        defaultProductsShouldBeFound("productNumber.notEquals=" + UPDATED_PRODUCT_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllProductsByProductNumberIsInShouldWork() throws Exception {
-        // Initialize the database
-        productsRepository.saveAndFlush(products);
-
-        // Get all the productsList where productNumber in DEFAULT_PRODUCT_NUMBER or UPDATED_PRODUCT_NUMBER
-        defaultProductsShouldBeFound("productNumber.in=" + DEFAULT_PRODUCT_NUMBER + "," + UPDATED_PRODUCT_NUMBER);
-
-        // Get all the productsList where productNumber equals to UPDATED_PRODUCT_NUMBER
-        defaultProductsShouldNotBeFound("productNumber.in=" + UPDATED_PRODUCT_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllProductsByProductNumberIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        productsRepository.saveAndFlush(products);
-
-        // Get all the productsList where productNumber is not null
-        defaultProductsShouldBeFound("productNumber.specified=true");
-
-        // Get all the productsList where productNumber is null
-        defaultProductsShouldNotBeFound("productNumber.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllProductsByProductNumberContainsSomething() throws Exception {
-        // Initialize the database
-        productsRepository.saveAndFlush(products);
-
-        // Get all the productsList where productNumber contains DEFAULT_PRODUCT_NUMBER
-        defaultProductsShouldBeFound("productNumber.contains=" + DEFAULT_PRODUCT_NUMBER);
-
-        // Get all the productsList where productNumber contains UPDATED_PRODUCT_NUMBER
-        defaultProductsShouldNotBeFound("productNumber.contains=" + UPDATED_PRODUCT_NUMBER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllProductsByProductNumberNotContainsSomething() throws Exception {
-        // Initialize the database
-        productsRepository.saveAndFlush(products);
-
-        // Get all the productsList where productNumber does not contain DEFAULT_PRODUCT_NUMBER
-        defaultProductsShouldNotBeFound("productNumber.doesNotContain=" + DEFAULT_PRODUCT_NUMBER);
-
-        // Get all the productsList where productNumber does not contain UPDATED_PRODUCT_NUMBER
-        defaultProductsShouldBeFound("productNumber.doesNotContain=" + UPDATED_PRODUCT_NUMBER);
-    }
-
-
-    @Test
-    @Transactional
     public void getAllProductsBySearchDetailsIsEqualToSomething() throws Exception {
         // Initialize the database
         productsRepository.saveAndFlush(products);
@@ -723,6 +645,84 @@ public class ProductsResourceIT {
 
         // Get all the productsList where searchDetails does not contain UPDATED_SEARCH_DETAILS
         defaultProductsShouldBeFound("searchDetails.doesNotContain=" + UPDATED_SEARCH_DETAILS);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllProductsByProductNumberIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productsRepository.saveAndFlush(products);
+
+        // Get all the productsList where productNumber equals to DEFAULT_PRODUCT_NUMBER
+        defaultProductsShouldBeFound("productNumber.equals=" + DEFAULT_PRODUCT_NUMBER);
+
+        // Get all the productsList where productNumber equals to UPDATED_PRODUCT_NUMBER
+        defaultProductsShouldNotBeFound("productNumber.equals=" + UPDATED_PRODUCT_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductsByProductNumberIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        productsRepository.saveAndFlush(products);
+
+        // Get all the productsList where productNumber not equals to DEFAULT_PRODUCT_NUMBER
+        defaultProductsShouldNotBeFound("productNumber.notEquals=" + DEFAULT_PRODUCT_NUMBER);
+
+        // Get all the productsList where productNumber not equals to UPDATED_PRODUCT_NUMBER
+        defaultProductsShouldBeFound("productNumber.notEquals=" + UPDATED_PRODUCT_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductsByProductNumberIsInShouldWork() throws Exception {
+        // Initialize the database
+        productsRepository.saveAndFlush(products);
+
+        // Get all the productsList where productNumber in DEFAULT_PRODUCT_NUMBER or UPDATED_PRODUCT_NUMBER
+        defaultProductsShouldBeFound("productNumber.in=" + DEFAULT_PRODUCT_NUMBER + "," + UPDATED_PRODUCT_NUMBER);
+
+        // Get all the productsList where productNumber equals to UPDATED_PRODUCT_NUMBER
+        defaultProductsShouldNotBeFound("productNumber.in=" + UPDATED_PRODUCT_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductsByProductNumberIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        productsRepository.saveAndFlush(products);
+
+        // Get all the productsList where productNumber is not null
+        defaultProductsShouldBeFound("productNumber.specified=true");
+
+        // Get all the productsList where productNumber is null
+        defaultProductsShouldNotBeFound("productNumber.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllProductsByProductNumberContainsSomething() throws Exception {
+        // Initialize the database
+        productsRepository.saveAndFlush(products);
+
+        // Get all the productsList where productNumber contains DEFAULT_PRODUCT_NUMBER
+        defaultProductsShouldBeFound("productNumber.contains=" + DEFAULT_PRODUCT_NUMBER);
+
+        // Get all the productsList where productNumber contains UPDATED_PRODUCT_NUMBER
+        defaultProductsShouldNotBeFound("productNumber.contains=" + UPDATED_PRODUCT_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductsByProductNumberNotContainsSomething() throws Exception {
+        // Initialize the database
+        productsRepository.saveAndFlush(products);
+
+        // Get all the productsList where productNumber does not contain DEFAULT_PRODUCT_NUMBER
+        defaultProductsShouldNotBeFound("productNumber.doesNotContain=" + DEFAULT_PRODUCT_NUMBER);
+
+        // Get all the productsList where productNumber does not contain UPDATED_PRODUCT_NUMBER
+        defaultProductsShouldBeFound("productNumber.doesNotContain=" + UPDATED_PRODUCT_NUMBER);
     }
 
 
@@ -1697,10 +1697,10 @@ public class ProductsResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(products.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
-            .andExpect(jsonPath("$.[*].productNumber").value(hasItem(DEFAULT_PRODUCT_NUMBER)))
             .andExpect(jsonPath("$.[*].searchDetails").value(hasItem(DEFAULT_SEARCH_DETAILS)))
+            .andExpect(jsonPath("$.[*].productNumber").value(hasItem(DEFAULT_PRODUCT_NUMBER)))
             .andExpect(jsonPath("$.[*].sellCount").value(hasItem(DEFAULT_SELL_COUNT)))
-            .andExpect(jsonPath("$.[*].stockItemString").value(hasItem(DEFAULT_STOCK_ITEM_STRING.toString())))
+            .andExpect(jsonPath("$.[*].productDetails").value(hasItem(DEFAULT_PRODUCT_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].totalWishlist").value(hasItem(DEFAULT_TOTAL_WISHLIST)))
             .andExpect(jsonPath("$.[*].totalStars").value(hasItem(DEFAULT_TOTAL_STARS)))
             .andExpect(jsonPath("$.[*].discountedPercentage").value(hasItem(DEFAULT_DISCOUNTED_PERCENTAGE)))
@@ -1760,10 +1760,10 @@ public class ProductsResourceIT {
         updatedProducts
             .name(UPDATED_NAME)
             .handle(UPDATED_HANDLE)
-            .productNumber(UPDATED_PRODUCT_NUMBER)
             .searchDetails(UPDATED_SEARCH_DETAILS)
+            .productNumber(UPDATED_PRODUCT_NUMBER)
             .sellCount(UPDATED_SELL_COUNT)
-            .stockItemString(UPDATED_STOCK_ITEM_STRING)
+            .productDetails(UPDATED_PRODUCT_DETAILS)
             .totalWishlist(UPDATED_TOTAL_WISHLIST)
             .totalStars(UPDATED_TOTAL_STARS)
             .discountedPercentage(UPDATED_DISCOUNTED_PERCENTAGE)
@@ -1788,10 +1788,10 @@ public class ProductsResourceIT {
         Products testProducts = productsList.get(productsList.size() - 1);
         assertThat(testProducts.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testProducts.getHandle()).isEqualTo(UPDATED_HANDLE);
-        assertThat(testProducts.getProductNumber()).isEqualTo(UPDATED_PRODUCT_NUMBER);
         assertThat(testProducts.getSearchDetails()).isEqualTo(UPDATED_SEARCH_DETAILS);
+        assertThat(testProducts.getProductNumber()).isEqualTo(UPDATED_PRODUCT_NUMBER);
         assertThat(testProducts.getSellCount()).isEqualTo(UPDATED_SELL_COUNT);
-        assertThat(testProducts.getStockItemString()).isEqualTo(UPDATED_STOCK_ITEM_STRING);
+        assertThat(testProducts.getProductDetails()).isEqualTo(UPDATED_PRODUCT_DETAILS);
         assertThat(testProducts.getTotalWishlist()).isEqualTo(UPDATED_TOTAL_WISHLIST);
         assertThat(testProducts.getTotalStars()).isEqualTo(UPDATED_TOTAL_STARS);
         assertThat(testProducts.getDiscountedPercentage()).isEqualTo(UPDATED_DISCOUNTED_PERCENTAGE);

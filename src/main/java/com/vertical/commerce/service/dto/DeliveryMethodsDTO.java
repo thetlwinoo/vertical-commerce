@@ -14,6 +14,18 @@ public class DeliveryMethodsDTO implements Serializable {
     @NotNull
     private String name;
 
+    private String thirdPartyName;
+
+    private Integer expectedMinArrivalDays;
+
+    private Integer expectedMaxArrivalDays;
+
+    private Boolean activeInd;
+
+    private Boolean defaultInd;
+
+    private String deliveryNote;
+
     @NotNull
     private Instant validFrom;
 
@@ -35,6 +47,54 @@ public class DeliveryMethodsDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getThirdPartyName() {
+        return thirdPartyName;
+    }
+
+    public void setThirdPartyName(String thirdPartyName) {
+        this.thirdPartyName = thirdPartyName;
+    }
+
+    public Integer getExpectedMinArrivalDays() {
+        return expectedMinArrivalDays;
+    }
+
+    public void setExpectedMinArrivalDays(Integer expectedMinArrivalDays) {
+        this.expectedMinArrivalDays = expectedMinArrivalDays;
+    }
+
+    public Integer getExpectedMaxArrivalDays() {
+        return expectedMaxArrivalDays;
+    }
+
+    public void setExpectedMaxArrivalDays(Integer expectedMaxArrivalDays) {
+        this.expectedMaxArrivalDays = expectedMaxArrivalDays;
+    }
+
+    public Boolean isActiveInd() {
+        return activeInd;
+    }
+
+    public void setActiveInd(Boolean activeInd) {
+        this.activeInd = activeInd;
+    }
+
+    public Boolean isDefaultInd() {
+        return defaultInd;
+    }
+
+    public void setDefaultInd(Boolean defaultInd) {
+        this.defaultInd = defaultInd;
+    }
+
+    public String getDeliveryNote() {
+        return deliveryNote;
+    }
+
+    public void setDeliveryNote(String deliveryNote) {
+        this.deliveryNote = deliveryNote;
     }
 
     public Instant getValidFrom() {
@@ -76,6 +136,12 @@ public class DeliveryMethodsDTO implements Serializable {
         return "DeliveryMethodsDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", thirdPartyName='" + getThirdPartyName() + "'" +
+            ", expectedMinArrivalDays=" + getExpectedMinArrivalDays() +
+            ", expectedMaxArrivalDays=" + getExpectedMaxArrivalDays() +
+            ", activeInd='" + isActiveInd() + "'" +
+            ", defaultInd='" + isDefaultInd() + "'" +
+            ", deliveryNote='" + getDeliveryNote() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

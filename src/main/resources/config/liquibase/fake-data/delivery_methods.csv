@@ -1,11 +1,11 @@
-id;name;valid_from;valid_to
-1;Tactics secondary payment;2020-06-10T12:21:46;2020-06-10T08:29:59
-2;Kip;2020-06-10T13:18:56;2020-06-10T06:17:16
-3;Handmade Borders quantify;2020-06-09T20:14:34;2020-06-09T23:36:22
-4;Human mobile maximize;2020-06-09T19:42:45;2020-06-10T03:17:03
-5;dot-com;2020-06-10T04:57:25;2020-06-09T20:34:51
-6;national Supervisor Sleek Metal Shirt;2020-06-09T19:20:25;2020-06-10T13:29:57
-7;synergies;2020-06-09T18:03:34;2020-06-10T13:03:36
-8;Seamless;2020-06-10T01:29:12;2020-06-10T13:06:57
-9;e-tailers;2020-06-09T21:57:50;2020-06-10T02:51:57
-10;Western Sahara;2020-06-09T20:40:42;2020-06-10T13:09:20
+id;name;third_party_name;expected_min_arrival_days;expected_max_arrival_days;active_ind;default_ind;delivery_note;valid_from;valid_to
+1;Tactics secondary payment;Adaptive;68195;46066;false;false;Handmade Borders quantify;2020-06-16T21:30:53;2020-06-17T00:52:41
+2;Human mobile maximize;Creek dot-com scale;68937;27027;true;true;Sleek Metal Shirt;2020-06-16T20:36:44;2020-06-17T14:46:16
+3;synergies;Intelligent Concrete Cheese Azerbaijan Table;30202;69229;false;false;Producer Sleek Wooden Shirt;2020-06-16T17:10:40;2020-06-17T03:25:30
+4;revolutionary;Automotive parsing Generic;23677;66271;true;true;generate Small Granite Shirt;2020-06-17T11:56:19;2020-06-17T02:37:09
+5;Licensed Fresh Hat;JBOD;96060;35866;true;true;Strategist;2020-06-17T00:29:05;2020-06-17T02:25:40
+6;Plaza;Branding;53666;58787;false;true;online;2020-06-16T16:06:04;2020-06-17T05:31:54
+7;azure extend China;GB Hat Bedfordshire;70289;62275;false;true;content SMS Utah;2020-06-17T01:13:06;2020-06-16T22:53:11
+8;Paradigm;fault-tolerant;35238;5930;false;false;synthesizing Home Loan Account Trinidad and Tobago Dollar;2020-06-17T06:01:36;2020-06-16T20:08:21
+9;silver THX;Wisconsin Fully-configurable Delaware;4658;81358;true;true;Industrial Rustic Fresh Chips innovate;2020-06-17T08:20:46;2020-06-17T13:42:16
+10;grey Cambridgeshire;system withdrawal Identity;50132;34577;false;true;Handcrafted Frozen Pants Savings Account;2020-06-17T09:19:45;2020-06-17T12:06:30

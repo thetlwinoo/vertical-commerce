@@ -68,6 +68,10 @@ public class SpecialDeals implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Orders> orderLists = new HashSet<>();
 
+    @OneToMany(mappedBy = "specialDeals")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<OrderPackages> orderPackageLists = new HashSet<>();
+
     @ManyToOne
     @JsonIgnoreProperties(value = "specialDeals", allowSetters = true)
     private BuyingGroups buyingGroup;
@@ -262,6 +266,31 @@ public class SpecialDeals implements Serializable {
 
     public void setOrderLists(Set<Orders> orders) {
         this.orderLists = orders;
+    }
+
+    public Set<OrderPackages> getOrderPackageLists() {
+        return orderPackageLists;
+    }
+
+    public SpecialDeals orderPackageLists(Set<OrderPackages> orderPackages) {
+        this.orderPackageLists = orderPackages;
+        return this;
+    }
+
+    public SpecialDeals addOrderPackageList(OrderPackages orderPackages) {
+        this.orderPackageLists.add(orderPackages);
+        orderPackages.setSpecialDeals(this);
+        return this;
+    }
+
+    public SpecialDeals removeOrderPackageList(OrderPackages orderPackages) {
+        this.orderPackageLists.remove(orderPackages);
+        orderPackages.setSpecialDeals(null);
+        return this;
+    }
+
+    public void setOrderPackageLists(Set<OrderPackages> orderPackages) {
+        this.orderPackageLists = orderPackages;
     }
 
     public BuyingGroups getBuyingGroup() {

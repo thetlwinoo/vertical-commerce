@@ -91,6 +91,9 @@ public class CustomersQueryService extends QueryService<Customers> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Customers_.id));
             }
+            if (criteria.getName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getName(), Customers_.name));
+            }
             if (criteria.getAccountNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAccountNumber(), Customers_.accountNumber));
             }
@@ -115,6 +118,12 @@ public class CustomersQueryService extends QueryService<Customers> {
             if (criteria.getRunPosition() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getRunPosition(), Customers_.runPosition));
             }
+            if (criteria.getThumbnailUrl() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), Customers_.thumbnailUrl));
+            }
+            if (criteria.getBillToAddressSameAsDeliveryAddress() != null) {
+                specification = specification.and(buildSpecification(criteria.getBillToAddressSameAsDeliveryAddress(), Customers_.billToAddressSameAsDeliveryAddress));
+            }
             if (criteria.getLastEditedBy() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLastEditedBy(), Customers_.lastEditedBy));
             }
@@ -135,6 +144,10 @@ public class CustomersQueryService extends QueryService<Customers> {
             if (criteria.getDeliveryAddressId() != null) {
                 specification = specification.and(buildSpecification(criteria.getDeliveryAddressId(),
                     root -> root.join(Customers_.deliveryAddress, JoinType.LEFT).get(Addresses_.id)));
+            }
+            if (criteria.getBillToAddressId() != null) {
+                specification = specification.and(buildSpecification(criteria.getBillToAddressId(),
+                    root -> root.join(Customers_.billToAddress, JoinType.LEFT).get(Addresses_.id)));
             }
         }
         return specification;

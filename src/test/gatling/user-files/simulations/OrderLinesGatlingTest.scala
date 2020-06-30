@@ -101,12 +101,11 @@ class OrderLinesGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "id":null
-                , "quantity":"0"
                 , "description":"SAMPLE_TEXT"
+                , "quantity":"0"
+                , "taxRate":"0"
                 , "unitPrice":"0"
                 , "unitPriceDiscount":"0"
-                , "lineTotal":"0"
-                , "taxRate":"0"
                 , "pickedQuantity":"0"
                 , "pickingCompletedWhen":"2020-01-01T00:00:00.000Z"
                 , "status":"AVAILABLE"

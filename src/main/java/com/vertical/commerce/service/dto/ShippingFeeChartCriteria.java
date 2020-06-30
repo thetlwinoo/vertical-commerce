@@ -44,7 +44,9 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
 
     private InstantFilter lastEditedWhen;
 
-    private LongFilter zoneId;
+    private LongFilter sourceZoneId;
+
+    private LongFilter destinationZoneId;
 
     private LongFilter deliveryMethodId;
 
@@ -61,7 +63,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
         this.price = other.price == null ? null : other.price.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
-        this.zoneId = other.zoneId == null ? null : other.zoneId.copy();
+        this.sourceZoneId = other.sourceZoneId == null ? null : other.sourceZoneId.copy();
+        this.destinationZoneId = other.destinationZoneId == null ? null : other.destinationZoneId.copy();
         this.deliveryMethodId = other.deliveryMethodId == null ? null : other.deliveryMethodId.copy();
     }
 
@@ -142,12 +145,20 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public LongFilter getZoneId() {
-        return zoneId;
+    public LongFilter getSourceZoneId() {
+        return sourceZoneId;
     }
 
-    public void setZoneId(LongFilter zoneId) {
-        this.zoneId = zoneId;
+    public void setSourceZoneId(LongFilter sourceZoneId) {
+        this.sourceZoneId = sourceZoneId;
+    }
+
+    public LongFilter getDestinationZoneId() {
+        return destinationZoneId;
+    }
+
+    public void setDestinationZoneId(LongFilter destinationZoneId) {
+        this.destinationZoneId = destinationZoneId;
     }
 
     public LongFilter getDeliveryMethodId() {
@@ -178,7 +189,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
             Objects.equals(price, that.price) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
-            Objects.equals(zoneId, that.zoneId) &&
+            Objects.equals(sourceZoneId, that.sourceZoneId) &&
+            Objects.equals(destinationZoneId, that.destinationZoneId) &&
             Objects.equals(deliveryMethodId, that.deliveryMethodId);
     }
 
@@ -194,7 +206,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
         price,
         lastEditedBy,
         lastEditedWhen,
-        zoneId,
+        sourceZoneId,
+        destinationZoneId,
         deliveryMethodId
         );
     }
@@ -212,7 +225,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
                 (price != null ? "price=" + price + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
-                (zoneId != null ? "zoneId=" + zoneId + ", " : "") +
+                (sourceZoneId != null ? "sourceZoneId=" + sourceZoneId + ", " : "") +
+                (destinationZoneId != null ? "destinationZoneId=" + destinationZoneId + ", " : "") +
                 (deliveryMethodId != null ? "deliveryMethodId=" + deliveryMethodId + ", " : "") +
             "}";
     }

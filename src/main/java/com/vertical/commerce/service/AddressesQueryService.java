@@ -118,9 +118,9 @@ public class AddressesQueryService extends QueryService<Addresses> {
             if (criteria.getActiveInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getActiveInd(), Addresses_.activeInd));
             }
-            if (criteria.getStateProvinceId() != null) {
-                specification = specification.and(buildSpecification(criteria.getStateProvinceId(),
-                    root -> root.join(Addresses_.stateProvince, JoinType.LEFT).get(StateProvinces_.id)));
+            if (criteria.getZoneId() != null) {
+                specification = specification.and(buildSpecification(criteria.getZoneId(),
+                    root -> root.join(Addresses_.zone, JoinType.LEFT).get(Zone_.id)));
             }
             if (criteria.getAddressTypeId() != null) {
                 specification = specification.and(buildSpecification(criteria.getAddressTypeId(),

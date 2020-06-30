@@ -29,13 +29,15 @@ public class ShoppingCartItemsCriteria implements Serializable, Criteria {
 
     private IntegerFilter quantity;
 
-    private BooleanFilter addToOrder;
+    private BooleanFilter selectOrder;
 
     private StringFilter lastEditedBy;
 
     private InstantFilter lastEditedWhen;
 
     private LongFilter stockItemId;
+
+    private LongFilter deliveryMethodId;
 
     private LongFilter cartId;
 
@@ -45,10 +47,11 @@ public class ShoppingCartItemsCriteria implements Serializable, Criteria {
     public ShoppingCartItemsCriteria(ShoppingCartItemsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.quantity = other.quantity == null ? null : other.quantity.copy();
-        this.addToOrder = other.addToOrder == null ? null : other.addToOrder.copy();
+        this.selectOrder = other.selectOrder == null ? null : other.selectOrder.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
         this.stockItemId = other.stockItemId == null ? null : other.stockItemId.copy();
+        this.deliveryMethodId = other.deliveryMethodId == null ? null : other.deliveryMethodId.copy();
         this.cartId = other.cartId == null ? null : other.cartId.copy();
     }
 
@@ -73,12 +76,12 @@ public class ShoppingCartItemsCriteria implements Serializable, Criteria {
         this.quantity = quantity;
     }
 
-    public BooleanFilter getAddToOrder() {
-        return addToOrder;
+    public BooleanFilter getSelectOrder() {
+        return selectOrder;
     }
 
-    public void setAddToOrder(BooleanFilter addToOrder) {
-        this.addToOrder = addToOrder;
+    public void setSelectOrder(BooleanFilter selectOrder) {
+        this.selectOrder = selectOrder;
     }
 
     public StringFilter getLastEditedBy() {
@@ -105,6 +108,14 @@ public class ShoppingCartItemsCriteria implements Serializable, Criteria {
         this.stockItemId = stockItemId;
     }
 
+    public LongFilter getDeliveryMethodId() {
+        return deliveryMethodId;
+    }
+
+    public void setDeliveryMethodId(LongFilter deliveryMethodId) {
+        this.deliveryMethodId = deliveryMethodId;
+    }
+
     public LongFilter getCartId() {
         return cartId;
     }
@@ -126,10 +137,11 @@ public class ShoppingCartItemsCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(quantity, that.quantity) &&
-            Objects.equals(addToOrder, that.addToOrder) &&
+            Objects.equals(selectOrder, that.selectOrder) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
             Objects.equals(stockItemId, that.stockItemId) &&
+            Objects.equals(deliveryMethodId, that.deliveryMethodId) &&
             Objects.equals(cartId, that.cartId);
     }
 
@@ -138,10 +150,11 @@ public class ShoppingCartItemsCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         quantity,
-        addToOrder,
+        selectOrder,
         lastEditedBy,
         lastEditedWhen,
         stockItemId,
+        deliveryMethodId,
         cartId
         );
     }
@@ -152,10 +165,11 @@ public class ShoppingCartItemsCriteria implements Serializable, Criteria {
         return "ShoppingCartItemsCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (quantity != null ? "quantity=" + quantity + ", " : "") +
-                (addToOrder != null ? "addToOrder=" + addToOrder + ", " : "") +
+                (selectOrder != null ? "selectOrder=" + selectOrder + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
                 (stockItemId != null ? "stockItemId=" + stockItemId + ", " : "") +
+                (deliveryMethodId != null ? "deliveryMethodId=" + deliveryMethodId + ", " : "") +
                 (cartId != null ? "cartId=" + cartId + ", " : "") +
             "}";
     }

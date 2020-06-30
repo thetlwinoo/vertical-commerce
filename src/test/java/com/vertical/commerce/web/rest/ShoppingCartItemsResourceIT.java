@@ -4,6 +4,7 @@ import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.ShoppingCartItems;
 import com.vertical.commerce.domain.StockItems;
+import com.vertical.commerce.domain.DeliveryMethods;
 import com.vertical.commerce.domain.ShoppingCarts;
 import com.vertical.commerce.repository.ShoppingCartItemsRepository;
 import com.vertical.commerce.service.ShoppingCartItemsService;
@@ -44,8 +45,8 @@ public class ShoppingCartItemsResourceIT {
     private static final Integer UPDATED_QUANTITY = 2;
     private static final Integer SMALLER_QUANTITY = 1 - 1;
 
-    private static final Boolean DEFAULT_ADD_TO_ORDER = false;
-    private static final Boolean UPDATED_ADD_TO_ORDER = true;
+    private static final Boolean DEFAULT_SELECT_ORDER = false;
+    private static final Boolean UPDATED_SELECT_ORDER = true;
 
     private static final String DEFAULT_LAST_EDITED_BY = "AAAAAAAAAA";
     private static final String UPDATED_LAST_EDITED_BY = "BBBBBBBBBB";
@@ -82,7 +83,7 @@ public class ShoppingCartItemsResourceIT {
     public static ShoppingCartItems createEntity(EntityManager em) {
         ShoppingCartItems shoppingCartItems = new ShoppingCartItems()
             .quantity(DEFAULT_QUANTITY)
-            .addToOrder(DEFAULT_ADD_TO_ORDER)
+            .selectOrder(DEFAULT_SELECT_ORDER)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
             .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN);
         return shoppingCartItems;
@@ -96,7 +97,7 @@ public class ShoppingCartItemsResourceIT {
     public static ShoppingCartItems createUpdatedEntity(EntityManager em) {
         ShoppingCartItems shoppingCartItems = new ShoppingCartItems()
             .quantity(UPDATED_QUANTITY)
-            .addToOrder(UPDATED_ADD_TO_ORDER)
+            .selectOrder(UPDATED_SELECT_ORDER)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
         return shoppingCartItems;
@@ -123,7 +124,7 @@ public class ShoppingCartItemsResourceIT {
         assertThat(shoppingCartItemsList).hasSize(databaseSizeBeforeCreate + 1);
         ShoppingCartItems testShoppingCartItems = shoppingCartItemsList.get(shoppingCartItemsList.size() - 1);
         assertThat(testShoppingCartItems.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
-        assertThat(testShoppingCartItems.isAddToOrder()).isEqualTo(DEFAULT_ADD_TO_ORDER);
+        assertThat(testShoppingCartItems.isSelectOrder()).isEqualTo(DEFAULT_SELECT_ORDER);
         assertThat(testShoppingCartItems.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
         assertThat(testShoppingCartItems.getLastEditedWhen()).isEqualTo(DEFAULT_LAST_EDITED_WHEN);
     }
@@ -201,7 +202,7 @@ public class ShoppingCartItemsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(shoppingCartItems.getId().intValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
-            .andExpect(jsonPath("$.[*].addToOrder").value(hasItem(DEFAULT_ADD_TO_ORDER.booleanValue())))
+            .andExpect(jsonPath("$.[*].selectOrder").value(hasItem(DEFAULT_SELECT_ORDER.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
     }
@@ -218,7 +219,7 @@ public class ShoppingCartItemsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(shoppingCartItems.getId().intValue()))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
-            .andExpect(jsonPath("$.addToOrder").value(DEFAULT_ADD_TO_ORDER.booleanValue()))
+            .andExpect(jsonPath("$.selectOrder").value(DEFAULT_SELECT_ORDER.booleanValue()))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
             .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()));
     }
@@ -350,54 +351,54 @@ public class ShoppingCartItemsResourceIT {
 
     @Test
     @Transactional
-    public void getAllShoppingCartItemsByAddToOrderIsEqualToSomething() throws Exception {
+    public void getAllShoppingCartItemsBySelectOrderIsEqualToSomething() throws Exception {
         // Initialize the database
         shoppingCartItemsRepository.saveAndFlush(shoppingCartItems);
 
-        // Get all the shoppingCartItemsList where addToOrder equals to DEFAULT_ADD_TO_ORDER
-        defaultShoppingCartItemsShouldBeFound("addToOrder.equals=" + DEFAULT_ADD_TO_ORDER);
+        // Get all the shoppingCartItemsList where selectOrder equals to DEFAULT_SELECT_ORDER
+        defaultShoppingCartItemsShouldBeFound("selectOrder.equals=" + DEFAULT_SELECT_ORDER);
 
-        // Get all the shoppingCartItemsList where addToOrder equals to UPDATED_ADD_TO_ORDER
-        defaultShoppingCartItemsShouldNotBeFound("addToOrder.equals=" + UPDATED_ADD_TO_ORDER);
+        // Get all the shoppingCartItemsList where selectOrder equals to UPDATED_SELECT_ORDER
+        defaultShoppingCartItemsShouldNotBeFound("selectOrder.equals=" + UPDATED_SELECT_ORDER);
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartItemsByAddToOrderIsNotEqualToSomething() throws Exception {
+    public void getAllShoppingCartItemsBySelectOrderIsNotEqualToSomething() throws Exception {
         // Initialize the database
         shoppingCartItemsRepository.saveAndFlush(shoppingCartItems);
 
-        // Get all the shoppingCartItemsList where addToOrder not equals to DEFAULT_ADD_TO_ORDER
-        defaultShoppingCartItemsShouldNotBeFound("addToOrder.notEquals=" + DEFAULT_ADD_TO_ORDER);
+        // Get all the shoppingCartItemsList where selectOrder not equals to DEFAULT_SELECT_ORDER
+        defaultShoppingCartItemsShouldNotBeFound("selectOrder.notEquals=" + DEFAULT_SELECT_ORDER);
 
-        // Get all the shoppingCartItemsList where addToOrder not equals to UPDATED_ADD_TO_ORDER
-        defaultShoppingCartItemsShouldBeFound("addToOrder.notEquals=" + UPDATED_ADD_TO_ORDER);
+        // Get all the shoppingCartItemsList where selectOrder not equals to UPDATED_SELECT_ORDER
+        defaultShoppingCartItemsShouldBeFound("selectOrder.notEquals=" + UPDATED_SELECT_ORDER);
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartItemsByAddToOrderIsInShouldWork() throws Exception {
+    public void getAllShoppingCartItemsBySelectOrderIsInShouldWork() throws Exception {
         // Initialize the database
         shoppingCartItemsRepository.saveAndFlush(shoppingCartItems);
 
-        // Get all the shoppingCartItemsList where addToOrder in DEFAULT_ADD_TO_ORDER or UPDATED_ADD_TO_ORDER
-        defaultShoppingCartItemsShouldBeFound("addToOrder.in=" + DEFAULT_ADD_TO_ORDER + "," + UPDATED_ADD_TO_ORDER);
+        // Get all the shoppingCartItemsList where selectOrder in DEFAULT_SELECT_ORDER or UPDATED_SELECT_ORDER
+        defaultShoppingCartItemsShouldBeFound("selectOrder.in=" + DEFAULT_SELECT_ORDER + "," + UPDATED_SELECT_ORDER);
 
-        // Get all the shoppingCartItemsList where addToOrder equals to UPDATED_ADD_TO_ORDER
-        defaultShoppingCartItemsShouldNotBeFound("addToOrder.in=" + UPDATED_ADD_TO_ORDER);
+        // Get all the shoppingCartItemsList where selectOrder equals to UPDATED_SELECT_ORDER
+        defaultShoppingCartItemsShouldNotBeFound("selectOrder.in=" + UPDATED_SELECT_ORDER);
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartItemsByAddToOrderIsNullOrNotNull() throws Exception {
+    public void getAllShoppingCartItemsBySelectOrderIsNullOrNotNull() throws Exception {
         // Initialize the database
         shoppingCartItemsRepository.saveAndFlush(shoppingCartItems);
 
-        // Get all the shoppingCartItemsList where addToOrder is not null
-        defaultShoppingCartItemsShouldBeFound("addToOrder.specified=true");
+        // Get all the shoppingCartItemsList where selectOrder is not null
+        defaultShoppingCartItemsShouldBeFound("selectOrder.specified=true");
 
-        // Get all the shoppingCartItemsList where addToOrder is null
-        defaultShoppingCartItemsShouldNotBeFound("addToOrder.specified=false");
+        // Get all the shoppingCartItemsList where selectOrder is null
+        defaultShoppingCartItemsShouldNotBeFound("selectOrder.specified=false");
     }
 
     @Test
@@ -552,6 +553,26 @@ public class ShoppingCartItemsResourceIT {
 
     @Test
     @Transactional
+    public void getAllShoppingCartItemsByDeliveryMethodIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartItemsRepository.saveAndFlush(shoppingCartItems);
+        DeliveryMethods deliveryMethod = DeliveryMethodsResourceIT.createEntity(em);
+        em.persist(deliveryMethod);
+        em.flush();
+        shoppingCartItems.setDeliveryMethod(deliveryMethod);
+        shoppingCartItemsRepository.saveAndFlush(shoppingCartItems);
+        Long deliveryMethodId = deliveryMethod.getId();
+
+        // Get all the shoppingCartItemsList where deliveryMethod equals to deliveryMethodId
+        defaultShoppingCartItemsShouldBeFound("deliveryMethodId.equals=" + deliveryMethodId);
+
+        // Get all the shoppingCartItemsList where deliveryMethod equals to deliveryMethodId + 1
+        defaultShoppingCartItemsShouldNotBeFound("deliveryMethodId.equals=" + (deliveryMethodId + 1));
+    }
+
+
+    @Test
+    @Transactional
     public void getAllShoppingCartItemsByCartIsEqualToSomething() throws Exception {
         // Initialize the database
         shoppingCartItemsRepository.saveAndFlush(shoppingCartItems);
@@ -578,7 +599,7 @@ public class ShoppingCartItemsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(shoppingCartItems.getId().intValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
-            .andExpect(jsonPath("$.[*].addToOrder").value(hasItem(DEFAULT_ADD_TO_ORDER.booleanValue())))
+            .andExpect(jsonPath("$.[*].selectOrder").value(hasItem(DEFAULT_SELECT_ORDER.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
 
@@ -628,7 +649,7 @@ public class ShoppingCartItemsResourceIT {
         em.detach(updatedShoppingCartItems);
         updatedShoppingCartItems
             .quantity(UPDATED_QUANTITY)
-            .addToOrder(UPDATED_ADD_TO_ORDER)
+            .selectOrder(UPDATED_SELECT_ORDER)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
         ShoppingCartItemsDTO shoppingCartItemsDTO = shoppingCartItemsMapper.toDto(updatedShoppingCartItems);
@@ -643,7 +664,7 @@ public class ShoppingCartItemsResourceIT {
         assertThat(shoppingCartItemsList).hasSize(databaseSizeBeforeUpdate);
         ShoppingCartItems testShoppingCartItems = shoppingCartItemsList.get(shoppingCartItemsList.size() - 1);
         assertThat(testShoppingCartItems.getQuantity()).isEqualTo(UPDATED_QUANTITY);
-        assertThat(testShoppingCartItems.isAddToOrder()).isEqualTo(UPDATED_ADD_TO_ORDER);
+        assertThat(testShoppingCartItems.isSelectOrder()).isEqualTo(UPDATED_SELECT_ORDER);
         assertThat(testShoppingCartItems.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
         assertThat(testShoppingCartItems.getLastEditedWhen()).isEqualTo(UPDATED_LAST_EDITED_WHEN);
     }

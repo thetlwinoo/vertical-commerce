@@ -7,20 +7,18 @@ import com.vertical.commerce.repository.PhotosExtendRepository;
 import com.vertical.commerce.repository.PhotosRepository;
 import com.vertical.commerce.repository.ProductsRepository;
 import com.vertical.commerce.repository.StockItemsRepository;
+import com.vertical.commerce.service.CommonService;
 import com.vertical.commerce.service.PhotosExtendService;
 import com.vertical.commerce.service.dto.PhotosDTO;
 import com.vertical.commerce.service.mapper.PhotosMapper;
-import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,13 +30,15 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
     private final StockItemsRepository stockItemsRepository;
     private final ProductsRepository productsRepository;
     private final PhotosMapper photosMapper;
+    private final CommonService commonService;
 
-    public PhotosExtendServiceImpl(PhotosRepository photosRepository, PhotosExtendRepository photosExtendRepository, StockItemsRepository stockItemsRepository, ProductsRepository productsRepository, PhotosMapper photosMapper) {
+    public PhotosExtendServiceImpl(PhotosRepository photosRepository, PhotosExtendRepository photosExtendRepository, StockItemsRepository stockItemsRepository, ProductsRepository productsRepository, PhotosMapper photosMapper, CommonService commonService) {
         this.photosRepository = photosRepository;
         this.photosExtendRepository = photosExtendRepository;
         this.stockItemsRepository = stockItemsRepository;
         this.productsRepository = productsRepository;
         this.photosMapper = photosMapper;
+        this.commonService = commonService;
     }
 
     @Override
@@ -50,10 +50,11 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
             photos.setDefaultInd(true);
             photos = photosRepository.save(photos);
             stockItems.setThumbnailUrl(photos.getThumbnailUrl());
+            stockItems.setActiveInd(true);
             stockItemsRepository.save(stockItems);
 
             Products products = productsRepository.getOne(stockItems.getProduct().getId());
-            products.setStockItemString(getStockItemString(products));
+            products.setProductDetails(commonService.getProductDetails(products).toJSONString());
 
             productsRepository.save(products);
         }else{
@@ -84,7 +85,7 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
                 stockItemsRepository.save(stockItems);
 
                 Products products = productsRepository.getOne(stockItems.getProduct().getId());
-                products.setStockItemString(getStockItemString(products));
+                products.setProductDetails(commonService.getProductDetails(products).toJSONString());
                 productsRepository.save(products);
             } else {
                 if (i.isDefaultInd()) {
@@ -108,20 +109,5 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
     @Override
     public void deleteByBlobId(String id){
         photosExtendRepository.deletePhotosByBlobId(id);
-    }
-
-    private String getStockItemString(Products product){
-        List<String> stockItemList= new ArrayList<>();
-        for (StockItems i : product.getStockItemLists()) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("stockItemId",i.getId());
-            jsonObject.put("thumbnail",i.getThumbnailUrl());
-            jsonObject.put("unitPrice",i.getUnitPrice());
-            jsonObject.put("recommendedRetailPrice",i.getRecommendedRetailPrice());
-            String jsonString = jsonObject.toJSONString();
-            stockItemList.add(jsonString);
-        }
-
-        return String.join(";",stockItemList);
     }
 }

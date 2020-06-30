@@ -47,4 +47,6 @@ public interface ProductsExtendService {
     ProductsDTO importProducts(ProductsDTO productsDTO, Principal principal);
 
     List<Long> getProductIdsBySupplier(Long supplierId);
+
+    String getProductDetails(Long productId);
 }

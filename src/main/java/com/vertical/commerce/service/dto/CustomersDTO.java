@@ -12,6 +12,8 @@ public class CustomersDTO implements Serializable {
     
     private Long id;
 
+    private String name;
+
     @NotNull
     private String accountNumber;
 
@@ -34,6 +36,10 @@ public class CustomersDTO implements Serializable {
 
     private String runPosition;
 
+    private String thumbnailUrl;
+
+    private Boolean billToAddressSameAsDeliveryAddress;
+
     @NotNull
     private String lastEditedBy;
 
@@ -53,6 +59,8 @@ public class CustomersDTO implements Serializable {
     private String deliveryMethodName;
 
     private Long deliveryAddressId;
+
+    private Long billToAddressId;
     
     public Long getId() {
         return id;
@@ -60,6 +68,14 @@ public class CustomersDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAccountNumber() {
@@ -126,6 +142,22 @@ public class CustomersDTO implements Serializable {
         this.runPosition = runPosition;
     }
 
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public Boolean isBillToAddressSameAsDeliveryAddress() {
+        return billToAddressSameAsDeliveryAddress;
+    }
+
+    public void setBillToAddressSameAsDeliveryAddress(Boolean billToAddressSameAsDeliveryAddress) {
+        this.billToAddressSameAsDeliveryAddress = billToAddressSameAsDeliveryAddress;
+    }
+
     public String getLastEditedBy() {
         return lastEditedBy;
     }
@@ -190,6 +222,14 @@ public class CustomersDTO implements Serializable {
         this.deliveryAddressId = addressesId;
     }
 
+    public Long getBillToAddressId() {
+        return billToAddressId;
+    }
+
+    public void setBillToAddressId(Long addressesId) {
+        this.billToAddressId = addressesId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -212,6 +252,7 @@ public class CustomersDTO implements Serializable {
     public String toString() {
         return "CustomersDTO{" +
             "id=" + getId() +
+            ", name='" + getName() + "'" +
             ", accountNumber='" + getAccountNumber() + "'" +
             ", accountOpenedDate='" + getAccountOpenedDate() + "'" +
             ", standardDiscountPercentage=" + getStandardDiscountPercentage() +
@@ -220,6 +261,8 @@ public class CustomersDTO implements Serializable {
             ", paymentDays=" + getPaymentDays() +
             ", deliveryRun='" + getDeliveryRun() + "'" +
             ", runPosition='" + getRunPosition() + "'" +
+            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
+            ", billToAddressSameAsDeliveryAddress='" + isBillToAddressSameAsDeliveryAddress() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
@@ -228,6 +271,7 @@ public class CustomersDTO implements Serializable {
             ", deliveryMethodId=" + getDeliveryMethodId() +
             ", deliveryMethodName='" + getDeliveryMethodName() + "'" +
             ", deliveryAddressId=" + getDeliveryAddressId() +
+            ", billToAddressId=" + getBillToAddressId() +
             "}";
     }
 }

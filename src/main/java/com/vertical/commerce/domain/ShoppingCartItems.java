@@ -28,8 +28,8 @@ public class ShoppingCartItems implements Serializable {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "add_to_order")
-    private Boolean addToOrder;
+    @Column(name = "select_order")
+    private Boolean selectOrder;
 
     @NotNull
     @Column(name = "last_edited_by", nullable = false)
@@ -42,6 +42,10 @@ public class ShoppingCartItems implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "shoppingCartItems", allowSetters = true)
     private StockItems stockItem;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "shoppingCartItems", allowSetters = true)
+    private DeliveryMethods deliveryMethod;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "cartItemLists", allowSetters = true)
@@ -69,17 +73,17 @@ public class ShoppingCartItems implements Serializable {
         this.quantity = quantity;
     }
 
-    public Boolean isAddToOrder() {
-        return addToOrder;
+    public Boolean isSelectOrder() {
+        return selectOrder;
     }
 
-    public ShoppingCartItems addToOrder(Boolean addToOrder) {
-        this.addToOrder = addToOrder;
+    public ShoppingCartItems selectOrder(Boolean selectOrder) {
+        this.selectOrder = selectOrder;
         return this;
     }
 
-    public void setAddToOrder(Boolean addToOrder) {
-        this.addToOrder = addToOrder;
+    public void setSelectOrder(Boolean selectOrder) {
+        this.selectOrder = selectOrder;
     }
 
     public String getLastEditedBy() {
@@ -121,6 +125,19 @@ public class ShoppingCartItems implements Serializable {
         this.stockItem = stockItems;
     }
 
+    public DeliveryMethods getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public ShoppingCartItems deliveryMethod(DeliveryMethods deliveryMethods) {
+        this.deliveryMethod = deliveryMethods;
+        return this;
+    }
+
+    public void setDeliveryMethod(DeliveryMethods deliveryMethods) {
+        this.deliveryMethod = deliveryMethods;
+    }
+
     public ShoppingCarts getCart() {
         return cart;
     }
@@ -157,7 +174,7 @@ public class ShoppingCartItems implements Serializable {
         return "ShoppingCartItems{" +
             "id=" + getId() +
             ", quantity=" + getQuantity() +
-            ", addToOrder='" + isAddToOrder() + "'" +
+            ", selectOrder='" + isSelectOrder() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             "}";

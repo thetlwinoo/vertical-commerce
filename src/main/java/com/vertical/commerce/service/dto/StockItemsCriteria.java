@@ -38,11 +38,33 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     private StringFilter barcode;
 
+    private BigDecimalFilter taxRate;
+
     private BigDecimalFilter unitPrice;
 
     private BigDecimalFilter recommendedRetailPrice;
 
+    private BigDecimalFilter typicalWeightPerUnit;
+
     private IntegerFilter quantityOnHand;
+
+    private StringFilter shelf;
+
+    private StringFilter bin;
+
+    private IntegerFilter lastStockTakeQuantity;
+
+    private BigDecimalFilter lastCostPrice;
+
+    private IntegerFilter reorderLevel;
+
+    private IntegerFilter targetStockLevel;
+
+    private IntegerFilter leadTimeDays;
+
+    private IntegerFilter quantityPerOuter;
+
+    private BooleanFilter isChillerStock;
 
     private IntegerFilter itemLength;
 
@@ -76,11 +98,15 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     private IntegerFilter sellCount;
 
-    private StringFilter customFields;
+    private StringFilter tags;
+
+    private StringFilter searchDetails;
 
     private StringFilter thumbnailUrl;
 
     private BooleanFilter activeInd;
+
+    private BooleanFilter liveInd;
 
     private BooleanFilter cashOnDeliveryInd;
 
@@ -88,9 +114,9 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     private InstantFilter lastEditedWhen;
 
-    private LongFilter photoListId;
-
     private LongFilter specialDealListId;
+
+    private LongFilter photoListId;
 
     private LongFilter itemLengthUnitId;
 
@@ -116,8 +142,6 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     private LongFilter barcodeTypeId;
 
-    private LongFilter stockItemHoldingId;
-
     private LongFilter productId;
 
     public StockItemsCriteria() {
@@ -130,9 +154,20 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.vendorSKU = other.vendorSKU == null ? null : other.vendorSKU.copy();
         this.generatedSKU = other.generatedSKU == null ? null : other.generatedSKU.copy();
         this.barcode = other.barcode == null ? null : other.barcode.copy();
+        this.taxRate = other.taxRate == null ? null : other.taxRate.copy();
         this.unitPrice = other.unitPrice == null ? null : other.unitPrice.copy();
         this.recommendedRetailPrice = other.recommendedRetailPrice == null ? null : other.recommendedRetailPrice.copy();
+        this.typicalWeightPerUnit = other.typicalWeightPerUnit == null ? null : other.typicalWeightPerUnit.copy();
         this.quantityOnHand = other.quantityOnHand == null ? null : other.quantityOnHand.copy();
+        this.shelf = other.shelf == null ? null : other.shelf.copy();
+        this.bin = other.bin == null ? null : other.bin.copy();
+        this.lastStockTakeQuantity = other.lastStockTakeQuantity == null ? null : other.lastStockTakeQuantity.copy();
+        this.lastCostPrice = other.lastCostPrice == null ? null : other.lastCostPrice.copy();
+        this.reorderLevel = other.reorderLevel == null ? null : other.reorderLevel.copy();
+        this.targetStockLevel = other.targetStockLevel == null ? null : other.targetStockLevel.copy();
+        this.leadTimeDays = other.leadTimeDays == null ? null : other.leadTimeDays.copy();
+        this.quantityPerOuter = other.quantityPerOuter == null ? null : other.quantityPerOuter.copy();
+        this.isChillerStock = other.isChillerStock == null ? null : other.isChillerStock.copy();
         this.itemLength = other.itemLength == null ? null : other.itemLength.copy();
         this.itemWidth = other.itemWidth == null ? null : other.itemWidth.copy();
         this.itemHeight = other.itemHeight == null ? null : other.itemHeight.copy();
@@ -149,14 +184,16 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.sellStartDate = other.sellStartDate == null ? null : other.sellStartDate.copy();
         this.sellEndDate = other.sellEndDate == null ? null : other.sellEndDate.copy();
         this.sellCount = other.sellCount == null ? null : other.sellCount.copy();
-        this.customFields = other.customFields == null ? null : other.customFields.copy();
+        this.tags = other.tags == null ? null : other.tags.copy();
+        this.searchDetails = other.searchDetails == null ? null : other.searchDetails.copy();
         this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
         this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
+        this.liveInd = other.liveInd == null ? null : other.liveInd.copy();
         this.cashOnDeliveryInd = other.cashOnDeliveryInd == null ? null : other.cashOnDeliveryInd.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
-        this.photoListId = other.photoListId == null ? null : other.photoListId.copy();
         this.specialDealListId = other.specialDealListId == null ? null : other.specialDealListId.copy();
+        this.photoListId = other.photoListId == null ? null : other.photoListId.copy();
         this.itemLengthUnitId = other.itemLengthUnitId == null ? null : other.itemLengthUnitId.copy();
         this.itemWidthUnitId = other.itemWidthUnitId == null ? null : other.itemWidthUnitId.copy();
         this.itemHeightUnitId = other.itemHeightUnitId == null ? null : other.itemHeightUnitId.copy();
@@ -169,7 +206,6 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.materialId = other.materialId == null ? null : other.materialId.copy();
         this.currencyId = other.currencyId == null ? null : other.currencyId.copy();
         this.barcodeTypeId = other.barcodeTypeId == null ? null : other.barcodeTypeId.copy();
-        this.stockItemHoldingId = other.stockItemHoldingId == null ? null : other.stockItemHoldingId.copy();
         this.productId = other.productId == null ? null : other.productId.copy();
     }
 
@@ -226,6 +262,14 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.barcode = barcode;
     }
 
+    public BigDecimalFilter getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(BigDecimalFilter taxRate) {
+        this.taxRate = taxRate;
+    }
+
     public BigDecimalFilter getUnitPrice() {
         return unitPrice;
     }
@@ -242,12 +286,92 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.recommendedRetailPrice = recommendedRetailPrice;
     }
 
+    public BigDecimalFilter getTypicalWeightPerUnit() {
+        return typicalWeightPerUnit;
+    }
+
+    public void setTypicalWeightPerUnit(BigDecimalFilter typicalWeightPerUnit) {
+        this.typicalWeightPerUnit = typicalWeightPerUnit;
+    }
+
     public IntegerFilter getQuantityOnHand() {
         return quantityOnHand;
     }
 
     public void setQuantityOnHand(IntegerFilter quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
+    }
+
+    public StringFilter getShelf() {
+        return shelf;
+    }
+
+    public void setShelf(StringFilter shelf) {
+        this.shelf = shelf;
+    }
+
+    public StringFilter getBin() {
+        return bin;
+    }
+
+    public void setBin(StringFilter bin) {
+        this.bin = bin;
+    }
+
+    public IntegerFilter getLastStockTakeQuantity() {
+        return lastStockTakeQuantity;
+    }
+
+    public void setLastStockTakeQuantity(IntegerFilter lastStockTakeQuantity) {
+        this.lastStockTakeQuantity = lastStockTakeQuantity;
+    }
+
+    public BigDecimalFilter getLastCostPrice() {
+        return lastCostPrice;
+    }
+
+    public void setLastCostPrice(BigDecimalFilter lastCostPrice) {
+        this.lastCostPrice = lastCostPrice;
+    }
+
+    public IntegerFilter getReorderLevel() {
+        return reorderLevel;
+    }
+
+    public void setReorderLevel(IntegerFilter reorderLevel) {
+        this.reorderLevel = reorderLevel;
+    }
+
+    public IntegerFilter getTargetStockLevel() {
+        return targetStockLevel;
+    }
+
+    public void setTargetStockLevel(IntegerFilter targetStockLevel) {
+        this.targetStockLevel = targetStockLevel;
+    }
+
+    public IntegerFilter getLeadTimeDays() {
+        return leadTimeDays;
+    }
+
+    public void setLeadTimeDays(IntegerFilter leadTimeDays) {
+        this.leadTimeDays = leadTimeDays;
+    }
+
+    public IntegerFilter getQuantityPerOuter() {
+        return quantityPerOuter;
+    }
+
+    public void setQuantityPerOuter(IntegerFilter quantityPerOuter) {
+        this.quantityPerOuter = quantityPerOuter;
+    }
+
+    public BooleanFilter getIsChillerStock() {
+        return isChillerStock;
+    }
+
+    public void setIsChillerStock(BooleanFilter isChillerStock) {
+        this.isChillerStock = isChillerStock;
     }
 
     public IntegerFilter getItemLength() {
@@ -378,12 +502,20 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.sellCount = sellCount;
     }
 
-    public StringFilter getCustomFields() {
-        return customFields;
+    public StringFilter getTags() {
+        return tags;
     }
 
-    public void setCustomFields(StringFilter customFields) {
-        this.customFields = customFields;
+    public void setTags(StringFilter tags) {
+        this.tags = tags;
+    }
+
+    public StringFilter getSearchDetails() {
+        return searchDetails;
+    }
+
+    public void setSearchDetails(StringFilter searchDetails) {
+        this.searchDetails = searchDetails;
     }
 
     public StringFilter getThumbnailUrl() {
@@ -400,6 +532,14 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     public void setActiveInd(BooleanFilter activeInd) {
         this.activeInd = activeInd;
+    }
+
+    public BooleanFilter getLiveInd() {
+        return liveInd;
+    }
+
+    public void setLiveInd(BooleanFilter liveInd) {
+        this.liveInd = liveInd;
     }
 
     public BooleanFilter getCashOnDeliveryInd() {
@@ -426,20 +566,20 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public LongFilter getPhotoListId() {
-        return photoListId;
-    }
-
-    public void setPhotoListId(LongFilter photoListId) {
-        this.photoListId = photoListId;
-    }
-
     public LongFilter getSpecialDealListId() {
         return specialDealListId;
     }
 
     public void setSpecialDealListId(LongFilter specialDealListId) {
         this.specialDealListId = specialDealListId;
+    }
+
+    public LongFilter getPhotoListId() {
+        return photoListId;
+    }
+
+    public void setPhotoListId(LongFilter photoListId) {
+        this.photoListId = photoListId;
     }
 
     public LongFilter getItemLengthUnitId() {
@@ -538,14 +678,6 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.barcodeTypeId = barcodeTypeId;
     }
 
-    public LongFilter getStockItemHoldingId() {
-        return stockItemHoldingId;
-    }
-
-    public void setStockItemHoldingId(LongFilter stockItemHoldingId) {
-        this.stockItemHoldingId = stockItemHoldingId;
-    }
-
     public LongFilter getProductId() {
         return productId;
     }
@@ -571,9 +703,20 @@ public class StockItemsCriteria implements Serializable, Criteria {
             Objects.equals(vendorSKU, that.vendorSKU) &&
             Objects.equals(generatedSKU, that.generatedSKU) &&
             Objects.equals(barcode, that.barcode) &&
+            Objects.equals(taxRate, that.taxRate) &&
             Objects.equals(unitPrice, that.unitPrice) &&
             Objects.equals(recommendedRetailPrice, that.recommendedRetailPrice) &&
+            Objects.equals(typicalWeightPerUnit, that.typicalWeightPerUnit) &&
             Objects.equals(quantityOnHand, that.quantityOnHand) &&
+            Objects.equals(shelf, that.shelf) &&
+            Objects.equals(bin, that.bin) &&
+            Objects.equals(lastStockTakeQuantity, that.lastStockTakeQuantity) &&
+            Objects.equals(lastCostPrice, that.lastCostPrice) &&
+            Objects.equals(reorderLevel, that.reorderLevel) &&
+            Objects.equals(targetStockLevel, that.targetStockLevel) &&
+            Objects.equals(leadTimeDays, that.leadTimeDays) &&
+            Objects.equals(quantityPerOuter, that.quantityPerOuter) &&
+            Objects.equals(isChillerStock, that.isChillerStock) &&
             Objects.equals(itemLength, that.itemLength) &&
             Objects.equals(itemWidth, that.itemWidth) &&
             Objects.equals(itemHeight, that.itemHeight) &&
@@ -590,14 +733,16 @@ public class StockItemsCriteria implements Serializable, Criteria {
             Objects.equals(sellStartDate, that.sellStartDate) &&
             Objects.equals(sellEndDate, that.sellEndDate) &&
             Objects.equals(sellCount, that.sellCount) &&
-            Objects.equals(customFields, that.customFields) &&
+            Objects.equals(tags, that.tags) &&
+            Objects.equals(searchDetails, that.searchDetails) &&
             Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
             Objects.equals(activeInd, that.activeInd) &&
+            Objects.equals(liveInd, that.liveInd) &&
             Objects.equals(cashOnDeliveryInd, that.cashOnDeliveryInd) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
-            Objects.equals(photoListId, that.photoListId) &&
             Objects.equals(specialDealListId, that.specialDealListId) &&
+            Objects.equals(photoListId, that.photoListId) &&
             Objects.equals(itemLengthUnitId, that.itemLengthUnitId) &&
             Objects.equals(itemWidthUnitId, that.itemWidthUnitId) &&
             Objects.equals(itemHeightUnitId, that.itemHeightUnitId) &&
@@ -610,7 +755,6 @@ public class StockItemsCriteria implements Serializable, Criteria {
             Objects.equals(materialId, that.materialId) &&
             Objects.equals(currencyId, that.currencyId) &&
             Objects.equals(barcodeTypeId, that.barcodeTypeId) &&
-            Objects.equals(stockItemHoldingId, that.stockItemHoldingId) &&
             Objects.equals(productId, that.productId);
     }
 
@@ -623,9 +767,20 @@ public class StockItemsCriteria implements Serializable, Criteria {
         vendorSKU,
         generatedSKU,
         barcode,
+        taxRate,
         unitPrice,
         recommendedRetailPrice,
+        typicalWeightPerUnit,
         quantityOnHand,
+        shelf,
+        bin,
+        lastStockTakeQuantity,
+        lastCostPrice,
+        reorderLevel,
+        targetStockLevel,
+        leadTimeDays,
+        quantityPerOuter,
+        isChillerStock,
         itemLength,
         itemWidth,
         itemHeight,
@@ -642,14 +797,16 @@ public class StockItemsCriteria implements Serializable, Criteria {
         sellStartDate,
         sellEndDate,
         sellCount,
-        customFields,
+        tags,
+        searchDetails,
         thumbnailUrl,
         activeInd,
+        liveInd,
         cashOnDeliveryInd,
         lastEditedBy,
         lastEditedWhen,
-        photoListId,
         specialDealListId,
+        photoListId,
         itemLengthUnitId,
         itemWidthUnitId,
         itemHeightUnitId,
@@ -662,7 +819,6 @@ public class StockItemsCriteria implements Serializable, Criteria {
         materialId,
         currencyId,
         barcodeTypeId,
-        stockItemHoldingId,
         productId
         );
     }
@@ -677,9 +833,20 @@ public class StockItemsCriteria implements Serializable, Criteria {
                 (vendorSKU != null ? "vendorSKU=" + vendorSKU + ", " : "") +
                 (generatedSKU != null ? "generatedSKU=" + generatedSKU + ", " : "") +
                 (barcode != null ? "barcode=" + barcode + ", " : "") +
+                (taxRate != null ? "taxRate=" + taxRate + ", " : "") +
                 (unitPrice != null ? "unitPrice=" + unitPrice + ", " : "") +
                 (recommendedRetailPrice != null ? "recommendedRetailPrice=" + recommendedRetailPrice + ", " : "") +
+                (typicalWeightPerUnit != null ? "typicalWeightPerUnit=" + typicalWeightPerUnit + ", " : "") +
                 (quantityOnHand != null ? "quantityOnHand=" + quantityOnHand + ", " : "") +
+                (shelf != null ? "shelf=" + shelf + ", " : "") +
+                (bin != null ? "bin=" + bin + ", " : "") +
+                (lastStockTakeQuantity != null ? "lastStockTakeQuantity=" + lastStockTakeQuantity + ", " : "") +
+                (lastCostPrice != null ? "lastCostPrice=" + lastCostPrice + ", " : "") +
+                (reorderLevel != null ? "reorderLevel=" + reorderLevel + ", " : "") +
+                (targetStockLevel != null ? "targetStockLevel=" + targetStockLevel + ", " : "") +
+                (leadTimeDays != null ? "leadTimeDays=" + leadTimeDays + ", " : "") +
+                (quantityPerOuter != null ? "quantityPerOuter=" + quantityPerOuter + ", " : "") +
+                (isChillerStock != null ? "isChillerStock=" + isChillerStock + ", " : "") +
                 (itemLength != null ? "itemLength=" + itemLength + ", " : "") +
                 (itemWidth != null ? "itemWidth=" + itemWidth + ", " : "") +
                 (itemHeight != null ? "itemHeight=" + itemHeight + ", " : "") +
@@ -696,14 +863,16 @@ public class StockItemsCriteria implements Serializable, Criteria {
                 (sellStartDate != null ? "sellStartDate=" + sellStartDate + ", " : "") +
                 (sellEndDate != null ? "sellEndDate=" + sellEndDate + ", " : "") +
                 (sellCount != null ? "sellCount=" + sellCount + ", " : "") +
-                (customFields != null ? "customFields=" + customFields + ", " : "") +
+                (tags != null ? "tags=" + tags + ", " : "") +
+                (searchDetails != null ? "searchDetails=" + searchDetails + ", " : "") +
                 (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
                 (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
+                (liveInd != null ? "liveInd=" + liveInd + ", " : "") +
                 (cashOnDeliveryInd != null ? "cashOnDeliveryInd=" + cashOnDeliveryInd + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
-                (photoListId != null ? "photoListId=" + photoListId + ", " : "") +
                 (specialDealListId != null ? "specialDealListId=" + specialDealListId + ", " : "") +
+                (photoListId != null ? "photoListId=" + photoListId + ", " : "") +
                 (itemLengthUnitId != null ? "itemLengthUnitId=" + itemLengthUnitId + ", " : "") +
                 (itemWidthUnitId != null ? "itemWidthUnitId=" + itemWidthUnitId + ", " : "") +
                 (itemHeightUnitId != null ? "itemHeightUnitId=" + itemHeightUnitId + ", " : "") +
@@ -716,7 +885,6 @@ public class StockItemsCriteria implements Serializable, Criteria {
                 (materialId != null ? "materialId=" + materialId + ", " : "") +
                 (currencyId != null ? "currencyId=" + currencyId + ", " : "") +
                 (barcodeTypeId != null ? "barcodeTypeId=" + barcodeTypeId + ", " : "") +
-                (stockItemHoldingId != null ? "stockItemHoldingId=" + stockItemHoldingId + ", " : "") +
                 (productId != null ? "productId=" + productId + ", " : "") +
             "}";
     }

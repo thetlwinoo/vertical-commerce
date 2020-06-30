@@ -46,6 +46,8 @@ public class SpecialDealsDTO implements Serializable {
 
     private Long customerId;
 
+    private String customerName;
+
     private Long productCategoryId;
 
     private String productCategoryName;
@@ -172,6 +174,14 @@ public class SpecialDealsDTO implements Serializable {
         this.customerId = customersId;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customersName) {
+        this.customerName = customersName;
+    }
+
     public Long getProductCategoryId() {
         return productCategoryId;
     }
@@ -232,6 +242,7 @@ public class SpecialDealsDTO implements Serializable {
             ", customerCategoryId=" + getCustomerCategoryId() +
             ", customerCategoryName='" + getCustomerCategoryName() + "'" +
             ", customerId=" + getCustomerId() +
+            ", customerName='" + getCustomerName() + "'" +
             ", productCategoryId=" + getProductCategoryId() +
             ", productCategoryName='" + getProductCategoryName() + "'" +
             ", stockItemId=" + getStockItemId() +

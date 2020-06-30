@@ -8,6 +8,7 @@ import com.vertical.commerce.domain.People;
 import com.vertical.commerce.domain.Customers;
 import com.vertical.commerce.domain.DeliveryMethods;
 import com.vertical.commerce.domain.Orders;
+import com.vertical.commerce.domain.OrderPackages;
 import com.vertical.commerce.domain.PaymentMethods;
 import com.vertical.commerce.repository.InvoicesRepository;
 import com.vertical.commerce.service.InvoicesService;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -395,7 +397,7 @@ public class InvoicesResourceIT {
             .andExpect(jsonPath("$.[*].totalChillerItems").value(hasItem(DEFAULT_TOTAL_CHILLER_ITEMS)))
             .andExpect(jsonPath("$.[*].deliveryRun").value(hasItem(DEFAULT_DELIVERY_RUN)))
             .andExpect(jsonPath("$.[*].runPosition").value(hasItem(DEFAULT_RUN_POSITION)))
-            .andExpect(jsonPath("$.[*].returnedDeliveryData").value(hasItem(DEFAULT_RETURNED_DELIVERY_DATA)))
+            .andExpect(jsonPath("$.[*].returnedDeliveryData").value(hasItem(DEFAULT_RETURNED_DELIVERY_DATA.toString())))
             .andExpect(jsonPath("$.[*].confirmedDeliveryTime").value(hasItem(DEFAULT_CONFIRMED_DELIVERY_TIME.toString())))
             .andExpect(jsonPath("$.[*].confirmedReceivedBy").value(hasItem(DEFAULT_CONFIRMED_RECEIVED_BY)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
@@ -425,7 +427,7 @@ public class InvoicesResourceIT {
             .andExpect(jsonPath("$.totalChillerItems").value(DEFAULT_TOTAL_CHILLER_ITEMS))
             .andExpect(jsonPath("$.deliveryRun").value(DEFAULT_DELIVERY_RUN))
             .andExpect(jsonPath("$.runPosition").value(DEFAULT_RUN_POSITION))
-            .andExpect(jsonPath("$.returnedDeliveryData").value(DEFAULT_RETURNED_DELIVERY_DATA))
+            .andExpect(jsonPath("$.returnedDeliveryData").value(DEFAULT_RETURNED_DELIVERY_DATA.toString()))
             .andExpect(jsonPath("$.confirmedDeliveryTime").value(DEFAULT_CONFIRMED_DELIVERY_TIME.toString()))
             .andExpect(jsonPath("$.confirmedReceivedBy").value(DEFAULT_CONFIRMED_RECEIVED_BY))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
@@ -1315,84 +1317,6 @@ public class InvoicesResourceIT {
 
     @Test
     @Transactional
-    public void getAllInvoicesByReturnedDeliveryDataIsEqualToSomething() throws Exception {
-        // Initialize the database
-        invoicesRepository.saveAndFlush(invoices);
-
-        // Get all the invoicesList where returnedDeliveryData equals to DEFAULT_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldBeFound("returnedDeliveryData.equals=" + DEFAULT_RETURNED_DELIVERY_DATA);
-
-        // Get all the invoicesList where returnedDeliveryData equals to UPDATED_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldNotBeFound("returnedDeliveryData.equals=" + UPDATED_RETURNED_DELIVERY_DATA);
-    }
-
-    @Test
-    @Transactional
-    public void getAllInvoicesByReturnedDeliveryDataIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        invoicesRepository.saveAndFlush(invoices);
-
-        // Get all the invoicesList where returnedDeliveryData not equals to DEFAULT_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldNotBeFound("returnedDeliveryData.notEquals=" + DEFAULT_RETURNED_DELIVERY_DATA);
-
-        // Get all the invoicesList where returnedDeliveryData not equals to UPDATED_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldBeFound("returnedDeliveryData.notEquals=" + UPDATED_RETURNED_DELIVERY_DATA);
-    }
-
-    @Test
-    @Transactional
-    public void getAllInvoicesByReturnedDeliveryDataIsInShouldWork() throws Exception {
-        // Initialize the database
-        invoicesRepository.saveAndFlush(invoices);
-
-        // Get all the invoicesList where returnedDeliveryData in DEFAULT_RETURNED_DELIVERY_DATA or UPDATED_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldBeFound("returnedDeliveryData.in=" + DEFAULT_RETURNED_DELIVERY_DATA + "," + UPDATED_RETURNED_DELIVERY_DATA);
-
-        // Get all the invoicesList where returnedDeliveryData equals to UPDATED_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldNotBeFound("returnedDeliveryData.in=" + UPDATED_RETURNED_DELIVERY_DATA);
-    }
-
-    @Test
-    @Transactional
-    public void getAllInvoicesByReturnedDeliveryDataIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        invoicesRepository.saveAndFlush(invoices);
-
-        // Get all the invoicesList where returnedDeliveryData is not null
-        defaultInvoicesShouldBeFound("returnedDeliveryData.specified=true");
-
-        // Get all the invoicesList where returnedDeliveryData is null
-        defaultInvoicesShouldNotBeFound("returnedDeliveryData.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllInvoicesByReturnedDeliveryDataContainsSomething() throws Exception {
-        // Initialize the database
-        invoicesRepository.saveAndFlush(invoices);
-
-        // Get all the invoicesList where returnedDeliveryData contains DEFAULT_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldBeFound("returnedDeliveryData.contains=" + DEFAULT_RETURNED_DELIVERY_DATA);
-
-        // Get all the invoicesList where returnedDeliveryData contains UPDATED_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldNotBeFound("returnedDeliveryData.contains=" + UPDATED_RETURNED_DELIVERY_DATA);
-    }
-
-    @Test
-    @Transactional
-    public void getAllInvoicesByReturnedDeliveryDataNotContainsSomething() throws Exception {
-        // Initialize the database
-        invoicesRepository.saveAndFlush(invoices);
-
-        // Get all the invoicesList where returnedDeliveryData does not contain DEFAULT_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldNotBeFound("returnedDeliveryData.doesNotContain=" + DEFAULT_RETURNED_DELIVERY_DATA);
-
-        // Get all the invoicesList where returnedDeliveryData does not contain UPDATED_RETURNED_DELIVERY_DATA
-        defaultInvoicesShouldBeFound("returnedDeliveryData.doesNotContain=" + UPDATED_RETURNED_DELIVERY_DATA);
-    }
-
-
-    @Test
-    @Transactional
     public void getAllInvoicesByConfirmedDeliveryTimeIsEqualToSomething() throws Exception {
         // Initialize the database
         invoicesRepository.saveAndFlush(invoices);
@@ -1745,21 +1669,21 @@ public class InvoicesResourceIT {
 
     @Test
     @Transactional
-    public void getAllInvoicesBySalespersonPersonIsEqualToSomething() throws Exception {
+    public void getAllInvoicesBySalesPersonIsEqualToSomething() throws Exception {
         // Initialize the database
         invoicesRepository.saveAndFlush(invoices);
-        People salespersonPerson = PeopleResourceIT.createEntity(em);
-        em.persist(salespersonPerson);
+        People salesPerson = PeopleResourceIT.createEntity(em);
+        em.persist(salesPerson);
         em.flush();
-        invoices.setSalespersonPerson(salespersonPerson);
+        invoices.setSalesPerson(salesPerson);
         invoicesRepository.saveAndFlush(invoices);
-        Long salespersonPersonId = salespersonPerson.getId();
+        Long salesPersonId = salesPerson.getId();
 
-        // Get all the invoicesList where salespersonPerson equals to salespersonPersonId
-        defaultInvoicesShouldBeFound("salespersonPersonId.equals=" + salespersonPersonId);
+        // Get all the invoicesList where salesPerson equals to salesPersonId
+        defaultInvoicesShouldBeFound("salesPersonId.equals=" + salesPersonId);
 
-        // Get all the invoicesList where salespersonPerson equals to salespersonPersonId + 1
-        defaultInvoicesShouldNotBeFound("salespersonPersonId.equals=" + (salespersonPersonId + 1));
+        // Get all the invoicesList where salesPerson equals to salesPersonId + 1
+        defaultInvoicesShouldNotBeFound("salesPersonId.equals=" + (salesPersonId + 1));
     }
 
 
@@ -1885,6 +1809,26 @@ public class InvoicesResourceIT {
 
     @Test
     @Transactional
+    public void getAllInvoicesByOrderPackageIsEqualToSomething() throws Exception {
+        // Initialize the database
+        invoicesRepository.saveAndFlush(invoices);
+        OrderPackages orderPackage = OrderPackagesResourceIT.createEntity(em);
+        em.persist(orderPackage);
+        em.flush();
+        invoices.setOrderPackage(orderPackage);
+        invoicesRepository.saveAndFlush(invoices);
+        Long orderPackageId = orderPackage.getId();
+
+        // Get all the invoicesList where orderPackage equals to orderPackageId
+        defaultInvoicesShouldBeFound("orderPackageId.equals=" + orderPackageId);
+
+        // Get all the invoicesList where orderPackage equals to orderPackageId + 1
+        defaultInvoicesShouldNotBeFound("orderPackageId.equals=" + (orderPackageId + 1));
+    }
+
+
+    @Test
+    @Transactional
     public void getAllInvoicesByPaymentMethodIsEqualToSomething() throws Exception {
         // Initialize the database
         invoicesRepository.saveAndFlush(invoices);
@@ -1921,7 +1865,7 @@ public class InvoicesResourceIT {
             .andExpect(jsonPath("$.[*].totalChillerItems").value(hasItem(DEFAULT_TOTAL_CHILLER_ITEMS)))
             .andExpect(jsonPath("$.[*].deliveryRun").value(hasItem(DEFAULT_DELIVERY_RUN)))
             .andExpect(jsonPath("$.[*].runPosition").value(hasItem(DEFAULT_RUN_POSITION)))
-            .andExpect(jsonPath("$.[*].returnedDeliveryData").value(hasItem(DEFAULT_RETURNED_DELIVERY_DATA)))
+            .andExpect(jsonPath("$.[*].returnedDeliveryData").value(hasItem(DEFAULT_RETURNED_DELIVERY_DATA.toString())))
             .andExpect(jsonPath("$.[*].confirmedDeliveryTime").value(hasItem(DEFAULT_CONFIRMED_DELIVERY_TIME.toString())))
             .andExpect(jsonPath("$.[*].confirmedReceivedBy").value(hasItem(DEFAULT_CONFIRMED_RECEIVED_BY)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))

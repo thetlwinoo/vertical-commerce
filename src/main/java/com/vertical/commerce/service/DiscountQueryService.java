@@ -97,8 +97,19 @@ public class DiscountQueryService extends QueryService<Discount> {
             if (criteria.getDescription() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescription(), Discount_.description));
             }
-            if (criteria.getModifiedDate() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getModifiedDate(), Discount_.modifiedDate));
+            if (criteria.getValidFrom() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), Discount_.validFrom));
+            }
+            if (criteria.getValidTo() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidTo(), Discount_.validTo));
+            }
+            if (criteria.getSupplierId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierId(),
+                    root -> root.join(Discount_.supplier, JoinType.LEFT).get(Suppliers_.id)));
+            }
+            if (criteria.getDiscountTypeId() != null) {
+                specification = specification.and(buildSpecification(criteria.getDiscountTypeId(),
+                    root -> root.join(Discount_.discountType, JoinType.LEFT).get(DiscountTypes_.id)));
             }
         }
         return specification;

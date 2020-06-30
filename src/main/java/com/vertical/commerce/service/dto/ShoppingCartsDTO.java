@@ -15,7 +15,18 @@ public class ShoppingCartsDTO implements Serializable {
 
     private BigDecimal totalPrice;
 
-    private BigDecimal totalCargoPrice;
+    private BigDecimal subTotalPrice;
+
+    private BigDecimal totalShippingFee;
+
+    private BigDecimal totalShippingFeeDiscount;
+
+    private BigDecimal promotionTotal;
+
+    private BigDecimal voucherTotal;
+
+    @Lob
+    private String packageDetails;
 
     @Lob
     private String cartString;
@@ -32,7 +43,11 @@ public class ShoppingCartsDTO implements Serializable {
 
     private Long cartUserId;
 
+    private String cartUserFullName;
+
     private Long customerId;
+
+    private String customerName;
 
     private Long specialDealsId;
     
@@ -52,12 +67,52 @@ public class ShoppingCartsDTO implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public BigDecimal getTotalCargoPrice() {
-        return totalCargoPrice;
+    public BigDecimal getSubTotalPrice() {
+        return subTotalPrice;
     }
 
-    public void setTotalCargoPrice(BigDecimal totalCargoPrice) {
-        this.totalCargoPrice = totalCargoPrice;
+    public void setSubTotalPrice(BigDecimal subTotalPrice) {
+        this.subTotalPrice = subTotalPrice;
+    }
+
+    public BigDecimal getTotalShippingFee() {
+        return totalShippingFee;
+    }
+
+    public void setTotalShippingFee(BigDecimal totalShippingFee) {
+        this.totalShippingFee = totalShippingFee;
+    }
+
+    public BigDecimal getTotalShippingFeeDiscount() {
+        return totalShippingFeeDiscount;
+    }
+
+    public void setTotalShippingFeeDiscount(BigDecimal totalShippingFeeDiscount) {
+        this.totalShippingFeeDiscount = totalShippingFeeDiscount;
+    }
+
+    public BigDecimal getPromotionTotal() {
+        return promotionTotal;
+    }
+
+    public void setPromotionTotal(BigDecimal promotionTotal) {
+        this.promotionTotal = promotionTotal;
+    }
+
+    public BigDecimal getVoucherTotal() {
+        return voucherTotal;
+    }
+
+    public void setVoucherTotal(BigDecimal voucherTotal) {
+        this.voucherTotal = voucherTotal;
+    }
+
+    public String getPackageDetails() {
+        return packageDetails;
+    }
+
+    public void setPackageDetails(String packageDetails) {
+        this.packageDetails = packageDetails;
     }
 
     public String getCartString() {
@@ -100,12 +155,28 @@ public class ShoppingCartsDTO implements Serializable {
         this.cartUserId = peopleId;
     }
 
+    public String getCartUserFullName() {
+        return cartUserFullName;
+    }
+
+    public void setCartUserFullName(String peopleFullName) {
+        this.cartUserFullName = peopleFullName;
+    }
+
     public Long getCustomerId() {
         return customerId;
     }
 
     public void setCustomerId(Long customersId) {
         this.customerId = customersId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customersName) {
+        this.customerName = customersName;
     }
 
     public Long getSpecialDealsId() {
@@ -139,13 +210,20 @@ public class ShoppingCartsDTO implements Serializable {
         return "ShoppingCartsDTO{" +
             "id=" + getId() +
             ", totalPrice=" + getTotalPrice() +
-            ", totalCargoPrice=" + getTotalCargoPrice() +
+            ", subTotalPrice=" + getSubTotalPrice() +
+            ", totalShippingFee=" + getTotalShippingFee() +
+            ", totalShippingFeeDiscount=" + getTotalShippingFeeDiscount() +
+            ", promotionTotal=" + getPromotionTotal() +
+            ", voucherTotal=" + getVoucherTotal() +
+            ", packageDetails='" + getPackageDetails() + "'" +
             ", cartString='" + getCartString() + "'" +
             ", dealString='" + getDealString() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", cartUserId=" + getCartUserId() +
+            ", cartUserFullName='" + getCartUserFullName() + "'" +
             ", customerId=" + getCustomerId() +
+            ", customerName='" + getCustomerName() + "'" +
             ", specialDealsId=" + getSpecialDealsId() +
             "}";
     }

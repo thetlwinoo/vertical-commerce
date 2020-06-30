@@ -29,9 +29,23 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
+    private StringFilter thirdPartyName;
+
+    private IntegerFilter expectedMinArrivalDays;
+
+    private IntegerFilter expectedMaxArrivalDays;
+
+    private BooleanFilter activeInd;
+
+    private BooleanFilter defaultInd;
+
+    private StringFilter deliveryNote;
+
     private InstantFilter validFrom;
 
     private InstantFilter validTo;
+
+    private LongFilter supplierId;
 
     public DeliveryMethodsCriteria() {
     }
@@ -39,8 +53,15 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
     public DeliveryMethodsCriteria(DeliveryMethodsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
+        this.thirdPartyName = other.thirdPartyName == null ? null : other.thirdPartyName.copy();
+        this.expectedMinArrivalDays = other.expectedMinArrivalDays == null ? null : other.expectedMinArrivalDays.copy();
+        this.expectedMaxArrivalDays = other.expectedMaxArrivalDays == null ? null : other.expectedMaxArrivalDays.copy();
+        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
+        this.defaultInd = other.defaultInd == null ? null : other.defaultInd.copy();
+        this.deliveryNote = other.deliveryNote == null ? null : other.deliveryNote.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
+        this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
     }
 
     @Override
@@ -64,6 +85,54 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
         this.name = name;
     }
 
+    public StringFilter getThirdPartyName() {
+        return thirdPartyName;
+    }
+
+    public void setThirdPartyName(StringFilter thirdPartyName) {
+        this.thirdPartyName = thirdPartyName;
+    }
+
+    public IntegerFilter getExpectedMinArrivalDays() {
+        return expectedMinArrivalDays;
+    }
+
+    public void setExpectedMinArrivalDays(IntegerFilter expectedMinArrivalDays) {
+        this.expectedMinArrivalDays = expectedMinArrivalDays;
+    }
+
+    public IntegerFilter getExpectedMaxArrivalDays() {
+        return expectedMaxArrivalDays;
+    }
+
+    public void setExpectedMaxArrivalDays(IntegerFilter expectedMaxArrivalDays) {
+        this.expectedMaxArrivalDays = expectedMaxArrivalDays;
+    }
+
+    public BooleanFilter getActiveInd() {
+        return activeInd;
+    }
+
+    public void setActiveInd(BooleanFilter activeInd) {
+        this.activeInd = activeInd;
+    }
+
+    public BooleanFilter getDefaultInd() {
+        return defaultInd;
+    }
+
+    public void setDefaultInd(BooleanFilter defaultInd) {
+        this.defaultInd = defaultInd;
+    }
+
+    public StringFilter getDeliveryNote() {
+        return deliveryNote;
+    }
+
+    public void setDeliveryNote(StringFilter deliveryNote) {
+        this.deliveryNote = deliveryNote;
+    }
+
     public InstantFilter getValidFrom() {
         return validFrom;
     }
@@ -80,6 +149,14 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
         this.validTo = validTo;
     }
 
+    public LongFilter getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(LongFilter supplierId) {
+        this.supplierId = supplierId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -93,8 +170,15 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
+            Objects.equals(thirdPartyName, that.thirdPartyName) &&
+            Objects.equals(expectedMinArrivalDays, that.expectedMinArrivalDays) &&
+            Objects.equals(expectedMaxArrivalDays, that.expectedMaxArrivalDays) &&
+            Objects.equals(activeInd, that.activeInd) &&
+            Objects.equals(defaultInd, that.defaultInd) &&
+            Objects.equals(deliveryNote, that.deliveryNote) &&
             Objects.equals(validFrom, that.validFrom) &&
-            Objects.equals(validTo, that.validTo);
+            Objects.equals(validTo, that.validTo) &&
+            Objects.equals(supplierId, that.supplierId);
     }
 
     @Override
@@ -102,8 +186,15 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         name,
+        thirdPartyName,
+        expectedMinArrivalDays,
+        expectedMaxArrivalDays,
+        activeInd,
+        defaultInd,
+        deliveryNote,
         validFrom,
-        validTo
+        validTo,
+        supplierId
         );
     }
 
@@ -113,8 +204,15 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
         return "DeliveryMethodsCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
+                (thirdPartyName != null ? "thirdPartyName=" + thirdPartyName + ", " : "") +
+                (expectedMinArrivalDays != null ? "expectedMinArrivalDays=" + expectedMinArrivalDays + ", " : "") +
+                (expectedMaxArrivalDays != null ? "expectedMaxArrivalDays=" + expectedMaxArrivalDays + ", " : "") +
+                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
+                (defaultInd != null ? "defaultInd=" + defaultInd + ", " : "") +
+                (deliveryNote != null ? "deliveryNote=" + deliveryNote + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
+                (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
             "}";
     }
 

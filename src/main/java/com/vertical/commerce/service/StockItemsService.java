@@ -5,7 +5,6 @@ import com.vertical.commerce.service.dto.StockItemsDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,12 +27,6 @@ public interface StockItemsService {
      * @return the list of entities.
      */
     Page<StockItemsDTO> findAll(Pageable pageable);
-    /**
-     * Get all the StockItemsDTO where StockItemHolding is {@code null}.
-     *
-     * @return the {@link List} of entities.
-     */
-    List<StockItemsDTO> findAllWhereStockItemHoldingIsNull();
 
 
     /**

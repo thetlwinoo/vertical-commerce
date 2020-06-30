@@ -139,6 +139,9 @@ public class SuppliersQueryService extends QueryService<Suppliers> {
             if (criteria.getThumbnailUrl() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), Suppliers_.thumbnailUrl));
             }
+            if (criteria.getPickupSameAsHeadOffice() != null) {
+                specification = specification.and(buildSpecification(criteria.getPickupSameAsHeadOffice(), Suppliers_.pickupSameAsHeadOffice));
+            }
             if (criteria.getValidFrom() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), Suppliers_.validFrom));
             }
@@ -153,17 +156,17 @@ public class SuppliersQueryService extends QueryService<Suppliers> {
                 specification = specification.and(buildSpecification(criteria.getSupplierCategoryId(),
                     root -> root.join(Suppliers_.supplierCategory, JoinType.LEFT).get(SupplierCategories_.id)));
             }
+            if (criteria.getPickupAddressId() != null) {
+                specification = specification.and(buildSpecification(criteria.getPickupAddressId(),
+                    root -> root.join(Suppliers_.pickupAddress, JoinType.LEFT).get(Addresses_.id)));
+            }
+            if (criteria.getHeadOfficeAddressId() != null) {
+                specification = specification.and(buildSpecification(criteria.getHeadOfficeAddressId(),
+                    root -> root.join(Suppliers_.headOfficeAddress, JoinType.LEFT).get(Addresses_.id)));
+            }
             if (criteria.getDeliveryMethodId() != null) {
                 specification = specification.and(buildSpecification(criteria.getDeliveryMethodId(),
-                    root -> root.join(Suppliers_.deliveryMethod, JoinType.LEFT).get(DeliveryMethods_.id)));
-            }
-            if (criteria.getDeliveryCityId() != null) {
-                specification = specification.and(buildSpecification(criteria.getDeliveryCityId(),
-                    root -> root.join(Suppliers_.deliveryCity, JoinType.LEFT).get(Cities_.id)));
-            }
-            if (criteria.getPostalCityId() != null) {
-                specification = specification.and(buildSpecification(criteria.getPostalCityId(),
-                    root -> root.join(Suppliers_.postalCity, JoinType.LEFT).get(Cities_.id)));
+                    root -> root.join(Suppliers_.deliveryMethods, JoinType.LEFT).get(DeliveryMethods_.id)));
             }
         }
         return specification;

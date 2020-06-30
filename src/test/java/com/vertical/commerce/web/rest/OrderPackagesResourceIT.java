@@ -5,6 +5,8 @@ import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.OrderPackages;
 import com.vertical.commerce.domain.OrderLines;
 import com.vertical.commerce.domain.Suppliers;
+import com.vertical.commerce.domain.DeliveryMethods;
+import com.vertical.commerce.domain.SpecialDeals;
 import com.vertical.commerce.domain.Orders;
 import com.vertical.commerce.repository.OrderPackagesRepository;
 import com.vertical.commerce.service.OrderPackagesService;
@@ -24,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -54,8 +57,36 @@ public class OrderPackagesResourceIT {
     private static final String DEFAULT_INTERNAL_COMMENTS = "AAAAAAAAAA";
     private static final String UPDATED_INTERNAL_COMMENTS = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER = "BBBBBBBBBB";
+    private static final BigDecimal DEFAULT_PACKAGE_SHIPPING_FEE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PACKAGE_SHIPPING_FEE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_PACKAGE_SHIPPING_FEE = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_PACKAGE_SHIPPING_FEE_DISCOUNT = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_PACKAGE_PRICE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PACKAGE_PRICE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_PACKAGE_PRICE = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_PACKAGE_SUB_TOTAL = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PACKAGE_SUB_TOTAL = new BigDecimal(2);
+    private static final BigDecimal SMALLER_PACKAGE_SUB_TOTAL = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_PACKAGE_TAX_AMOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PACKAGE_TAX_AMOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_PACKAGE_TAX_AMOUNT = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_PACKAGE_VOUCHER_DISCOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PACKAGE_VOUCHER_DISCOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_PACKAGE_VOUCHER_DISCOUNT = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_PACKAGE_PROMOTION_DISCOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PACKAGE_PROMOTION_DISCOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_PACKAGE_PROMOTION_DISCOUNT = new BigDecimal(1 - 1);
+
+    private static final Instant DEFAULT_PICKING_COMPLETED_WHEN = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_PICKING_COMPLETED_WHEN = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final Instant DEFAULT_CUSTOMER_REVIEWED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CUSTOMER_REVIEWED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -121,7 +152,14 @@ public class OrderPackagesResourceIT {
             .comments(DEFAULT_COMMENTS)
             .deliveryInstructions(DEFAULT_DELIVERY_INSTRUCTIONS)
             .internalComments(DEFAULT_INTERNAL_COMMENTS)
-            .customerPurchaseOrderNumber(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER)
+            .packageShippingFee(DEFAULT_PACKAGE_SHIPPING_FEE)
+            .packageShippingFeeDiscount(DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT)
+            .packagePrice(DEFAULT_PACKAGE_PRICE)
+            .packageSubTotal(DEFAULT_PACKAGE_SUB_TOTAL)
+            .packageTaxAmount(DEFAULT_PACKAGE_TAX_AMOUNT)
+            .packageVoucherDiscount(DEFAULT_PACKAGE_VOUCHER_DISCOUNT)
+            .packagePromotionDiscount(DEFAULT_PACKAGE_PROMOTION_DISCOUNT)
+            .pickingCompletedWhen(DEFAULT_PICKING_COMPLETED_WHEN)
             .customerReviewedOn(DEFAULT_CUSTOMER_REVIEWED_ON)
             .sellerRating(DEFAULT_SELLER_RATING)
             .sellerReview(DEFAULT_SELLER_REVIEW)
@@ -146,7 +184,14 @@ public class OrderPackagesResourceIT {
             .comments(UPDATED_COMMENTS)
             .deliveryInstructions(UPDATED_DELIVERY_INSTRUCTIONS)
             .internalComments(UPDATED_INTERNAL_COMMENTS)
-            .customerPurchaseOrderNumber(UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER)
+            .packageShippingFee(UPDATED_PACKAGE_SHIPPING_FEE)
+            .packageShippingFeeDiscount(UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT)
+            .packagePrice(UPDATED_PACKAGE_PRICE)
+            .packageSubTotal(UPDATED_PACKAGE_SUB_TOTAL)
+            .packageTaxAmount(UPDATED_PACKAGE_TAX_AMOUNT)
+            .packageVoucherDiscount(UPDATED_PACKAGE_VOUCHER_DISCOUNT)
+            .packagePromotionDiscount(UPDATED_PACKAGE_PROMOTION_DISCOUNT)
+            .pickingCompletedWhen(UPDATED_PICKING_COMPLETED_WHEN)
             .customerReviewedOn(UPDATED_CUSTOMER_REVIEWED_ON)
             .sellerRating(UPDATED_SELLER_RATING)
             .sellerReview(UPDATED_SELLER_REVIEW)
@@ -184,7 +229,14 @@ public class OrderPackagesResourceIT {
         assertThat(testOrderPackages.getComments()).isEqualTo(DEFAULT_COMMENTS);
         assertThat(testOrderPackages.getDeliveryInstructions()).isEqualTo(DEFAULT_DELIVERY_INSTRUCTIONS);
         assertThat(testOrderPackages.getInternalComments()).isEqualTo(DEFAULT_INTERNAL_COMMENTS);
-        assertThat(testOrderPackages.getCustomerPurchaseOrderNumber()).isEqualTo(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        assertThat(testOrderPackages.getPackageShippingFee()).isEqualTo(DEFAULT_PACKAGE_SHIPPING_FEE);
+        assertThat(testOrderPackages.getPackageShippingFeeDiscount()).isEqualTo(DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT);
+        assertThat(testOrderPackages.getPackagePrice()).isEqualTo(DEFAULT_PACKAGE_PRICE);
+        assertThat(testOrderPackages.getPackageSubTotal()).isEqualTo(DEFAULT_PACKAGE_SUB_TOTAL);
+        assertThat(testOrderPackages.getPackageTaxAmount()).isEqualTo(DEFAULT_PACKAGE_TAX_AMOUNT);
+        assertThat(testOrderPackages.getPackageVoucherDiscount()).isEqualTo(DEFAULT_PACKAGE_VOUCHER_DISCOUNT);
+        assertThat(testOrderPackages.getPackagePromotionDiscount()).isEqualTo(DEFAULT_PACKAGE_PROMOTION_DISCOUNT);
+        assertThat(testOrderPackages.getPickingCompletedWhen()).isEqualTo(DEFAULT_PICKING_COMPLETED_WHEN);
         assertThat(testOrderPackages.getCustomerReviewedOn()).isEqualTo(DEFAULT_CUSTOMER_REVIEWED_ON);
         assertThat(testOrderPackages.getSellerRating()).isEqualTo(DEFAULT_SELLER_RATING);
         assertThat(testOrderPackages.getSellerReview()).isEqualTo(DEFAULT_SELLER_REVIEW);
@@ -273,7 +325,14 @@ public class OrderPackagesResourceIT {
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
             .andExpect(jsonPath("$.[*].deliveryInstructions").value(hasItem(DEFAULT_DELIVERY_INSTRUCTIONS)))
             .andExpect(jsonPath("$.[*].internalComments").value(hasItem(DEFAULT_INTERNAL_COMMENTS)))
-            .andExpect(jsonPath("$.[*].customerPurchaseOrderNumber").value(hasItem(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER)))
+            .andExpect(jsonPath("$.[*].packageShippingFee").value(hasItem(DEFAULT_PACKAGE_SHIPPING_FEE.intValue())))
+            .andExpect(jsonPath("$.[*].packageShippingFeeDiscount").value(hasItem(DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].packagePrice").value(hasItem(DEFAULT_PACKAGE_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].packageSubTotal").value(hasItem(DEFAULT_PACKAGE_SUB_TOTAL.intValue())))
+            .andExpect(jsonPath("$.[*].packageTaxAmount").value(hasItem(DEFAULT_PACKAGE_TAX_AMOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].packageVoucherDiscount").value(hasItem(DEFAULT_PACKAGE_VOUCHER_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].packagePromotionDiscount").value(hasItem(DEFAULT_PACKAGE_PROMOTION_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].pickingCompletedWhen").value(hasItem(DEFAULT_PICKING_COMPLETED_WHEN.toString())))
             .andExpect(jsonPath("$.[*].customerReviewedOn").value(hasItem(DEFAULT_CUSTOMER_REVIEWED_ON.toString())))
             .andExpect(jsonPath("$.[*].sellerRating").value(hasItem(DEFAULT_SELLER_RATING)))
             .andExpect(jsonPath("$.[*].sellerReview").value(hasItem(DEFAULT_SELLER_REVIEW.toString())))
@@ -301,7 +360,14 @@ public class OrderPackagesResourceIT {
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS))
             .andExpect(jsonPath("$.deliveryInstructions").value(DEFAULT_DELIVERY_INSTRUCTIONS))
             .andExpect(jsonPath("$.internalComments").value(DEFAULT_INTERNAL_COMMENTS))
-            .andExpect(jsonPath("$.customerPurchaseOrderNumber").value(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER))
+            .andExpect(jsonPath("$.packageShippingFee").value(DEFAULT_PACKAGE_SHIPPING_FEE.intValue()))
+            .andExpect(jsonPath("$.packageShippingFeeDiscount").value(DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT.intValue()))
+            .andExpect(jsonPath("$.packagePrice").value(DEFAULT_PACKAGE_PRICE.intValue()))
+            .andExpect(jsonPath("$.packageSubTotal").value(DEFAULT_PACKAGE_SUB_TOTAL.intValue()))
+            .andExpect(jsonPath("$.packageTaxAmount").value(DEFAULT_PACKAGE_TAX_AMOUNT.intValue()))
+            .andExpect(jsonPath("$.packageVoucherDiscount").value(DEFAULT_PACKAGE_VOUCHER_DISCOUNT.intValue()))
+            .andExpect(jsonPath("$.packagePromotionDiscount").value(DEFAULT_PACKAGE_PROMOTION_DISCOUNT.intValue()))
+            .andExpect(jsonPath("$.pickingCompletedWhen").value(DEFAULT_PICKING_COMPLETED_WHEN.toString()))
             .andExpect(jsonPath("$.customerReviewedOn").value(DEFAULT_CUSTOMER_REVIEWED_ON.toString()))
             .andExpect(jsonPath("$.sellerRating").value(DEFAULT_SELLER_RATING))
             .andExpect(jsonPath("$.sellerReview").value(DEFAULT_SELLER_REVIEW.toString()))
@@ -622,81 +688,790 @@ public class OrderPackagesResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrderPackagesByCustomerPurchaseOrderNumberIsEqualToSomething() throws Exception {
+    public void getAllOrderPackagesByPackageShippingFeeIsEqualToSomething() throws Exception {
         // Initialize the database
         orderPackagesRepository.saveAndFlush(orderPackages);
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber equals to DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldBeFound("customerPurchaseOrderNumber.equals=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        // Get all the orderPackagesList where packageShippingFee equals to DEFAULT_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldBeFound("packageShippingFee.equals=" + DEFAULT_PACKAGE_SHIPPING_FEE);
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber equals to UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldNotBeFound("customerPurchaseOrderNumber.equals=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        // Get all the orderPackagesList where packageShippingFee equals to UPDATED_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldNotBeFound("packageShippingFee.equals=" + UPDATED_PACKAGE_SHIPPING_FEE);
     }
 
     @Test
     @Transactional
-    public void getAllOrderPackagesByCustomerPurchaseOrderNumberIsNotEqualToSomething() throws Exception {
+    public void getAllOrderPackagesByPackageShippingFeeIsNotEqualToSomething() throws Exception {
         // Initialize the database
         orderPackagesRepository.saveAndFlush(orderPackages);
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber not equals to DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldNotBeFound("customerPurchaseOrderNumber.notEquals=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        // Get all the orderPackagesList where packageShippingFee not equals to DEFAULT_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldNotBeFound("packageShippingFee.notEquals=" + DEFAULT_PACKAGE_SHIPPING_FEE);
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber not equals to UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldBeFound("customerPurchaseOrderNumber.notEquals=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        // Get all the orderPackagesList where packageShippingFee not equals to UPDATED_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldBeFound("packageShippingFee.notEquals=" + UPDATED_PACKAGE_SHIPPING_FEE);
     }
 
     @Test
     @Transactional
-    public void getAllOrderPackagesByCustomerPurchaseOrderNumberIsInShouldWork() throws Exception {
+    public void getAllOrderPackagesByPackageShippingFeeIsInShouldWork() throws Exception {
         // Initialize the database
         orderPackagesRepository.saveAndFlush(orderPackages);
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber in DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER or UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldBeFound("customerPurchaseOrderNumber.in=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER + "," + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        // Get all the orderPackagesList where packageShippingFee in DEFAULT_PACKAGE_SHIPPING_FEE or UPDATED_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldBeFound("packageShippingFee.in=" + DEFAULT_PACKAGE_SHIPPING_FEE + "," + UPDATED_PACKAGE_SHIPPING_FEE);
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber equals to UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldNotBeFound("customerPurchaseOrderNumber.in=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        // Get all the orderPackagesList where packageShippingFee equals to UPDATED_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldNotBeFound("packageShippingFee.in=" + UPDATED_PACKAGE_SHIPPING_FEE);
     }
 
     @Test
     @Transactional
-    public void getAllOrderPackagesByCustomerPurchaseOrderNumberIsNullOrNotNull() throws Exception {
+    public void getAllOrderPackagesByPackageShippingFeeIsNullOrNotNull() throws Exception {
         // Initialize the database
         orderPackagesRepository.saveAndFlush(orderPackages);
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber is not null
-        defaultOrderPackagesShouldBeFound("customerPurchaseOrderNumber.specified=true");
+        // Get all the orderPackagesList where packageShippingFee is not null
+        defaultOrderPackagesShouldBeFound("packageShippingFee.specified=true");
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber is null
-        defaultOrderPackagesShouldNotBeFound("customerPurchaseOrderNumber.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllOrderPackagesByCustomerPurchaseOrderNumberContainsSomething() throws Exception {
-        // Initialize the database
-        orderPackagesRepository.saveAndFlush(orderPackages);
-
-        // Get all the orderPackagesList where customerPurchaseOrderNumber contains DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldBeFound("customerPurchaseOrderNumber.contains=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
-
-        // Get all the orderPackagesList where customerPurchaseOrderNumber contains UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldNotBeFound("customerPurchaseOrderNumber.contains=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        // Get all the orderPackagesList where packageShippingFee is null
+        defaultOrderPackagesShouldNotBeFound("packageShippingFee.specified=false");
     }
 
     @Test
     @Transactional
-    public void getAllOrderPackagesByCustomerPurchaseOrderNumberNotContainsSomething() throws Exception {
+    public void getAllOrderPackagesByPackageShippingFeeIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         orderPackagesRepository.saveAndFlush(orderPackages);
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber does not contain DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldNotBeFound("customerPurchaseOrderNumber.doesNotContain=" + DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        // Get all the orderPackagesList where packageShippingFee is greater than or equal to DEFAULT_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldBeFound("packageShippingFee.greaterThanOrEqual=" + DEFAULT_PACKAGE_SHIPPING_FEE);
 
-        // Get all the orderPackagesList where customerPurchaseOrderNumber does not contain UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER
-        defaultOrderPackagesShouldBeFound("customerPurchaseOrderNumber.doesNotContain=" + UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        // Get all the orderPackagesList where packageShippingFee is greater than or equal to UPDATED_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldNotBeFound("packageShippingFee.greaterThanOrEqual=" + UPDATED_PACKAGE_SHIPPING_FEE);
     }
 
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFee is less than or equal to DEFAULT_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldBeFound("packageShippingFee.lessThanOrEqual=" + DEFAULT_PACKAGE_SHIPPING_FEE);
+
+        // Get all the orderPackagesList where packageShippingFee is less than or equal to SMALLER_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldNotBeFound("packageShippingFee.lessThanOrEqual=" + SMALLER_PACKAGE_SHIPPING_FEE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeIsLessThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFee is less than DEFAULT_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldNotBeFound("packageShippingFee.lessThan=" + DEFAULT_PACKAGE_SHIPPING_FEE);
+
+        // Get all the orderPackagesList where packageShippingFee is less than UPDATED_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldBeFound("packageShippingFee.lessThan=" + UPDATED_PACKAGE_SHIPPING_FEE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFee is greater than DEFAULT_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldNotBeFound("packageShippingFee.greaterThan=" + DEFAULT_PACKAGE_SHIPPING_FEE);
+
+        // Get all the orderPackagesList where packageShippingFee is greater than SMALLER_PACKAGE_SHIPPING_FEE
+        defaultOrderPackagesShouldBeFound("packageShippingFee.greaterThan=" + SMALLER_PACKAGE_SHIPPING_FEE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeDiscountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount equals to DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageShippingFeeDiscount.equals=" + DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount equals to UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageShippingFeeDiscount.equals=" + UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeDiscountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount not equals to DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageShippingFeeDiscount.notEquals=" + DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount not equals to UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageShippingFeeDiscount.notEquals=" + UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeDiscountIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount in DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT or UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageShippingFeeDiscount.in=" + DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT + "," + UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount equals to UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageShippingFeeDiscount.in=" + UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeDiscountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is not null
+        defaultOrderPackagesShouldBeFound("packageShippingFeeDiscount.specified=true");
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is null
+        defaultOrderPackagesShouldNotBeFound("packageShippingFeeDiscount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeDiscountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is greater than or equal to DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageShippingFeeDiscount.greaterThanOrEqual=" + DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is greater than or equal to UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageShippingFeeDiscount.greaterThanOrEqual=" + UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeDiscountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is less than or equal to DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageShippingFeeDiscount.lessThanOrEqual=" + DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is less than or equal to SMALLER_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageShippingFeeDiscount.lessThanOrEqual=" + SMALLER_PACKAGE_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeDiscountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is less than DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageShippingFeeDiscount.lessThan=" + DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is less than UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageShippingFeeDiscount.lessThan=" + UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageShippingFeeDiscountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is greater than DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageShippingFeeDiscount.greaterThan=" + DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the orderPackagesList where packageShippingFeeDiscount is greater than SMALLER_PACKAGE_SHIPPING_FEE_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageShippingFeeDiscount.greaterThan=" + SMALLER_PACKAGE_SHIPPING_FEE_DISCOUNT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePriceIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePrice equals to DEFAULT_PACKAGE_PRICE
+        defaultOrderPackagesShouldBeFound("packagePrice.equals=" + DEFAULT_PACKAGE_PRICE);
+
+        // Get all the orderPackagesList where packagePrice equals to UPDATED_PACKAGE_PRICE
+        defaultOrderPackagesShouldNotBeFound("packagePrice.equals=" + UPDATED_PACKAGE_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePriceIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePrice not equals to DEFAULT_PACKAGE_PRICE
+        defaultOrderPackagesShouldNotBeFound("packagePrice.notEquals=" + DEFAULT_PACKAGE_PRICE);
+
+        // Get all the orderPackagesList where packagePrice not equals to UPDATED_PACKAGE_PRICE
+        defaultOrderPackagesShouldBeFound("packagePrice.notEquals=" + UPDATED_PACKAGE_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePriceIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePrice in DEFAULT_PACKAGE_PRICE or UPDATED_PACKAGE_PRICE
+        defaultOrderPackagesShouldBeFound("packagePrice.in=" + DEFAULT_PACKAGE_PRICE + "," + UPDATED_PACKAGE_PRICE);
+
+        // Get all the orderPackagesList where packagePrice equals to UPDATED_PACKAGE_PRICE
+        defaultOrderPackagesShouldNotBeFound("packagePrice.in=" + UPDATED_PACKAGE_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePriceIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePrice is not null
+        defaultOrderPackagesShouldBeFound("packagePrice.specified=true");
+
+        // Get all the orderPackagesList where packagePrice is null
+        defaultOrderPackagesShouldNotBeFound("packagePrice.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePriceIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePrice is greater than or equal to DEFAULT_PACKAGE_PRICE
+        defaultOrderPackagesShouldBeFound("packagePrice.greaterThanOrEqual=" + DEFAULT_PACKAGE_PRICE);
+
+        // Get all the orderPackagesList where packagePrice is greater than or equal to UPDATED_PACKAGE_PRICE
+        defaultOrderPackagesShouldNotBeFound("packagePrice.greaterThanOrEqual=" + UPDATED_PACKAGE_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePriceIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePrice is less than or equal to DEFAULT_PACKAGE_PRICE
+        defaultOrderPackagesShouldBeFound("packagePrice.lessThanOrEqual=" + DEFAULT_PACKAGE_PRICE);
+
+        // Get all the orderPackagesList where packagePrice is less than or equal to SMALLER_PACKAGE_PRICE
+        defaultOrderPackagesShouldNotBeFound("packagePrice.lessThanOrEqual=" + SMALLER_PACKAGE_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePriceIsLessThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePrice is less than DEFAULT_PACKAGE_PRICE
+        defaultOrderPackagesShouldNotBeFound("packagePrice.lessThan=" + DEFAULT_PACKAGE_PRICE);
+
+        // Get all the orderPackagesList where packagePrice is less than UPDATED_PACKAGE_PRICE
+        defaultOrderPackagesShouldBeFound("packagePrice.lessThan=" + UPDATED_PACKAGE_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePriceIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePrice is greater than DEFAULT_PACKAGE_PRICE
+        defaultOrderPackagesShouldNotBeFound("packagePrice.greaterThan=" + DEFAULT_PACKAGE_PRICE);
+
+        // Get all the orderPackagesList where packagePrice is greater than SMALLER_PACKAGE_PRICE
+        defaultOrderPackagesShouldBeFound("packagePrice.greaterThan=" + SMALLER_PACKAGE_PRICE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageSubTotalIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageSubTotal equals to DEFAULT_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldBeFound("packageSubTotal.equals=" + DEFAULT_PACKAGE_SUB_TOTAL);
+
+        // Get all the orderPackagesList where packageSubTotal equals to UPDATED_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldNotBeFound("packageSubTotal.equals=" + UPDATED_PACKAGE_SUB_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageSubTotalIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageSubTotal not equals to DEFAULT_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldNotBeFound("packageSubTotal.notEquals=" + DEFAULT_PACKAGE_SUB_TOTAL);
+
+        // Get all the orderPackagesList where packageSubTotal not equals to UPDATED_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldBeFound("packageSubTotal.notEquals=" + UPDATED_PACKAGE_SUB_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageSubTotalIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageSubTotal in DEFAULT_PACKAGE_SUB_TOTAL or UPDATED_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldBeFound("packageSubTotal.in=" + DEFAULT_PACKAGE_SUB_TOTAL + "," + UPDATED_PACKAGE_SUB_TOTAL);
+
+        // Get all the orderPackagesList where packageSubTotal equals to UPDATED_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldNotBeFound("packageSubTotal.in=" + UPDATED_PACKAGE_SUB_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageSubTotalIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageSubTotal is not null
+        defaultOrderPackagesShouldBeFound("packageSubTotal.specified=true");
+
+        // Get all the orderPackagesList where packageSubTotal is null
+        defaultOrderPackagesShouldNotBeFound("packageSubTotal.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageSubTotalIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageSubTotal is greater than or equal to DEFAULT_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldBeFound("packageSubTotal.greaterThanOrEqual=" + DEFAULT_PACKAGE_SUB_TOTAL);
+
+        // Get all the orderPackagesList where packageSubTotal is greater than or equal to UPDATED_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldNotBeFound("packageSubTotal.greaterThanOrEqual=" + UPDATED_PACKAGE_SUB_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageSubTotalIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageSubTotal is less than or equal to DEFAULT_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldBeFound("packageSubTotal.lessThanOrEqual=" + DEFAULT_PACKAGE_SUB_TOTAL);
+
+        // Get all the orderPackagesList where packageSubTotal is less than or equal to SMALLER_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldNotBeFound("packageSubTotal.lessThanOrEqual=" + SMALLER_PACKAGE_SUB_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageSubTotalIsLessThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageSubTotal is less than DEFAULT_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldNotBeFound("packageSubTotal.lessThan=" + DEFAULT_PACKAGE_SUB_TOTAL);
+
+        // Get all the orderPackagesList where packageSubTotal is less than UPDATED_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldBeFound("packageSubTotal.lessThan=" + UPDATED_PACKAGE_SUB_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageSubTotalIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageSubTotal is greater than DEFAULT_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldNotBeFound("packageSubTotal.greaterThan=" + DEFAULT_PACKAGE_SUB_TOTAL);
+
+        // Get all the orderPackagesList where packageSubTotal is greater than SMALLER_PACKAGE_SUB_TOTAL
+        defaultOrderPackagesShouldBeFound("packageSubTotal.greaterThan=" + SMALLER_PACKAGE_SUB_TOTAL);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageTaxAmountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageTaxAmount equals to DEFAULT_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldBeFound("packageTaxAmount.equals=" + DEFAULT_PACKAGE_TAX_AMOUNT);
+
+        // Get all the orderPackagesList where packageTaxAmount equals to UPDATED_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldNotBeFound("packageTaxAmount.equals=" + UPDATED_PACKAGE_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageTaxAmountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageTaxAmount not equals to DEFAULT_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldNotBeFound("packageTaxAmount.notEquals=" + DEFAULT_PACKAGE_TAX_AMOUNT);
+
+        // Get all the orderPackagesList where packageTaxAmount not equals to UPDATED_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldBeFound("packageTaxAmount.notEquals=" + UPDATED_PACKAGE_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageTaxAmountIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageTaxAmount in DEFAULT_PACKAGE_TAX_AMOUNT or UPDATED_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldBeFound("packageTaxAmount.in=" + DEFAULT_PACKAGE_TAX_AMOUNT + "," + UPDATED_PACKAGE_TAX_AMOUNT);
+
+        // Get all the orderPackagesList where packageTaxAmount equals to UPDATED_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldNotBeFound("packageTaxAmount.in=" + UPDATED_PACKAGE_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageTaxAmountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageTaxAmount is not null
+        defaultOrderPackagesShouldBeFound("packageTaxAmount.specified=true");
+
+        // Get all the orderPackagesList where packageTaxAmount is null
+        defaultOrderPackagesShouldNotBeFound("packageTaxAmount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageTaxAmountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageTaxAmount is greater than or equal to DEFAULT_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldBeFound("packageTaxAmount.greaterThanOrEqual=" + DEFAULT_PACKAGE_TAX_AMOUNT);
+
+        // Get all the orderPackagesList where packageTaxAmount is greater than or equal to UPDATED_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldNotBeFound("packageTaxAmount.greaterThanOrEqual=" + UPDATED_PACKAGE_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageTaxAmountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageTaxAmount is less than or equal to DEFAULT_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldBeFound("packageTaxAmount.lessThanOrEqual=" + DEFAULT_PACKAGE_TAX_AMOUNT);
+
+        // Get all the orderPackagesList where packageTaxAmount is less than or equal to SMALLER_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldNotBeFound("packageTaxAmount.lessThanOrEqual=" + SMALLER_PACKAGE_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageTaxAmountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageTaxAmount is less than DEFAULT_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldNotBeFound("packageTaxAmount.lessThan=" + DEFAULT_PACKAGE_TAX_AMOUNT);
+
+        // Get all the orderPackagesList where packageTaxAmount is less than UPDATED_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldBeFound("packageTaxAmount.lessThan=" + UPDATED_PACKAGE_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageTaxAmountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageTaxAmount is greater than DEFAULT_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldNotBeFound("packageTaxAmount.greaterThan=" + DEFAULT_PACKAGE_TAX_AMOUNT);
+
+        // Get all the orderPackagesList where packageTaxAmount is greater than SMALLER_PACKAGE_TAX_AMOUNT
+        defaultOrderPackagesShouldBeFound("packageTaxAmount.greaterThan=" + SMALLER_PACKAGE_TAX_AMOUNT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageVoucherDiscountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageVoucherDiscount equals to DEFAULT_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageVoucherDiscount.equals=" + DEFAULT_PACKAGE_VOUCHER_DISCOUNT);
+
+        // Get all the orderPackagesList where packageVoucherDiscount equals to UPDATED_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageVoucherDiscount.equals=" + UPDATED_PACKAGE_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageVoucherDiscountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageVoucherDiscount not equals to DEFAULT_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageVoucherDiscount.notEquals=" + DEFAULT_PACKAGE_VOUCHER_DISCOUNT);
+
+        // Get all the orderPackagesList where packageVoucherDiscount not equals to UPDATED_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageVoucherDiscount.notEquals=" + UPDATED_PACKAGE_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageVoucherDiscountIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageVoucherDiscount in DEFAULT_PACKAGE_VOUCHER_DISCOUNT or UPDATED_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageVoucherDiscount.in=" + DEFAULT_PACKAGE_VOUCHER_DISCOUNT + "," + UPDATED_PACKAGE_VOUCHER_DISCOUNT);
+
+        // Get all the orderPackagesList where packageVoucherDiscount equals to UPDATED_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageVoucherDiscount.in=" + UPDATED_PACKAGE_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageVoucherDiscountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageVoucherDiscount is not null
+        defaultOrderPackagesShouldBeFound("packageVoucherDiscount.specified=true");
+
+        // Get all the orderPackagesList where packageVoucherDiscount is null
+        defaultOrderPackagesShouldNotBeFound("packageVoucherDiscount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageVoucherDiscountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageVoucherDiscount is greater than or equal to DEFAULT_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageVoucherDiscount.greaterThanOrEqual=" + DEFAULT_PACKAGE_VOUCHER_DISCOUNT);
+
+        // Get all the orderPackagesList where packageVoucherDiscount is greater than or equal to UPDATED_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageVoucherDiscount.greaterThanOrEqual=" + UPDATED_PACKAGE_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageVoucherDiscountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageVoucherDiscount is less than or equal to DEFAULT_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageVoucherDiscount.lessThanOrEqual=" + DEFAULT_PACKAGE_VOUCHER_DISCOUNT);
+
+        // Get all the orderPackagesList where packageVoucherDiscount is less than or equal to SMALLER_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageVoucherDiscount.lessThanOrEqual=" + SMALLER_PACKAGE_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageVoucherDiscountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageVoucherDiscount is less than DEFAULT_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageVoucherDiscount.lessThan=" + DEFAULT_PACKAGE_VOUCHER_DISCOUNT);
+
+        // Get all the orderPackagesList where packageVoucherDiscount is less than UPDATED_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageVoucherDiscount.lessThan=" + UPDATED_PACKAGE_VOUCHER_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackageVoucherDiscountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packageVoucherDiscount is greater than DEFAULT_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packageVoucherDiscount.greaterThan=" + DEFAULT_PACKAGE_VOUCHER_DISCOUNT);
+
+        // Get all the orderPackagesList where packageVoucherDiscount is greater than SMALLER_PACKAGE_VOUCHER_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packageVoucherDiscount.greaterThan=" + SMALLER_PACKAGE_VOUCHER_DISCOUNT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePromotionDiscountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePromotionDiscount equals to DEFAULT_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packagePromotionDiscount.equals=" + DEFAULT_PACKAGE_PROMOTION_DISCOUNT);
+
+        // Get all the orderPackagesList where packagePromotionDiscount equals to UPDATED_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packagePromotionDiscount.equals=" + UPDATED_PACKAGE_PROMOTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePromotionDiscountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePromotionDiscount not equals to DEFAULT_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packagePromotionDiscount.notEquals=" + DEFAULT_PACKAGE_PROMOTION_DISCOUNT);
+
+        // Get all the orderPackagesList where packagePromotionDiscount not equals to UPDATED_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packagePromotionDiscount.notEquals=" + UPDATED_PACKAGE_PROMOTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePromotionDiscountIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePromotionDiscount in DEFAULT_PACKAGE_PROMOTION_DISCOUNT or UPDATED_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packagePromotionDiscount.in=" + DEFAULT_PACKAGE_PROMOTION_DISCOUNT + "," + UPDATED_PACKAGE_PROMOTION_DISCOUNT);
+
+        // Get all the orderPackagesList where packagePromotionDiscount equals to UPDATED_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packagePromotionDiscount.in=" + UPDATED_PACKAGE_PROMOTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePromotionDiscountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePromotionDiscount is not null
+        defaultOrderPackagesShouldBeFound("packagePromotionDiscount.specified=true");
+
+        // Get all the orderPackagesList where packagePromotionDiscount is null
+        defaultOrderPackagesShouldNotBeFound("packagePromotionDiscount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePromotionDiscountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePromotionDiscount is greater than or equal to DEFAULT_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packagePromotionDiscount.greaterThanOrEqual=" + DEFAULT_PACKAGE_PROMOTION_DISCOUNT);
+
+        // Get all the orderPackagesList where packagePromotionDiscount is greater than or equal to UPDATED_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packagePromotionDiscount.greaterThanOrEqual=" + UPDATED_PACKAGE_PROMOTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePromotionDiscountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePromotionDiscount is less than or equal to DEFAULT_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packagePromotionDiscount.lessThanOrEqual=" + DEFAULT_PACKAGE_PROMOTION_DISCOUNT);
+
+        // Get all the orderPackagesList where packagePromotionDiscount is less than or equal to SMALLER_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packagePromotionDiscount.lessThanOrEqual=" + SMALLER_PACKAGE_PROMOTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePromotionDiscountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePromotionDiscount is less than DEFAULT_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packagePromotionDiscount.lessThan=" + DEFAULT_PACKAGE_PROMOTION_DISCOUNT);
+
+        // Get all the orderPackagesList where packagePromotionDiscount is less than UPDATED_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packagePromotionDiscount.lessThan=" + UPDATED_PACKAGE_PROMOTION_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPackagePromotionDiscountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where packagePromotionDiscount is greater than DEFAULT_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldNotBeFound("packagePromotionDiscount.greaterThan=" + DEFAULT_PACKAGE_PROMOTION_DISCOUNT);
+
+        // Get all the orderPackagesList where packagePromotionDiscount is greater than SMALLER_PACKAGE_PROMOTION_DISCOUNT
+        defaultOrderPackagesShouldBeFound("packagePromotionDiscount.greaterThan=" + SMALLER_PACKAGE_PROMOTION_DISCOUNT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPickingCompletedWhenIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where pickingCompletedWhen equals to DEFAULT_PICKING_COMPLETED_WHEN
+        defaultOrderPackagesShouldBeFound("pickingCompletedWhen.equals=" + DEFAULT_PICKING_COMPLETED_WHEN);
+
+        // Get all the orderPackagesList where pickingCompletedWhen equals to UPDATED_PICKING_COMPLETED_WHEN
+        defaultOrderPackagesShouldNotBeFound("pickingCompletedWhen.equals=" + UPDATED_PICKING_COMPLETED_WHEN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPickingCompletedWhenIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where pickingCompletedWhen not equals to DEFAULT_PICKING_COMPLETED_WHEN
+        defaultOrderPackagesShouldNotBeFound("pickingCompletedWhen.notEquals=" + DEFAULT_PICKING_COMPLETED_WHEN);
+
+        // Get all the orderPackagesList where pickingCompletedWhen not equals to UPDATED_PICKING_COMPLETED_WHEN
+        defaultOrderPackagesShouldBeFound("pickingCompletedWhen.notEquals=" + UPDATED_PICKING_COMPLETED_WHEN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPickingCompletedWhenIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where pickingCompletedWhen in DEFAULT_PICKING_COMPLETED_WHEN or UPDATED_PICKING_COMPLETED_WHEN
+        defaultOrderPackagesShouldBeFound("pickingCompletedWhen.in=" + DEFAULT_PICKING_COMPLETED_WHEN + "," + UPDATED_PICKING_COMPLETED_WHEN);
+
+        // Get all the orderPackagesList where pickingCompletedWhen equals to UPDATED_PICKING_COMPLETED_WHEN
+        defaultOrderPackagesShouldNotBeFound("pickingCompletedWhen.in=" + UPDATED_PICKING_COMPLETED_WHEN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByPickingCompletedWhenIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where pickingCompletedWhen is not null
+        defaultOrderPackagesShouldBeFound("pickingCompletedWhen.specified=true");
+
+        // Get all the orderPackagesList where pickingCompletedWhen is null
+        defaultOrderPackagesShouldNotBeFound("pickingCompletedWhen.specified=false");
+    }
 
     @Test
     @Transactional
@@ -1236,6 +2011,46 @@ public class OrderPackagesResourceIT {
 
     @Test
     @Transactional
+    public void getAllOrderPackagesByDeliveryMethodIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+        DeliveryMethods deliveryMethod = DeliveryMethodsResourceIT.createEntity(em);
+        em.persist(deliveryMethod);
+        em.flush();
+        orderPackages.setDeliveryMethod(deliveryMethod);
+        orderPackagesRepository.saveAndFlush(orderPackages);
+        Long deliveryMethodId = deliveryMethod.getId();
+
+        // Get all the orderPackagesList where deliveryMethod equals to deliveryMethodId
+        defaultOrderPackagesShouldBeFound("deliveryMethodId.equals=" + deliveryMethodId);
+
+        // Get all the orderPackagesList where deliveryMethod equals to deliveryMethodId + 1
+        defaultOrderPackagesShouldNotBeFound("deliveryMethodId.equals=" + (deliveryMethodId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesBySpecialDealsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+        SpecialDeals specialDeals = SpecialDealsResourceIT.createEntity(em);
+        em.persist(specialDeals);
+        em.flush();
+        orderPackages.setSpecialDeals(specialDeals);
+        orderPackagesRepository.saveAndFlush(orderPackages);
+        Long specialDealsId = specialDeals.getId();
+
+        // Get all the orderPackagesList where specialDeals equals to specialDealsId
+        defaultOrderPackagesShouldBeFound("specialDealsId.equals=" + specialDealsId);
+
+        // Get all the orderPackagesList where specialDeals equals to specialDealsId + 1
+        defaultOrderPackagesShouldNotBeFound("specialDealsId.equals=" + (specialDealsId + 1));
+    }
+
+
+    @Test
+    @Transactional
     public void getAllOrderPackagesByOrderIsEqualToSomething() throws Exception {
         // Initialize the database
         orderPackagesRepository.saveAndFlush(orderPackages);
@@ -1265,7 +2080,14 @@ public class OrderPackagesResourceIT {
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
             .andExpect(jsonPath("$.[*].deliveryInstructions").value(hasItem(DEFAULT_DELIVERY_INSTRUCTIONS)))
             .andExpect(jsonPath("$.[*].internalComments").value(hasItem(DEFAULT_INTERNAL_COMMENTS)))
-            .andExpect(jsonPath("$.[*].customerPurchaseOrderNumber").value(hasItem(DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER)))
+            .andExpect(jsonPath("$.[*].packageShippingFee").value(hasItem(DEFAULT_PACKAGE_SHIPPING_FEE.intValue())))
+            .andExpect(jsonPath("$.[*].packageShippingFeeDiscount").value(hasItem(DEFAULT_PACKAGE_SHIPPING_FEE_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].packagePrice").value(hasItem(DEFAULT_PACKAGE_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].packageSubTotal").value(hasItem(DEFAULT_PACKAGE_SUB_TOTAL.intValue())))
+            .andExpect(jsonPath("$.[*].packageTaxAmount").value(hasItem(DEFAULT_PACKAGE_TAX_AMOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].packageVoucherDiscount").value(hasItem(DEFAULT_PACKAGE_VOUCHER_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].packagePromotionDiscount").value(hasItem(DEFAULT_PACKAGE_PROMOTION_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].pickingCompletedWhen").value(hasItem(DEFAULT_PICKING_COMPLETED_WHEN.toString())))
             .andExpect(jsonPath("$.[*].customerReviewedOn").value(hasItem(DEFAULT_CUSTOMER_REVIEWED_ON.toString())))
             .andExpect(jsonPath("$.[*].sellerRating").value(hasItem(DEFAULT_SELLER_RATING)))
             .andExpect(jsonPath("$.[*].sellerReview").value(hasItem(DEFAULT_SELLER_REVIEW.toString())))
@@ -1326,7 +2148,14 @@ public class OrderPackagesResourceIT {
             .comments(UPDATED_COMMENTS)
             .deliveryInstructions(UPDATED_DELIVERY_INSTRUCTIONS)
             .internalComments(UPDATED_INTERNAL_COMMENTS)
-            .customerPurchaseOrderNumber(UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER)
+            .packageShippingFee(UPDATED_PACKAGE_SHIPPING_FEE)
+            .packageShippingFeeDiscount(UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT)
+            .packagePrice(UPDATED_PACKAGE_PRICE)
+            .packageSubTotal(UPDATED_PACKAGE_SUB_TOTAL)
+            .packageTaxAmount(UPDATED_PACKAGE_TAX_AMOUNT)
+            .packageVoucherDiscount(UPDATED_PACKAGE_VOUCHER_DISCOUNT)
+            .packagePromotionDiscount(UPDATED_PACKAGE_PROMOTION_DISCOUNT)
+            .pickingCompletedWhen(UPDATED_PICKING_COMPLETED_WHEN)
             .customerReviewedOn(UPDATED_CUSTOMER_REVIEWED_ON)
             .sellerRating(UPDATED_SELLER_RATING)
             .sellerReview(UPDATED_SELLER_REVIEW)
@@ -1352,7 +2181,14 @@ public class OrderPackagesResourceIT {
         assertThat(testOrderPackages.getComments()).isEqualTo(UPDATED_COMMENTS);
         assertThat(testOrderPackages.getDeliveryInstructions()).isEqualTo(UPDATED_DELIVERY_INSTRUCTIONS);
         assertThat(testOrderPackages.getInternalComments()).isEqualTo(UPDATED_INTERNAL_COMMENTS);
-        assertThat(testOrderPackages.getCustomerPurchaseOrderNumber()).isEqualTo(UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER);
+        assertThat(testOrderPackages.getPackageShippingFee()).isEqualTo(UPDATED_PACKAGE_SHIPPING_FEE);
+        assertThat(testOrderPackages.getPackageShippingFeeDiscount()).isEqualTo(UPDATED_PACKAGE_SHIPPING_FEE_DISCOUNT);
+        assertThat(testOrderPackages.getPackagePrice()).isEqualTo(UPDATED_PACKAGE_PRICE);
+        assertThat(testOrderPackages.getPackageSubTotal()).isEqualTo(UPDATED_PACKAGE_SUB_TOTAL);
+        assertThat(testOrderPackages.getPackageTaxAmount()).isEqualTo(UPDATED_PACKAGE_TAX_AMOUNT);
+        assertThat(testOrderPackages.getPackageVoucherDiscount()).isEqualTo(UPDATED_PACKAGE_VOUCHER_DISCOUNT);
+        assertThat(testOrderPackages.getPackagePromotionDiscount()).isEqualTo(UPDATED_PACKAGE_PROMOTION_DISCOUNT);
+        assertThat(testOrderPackages.getPickingCompletedWhen()).isEqualTo(UPDATED_PICKING_COMPLETED_WHEN);
         assertThat(testOrderPackages.getCustomerReviewedOn()).isEqualTo(UPDATED_CUSTOMER_REVIEWED_ON);
         assertThat(testOrderPackages.getSellerRating()).isEqualTo(UPDATED_SELLER_RATING);
         assertThat(testOrderPackages.getSellerReview()).isEqualTo(UPDATED_SELLER_REVIEW);

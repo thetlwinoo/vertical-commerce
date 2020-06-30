@@ -68,8 +68,6 @@ public class InvoicesCriteria implements Serializable, Criteria {
 
     private StringFilter runPosition;
 
-    private StringFilter returnedDeliveryData;
-
     private InstantFilter confirmedDeliveryTime;
 
     private StringFilter confirmedReceivedBy;
@@ -84,7 +82,7 @@ public class InvoicesCriteria implements Serializable, Criteria {
 
     private LongFilter contactPersonId;
 
-    private LongFilter salespersonPersonId;
+    private LongFilter salesPersonId;
 
     private LongFilter packedByPersonId;
 
@@ -97,6 +95,8 @@ public class InvoicesCriteria implements Serializable, Criteria {
     private LongFilter deliveryMethodId;
 
     private LongFilter orderId;
+
+    private LongFilter orderPackageId;
 
     private LongFilter paymentMethodId;
 
@@ -116,7 +116,6 @@ public class InvoicesCriteria implements Serializable, Criteria {
         this.totalChillerItems = other.totalChillerItems == null ? null : other.totalChillerItems.copy();
         this.deliveryRun = other.deliveryRun == null ? null : other.deliveryRun.copy();
         this.runPosition = other.runPosition == null ? null : other.runPosition.copy();
-        this.returnedDeliveryData = other.returnedDeliveryData == null ? null : other.returnedDeliveryData.copy();
         this.confirmedDeliveryTime = other.confirmedDeliveryTime == null ? null : other.confirmedDeliveryTime.copy();
         this.confirmedReceivedBy = other.confirmedReceivedBy == null ? null : other.confirmedReceivedBy.copy();
         this.status = other.status == null ? null : other.status.copy();
@@ -124,13 +123,14 @@ public class InvoicesCriteria implements Serializable, Criteria {
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
         this.invoiceLineListId = other.invoiceLineListId == null ? null : other.invoiceLineListId.copy();
         this.contactPersonId = other.contactPersonId == null ? null : other.contactPersonId.copy();
-        this.salespersonPersonId = other.salespersonPersonId == null ? null : other.salespersonPersonId.copy();
+        this.salesPersonId = other.salesPersonId == null ? null : other.salesPersonId.copy();
         this.packedByPersonId = other.packedByPersonId == null ? null : other.packedByPersonId.copy();
         this.accountsPersonId = other.accountsPersonId == null ? null : other.accountsPersonId.copy();
         this.customerId = other.customerId == null ? null : other.customerId.copy();
         this.billToCustomerId = other.billToCustomerId == null ? null : other.billToCustomerId.copy();
         this.deliveryMethodId = other.deliveryMethodId == null ? null : other.deliveryMethodId.copy();
         this.orderId = other.orderId == null ? null : other.orderId.copy();
+        this.orderPackageId = other.orderPackageId == null ? null : other.orderPackageId.copy();
         this.paymentMethodId = other.paymentMethodId == null ? null : other.paymentMethodId.copy();
     }
 
@@ -235,14 +235,6 @@ public class InvoicesCriteria implements Serializable, Criteria {
         this.runPosition = runPosition;
     }
 
-    public StringFilter getReturnedDeliveryData() {
-        return returnedDeliveryData;
-    }
-
-    public void setReturnedDeliveryData(StringFilter returnedDeliveryData) {
-        this.returnedDeliveryData = returnedDeliveryData;
-    }
-
     public InstantFilter getConfirmedDeliveryTime() {
         return confirmedDeliveryTime;
     }
@@ -299,12 +291,12 @@ public class InvoicesCriteria implements Serializable, Criteria {
         this.contactPersonId = contactPersonId;
     }
 
-    public LongFilter getSalespersonPersonId() {
-        return salespersonPersonId;
+    public LongFilter getSalesPersonId() {
+        return salesPersonId;
     }
 
-    public void setSalespersonPersonId(LongFilter salespersonPersonId) {
-        this.salespersonPersonId = salespersonPersonId;
+    public void setSalesPersonId(LongFilter salesPersonId) {
+        this.salesPersonId = salesPersonId;
     }
 
     public LongFilter getPackedByPersonId() {
@@ -355,6 +347,14 @@ public class InvoicesCriteria implements Serializable, Criteria {
         this.orderId = orderId;
     }
 
+    public LongFilter getOrderPackageId() {
+        return orderPackageId;
+    }
+
+    public void setOrderPackageId(LongFilter orderPackageId) {
+        this.orderPackageId = orderPackageId;
+    }
+
     public LongFilter getPaymentMethodId() {
         return paymentMethodId;
     }
@@ -386,7 +386,6 @@ public class InvoicesCriteria implements Serializable, Criteria {
             Objects.equals(totalChillerItems, that.totalChillerItems) &&
             Objects.equals(deliveryRun, that.deliveryRun) &&
             Objects.equals(runPosition, that.runPosition) &&
-            Objects.equals(returnedDeliveryData, that.returnedDeliveryData) &&
             Objects.equals(confirmedDeliveryTime, that.confirmedDeliveryTime) &&
             Objects.equals(confirmedReceivedBy, that.confirmedReceivedBy) &&
             Objects.equals(status, that.status) &&
@@ -394,13 +393,14 @@ public class InvoicesCriteria implements Serializable, Criteria {
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
             Objects.equals(invoiceLineListId, that.invoiceLineListId) &&
             Objects.equals(contactPersonId, that.contactPersonId) &&
-            Objects.equals(salespersonPersonId, that.salespersonPersonId) &&
+            Objects.equals(salesPersonId, that.salesPersonId) &&
             Objects.equals(packedByPersonId, that.packedByPersonId) &&
             Objects.equals(accountsPersonId, that.accountsPersonId) &&
             Objects.equals(customerId, that.customerId) &&
             Objects.equals(billToCustomerId, that.billToCustomerId) &&
             Objects.equals(deliveryMethodId, that.deliveryMethodId) &&
             Objects.equals(orderId, that.orderId) &&
+            Objects.equals(orderPackageId, that.orderPackageId) &&
             Objects.equals(paymentMethodId, that.paymentMethodId);
     }
 
@@ -419,7 +419,6 @@ public class InvoicesCriteria implements Serializable, Criteria {
         totalChillerItems,
         deliveryRun,
         runPosition,
-        returnedDeliveryData,
         confirmedDeliveryTime,
         confirmedReceivedBy,
         status,
@@ -427,13 +426,14 @@ public class InvoicesCriteria implements Serializable, Criteria {
         lastEditedWhen,
         invoiceLineListId,
         contactPersonId,
-        salespersonPersonId,
+        salesPersonId,
         packedByPersonId,
         accountsPersonId,
         customerId,
         billToCustomerId,
         deliveryMethodId,
         orderId,
+        orderPackageId,
         paymentMethodId
         );
     }
@@ -454,7 +454,6 @@ public class InvoicesCriteria implements Serializable, Criteria {
                 (totalChillerItems != null ? "totalChillerItems=" + totalChillerItems + ", " : "") +
                 (deliveryRun != null ? "deliveryRun=" + deliveryRun + ", " : "") +
                 (runPosition != null ? "runPosition=" + runPosition + ", " : "") +
-                (returnedDeliveryData != null ? "returnedDeliveryData=" + returnedDeliveryData + ", " : "") +
                 (confirmedDeliveryTime != null ? "confirmedDeliveryTime=" + confirmedDeliveryTime + ", " : "") +
                 (confirmedReceivedBy != null ? "confirmedReceivedBy=" + confirmedReceivedBy + ", " : "") +
                 (status != null ? "status=" + status + ", " : "") +
@@ -462,13 +461,14 @@ public class InvoicesCriteria implements Serializable, Criteria {
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
                 (invoiceLineListId != null ? "invoiceLineListId=" + invoiceLineListId + ", " : "") +
                 (contactPersonId != null ? "contactPersonId=" + contactPersonId + ", " : "") +
-                (salespersonPersonId != null ? "salespersonPersonId=" + salespersonPersonId + ", " : "") +
+                (salesPersonId != null ? "salesPersonId=" + salesPersonId + ", " : "") +
                 (packedByPersonId != null ? "packedByPersonId=" + packedByPersonId + ", " : "") +
                 (accountsPersonId != null ? "accountsPersonId=" + accountsPersonId + ", " : "") +
                 (customerId != null ? "customerId=" + customerId + ", " : "") +
                 (billToCustomerId != null ? "billToCustomerId=" + billToCustomerId + ", " : "") +
                 (deliveryMethodId != null ? "deliveryMethodId=" + deliveryMethodId + ", " : "") +
                 (orderId != null ? "orderId=" + orderId + ", " : "") +
+                (orderPackageId != null ? "orderPackageId=" + orderPackageId + ", " : "") +
                 (paymentMethodId != null ? "paymentMethodId=" + paymentMethodId + ", " : "") +
             "}";
     }

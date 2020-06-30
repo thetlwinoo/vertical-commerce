@@ -44,7 +44,7 @@ public class AddressesCriteria implements Serializable, Criteria {
 
     private BooleanFilter activeInd;
 
-    private LongFilter stateProvinceId;
+    private LongFilter zoneId;
 
     private LongFilter addressTypeId;
 
@@ -64,7 +64,7 @@ public class AddressesCriteria implements Serializable, Criteria {
         this.postalCode = other.postalCode == null ? null : other.postalCode.copy();
         this.defaultInd = other.defaultInd == null ? null : other.defaultInd.copy();
         this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
-        this.stateProvinceId = other.stateProvinceId == null ? null : other.stateProvinceId.copy();
+        this.zoneId = other.zoneId == null ? null : other.zoneId.copy();
         this.addressTypeId = other.addressTypeId == null ? null : other.addressTypeId.copy();
         this.personId = other.personId == null ? null : other.personId.copy();
     }
@@ -154,12 +154,12 @@ public class AddressesCriteria implements Serializable, Criteria {
         this.activeInd = activeInd;
     }
 
-    public LongFilter getStateProvinceId() {
-        return stateProvinceId;
+    public LongFilter getZoneId() {
+        return zoneId;
     }
 
-    public void setStateProvinceId(LongFilter stateProvinceId) {
-        this.stateProvinceId = stateProvinceId;
+    public void setZoneId(LongFilter zoneId) {
+        this.zoneId = zoneId;
     }
 
     public LongFilter getAddressTypeId() {
@@ -199,7 +199,7 @@ public class AddressesCriteria implements Serializable, Criteria {
             Objects.equals(postalCode, that.postalCode) &&
             Objects.equals(defaultInd, that.defaultInd) &&
             Objects.equals(activeInd, that.activeInd) &&
-            Objects.equals(stateProvinceId, that.stateProvinceId) &&
+            Objects.equals(zoneId, that.zoneId) &&
             Objects.equals(addressTypeId, that.addressTypeId) &&
             Objects.equals(personId, that.personId);
     }
@@ -217,7 +217,7 @@ public class AddressesCriteria implements Serializable, Criteria {
         postalCode,
         defaultInd,
         activeInd,
-        stateProvinceId,
+        zoneId,
         addressTypeId,
         personId
         );
@@ -237,7 +237,7 @@ public class AddressesCriteria implements Serializable, Criteria {
                 (postalCode != null ? "postalCode=" + postalCode + ", " : "") +
                 (defaultInd != null ? "defaultInd=" + defaultInd + ", " : "") +
                 (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
-                (stateProvinceId != null ? "stateProvinceId=" + stateProvinceId + ", " : "") +
+                (zoneId != null ? "zoneId=" + zoneId + ", " : "") +
                 (addressTypeId != null ? "addressTypeId=" + addressTypeId + ", " : "") +
                 (personId != null ? "personId=" + personId + ", " : "") +
             "}";

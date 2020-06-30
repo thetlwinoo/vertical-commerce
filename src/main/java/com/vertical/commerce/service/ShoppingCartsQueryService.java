@@ -94,8 +94,20 @@ public class ShoppingCartsQueryService extends QueryService<ShoppingCarts> {
             if (criteria.getTotalPrice() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getTotalPrice(), ShoppingCarts_.totalPrice));
             }
-            if (criteria.getTotalCargoPrice() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getTotalCargoPrice(), ShoppingCarts_.totalCargoPrice));
+            if (criteria.getSubTotalPrice() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getSubTotalPrice(), ShoppingCarts_.subTotalPrice));
+            }
+            if (criteria.getTotalShippingFee() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalShippingFee(), ShoppingCarts_.totalShippingFee));
+            }
+            if (criteria.getTotalShippingFeeDiscount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalShippingFeeDiscount(), ShoppingCarts_.totalShippingFeeDiscount));
+            }
+            if (criteria.getPromotionTotal() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPromotionTotal(), ShoppingCarts_.promotionTotal));
+            }
+            if (criteria.getVoucherTotal() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getVoucherTotal(), ShoppingCarts_.voucherTotal));
             }
             if (criteria.getLastEditedBy() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLastEditedBy(), ShoppingCarts_.lastEditedBy));

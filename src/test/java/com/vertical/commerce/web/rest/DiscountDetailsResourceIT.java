@@ -4,7 +4,7 @@ import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.DiscountDetails;
 import com.vertical.commerce.domain.Discount;
-import com.vertical.commerce.domain.Products;
+import com.vertical.commerce.domain.StockItems;
 import com.vertical.commerce.domain.ProductCategory;
 import com.vertical.commerce.repository.DiscountDetailsRepository;
 import com.vertical.commerce.service.DiscountDetailsService;
@@ -42,6 +42,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class DiscountDetailsResourceIT {
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
     private static final BigDecimal DEFAULT_AMOUNT = new BigDecimal(1);
     private static final BigDecimal UPDATED_AMOUNT = new BigDecimal(2);
     private static final BigDecimal SMALLER_AMOUNT = new BigDecimal(1 - 1);
@@ -55,9 +58,6 @@ public class DiscountDetailsResourceIT {
     private static final Boolean DEFAULT_IS_FINAL_BILL_DISCOUNT = false;
     private static final Boolean UPDATED_IS_FINAL_BILL_DISCOUNT = true;
 
-    private static final String DEFAULT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NAME = "BBBBBBBBBB";
-
     private static final Integer DEFAULT_START_COUNT = 1;
     private static final Integer UPDATED_START_COUNT = 2;
     private static final Integer SMALLER_START_COUNT = 1 - 1;
@@ -69,6 +69,22 @@ public class DiscountDetailsResourceIT {
     private static final Integer DEFAULT_MULTIPLY_COUNT = 1;
     private static final Integer UPDATED_MULTIPLY_COUNT = 2;
     private static final Integer SMALLER_MULTIPLY_COUNT = 1 - 1;
+
+    private static final BigDecimal DEFAULT_MIN_AMOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_MIN_AMOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_MIN_AMOUNT = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_MAX_AMOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_MAX_AMOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_MAX_AMOUNT = new BigDecimal(1 - 1);
+
+    private static final Integer DEFAULT_MIN_VOLUME_WEIGHT = 1;
+    private static final Integer UPDATED_MIN_VOLUME_WEIGHT = 2;
+    private static final Integer SMALLER_MIN_VOLUME_WEIGHT = 1 - 1;
+
+    private static final Integer DEFAULT_MAX_VOLUME_WEIGHT = 1;
+    private static final Integer UPDATED_MAX_VOLUME_WEIGHT = 2;
+    private static final Integer SMALLER_MAX_VOLUME_WEIGHT = 1 - 1;
 
     private static final Instant DEFAULT_MODIFIED_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_MODIFIED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -101,14 +117,18 @@ public class DiscountDetailsResourceIT {
      */
     public static DiscountDetails createEntity(EntityManager em) {
         DiscountDetails discountDetails = new DiscountDetails()
+            .name(DEFAULT_NAME)
             .amount(DEFAULT_AMOUNT)
             .isPercentage(DEFAULT_IS_PERCENTAGE)
             .isAllowCombinationDiscount(DEFAULT_IS_ALLOW_COMBINATION_DISCOUNT)
             .isFinalBillDiscount(DEFAULT_IS_FINAL_BILL_DISCOUNT)
-            .name(DEFAULT_NAME)
             .startCount(DEFAULT_START_COUNT)
             .endCount(DEFAULT_END_COUNT)
             .multiplyCount(DEFAULT_MULTIPLY_COUNT)
+            .minAmount(DEFAULT_MIN_AMOUNT)
+            .maxAmount(DEFAULT_MAX_AMOUNT)
+            .minVolumeWeight(DEFAULT_MIN_VOLUME_WEIGHT)
+            .maxVolumeWeight(DEFAULT_MAX_VOLUME_WEIGHT)
             .modifiedDate(DEFAULT_MODIFIED_DATE);
         return discountDetails;
     }
@@ -120,14 +140,18 @@ public class DiscountDetailsResourceIT {
      */
     public static DiscountDetails createUpdatedEntity(EntityManager em) {
         DiscountDetails discountDetails = new DiscountDetails()
+            .name(UPDATED_NAME)
             .amount(UPDATED_AMOUNT)
             .isPercentage(UPDATED_IS_PERCENTAGE)
             .isAllowCombinationDiscount(UPDATED_IS_ALLOW_COMBINATION_DISCOUNT)
             .isFinalBillDiscount(UPDATED_IS_FINAL_BILL_DISCOUNT)
-            .name(UPDATED_NAME)
             .startCount(UPDATED_START_COUNT)
             .endCount(UPDATED_END_COUNT)
             .multiplyCount(UPDATED_MULTIPLY_COUNT)
+            .minAmount(UPDATED_MIN_AMOUNT)
+            .maxAmount(UPDATED_MAX_AMOUNT)
+            .minVolumeWeight(UPDATED_MIN_VOLUME_WEIGHT)
+            .maxVolumeWeight(UPDATED_MAX_VOLUME_WEIGHT)
             .modifiedDate(UPDATED_MODIFIED_DATE);
         return discountDetails;
     }
@@ -152,14 +176,18 @@ public class DiscountDetailsResourceIT {
         List<DiscountDetails> discountDetailsList = discountDetailsRepository.findAll();
         assertThat(discountDetailsList).hasSize(databaseSizeBeforeCreate + 1);
         DiscountDetails testDiscountDetails = discountDetailsList.get(discountDetailsList.size() - 1);
+        assertThat(testDiscountDetails.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testDiscountDetails.getAmount()).isEqualTo(DEFAULT_AMOUNT);
         assertThat(testDiscountDetails.isIsPercentage()).isEqualTo(DEFAULT_IS_PERCENTAGE);
         assertThat(testDiscountDetails.isIsAllowCombinationDiscount()).isEqualTo(DEFAULT_IS_ALLOW_COMBINATION_DISCOUNT);
         assertThat(testDiscountDetails.isIsFinalBillDiscount()).isEqualTo(DEFAULT_IS_FINAL_BILL_DISCOUNT);
-        assertThat(testDiscountDetails.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testDiscountDetails.getStartCount()).isEqualTo(DEFAULT_START_COUNT);
         assertThat(testDiscountDetails.getEndCount()).isEqualTo(DEFAULT_END_COUNT);
         assertThat(testDiscountDetails.getMultiplyCount()).isEqualTo(DEFAULT_MULTIPLY_COUNT);
+        assertThat(testDiscountDetails.getMinAmount()).isEqualTo(DEFAULT_MIN_AMOUNT);
+        assertThat(testDiscountDetails.getMaxAmount()).isEqualTo(DEFAULT_MAX_AMOUNT);
+        assertThat(testDiscountDetails.getMinVolumeWeight()).isEqualTo(DEFAULT_MIN_VOLUME_WEIGHT);
+        assertThat(testDiscountDetails.getMaxVolumeWeight()).isEqualTo(DEFAULT_MAX_VOLUME_WEIGHT);
         assertThat(testDiscountDetails.getModifiedDate()).isEqualTo(DEFAULT_MODIFIED_DATE);
     }
 
@@ -183,6 +211,26 @@ public class DiscountDetailsResourceIT {
         assertThat(discountDetailsList).hasSize(databaseSizeBeforeCreate);
     }
 
+
+    @Test
+    @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = discountDetailsRepository.findAll().size();
+        // set the field null
+        discountDetails.setName(null);
+
+        // Create the DiscountDetails, which fails.
+        DiscountDetailsDTO discountDetailsDTO = discountDetailsMapper.toDto(discountDetails);
+
+
+        restDiscountDetailsMockMvc.perform(post("/api/discount-details").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(discountDetailsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<DiscountDetails> discountDetailsList = discountDetailsRepository.findAll();
+        assertThat(discountDetailsList).hasSize(databaseSizeBeforeTest);
+    }
 
     @Test
     @Transactional
@@ -266,66 +314,6 @@ public class DiscountDetailsResourceIT {
 
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = discountDetailsRepository.findAll().size();
-        // set the field null
-        discountDetails.setName(null);
-
-        // Create the DiscountDetails, which fails.
-        DiscountDetailsDTO discountDetailsDTO = discountDetailsMapper.toDto(discountDetails);
-
-
-        restDiscountDetailsMockMvc.perform(post("/api/discount-details").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(discountDetailsDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<DiscountDetails> discountDetailsList = discountDetailsRepository.findAll();
-        assertThat(discountDetailsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkStartCountIsRequired() throws Exception {
-        int databaseSizeBeforeTest = discountDetailsRepository.findAll().size();
-        // set the field null
-        discountDetails.setStartCount(null);
-
-        // Create the DiscountDetails, which fails.
-        DiscountDetailsDTO discountDetailsDTO = discountDetailsMapper.toDto(discountDetails);
-
-
-        restDiscountDetailsMockMvc.perform(post("/api/discount-details").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(discountDetailsDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<DiscountDetails> discountDetailsList = discountDetailsRepository.findAll();
-        assertThat(discountDetailsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkMultiplyCountIsRequired() throws Exception {
-        int databaseSizeBeforeTest = discountDetailsRepository.findAll().size();
-        // set the field null
-        discountDetails.setMultiplyCount(null);
-
-        // Create the DiscountDetails, which fails.
-        DiscountDetailsDTO discountDetailsDTO = discountDetailsMapper.toDto(discountDetails);
-
-
-        restDiscountDetailsMockMvc.perform(post("/api/discount-details").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(discountDetailsDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<DiscountDetails> discountDetailsList = discountDetailsRepository.findAll();
-        assertThat(discountDetailsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkModifiedDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = discountDetailsRepository.findAll().size();
         // set the field null
@@ -355,14 +343,18 @@ public class DiscountDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(discountDetails.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
             .andExpect(jsonPath("$.[*].isPercentage").value(hasItem(DEFAULT_IS_PERCENTAGE.booleanValue())))
             .andExpect(jsonPath("$.[*].isAllowCombinationDiscount").value(hasItem(DEFAULT_IS_ALLOW_COMBINATION_DISCOUNT.booleanValue())))
             .andExpect(jsonPath("$.[*].isFinalBillDiscount").value(hasItem(DEFAULT_IS_FINAL_BILL_DISCOUNT.booleanValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].startCount").value(hasItem(DEFAULT_START_COUNT)))
             .andExpect(jsonPath("$.[*].endCount").value(hasItem(DEFAULT_END_COUNT)))
             .andExpect(jsonPath("$.[*].multiplyCount").value(hasItem(DEFAULT_MULTIPLY_COUNT)))
+            .andExpect(jsonPath("$.[*].minAmount").value(hasItem(DEFAULT_MIN_AMOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].maxAmount").value(hasItem(DEFAULT_MAX_AMOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].minVolumeWeight").value(hasItem(DEFAULT_MIN_VOLUME_WEIGHT)))
+            .andExpect(jsonPath("$.[*].maxVolumeWeight").value(hasItem(DEFAULT_MAX_VOLUME_WEIGHT)))
             .andExpect(jsonPath("$.[*].modifiedDate").value(hasItem(DEFAULT_MODIFIED_DATE.toString())));
     }
     
@@ -377,14 +369,18 @@ public class DiscountDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(discountDetails.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.intValue()))
             .andExpect(jsonPath("$.isPercentage").value(DEFAULT_IS_PERCENTAGE.booleanValue()))
             .andExpect(jsonPath("$.isAllowCombinationDiscount").value(DEFAULT_IS_ALLOW_COMBINATION_DISCOUNT.booleanValue()))
             .andExpect(jsonPath("$.isFinalBillDiscount").value(DEFAULT_IS_FINAL_BILL_DISCOUNT.booleanValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.startCount").value(DEFAULT_START_COUNT))
             .andExpect(jsonPath("$.endCount").value(DEFAULT_END_COUNT))
             .andExpect(jsonPath("$.multiplyCount").value(DEFAULT_MULTIPLY_COUNT))
+            .andExpect(jsonPath("$.minAmount").value(DEFAULT_MIN_AMOUNT.intValue()))
+            .andExpect(jsonPath("$.maxAmount").value(DEFAULT_MAX_AMOUNT.intValue()))
+            .andExpect(jsonPath("$.minVolumeWeight").value(DEFAULT_MIN_VOLUME_WEIGHT))
+            .andExpect(jsonPath("$.maxVolumeWeight").value(DEFAULT_MAX_VOLUME_WEIGHT))
             .andExpect(jsonPath("$.modifiedDate").value(DEFAULT_MODIFIED_DATE.toString()));
     }
 
@@ -405,6 +401,84 @@ public class DiscountDetailsResourceIT {
 
         defaultDiscountDetailsShouldBeFound("id.lessThanOrEqual=" + id);
         defaultDiscountDetailsShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where name equals to DEFAULT_NAME
+        defaultDiscountDetailsShouldBeFound("name.equals=" + DEFAULT_NAME);
+
+        // Get all the discountDetailsList where name equals to UPDATED_NAME
+        defaultDiscountDetailsShouldNotBeFound("name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByNameIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where name not equals to DEFAULT_NAME
+        defaultDiscountDetailsShouldNotBeFound("name.notEquals=" + DEFAULT_NAME);
+
+        // Get all the discountDetailsList where name not equals to UPDATED_NAME
+        defaultDiscountDetailsShouldBeFound("name.notEquals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where name in DEFAULT_NAME or UPDATED_NAME
+        defaultDiscountDetailsShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+
+        // Get all the discountDetailsList where name equals to UPDATED_NAME
+        defaultDiscountDetailsShouldNotBeFound("name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where name is not null
+        defaultDiscountDetailsShouldBeFound("name.specified=true");
+
+        // Get all the discountDetailsList where name is null
+        defaultDiscountDetailsShouldNotBeFound("name.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllDiscountDetailsByNameContainsSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where name contains DEFAULT_NAME
+        defaultDiscountDetailsShouldBeFound("name.contains=" + DEFAULT_NAME);
+
+        // Get all the discountDetailsList where name contains UPDATED_NAME
+        defaultDiscountDetailsShouldNotBeFound("name.contains=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where name does not contain DEFAULT_NAME
+        defaultDiscountDetailsShouldNotBeFound("name.doesNotContain=" + DEFAULT_NAME);
+
+        // Get all the discountDetailsList where name does not contain UPDATED_NAME
+        defaultDiscountDetailsShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
     }
 
 
@@ -668,84 +742,6 @@ public class DiscountDetailsResourceIT {
         // Get all the discountDetailsList where isFinalBillDiscount is null
         defaultDiscountDetailsShouldNotBeFound("isFinalBillDiscount.specified=false");
     }
-
-    @Test
-    @Transactional
-    public void getAllDiscountDetailsByNameIsEqualToSomething() throws Exception {
-        // Initialize the database
-        discountDetailsRepository.saveAndFlush(discountDetails);
-
-        // Get all the discountDetailsList where name equals to DEFAULT_NAME
-        defaultDiscountDetailsShouldBeFound("name.equals=" + DEFAULT_NAME);
-
-        // Get all the discountDetailsList where name equals to UPDATED_NAME
-        defaultDiscountDetailsShouldNotBeFound("name.equals=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void getAllDiscountDetailsByNameIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        discountDetailsRepository.saveAndFlush(discountDetails);
-
-        // Get all the discountDetailsList where name not equals to DEFAULT_NAME
-        defaultDiscountDetailsShouldNotBeFound("name.notEquals=" + DEFAULT_NAME);
-
-        // Get all the discountDetailsList where name not equals to UPDATED_NAME
-        defaultDiscountDetailsShouldBeFound("name.notEquals=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void getAllDiscountDetailsByNameIsInShouldWork() throws Exception {
-        // Initialize the database
-        discountDetailsRepository.saveAndFlush(discountDetails);
-
-        // Get all the discountDetailsList where name in DEFAULT_NAME or UPDATED_NAME
-        defaultDiscountDetailsShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
-
-        // Get all the discountDetailsList where name equals to UPDATED_NAME
-        defaultDiscountDetailsShouldNotBeFound("name.in=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void getAllDiscountDetailsByNameIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        discountDetailsRepository.saveAndFlush(discountDetails);
-
-        // Get all the discountDetailsList where name is not null
-        defaultDiscountDetailsShouldBeFound("name.specified=true");
-
-        // Get all the discountDetailsList where name is null
-        defaultDiscountDetailsShouldNotBeFound("name.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllDiscountDetailsByNameContainsSomething() throws Exception {
-        // Initialize the database
-        discountDetailsRepository.saveAndFlush(discountDetails);
-
-        // Get all the discountDetailsList where name contains DEFAULT_NAME
-        defaultDiscountDetailsShouldBeFound("name.contains=" + DEFAULT_NAME);
-
-        // Get all the discountDetailsList where name contains UPDATED_NAME
-        defaultDiscountDetailsShouldNotBeFound("name.contains=" + UPDATED_NAME);
-    }
-
-    @Test
-    @Transactional
-    public void getAllDiscountDetailsByNameNotContainsSomething() throws Exception {
-        // Initialize the database
-        discountDetailsRepository.saveAndFlush(discountDetails);
-
-        // Get all the discountDetailsList where name does not contain DEFAULT_NAME
-        defaultDiscountDetailsShouldNotBeFound("name.doesNotContain=" + DEFAULT_NAME);
-
-        // Get all the discountDetailsList where name does not contain UPDATED_NAME
-        defaultDiscountDetailsShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
-    }
-
 
     @Test
     @Transactional
@@ -1064,6 +1060,426 @@ public class DiscountDetailsResourceIT {
 
     @Test
     @Transactional
+    public void getAllDiscountDetailsByMinAmountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minAmount equals to DEFAULT_MIN_AMOUNT
+        defaultDiscountDetailsShouldBeFound("minAmount.equals=" + DEFAULT_MIN_AMOUNT);
+
+        // Get all the discountDetailsList where minAmount equals to UPDATED_MIN_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("minAmount.equals=" + UPDATED_MIN_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinAmountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minAmount not equals to DEFAULT_MIN_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("minAmount.notEquals=" + DEFAULT_MIN_AMOUNT);
+
+        // Get all the discountDetailsList where minAmount not equals to UPDATED_MIN_AMOUNT
+        defaultDiscountDetailsShouldBeFound("minAmount.notEquals=" + UPDATED_MIN_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinAmountIsInShouldWork() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minAmount in DEFAULT_MIN_AMOUNT or UPDATED_MIN_AMOUNT
+        defaultDiscountDetailsShouldBeFound("minAmount.in=" + DEFAULT_MIN_AMOUNT + "," + UPDATED_MIN_AMOUNT);
+
+        // Get all the discountDetailsList where minAmount equals to UPDATED_MIN_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("minAmount.in=" + UPDATED_MIN_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinAmountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minAmount is not null
+        defaultDiscountDetailsShouldBeFound("minAmount.specified=true");
+
+        // Get all the discountDetailsList where minAmount is null
+        defaultDiscountDetailsShouldNotBeFound("minAmount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinAmountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minAmount is greater than or equal to DEFAULT_MIN_AMOUNT
+        defaultDiscountDetailsShouldBeFound("minAmount.greaterThanOrEqual=" + DEFAULT_MIN_AMOUNT);
+
+        // Get all the discountDetailsList where minAmount is greater than or equal to UPDATED_MIN_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("minAmount.greaterThanOrEqual=" + UPDATED_MIN_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinAmountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minAmount is less than or equal to DEFAULT_MIN_AMOUNT
+        defaultDiscountDetailsShouldBeFound("minAmount.lessThanOrEqual=" + DEFAULT_MIN_AMOUNT);
+
+        // Get all the discountDetailsList where minAmount is less than or equal to SMALLER_MIN_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("minAmount.lessThanOrEqual=" + SMALLER_MIN_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinAmountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minAmount is less than DEFAULT_MIN_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("minAmount.lessThan=" + DEFAULT_MIN_AMOUNT);
+
+        // Get all the discountDetailsList where minAmount is less than UPDATED_MIN_AMOUNT
+        defaultDiscountDetailsShouldBeFound("minAmount.lessThan=" + UPDATED_MIN_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinAmountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minAmount is greater than DEFAULT_MIN_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("minAmount.greaterThan=" + DEFAULT_MIN_AMOUNT);
+
+        // Get all the discountDetailsList where minAmount is greater than SMALLER_MIN_AMOUNT
+        defaultDiscountDetailsShouldBeFound("minAmount.greaterThan=" + SMALLER_MIN_AMOUNT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxAmountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxAmount equals to DEFAULT_MAX_AMOUNT
+        defaultDiscountDetailsShouldBeFound("maxAmount.equals=" + DEFAULT_MAX_AMOUNT);
+
+        // Get all the discountDetailsList where maxAmount equals to UPDATED_MAX_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("maxAmount.equals=" + UPDATED_MAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxAmountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxAmount not equals to DEFAULT_MAX_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("maxAmount.notEquals=" + DEFAULT_MAX_AMOUNT);
+
+        // Get all the discountDetailsList where maxAmount not equals to UPDATED_MAX_AMOUNT
+        defaultDiscountDetailsShouldBeFound("maxAmount.notEquals=" + UPDATED_MAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxAmountIsInShouldWork() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxAmount in DEFAULT_MAX_AMOUNT or UPDATED_MAX_AMOUNT
+        defaultDiscountDetailsShouldBeFound("maxAmount.in=" + DEFAULT_MAX_AMOUNT + "," + UPDATED_MAX_AMOUNT);
+
+        // Get all the discountDetailsList where maxAmount equals to UPDATED_MAX_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("maxAmount.in=" + UPDATED_MAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxAmountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxAmount is not null
+        defaultDiscountDetailsShouldBeFound("maxAmount.specified=true");
+
+        // Get all the discountDetailsList where maxAmount is null
+        defaultDiscountDetailsShouldNotBeFound("maxAmount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxAmountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxAmount is greater than or equal to DEFAULT_MAX_AMOUNT
+        defaultDiscountDetailsShouldBeFound("maxAmount.greaterThanOrEqual=" + DEFAULT_MAX_AMOUNT);
+
+        // Get all the discountDetailsList where maxAmount is greater than or equal to UPDATED_MAX_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("maxAmount.greaterThanOrEqual=" + UPDATED_MAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxAmountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxAmount is less than or equal to DEFAULT_MAX_AMOUNT
+        defaultDiscountDetailsShouldBeFound("maxAmount.lessThanOrEqual=" + DEFAULT_MAX_AMOUNT);
+
+        // Get all the discountDetailsList where maxAmount is less than or equal to SMALLER_MAX_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("maxAmount.lessThanOrEqual=" + SMALLER_MAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxAmountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxAmount is less than DEFAULT_MAX_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("maxAmount.lessThan=" + DEFAULT_MAX_AMOUNT);
+
+        // Get all the discountDetailsList where maxAmount is less than UPDATED_MAX_AMOUNT
+        defaultDiscountDetailsShouldBeFound("maxAmount.lessThan=" + UPDATED_MAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxAmountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxAmount is greater than DEFAULT_MAX_AMOUNT
+        defaultDiscountDetailsShouldNotBeFound("maxAmount.greaterThan=" + DEFAULT_MAX_AMOUNT);
+
+        // Get all the discountDetailsList where maxAmount is greater than SMALLER_MAX_AMOUNT
+        defaultDiscountDetailsShouldBeFound("maxAmount.greaterThan=" + SMALLER_MAX_AMOUNT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinVolumeWeightIsEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minVolumeWeight equals to DEFAULT_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("minVolumeWeight.equals=" + DEFAULT_MIN_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where minVolumeWeight equals to UPDATED_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("minVolumeWeight.equals=" + UPDATED_MIN_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinVolumeWeightIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minVolumeWeight not equals to DEFAULT_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("minVolumeWeight.notEquals=" + DEFAULT_MIN_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where minVolumeWeight not equals to UPDATED_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("minVolumeWeight.notEquals=" + UPDATED_MIN_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinVolumeWeightIsInShouldWork() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minVolumeWeight in DEFAULT_MIN_VOLUME_WEIGHT or UPDATED_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("minVolumeWeight.in=" + DEFAULT_MIN_VOLUME_WEIGHT + "," + UPDATED_MIN_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where minVolumeWeight equals to UPDATED_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("minVolumeWeight.in=" + UPDATED_MIN_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinVolumeWeightIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minVolumeWeight is not null
+        defaultDiscountDetailsShouldBeFound("minVolumeWeight.specified=true");
+
+        // Get all the discountDetailsList where minVolumeWeight is null
+        defaultDiscountDetailsShouldNotBeFound("minVolumeWeight.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinVolumeWeightIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minVolumeWeight is greater than or equal to DEFAULT_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("minVolumeWeight.greaterThanOrEqual=" + DEFAULT_MIN_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where minVolumeWeight is greater than or equal to UPDATED_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("minVolumeWeight.greaterThanOrEqual=" + UPDATED_MIN_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinVolumeWeightIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minVolumeWeight is less than or equal to DEFAULT_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("minVolumeWeight.lessThanOrEqual=" + DEFAULT_MIN_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where minVolumeWeight is less than or equal to SMALLER_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("minVolumeWeight.lessThanOrEqual=" + SMALLER_MIN_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinVolumeWeightIsLessThanSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minVolumeWeight is less than DEFAULT_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("minVolumeWeight.lessThan=" + DEFAULT_MIN_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where minVolumeWeight is less than UPDATED_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("minVolumeWeight.lessThan=" + UPDATED_MIN_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMinVolumeWeightIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where minVolumeWeight is greater than DEFAULT_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("minVolumeWeight.greaterThan=" + DEFAULT_MIN_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where minVolumeWeight is greater than SMALLER_MIN_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("minVolumeWeight.greaterThan=" + SMALLER_MIN_VOLUME_WEIGHT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxVolumeWeightIsEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxVolumeWeight equals to DEFAULT_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("maxVolumeWeight.equals=" + DEFAULT_MAX_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where maxVolumeWeight equals to UPDATED_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("maxVolumeWeight.equals=" + UPDATED_MAX_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxVolumeWeightIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxVolumeWeight not equals to DEFAULT_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("maxVolumeWeight.notEquals=" + DEFAULT_MAX_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where maxVolumeWeight not equals to UPDATED_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("maxVolumeWeight.notEquals=" + UPDATED_MAX_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxVolumeWeightIsInShouldWork() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxVolumeWeight in DEFAULT_MAX_VOLUME_WEIGHT or UPDATED_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("maxVolumeWeight.in=" + DEFAULT_MAX_VOLUME_WEIGHT + "," + UPDATED_MAX_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where maxVolumeWeight equals to UPDATED_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("maxVolumeWeight.in=" + UPDATED_MAX_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxVolumeWeightIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxVolumeWeight is not null
+        defaultDiscountDetailsShouldBeFound("maxVolumeWeight.specified=true");
+
+        // Get all the discountDetailsList where maxVolumeWeight is null
+        defaultDiscountDetailsShouldNotBeFound("maxVolumeWeight.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxVolumeWeightIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxVolumeWeight is greater than or equal to DEFAULT_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("maxVolumeWeight.greaterThanOrEqual=" + DEFAULT_MAX_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where maxVolumeWeight is greater than or equal to UPDATED_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("maxVolumeWeight.greaterThanOrEqual=" + UPDATED_MAX_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxVolumeWeightIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxVolumeWeight is less than or equal to DEFAULT_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("maxVolumeWeight.lessThanOrEqual=" + DEFAULT_MAX_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where maxVolumeWeight is less than or equal to SMALLER_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("maxVolumeWeight.lessThanOrEqual=" + SMALLER_MAX_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxVolumeWeightIsLessThanSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxVolumeWeight is less than DEFAULT_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("maxVolumeWeight.lessThan=" + DEFAULT_MAX_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where maxVolumeWeight is less than UPDATED_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("maxVolumeWeight.lessThan=" + UPDATED_MAX_VOLUME_WEIGHT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllDiscountDetailsByMaxVolumeWeightIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        discountDetailsRepository.saveAndFlush(discountDetails);
+
+        // Get all the discountDetailsList where maxVolumeWeight is greater than DEFAULT_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldNotBeFound("maxVolumeWeight.greaterThan=" + DEFAULT_MAX_VOLUME_WEIGHT);
+
+        // Get all the discountDetailsList where maxVolumeWeight is greater than SMALLER_MAX_VOLUME_WEIGHT
+        defaultDiscountDetailsShouldBeFound("maxVolumeWeight.greaterThan=" + SMALLER_MAX_VOLUME_WEIGHT);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllDiscountDetailsByModifiedDateIsEqualToSomething() throws Exception {
         // Initialize the database
         discountDetailsRepository.saveAndFlush(discountDetails);
@@ -1136,21 +1552,21 @@ public class DiscountDetailsResourceIT {
 
     @Test
     @Transactional
-    public void getAllDiscountDetailsByProductIsEqualToSomething() throws Exception {
+    public void getAllDiscountDetailsByStockItemIsEqualToSomething() throws Exception {
         // Initialize the database
         discountDetailsRepository.saveAndFlush(discountDetails);
-        Products product = ProductsResourceIT.createEntity(em);
-        em.persist(product);
+        StockItems stockItem = StockItemsResourceIT.createEntity(em);
+        em.persist(stockItem);
         em.flush();
-        discountDetails.setProduct(product);
+        discountDetails.setStockItem(stockItem);
         discountDetailsRepository.saveAndFlush(discountDetails);
-        Long productId = product.getId();
+        Long stockItemId = stockItem.getId();
 
-        // Get all the discountDetailsList where product equals to productId
-        defaultDiscountDetailsShouldBeFound("productId.equals=" + productId);
+        // Get all the discountDetailsList where stockItem equals to stockItemId
+        defaultDiscountDetailsShouldBeFound("stockItemId.equals=" + stockItemId);
 
-        // Get all the discountDetailsList where product equals to productId + 1
-        defaultDiscountDetailsShouldNotBeFound("productId.equals=" + (productId + 1));
+        // Get all the discountDetailsList where stockItem equals to stockItemId + 1
+        defaultDiscountDetailsShouldNotBeFound("stockItemId.equals=" + (stockItemId + 1));
     }
 
 
@@ -1181,14 +1597,18 @@ public class DiscountDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(discountDetails.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.intValue())))
             .andExpect(jsonPath("$.[*].isPercentage").value(hasItem(DEFAULT_IS_PERCENTAGE.booleanValue())))
             .andExpect(jsonPath("$.[*].isAllowCombinationDiscount").value(hasItem(DEFAULT_IS_ALLOW_COMBINATION_DISCOUNT.booleanValue())))
             .andExpect(jsonPath("$.[*].isFinalBillDiscount").value(hasItem(DEFAULT_IS_FINAL_BILL_DISCOUNT.booleanValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].startCount").value(hasItem(DEFAULT_START_COUNT)))
             .andExpect(jsonPath("$.[*].endCount").value(hasItem(DEFAULT_END_COUNT)))
             .andExpect(jsonPath("$.[*].multiplyCount").value(hasItem(DEFAULT_MULTIPLY_COUNT)))
+            .andExpect(jsonPath("$.[*].minAmount").value(hasItem(DEFAULT_MIN_AMOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].maxAmount").value(hasItem(DEFAULT_MAX_AMOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].minVolumeWeight").value(hasItem(DEFAULT_MIN_VOLUME_WEIGHT)))
+            .andExpect(jsonPath("$.[*].maxVolumeWeight").value(hasItem(DEFAULT_MAX_VOLUME_WEIGHT)))
             .andExpect(jsonPath("$.[*].modifiedDate").value(hasItem(DEFAULT_MODIFIED_DATE.toString())));
 
         // Check, that the count call also returns 1
@@ -1236,14 +1656,18 @@ public class DiscountDetailsResourceIT {
         // Disconnect from session so that the updates on updatedDiscountDetails are not directly saved in db
         em.detach(updatedDiscountDetails);
         updatedDiscountDetails
+            .name(UPDATED_NAME)
             .amount(UPDATED_AMOUNT)
             .isPercentage(UPDATED_IS_PERCENTAGE)
             .isAllowCombinationDiscount(UPDATED_IS_ALLOW_COMBINATION_DISCOUNT)
             .isFinalBillDiscount(UPDATED_IS_FINAL_BILL_DISCOUNT)
-            .name(UPDATED_NAME)
             .startCount(UPDATED_START_COUNT)
             .endCount(UPDATED_END_COUNT)
             .multiplyCount(UPDATED_MULTIPLY_COUNT)
+            .minAmount(UPDATED_MIN_AMOUNT)
+            .maxAmount(UPDATED_MAX_AMOUNT)
+            .minVolumeWeight(UPDATED_MIN_VOLUME_WEIGHT)
+            .maxVolumeWeight(UPDATED_MAX_VOLUME_WEIGHT)
             .modifiedDate(UPDATED_MODIFIED_DATE);
         DiscountDetailsDTO discountDetailsDTO = discountDetailsMapper.toDto(updatedDiscountDetails);
 
@@ -1256,14 +1680,18 @@ public class DiscountDetailsResourceIT {
         List<DiscountDetails> discountDetailsList = discountDetailsRepository.findAll();
         assertThat(discountDetailsList).hasSize(databaseSizeBeforeUpdate);
         DiscountDetails testDiscountDetails = discountDetailsList.get(discountDetailsList.size() - 1);
+        assertThat(testDiscountDetails.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDiscountDetails.getAmount()).isEqualTo(UPDATED_AMOUNT);
         assertThat(testDiscountDetails.isIsPercentage()).isEqualTo(UPDATED_IS_PERCENTAGE);
         assertThat(testDiscountDetails.isIsAllowCombinationDiscount()).isEqualTo(UPDATED_IS_ALLOW_COMBINATION_DISCOUNT);
         assertThat(testDiscountDetails.isIsFinalBillDiscount()).isEqualTo(UPDATED_IS_FINAL_BILL_DISCOUNT);
-        assertThat(testDiscountDetails.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDiscountDetails.getStartCount()).isEqualTo(UPDATED_START_COUNT);
         assertThat(testDiscountDetails.getEndCount()).isEqualTo(UPDATED_END_COUNT);
         assertThat(testDiscountDetails.getMultiplyCount()).isEqualTo(UPDATED_MULTIPLY_COUNT);
+        assertThat(testDiscountDetails.getMinAmount()).isEqualTo(UPDATED_MIN_AMOUNT);
+        assertThat(testDiscountDetails.getMaxAmount()).isEqualTo(UPDATED_MAX_AMOUNT);
+        assertThat(testDiscountDetails.getMinVolumeWeight()).isEqualTo(UPDATED_MIN_VOLUME_WEIGHT);
+        assertThat(testDiscountDetails.getMaxVolumeWeight()).isEqualTo(UPDATED_MAX_VOLUME_WEIGHT);
         assertThat(testDiscountDetails.getModifiedDate()).isEqualTo(UPDATED_MODIFIED_DATE);
     }
 

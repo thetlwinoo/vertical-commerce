@@ -5,7 +5,6 @@ import com.vertical.commerce.service.ProductsExtendService;
 import com.vertical.commerce.service.dto.ProductCategoryDTO;
 import com.vertical.commerce.service.dto.ProductsCriteria;
 import com.vertical.commerce.service.dto.ProductsDTO;
-import com.vertical.commerce.service.dto.ReviewLinesDTO;
 import com.vertical.commerce.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -97,6 +96,12 @@ public class ProductsExtendResource {
     public ResponseEntity getFullById(@PathVariable Long id) {
         Optional<ProductsDTO> products = productsExtendService.findOne(id);
         return ResponseUtil.wrapOrNotFound(products);
+    }
+
+    @RequestMapping(value = "/products-extend/details/{id}", method = RequestMethod.GET)
+    public ResponseEntity<String> getProductDetails(@PathVariable Long id) {
+        String details = productsExtendService.getProductDetails(id);
+        return ResponseEntity.ok().body(details);
     }
 
     @RequestMapping(value = "/products-extend/related", method = RequestMethod.GET, params = "id")

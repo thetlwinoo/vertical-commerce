@@ -2,6 +2,7 @@ package com.vertical.commerce.web.rest;
 
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
+import com.vertical.commerce.service.OrderPackagesExtendService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -20,12 +21,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class OrderPackagesExtendResourceIT {
 
     private MockMvc restMockMvc;
+    private final OrderPackagesExtendService orderPackagesExtendService;
+
+    public OrderPackagesExtendResourceIT(OrderPackagesExtendService orderPackagesExtendService) {
+        this.orderPackagesExtendService = orderPackagesExtendService;
+    }
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        OrderPackagesExtendResource orderPackagesExtendResource = new OrderPackagesExtendResource();
+        OrderPackagesExtendResource orderPackagesExtendResource = new OrderPackagesExtendResource(orderPackagesExtendService);
         restMockMvc = MockMvcBuilders
             .standaloneSetup(orderPackagesExtendResource)
             .build();

@@ -45,15 +45,15 @@ public class OrderLinesExtendServiceImpl implements OrderLinesExtendService {
         OrderLines orderLines = orderLinesMapper.toEntity(orderLinesDTO);
         orderLines = orderLinesRepository.save(orderLines);
 
-        Orders orders = orderLines.getOrder();
-        List<String> orderLineList= new ArrayList<>();
-
-        for (OrderLines i : orders.getOrderLineLists()) {
-            String orderLineString = commonService.getOrderLineString(orders,i);
-            orderLineList.add(orderLineString);
-        }
-        orders.setOrderLineString(String.join(";",orderLineList));
-        ordersRepository.save(orders);
+//        Orders orders = orderLines.getOrder();
+//        List<String> orderLineList= new ArrayList<>();
+//
+//        for (OrderLines i : orders.getOrderLineLists()) {
+//            String orderLineString = commonService.getOrderLineString(orders,i);
+//            orderLineList.add(orderLineString);
+//        }
+//        orders.setOrderLineString(String.join(";",orderLineList));
+//        ordersRepository.save(orders);
 
         return orderLinesMapper.toDto(orderLines);
     }

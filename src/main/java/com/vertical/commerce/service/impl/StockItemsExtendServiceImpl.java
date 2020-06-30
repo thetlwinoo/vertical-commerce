@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
+
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
@@ -101,13 +103,25 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
             saveStockItems.setSellStartDate(stockItemsDTO.getSellStartDate());
             saveStockItems.setSellEndDate(stockItemsDTO.getSellEndDate());
             saveStockItems.setCustomFields(stockItemsDTO.getCustomFields());
-            saveStockItems.setActiveInd(true);
+            saveStockItems.setActiveInd(false);
+            saveStockItems.setLiveInd(true);
             saveStockItems.setSellCount(0);
             saveStockItems.setProduct(productsRepository.getOne(stockItemsDTO.getProductId()));
             Materials materials = commonService.getMaterialsEntity(stockItemsDTO.getMaterialId(),stockItemsDTO.getMaterialName());
             saveStockItems.setMaterial(materials);
+            saveStockItems.setQuantityOnHand(stockItemsDTO.getQuantityOnHand());
+            saveStockItems.setLastCostPrice(stockItemsDTO.getLastCostPrice());
+            saveStockItems.setBin(stockItemsDTO.getBin());
+            saveStockItems.setShelf(stockItemsDTO.getShelf());
+            saveStockItems.setCashOnDeliveryInd(false);
+            saveStockItems.setReorderLevel(stockItemsDTO.getReorderLevel());
+            saveStockItems.setLastStockTakeQuantity(stockItemsDTO.getLastStockTakeQuantity());
+            saveStockItems.targetStockLevel(stockItemsDTO.getTargetStockLevel());
+            saveStockItems.setSearchDetails(stockItemsDTO.getSearchDetails());
             saveStockItems.setLastEditedBy(people.getFullName());
             saveStockItems.setLastEditedWhen(Instant.now());
+            saveStockItems.setIsChillerStock(stockItemsDTO.isIsChillerStock());
+            saveStockItems.setTaxRate(BigDecimal.valueOf(commonService.getTaxByCode("ECT").getRate()));
             Currency currency = commonService.getCurrencyEntity(stockItemsDTO.getCurrencyId(),stockItemsDTO.getCurrencyCode());
             saveStockItems.setCurrency(currency);
 

@@ -101,14 +101,18 @@ class DiscountDetailsGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "id":null
+                , "name":"SAMPLE_TEXT"
                 , "amount":"0"
                 , "isPercentage":null
                 , "isAllowCombinationDiscount":null
                 , "isFinalBillDiscount":null
-                , "name":"SAMPLE_TEXT"
                 , "startCount":"0"
                 , "endCount":"0"
                 , "multiplyCount":"0"
+                , "minAmount":"0"
+                , "maxAmount":"0"
+                , "minVolumeWeight":"0"
+                , "maxVolumeWeight":"0"
                 , "modifiedDate":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))

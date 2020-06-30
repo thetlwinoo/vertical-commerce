@@ -91,23 +91,20 @@ public class OrderLinesQueryService extends QueryService<OrderLines> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), OrderLines_.id));
             }
+            if (criteria.getDescription() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDescription(), OrderLines_.description));
+            }
             if (criteria.getQuantity() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getQuantity(), OrderLines_.quantity));
             }
-            if (criteria.getDescription() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getDescription(), OrderLines_.description));
+            if (criteria.getTaxRate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTaxRate(), OrderLines_.taxRate));
             }
             if (criteria.getUnitPrice() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUnitPrice(), OrderLines_.unitPrice));
             }
             if (criteria.getUnitPriceDiscount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUnitPriceDiscount(), OrderLines_.unitPriceDiscount));
-            }
-            if (criteria.getLineTotal() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getLineTotal(), OrderLines_.lineTotal));
-            }
-            if (criteria.getTaxRate() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getTaxRate(), OrderLines_.taxRate));
             }
             if (criteria.getPickedQuantity() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPickedQuantity(), OrderLines_.pickedQuantity));
@@ -139,10 +136,6 @@ public class OrderLinesQueryService extends QueryService<OrderLines> {
             if (criteria.getLastEditedWhen() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastEditedWhen(), OrderLines_.lastEditedWhen));
             }
-            if (criteria.getSupplierId() != null) {
-                specification = specification.and(buildSpecification(criteria.getSupplierId(),
-                    root -> root.join(OrderLines_.supplier, JoinType.LEFT).get(Suppliers_.id)));
-            }
             if (criteria.getStockItemId() != null) {
                 specification = specification.and(buildSpecification(criteria.getStockItemId(),
                     root -> root.join(OrderLines_.stockItem, JoinType.LEFT).get(StockItems_.id)));
@@ -155,9 +148,13 @@ public class OrderLinesQueryService extends QueryService<OrderLines> {
                 specification = specification.and(buildSpecification(criteria.getReviewImageId(),
                     root -> root.join(OrderLines_.reviewImage, JoinType.LEFT).get(Photos_.id)));
             }
-            if (criteria.getOrderId() != null) {
-                specification = specification.and(buildSpecification(criteria.getOrderId(),
-                    root -> root.join(OrderLines_.order, JoinType.LEFT).get(Orders_.id)));
+            if (criteria.getSupplierId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierId(),
+                    root -> root.join(OrderLines_.supplier, JoinType.LEFT).get(Suppliers_.id)));
+            }
+            if (criteria.getOrderPackageId() != null) {
+                specification = specification.and(buildSpecification(criteria.getOrderPackageId(),
+                    root -> root.join(OrderLines_.orderPackage, JoinType.LEFT).get(OrderPackages_.id)));
             }
         }
         return specification;

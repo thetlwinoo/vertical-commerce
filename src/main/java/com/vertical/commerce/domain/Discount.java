@@ -1,5 +1,6 @@
 package com.vertical.commerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,8 +33,20 @@ public class Discount implements Serializable {
     private String description;
 
     @NotNull
-    @Column(name = "modified_date", nullable = false)
-    private Instant modifiedDate;
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
+
+    @NotNull
+    @Column(name = "valid_to", nullable = false)
+    private Instant validTo;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "discounts", allowSetters = true)
+    private Suppliers supplier;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "discounts", allowSetters = true)
+    private DiscountTypes discountType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -70,17 +83,56 @@ public class Discount implements Serializable {
         this.description = description;
     }
 
-    public Instant getModifiedDate() {
-        return modifiedDate;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public Discount modifiedDate(Instant modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public Discount validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
         return this;
     }
 
-    public void setModifiedDate(Instant modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public Discount validTo(Instant validTo) {
+        this.validTo = validTo;
+        return this;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
+    }
+
+    public Suppliers getSupplier() {
+        return supplier;
+    }
+
+    public Discount supplier(Suppliers suppliers) {
+        this.supplier = suppliers;
+        return this;
+    }
+
+    public void setSupplier(Suppliers suppliers) {
+        this.supplier = suppliers;
+    }
+
+    public DiscountTypes getDiscountType() {
+        return discountType;
+    }
+
+    public Discount discountType(DiscountTypes discountTypes) {
+        this.discountType = discountTypes;
+        return this;
+    }
+
+    public void setDiscountType(DiscountTypes discountTypes) {
+        this.discountType = discountTypes;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -107,7 +159,8 @@ public class Discount implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", modifiedDate='" + getModifiedDate() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

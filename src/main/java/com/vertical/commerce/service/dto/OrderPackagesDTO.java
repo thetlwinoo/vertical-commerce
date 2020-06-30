@@ -3,6 +3,7 @@ package com.vertical.commerce.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Lob;
 
 /**
@@ -20,7 +21,21 @@ public class OrderPackagesDTO implements Serializable {
 
     private String internalComments;
 
-    private String customerPurchaseOrderNumber;
+    private BigDecimal packageShippingFee;
+
+    private BigDecimal packageShippingFeeDiscount;
+
+    private BigDecimal packagePrice;
+
+    private BigDecimal packageSubTotal;
+
+    private BigDecimal packageTaxAmount;
+
+    private BigDecimal packageVoucherDiscount;
+
+    private BigDecimal packagePromotionDiscount;
+
+    private Instant pickingCompletedWhen;
 
     private Instant customerReviewedOn;
 
@@ -51,6 +66,12 @@ public class OrderPackagesDTO implements Serializable {
     private Long supplierId;
 
     private String supplierName;
+
+    private Long deliveryMethodId;
+
+    private String deliveryMethodName;
+
+    private Long specialDealsId;
 
     private Long orderId;
     
@@ -94,12 +115,68 @@ public class OrderPackagesDTO implements Serializable {
         this.internalComments = internalComments;
     }
 
-    public String getCustomerPurchaseOrderNumber() {
-        return customerPurchaseOrderNumber;
+    public BigDecimal getPackageShippingFee() {
+        return packageShippingFee;
     }
 
-    public void setCustomerPurchaseOrderNumber(String customerPurchaseOrderNumber) {
-        this.customerPurchaseOrderNumber = customerPurchaseOrderNumber;
+    public void setPackageShippingFee(BigDecimal packageShippingFee) {
+        this.packageShippingFee = packageShippingFee;
+    }
+
+    public BigDecimal getPackageShippingFeeDiscount() {
+        return packageShippingFeeDiscount;
+    }
+
+    public void setPackageShippingFeeDiscount(BigDecimal packageShippingFeeDiscount) {
+        this.packageShippingFeeDiscount = packageShippingFeeDiscount;
+    }
+
+    public BigDecimal getPackagePrice() {
+        return packagePrice;
+    }
+
+    public void setPackagePrice(BigDecimal packagePrice) {
+        this.packagePrice = packagePrice;
+    }
+
+    public BigDecimal getPackageSubTotal() {
+        return packageSubTotal;
+    }
+
+    public void setPackageSubTotal(BigDecimal packageSubTotal) {
+        this.packageSubTotal = packageSubTotal;
+    }
+
+    public BigDecimal getPackageTaxAmount() {
+        return packageTaxAmount;
+    }
+
+    public void setPackageTaxAmount(BigDecimal packageTaxAmount) {
+        this.packageTaxAmount = packageTaxAmount;
+    }
+
+    public BigDecimal getPackageVoucherDiscount() {
+        return packageVoucherDiscount;
+    }
+
+    public void setPackageVoucherDiscount(BigDecimal packageVoucherDiscount) {
+        this.packageVoucherDiscount = packageVoucherDiscount;
+    }
+
+    public BigDecimal getPackagePromotionDiscount() {
+        return packagePromotionDiscount;
+    }
+
+    public void setPackagePromotionDiscount(BigDecimal packagePromotionDiscount) {
+        this.packagePromotionDiscount = packagePromotionDiscount;
+    }
+
+    public Instant getPickingCompletedWhen() {
+        return pickingCompletedWhen;
+    }
+
+    public void setPickingCompletedWhen(Instant pickingCompletedWhen) {
+        this.pickingCompletedWhen = pickingCompletedWhen;
     }
 
     public Instant getCustomerReviewedOn() {
@@ -198,6 +275,30 @@ public class OrderPackagesDTO implements Serializable {
         this.supplierName = suppliersName;
     }
 
+    public Long getDeliveryMethodId() {
+        return deliveryMethodId;
+    }
+
+    public void setDeliveryMethodId(Long deliveryMethodsId) {
+        this.deliveryMethodId = deliveryMethodsId;
+    }
+
+    public String getDeliveryMethodName() {
+        return deliveryMethodName;
+    }
+
+    public void setDeliveryMethodName(String deliveryMethodsName) {
+        this.deliveryMethodName = deliveryMethodsName;
+    }
+
+    public Long getSpecialDealsId() {
+        return specialDealsId;
+    }
+
+    public void setSpecialDealsId(Long specialDealsId) {
+        this.specialDealsId = specialDealsId;
+    }
+
     public Long getOrderId() {
         return orderId;
     }
@@ -232,7 +333,14 @@ public class OrderPackagesDTO implements Serializable {
             ", comments='" + getComments() + "'" +
             ", deliveryInstructions='" + getDeliveryInstructions() + "'" +
             ", internalComments='" + getInternalComments() + "'" +
-            ", customerPurchaseOrderNumber='" + getCustomerPurchaseOrderNumber() + "'" +
+            ", packageShippingFee=" + getPackageShippingFee() +
+            ", packageShippingFeeDiscount=" + getPackageShippingFeeDiscount() +
+            ", packagePrice=" + getPackagePrice() +
+            ", packageSubTotal=" + getPackageSubTotal() +
+            ", packageTaxAmount=" + getPackageTaxAmount() +
+            ", packageVoucherDiscount=" + getPackageVoucherDiscount() +
+            ", packagePromotionDiscount=" + getPackagePromotionDiscount() +
+            ", pickingCompletedWhen='" + getPickingCompletedWhen() + "'" +
             ", customerReviewedOn='" + getCustomerReviewedOn() + "'" +
             ", sellerRating=" + getSellerRating() +
             ", sellerReview='" + getSellerReview() + "'" +
@@ -245,6 +353,9 @@ public class OrderPackagesDTO implements Serializable {
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", supplierId=" + getSupplierId() +
             ", supplierName='" + getSupplierName() + "'" +
+            ", deliveryMethodId=" + getDeliveryMethodId() +
+            ", deliveryMethodName='" + getDeliveryMethodName() + "'" +
+            ", specialDealsId=" + getSpecialDealsId() +
             ", orderId=" + getOrderId() +
             "}";
     }

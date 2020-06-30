@@ -17,8 +17,19 @@ public class DiscountDTO implements Serializable {
     private String description;
 
     @NotNull
-    private Instant modifiedDate;
+    private Instant validFrom;
 
+    @NotNull
+    private Instant validTo;
+
+
+    private Long supplierId;
+
+    private String supplierName;
+
+    private Long discountTypeId;
+
+    private String discountTypeName;
     
     public Long getId() {
         return id;
@@ -44,12 +55,52 @@ public class DiscountDTO implements Serializable {
         this.description = description;
     }
 
-    public Instant getModifiedDate() {
-        return modifiedDate;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public void setModifiedDate(Instant modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long suppliersId) {
+        this.supplierId = suppliersId;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String suppliersName) {
+        this.supplierName = suppliersName;
+    }
+
+    public Long getDiscountTypeId() {
+        return discountTypeId;
+    }
+
+    public void setDiscountTypeId(Long discountTypesId) {
+        this.discountTypeId = discountTypesId;
+    }
+
+    public String getDiscountTypeName() {
+        return discountTypeName;
+    }
+
+    public void setDiscountTypeName(String discountTypesName) {
+        this.discountTypeName = discountTypesName;
     }
 
     @Override
@@ -76,7 +127,12 @@ public class DiscountDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", modifiedDate='" + getModifiedDate() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
+            ", supplierId=" + getSupplierId() +
+            ", supplierName='" + getSupplierName() + "'" +
+            ", discountTypeId=" + getDiscountTypeId() +
+            ", discountTypeName='" + getDiscountTypeName() + "'" +
             "}";
     }
 }

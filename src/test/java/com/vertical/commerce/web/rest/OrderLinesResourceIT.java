@@ -3,11 +3,11 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.OrderLines;
-import com.vertical.commerce.domain.Suppliers;
 import com.vertical.commerce.domain.StockItems;
 import com.vertical.commerce.domain.PackageTypes;
 import com.vertical.commerce.domain.Photos;
-import com.vertical.commerce.domain.Orders;
+import com.vertical.commerce.domain.Suppliers;
+import com.vertical.commerce.domain.OrderPackages;
 import com.vertical.commerce.repository.OrderLinesRepository;
 import com.vertical.commerce.service.OrderLinesService;
 import com.vertical.commerce.service.dto.OrderLinesDTO;
@@ -46,12 +46,16 @@ import com.vertical.commerce.domain.enumeration.OrderLineStatus;
 @WithMockUser
 public class OrderLinesResourceIT {
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
     private static final Integer DEFAULT_QUANTITY = 1;
     private static final Integer UPDATED_QUANTITY = 2;
     private static final Integer SMALLER_QUANTITY = 1 - 1;
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
-    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+    private static final BigDecimal DEFAULT_TAX_RATE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TAX_RATE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TAX_RATE = new BigDecimal(1 - 1);
 
     private static final BigDecimal DEFAULT_UNIT_PRICE = new BigDecimal(1);
     private static final BigDecimal UPDATED_UNIT_PRICE = new BigDecimal(2);
@@ -60,14 +64,6 @@ public class OrderLinesResourceIT {
     private static final BigDecimal DEFAULT_UNIT_PRICE_DISCOUNT = new BigDecimal(1);
     private static final BigDecimal UPDATED_UNIT_PRICE_DISCOUNT = new BigDecimal(2);
     private static final BigDecimal SMALLER_UNIT_PRICE_DISCOUNT = new BigDecimal(1 - 1);
-
-    private static final BigDecimal DEFAULT_LINE_TOTAL = new BigDecimal(1);
-    private static final BigDecimal UPDATED_LINE_TOTAL = new BigDecimal(2);
-    private static final BigDecimal SMALLER_LINE_TOTAL = new BigDecimal(1 - 1);
-
-    private static final BigDecimal DEFAULT_TAX_RATE = new BigDecimal(1);
-    private static final BigDecimal UPDATED_TAX_RATE = new BigDecimal(2);
-    private static final BigDecimal SMALLER_TAX_RATE = new BigDecimal(1 - 1);
 
     private static final Integer DEFAULT_PICKED_QUANTITY = 1;
     private static final Integer UPDATED_PICKED_QUANTITY = 2;
@@ -136,12 +132,11 @@ public class OrderLinesResourceIT {
      */
     public static OrderLines createEntity(EntityManager em) {
         OrderLines orderLines = new OrderLines()
-            .quantity(DEFAULT_QUANTITY)
             .description(DEFAULT_DESCRIPTION)
+            .quantity(DEFAULT_QUANTITY)
+            .taxRate(DEFAULT_TAX_RATE)
             .unitPrice(DEFAULT_UNIT_PRICE)
             .unitPriceDiscount(DEFAULT_UNIT_PRICE_DISCOUNT)
-            .lineTotal(DEFAULT_LINE_TOTAL)
-            .taxRate(DEFAULT_TAX_RATE)
             .pickedQuantity(DEFAULT_PICKED_QUANTITY)
             .pickingCompletedWhen(DEFAULT_PICKING_COMPLETED_WHEN)
             .status(DEFAULT_STATUS)
@@ -164,12 +159,11 @@ public class OrderLinesResourceIT {
      */
     public static OrderLines createUpdatedEntity(EntityManager em) {
         OrderLines orderLines = new OrderLines()
-            .quantity(UPDATED_QUANTITY)
             .description(UPDATED_DESCRIPTION)
+            .quantity(UPDATED_QUANTITY)
+            .taxRate(UPDATED_TAX_RATE)
             .unitPrice(UPDATED_UNIT_PRICE)
             .unitPriceDiscount(UPDATED_UNIT_PRICE_DISCOUNT)
-            .lineTotal(UPDATED_LINE_TOTAL)
-            .taxRate(UPDATED_TAX_RATE)
             .pickedQuantity(UPDATED_PICKED_QUANTITY)
             .pickingCompletedWhen(UPDATED_PICKING_COMPLETED_WHEN)
             .status(UPDATED_STATUS)
@@ -205,12 +199,11 @@ public class OrderLinesResourceIT {
         List<OrderLines> orderLinesList = orderLinesRepository.findAll();
         assertThat(orderLinesList).hasSize(databaseSizeBeforeCreate + 1);
         OrderLines testOrderLines = orderLinesList.get(orderLinesList.size() - 1);
-        assertThat(testOrderLines.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testOrderLines.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testOrderLines.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
+        assertThat(testOrderLines.getTaxRate()).isEqualTo(DEFAULT_TAX_RATE);
         assertThat(testOrderLines.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
         assertThat(testOrderLines.getUnitPriceDiscount()).isEqualTo(DEFAULT_UNIT_PRICE_DISCOUNT);
-        assertThat(testOrderLines.getLineTotal()).isEqualTo(DEFAULT_LINE_TOTAL);
-        assertThat(testOrderLines.getTaxRate()).isEqualTo(DEFAULT_TAX_RATE);
         assertThat(testOrderLines.getPickedQuantity()).isEqualTo(DEFAULT_PICKED_QUANTITY);
         assertThat(testOrderLines.getPickingCompletedWhen()).isEqualTo(DEFAULT_PICKING_COMPLETED_WHEN);
         assertThat(testOrderLines.getStatus()).isEqualTo(DEFAULT_STATUS);
@@ -337,12 +330,11 @@ public class OrderLinesResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(orderLines.getId().intValue())))
-            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].taxRate").value(hasItem(DEFAULT_TAX_RATE.intValue())))
             .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.intValue())))
             .andExpect(jsonPath("$.[*].unitPriceDiscount").value(hasItem(DEFAULT_UNIT_PRICE_DISCOUNT.intValue())))
-            .andExpect(jsonPath("$.[*].lineTotal").value(hasItem(DEFAULT_LINE_TOTAL.intValue())))
-            .andExpect(jsonPath("$.[*].taxRate").value(hasItem(DEFAULT_TAX_RATE.intValue())))
             .andExpect(jsonPath("$.[*].pickedQuantity").value(hasItem(DEFAULT_PICKED_QUANTITY)))
             .andExpect(jsonPath("$.[*].pickingCompletedWhen").value(hasItem(DEFAULT_PICKING_COMPLETED_WHEN.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
@@ -368,12 +360,11 @@ public class OrderLinesResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(orderLines.getId().intValue()))
-            .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
+            .andExpect(jsonPath("$.taxRate").value(DEFAULT_TAX_RATE.intValue()))
             .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.intValue()))
             .andExpect(jsonPath("$.unitPriceDiscount").value(DEFAULT_UNIT_PRICE_DISCOUNT.intValue()))
-            .andExpect(jsonPath("$.lineTotal").value(DEFAULT_LINE_TOTAL.intValue()))
-            .andExpect(jsonPath("$.taxRate").value(DEFAULT_TAX_RATE.intValue()))
             .andExpect(jsonPath("$.pickedQuantity").value(DEFAULT_PICKED_QUANTITY))
             .andExpect(jsonPath("$.pickingCompletedWhen").value(DEFAULT_PICKING_COMPLETED_WHEN.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
@@ -405,6 +396,84 @@ public class OrderLinesResourceIT {
 
         defaultOrderLinesShouldBeFound("id.lessThanOrEqual=" + id);
         defaultOrderLinesShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByDescriptionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where description equals to DEFAULT_DESCRIPTION
+        defaultOrderLinesShouldBeFound("description.equals=" + DEFAULT_DESCRIPTION);
+
+        // Get all the orderLinesList where description equals to UPDATED_DESCRIPTION
+        defaultOrderLinesShouldNotBeFound("description.equals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByDescriptionIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where description not equals to DEFAULT_DESCRIPTION
+        defaultOrderLinesShouldNotBeFound("description.notEquals=" + DEFAULT_DESCRIPTION);
+
+        // Get all the orderLinesList where description not equals to UPDATED_DESCRIPTION
+        defaultOrderLinesShouldBeFound("description.notEquals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByDescriptionIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where description in DEFAULT_DESCRIPTION or UPDATED_DESCRIPTION
+        defaultOrderLinesShouldBeFound("description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION);
+
+        // Get all the orderLinesList where description equals to UPDATED_DESCRIPTION
+        defaultOrderLinesShouldNotBeFound("description.in=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByDescriptionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where description is not null
+        defaultOrderLinesShouldBeFound("description.specified=true");
+
+        // Get all the orderLinesList where description is null
+        defaultOrderLinesShouldNotBeFound("description.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllOrderLinesByDescriptionContainsSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where description contains DEFAULT_DESCRIPTION
+        defaultOrderLinesShouldBeFound("description.contains=" + DEFAULT_DESCRIPTION);
+
+        // Get all the orderLinesList where description contains UPDATED_DESCRIPTION
+        defaultOrderLinesShouldNotBeFound("description.contains=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByDescriptionNotContainsSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where description does not contain DEFAULT_DESCRIPTION
+        defaultOrderLinesShouldNotBeFound("description.doesNotContain=" + DEFAULT_DESCRIPTION);
+
+        // Get all the orderLinesList where description does not contain UPDATED_DESCRIPTION
+        defaultOrderLinesShouldBeFound("description.doesNotContain=" + UPDATED_DESCRIPTION);
     }
 
 
@@ -515,79 +584,106 @@ public class OrderLinesResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrderLinesByDescriptionIsEqualToSomething() throws Exception {
+    public void getAllOrderLinesByTaxRateIsEqualToSomething() throws Exception {
         // Initialize the database
         orderLinesRepository.saveAndFlush(orderLines);
 
-        // Get all the orderLinesList where description equals to DEFAULT_DESCRIPTION
-        defaultOrderLinesShouldBeFound("description.equals=" + DEFAULT_DESCRIPTION);
+        // Get all the orderLinesList where taxRate equals to DEFAULT_TAX_RATE
+        defaultOrderLinesShouldBeFound("taxRate.equals=" + DEFAULT_TAX_RATE);
 
-        // Get all the orderLinesList where description equals to UPDATED_DESCRIPTION
-        defaultOrderLinesShouldNotBeFound("description.equals=" + UPDATED_DESCRIPTION);
+        // Get all the orderLinesList where taxRate equals to UPDATED_TAX_RATE
+        defaultOrderLinesShouldNotBeFound("taxRate.equals=" + UPDATED_TAX_RATE);
     }
 
     @Test
     @Transactional
-    public void getAllOrderLinesByDescriptionIsNotEqualToSomething() throws Exception {
+    public void getAllOrderLinesByTaxRateIsNotEqualToSomething() throws Exception {
         // Initialize the database
         orderLinesRepository.saveAndFlush(orderLines);
 
-        // Get all the orderLinesList where description not equals to DEFAULT_DESCRIPTION
-        defaultOrderLinesShouldNotBeFound("description.notEquals=" + DEFAULT_DESCRIPTION);
+        // Get all the orderLinesList where taxRate not equals to DEFAULT_TAX_RATE
+        defaultOrderLinesShouldNotBeFound("taxRate.notEquals=" + DEFAULT_TAX_RATE);
 
-        // Get all the orderLinesList where description not equals to UPDATED_DESCRIPTION
-        defaultOrderLinesShouldBeFound("description.notEquals=" + UPDATED_DESCRIPTION);
+        // Get all the orderLinesList where taxRate not equals to UPDATED_TAX_RATE
+        defaultOrderLinesShouldBeFound("taxRate.notEquals=" + UPDATED_TAX_RATE);
     }
 
     @Test
     @Transactional
-    public void getAllOrderLinesByDescriptionIsInShouldWork() throws Exception {
+    public void getAllOrderLinesByTaxRateIsInShouldWork() throws Exception {
         // Initialize the database
         orderLinesRepository.saveAndFlush(orderLines);
 
-        // Get all the orderLinesList where description in DEFAULT_DESCRIPTION or UPDATED_DESCRIPTION
-        defaultOrderLinesShouldBeFound("description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION);
+        // Get all the orderLinesList where taxRate in DEFAULT_TAX_RATE or UPDATED_TAX_RATE
+        defaultOrderLinesShouldBeFound("taxRate.in=" + DEFAULT_TAX_RATE + "," + UPDATED_TAX_RATE);
 
-        // Get all the orderLinesList where description equals to UPDATED_DESCRIPTION
-        defaultOrderLinesShouldNotBeFound("description.in=" + UPDATED_DESCRIPTION);
+        // Get all the orderLinesList where taxRate equals to UPDATED_TAX_RATE
+        defaultOrderLinesShouldNotBeFound("taxRate.in=" + UPDATED_TAX_RATE);
     }
 
     @Test
     @Transactional
-    public void getAllOrderLinesByDescriptionIsNullOrNotNull() throws Exception {
+    public void getAllOrderLinesByTaxRateIsNullOrNotNull() throws Exception {
         // Initialize the database
         orderLinesRepository.saveAndFlush(orderLines);
 
-        // Get all the orderLinesList where description is not null
-        defaultOrderLinesShouldBeFound("description.specified=true");
+        // Get all the orderLinesList where taxRate is not null
+        defaultOrderLinesShouldBeFound("taxRate.specified=true");
 
-        // Get all the orderLinesList where description is null
-        defaultOrderLinesShouldNotBeFound("description.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllOrderLinesByDescriptionContainsSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where description contains DEFAULT_DESCRIPTION
-        defaultOrderLinesShouldBeFound("description.contains=" + DEFAULT_DESCRIPTION);
-
-        // Get all the orderLinesList where description contains UPDATED_DESCRIPTION
-        defaultOrderLinesShouldNotBeFound("description.contains=" + UPDATED_DESCRIPTION);
+        // Get all the orderLinesList where taxRate is null
+        defaultOrderLinesShouldNotBeFound("taxRate.specified=false");
     }
 
     @Test
     @Transactional
-    public void getAllOrderLinesByDescriptionNotContainsSomething() throws Exception {
+    public void getAllOrderLinesByTaxRateIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         orderLinesRepository.saveAndFlush(orderLines);
 
-        // Get all the orderLinesList where description does not contain DEFAULT_DESCRIPTION
-        defaultOrderLinesShouldNotBeFound("description.doesNotContain=" + DEFAULT_DESCRIPTION);
+        // Get all the orderLinesList where taxRate is greater than or equal to DEFAULT_TAX_RATE
+        defaultOrderLinesShouldBeFound("taxRate.greaterThanOrEqual=" + DEFAULT_TAX_RATE);
 
-        // Get all the orderLinesList where description does not contain UPDATED_DESCRIPTION
-        defaultOrderLinesShouldBeFound("description.doesNotContain=" + UPDATED_DESCRIPTION);
+        // Get all the orderLinesList where taxRate is greater than or equal to UPDATED_TAX_RATE
+        defaultOrderLinesShouldNotBeFound("taxRate.greaterThanOrEqual=" + UPDATED_TAX_RATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByTaxRateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where taxRate is less than or equal to DEFAULT_TAX_RATE
+        defaultOrderLinesShouldBeFound("taxRate.lessThanOrEqual=" + DEFAULT_TAX_RATE);
+
+        // Get all the orderLinesList where taxRate is less than or equal to SMALLER_TAX_RATE
+        defaultOrderLinesShouldNotBeFound("taxRate.lessThanOrEqual=" + SMALLER_TAX_RATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByTaxRateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where taxRate is less than DEFAULT_TAX_RATE
+        defaultOrderLinesShouldNotBeFound("taxRate.lessThan=" + DEFAULT_TAX_RATE);
+
+        // Get all the orderLinesList where taxRate is less than UPDATED_TAX_RATE
+        defaultOrderLinesShouldBeFound("taxRate.lessThan=" + UPDATED_TAX_RATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByTaxRateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where taxRate is greater than DEFAULT_TAX_RATE
+        defaultOrderLinesShouldNotBeFound("taxRate.greaterThan=" + DEFAULT_TAX_RATE);
+
+        // Get all the orderLinesList where taxRate is greater than SMALLER_TAX_RATE
+        defaultOrderLinesShouldBeFound("taxRate.greaterThan=" + SMALLER_TAX_RATE);
     }
 
 
@@ -798,216 +894,6 @@ public class OrderLinesResourceIT {
 
         // Get all the orderLinesList where unitPriceDiscount is greater than SMALLER_UNIT_PRICE_DISCOUNT
         defaultOrderLinesShouldBeFound("unitPriceDiscount.greaterThan=" + SMALLER_UNIT_PRICE_DISCOUNT);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByLineTotalIsEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where lineTotal equals to DEFAULT_LINE_TOTAL
-        defaultOrderLinesShouldBeFound("lineTotal.equals=" + DEFAULT_LINE_TOTAL);
-
-        // Get all the orderLinesList where lineTotal equals to UPDATED_LINE_TOTAL
-        defaultOrderLinesShouldNotBeFound("lineTotal.equals=" + UPDATED_LINE_TOTAL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByLineTotalIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where lineTotal not equals to DEFAULT_LINE_TOTAL
-        defaultOrderLinesShouldNotBeFound("lineTotal.notEquals=" + DEFAULT_LINE_TOTAL);
-
-        // Get all the orderLinesList where lineTotal not equals to UPDATED_LINE_TOTAL
-        defaultOrderLinesShouldBeFound("lineTotal.notEquals=" + UPDATED_LINE_TOTAL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByLineTotalIsInShouldWork() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where lineTotal in DEFAULT_LINE_TOTAL or UPDATED_LINE_TOTAL
-        defaultOrderLinesShouldBeFound("lineTotal.in=" + DEFAULT_LINE_TOTAL + "," + UPDATED_LINE_TOTAL);
-
-        // Get all the orderLinesList where lineTotal equals to UPDATED_LINE_TOTAL
-        defaultOrderLinesShouldNotBeFound("lineTotal.in=" + UPDATED_LINE_TOTAL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByLineTotalIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where lineTotal is not null
-        defaultOrderLinesShouldBeFound("lineTotal.specified=true");
-
-        // Get all the orderLinesList where lineTotal is null
-        defaultOrderLinesShouldNotBeFound("lineTotal.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByLineTotalIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where lineTotal is greater than or equal to DEFAULT_LINE_TOTAL
-        defaultOrderLinesShouldBeFound("lineTotal.greaterThanOrEqual=" + DEFAULT_LINE_TOTAL);
-
-        // Get all the orderLinesList where lineTotal is greater than or equal to UPDATED_LINE_TOTAL
-        defaultOrderLinesShouldNotBeFound("lineTotal.greaterThanOrEqual=" + UPDATED_LINE_TOTAL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByLineTotalIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where lineTotal is less than or equal to DEFAULT_LINE_TOTAL
-        defaultOrderLinesShouldBeFound("lineTotal.lessThanOrEqual=" + DEFAULT_LINE_TOTAL);
-
-        // Get all the orderLinesList where lineTotal is less than or equal to SMALLER_LINE_TOTAL
-        defaultOrderLinesShouldNotBeFound("lineTotal.lessThanOrEqual=" + SMALLER_LINE_TOTAL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByLineTotalIsLessThanSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where lineTotal is less than DEFAULT_LINE_TOTAL
-        defaultOrderLinesShouldNotBeFound("lineTotal.lessThan=" + DEFAULT_LINE_TOTAL);
-
-        // Get all the orderLinesList where lineTotal is less than UPDATED_LINE_TOTAL
-        defaultOrderLinesShouldBeFound("lineTotal.lessThan=" + UPDATED_LINE_TOTAL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByLineTotalIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where lineTotal is greater than DEFAULT_LINE_TOTAL
-        defaultOrderLinesShouldNotBeFound("lineTotal.greaterThan=" + DEFAULT_LINE_TOTAL);
-
-        // Get all the orderLinesList where lineTotal is greater than SMALLER_LINE_TOTAL
-        defaultOrderLinesShouldBeFound("lineTotal.greaterThan=" + SMALLER_LINE_TOTAL);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByTaxRateIsEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where taxRate equals to DEFAULT_TAX_RATE
-        defaultOrderLinesShouldBeFound("taxRate.equals=" + DEFAULT_TAX_RATE);
-
-        // Get all the orderLinesList where taxRate equals to UPDATED_TAX_RATE
-        defaultOrderLinesShouldNotBeFound("taxRate.equals=" + UPDATED_TAX_RATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByTaxRateIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where taxRate not equals to DEFAULT_TAX_RATE
-        defaultOrderLinesShouldNotBeFound("taxRate.notEquals=" + DEFAULT_TAX_RATE);
-
-        // Get all the orderLinesList where taxRate not equals to UPDATED_TAX_RATE
-        defaultOrderLinesShouldBeFound("taxRate.notEquals=" + UPDATED_TAX_RATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByTaxRateIsInShouldWork() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where taxRate in DEFAULT_TAX_RATE or UPDATED_TAX_RATE
-        defaultOrderLinesShouldBeFound("taxRate.in=" + DEFAULT_TAX_RATE + "," + UPDATED_TAX_RATE);
-
-        // Get all the orderLinesList where taxRate equals to UPDATED_TAX_RATE
-        defaultOrderLinesShouldNotBeFound("taxRate.in=" + UPDATED_TAX_RATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByTaxRateIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where taxRate is not null
-        defaultOrderLinesShouldBeFound("taxRate.specified=true");
-
-        // Get all the orderLinesList where taxRate is null
-        defaultOrderLinesShouldNotBeFound("taxRate.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByTaxRateIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where taxRate is greater than or equal to DEFAULT_TAX_RATE
-        defaultOrderLinesShouldBeFound("taxRate.greaterThanOrEqual=" + DEFAULT_TAX_RATE);
-
-        // Get all the orderLinesList where taxRate is greater than or equal to UPDATED_TAX_RATE
-        defaultOrderLinesShouldNotBeFound("taxRate.greaterThanOrEqual=" + UPDATED_TAX_RATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByTaxRateIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where taxRate is less than or equal to DEFAULT_TAX_RATE
-        defaultOrderLinesShouldBeFound("taxRate.lessThanOrEqual=" + DEFAULT_TAX_RATE);
-
-        // Get all the orderLinesList where taxRate is less than or equal to SMALLER_TAX_RATE
-        defaultOrderLinesShouldNotBeFound("taxRate.lessThanOrEqual=" + SMALLER_TAX_RATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByTaxRateIsLessThanSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where taxRate is less than DEFAULT_TAX_RATE
-        defaultOrderLinesShouldNotBeFound("taxRate.lessThan=" + DEFAULT_TAX_RATE);
-
-        // Get all the orderLinesList where taxRate is less than UPDATED_TAX_RATE
-        defaultOrderLinesShouldBeFound("taxRate.lessThan=" + UPDATED_TAX_RATE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByTaxRateIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where taxRate is greater than DEFAULT_TAX_RATE
-        defaultOrderLinesShouldNotBeFound("taxRate.greaterThan=" + DEFAULT_TAX_RATE);
-
-        // Get all the orderLinesList where taxRate is greater than SMALLER_TAX_RATE
-        defaultOrderLinesShouldBeFound("taxRate.greaterThan=" + SMALLER_TAX_RATE);
     }
 
 
@@ -1744,26 +1630,6 @@ public class OrderLinesResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrderLinesBySupplierIsEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-        Suppliers supplier = SuppliersResourceIT.createEntity(em);
-        em.persist(supplier);
-        em.flush();
-        orderLines.setSupplier(supplier);
-        orderLinesRepository.saveAndFlush(orderLines);
-        Long supplierId = supplier.getId();
-
-        // Get all the orderLinesList where supplier equals to supplierId
-        defaultOrderLinesShouldBeFound("supplierId.equals=" + supplierId);
-
-        // Get all the orderLinesList where supplier equals to supplierId + 1
-        defaultOrderLinesShouldNotBeFound("supplierId.equals=" + (supplierId + 1));
-    }
-
-
-    @Test
-    @Transactional
     public void getAllOrderLinesByStockItemIsEqualToSomething() throws Exception {
         // Initialize the database
         orderLinesRepository.saveAndFlush(orderLines);
@@ -1824,21 +1690,41 @@ public class OrderLinesResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrderLinesByOrderIsEqualToSomething() throws Exception {
+    public void getAllOrderLinesBySupplierIsEqualToSomething() throws Exception {
         // Initialize the database
         orderLinesRepository.saveAndFlush(orderLines);
-        Orders order = OrdersResourceIT.createEntity(em);
-        em.persist(order);
+        Suppliers supplier = SuppliersResourceIT.createEntity(em);
+        em.persist(supplier);
         em.flush();
-        orderLines.setOrder(order);
+        orderLines.setSupplier(supplier);
         orderLinesRepository.saveAndFlush(orderLines);
-        Long orderId = order.getId();
+        Long supplierId = supplier.getId();
 
-        // Get all the orderLinesList where order equals to orderId
-        defaultOrderLinesShouldBeFound("orderId.equals=" + orderId);
+        // Get all the orderLinesList where supplier equals to supplierId
+        defaultOrderLinesShouldBeFound("supplierId.equals=" + supplierId);
 
-        // Get all the orderLinesList where order equals to orderId + 1
-        defaultOrderLinesShouldNotBeFound("orderId.equals=" + (orderId + 1));
+        // Get all the orderLinesList where supplier equals to supplierId + 1
+        defaultOrderLinesShouldNotBeFound("supplierId.equals=" + (supplierId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByOrderPackageIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+        OrderPackages orderPackage = OrderPackagesResourceIT.createEntity(em);
+        em.persist(orderPackage);
+        em.flush();
+        orderLines.setOrderPackage(orderPackage);
+        orderLinesRepository.saveAndFlush(orderLines);
+        Long orderPackageId = orderPackage.getId();
+
+        // Get all the orderLinesList where orderPackage equals to orderPackageId
+        defaultOrderLinesShouldBeFound("orderPackageId.equals=" + orderPackageId);
+
+        // Get all the orderLinesList where orderPackage equals to orderPackageId + 1
+        defaultOrderLinesShouldNotBeFound("orderPackageId.equals=" + (orderPackageId + 1));
     }
 
     /**
@@ -1849,12 +1735,11 @@ public class OrderLinesResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(orderLines.getId().intValue())))
-            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].taxRate").value(hasItem(DEFAULT_TAX_RATE.intValue())))
             .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.intValue())))
             .andExpect(jsonPath("$.[*].unitPriceDiscount").value(hasItem(DEFAULT_UNIT_PRICE_DISCOUNT.intValue())))
-            .andExpect(jsonPath("$.[*].lineTotal").value(hasItem(DEFAULT_LINE_TOTAL.intValue())))
-            .andExpect(jsonPath("$.[*].taxRate").value(hasItem(DEFAULT_TAX_RATE.intValue())))
             .andExpect(jsonPath("$.[*].pickedQuantity").value(hasItem(DEFAULT_PICKED_QUANTITY)))
             .andExpect(jsonPath("$.[*].pickingCompletedWhen").value(hasItem(DEFAULT_PICKING_COMPLETED_WHEN.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
@@ -1913,12 +1798,11 @@ public class OrderLinesResourceIT {
         // Disconnect from session so that the updates on updatedOrderLines are not directly saved in db
         em.detach(updatedOrderLines);
         updatedOrderLines
-            .quantity(UPDATED_QUANTITY)
             .description(UPDATED_DESCRIPTION)
+            .quantity(UPDATED_QUANTITY)
+            .taxRate(UPDATED_TAX_RATE)
             .unitPrice(UPDATED_UNIT_PRICE)
             .unitPriceDiscount(UPDATED_UNIT_PRICE_DISCOUNT)
-            .lineTotal(UPDATED_LINE_TOTAL)
-            .taxRate(UPDATED_TAX_RATE)
             .pickedQuantity(UPDATED_PICKED_QUANTITY)
             .pickingCompletedWhen(UPDATED_PICKING_COMPLETED_WHEN)
             .status(UPDATED_STATUS)
@@ -1942,12 +1826,11 @@ public class OrderLinesResourceIT {
         List<OrderLines> orderLinesList = orderLinesRepository.findAll();
         assertThat(orderLinesList).hasSize(databaseSizeBeforeUpdate);
         OrderLines testOrderLines = orderLinesList.get(orderLinesList.size() - 1);
-        assertThat(testOrderLines.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testOrderLines.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testOrderLines.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testOrderLines.getTaxRate()).isEqualTo(UPDATED_TAX_RATE);
         assertThat(testOrderLines.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
         assertThat(testOrderLines.getUnitPriceDiscount()).isEqualTo(UPDATED_UNIT_PRICE_DISCOUNT);
-        assertThat(testOrderLines.getLineTotal()).isEqualTo(UPDATED_LINE_TOTAL);
-        assertThat(testOrderLines.getTaxRate()).isEqualTo(UPDATED_TAX_RATE);
         assertThat(testOrderLines.getPickedQuantity()).isEqualTo(UPDATED_PICKED_QUANTITY);
         assertThat(testOrderLines.getPickingCompletedWhen()).isEqualTo(UPDATED_PICKING_COMPLETED_WHEN);
         assertThat(testOrderLines.getStatus()).isEqualTo(UPDATED_STATUS);

@@ -106,9 +106,20 @@ class StockItemsGatlingTest extends Simulation {
                 , "vendorSKU":"SAMPLE_TEXT"
                 , "generatedSKU":"SAMPLE_TEXT"
                 , "barcode":"SAMPLE_TEXT"
+                , "taxRate":"0"
                 , "unitPrice":"0"
                 , "recommendedRetailPrice":"0"
+                , "typicalWeightPerUnit":"0"
                 , "quantityOnHand":"0"
+                , "shelf":"SAMPLE_TEXT"
+                , "bin":"SAMPLE_TEXT"
+                , "lastStockTakeQuantity":"0"
+                , "lastCostPrice":"0"
+                , "reorderLevel":"0"
+                , "targetStockLevel":"0"
+                , "leadTimeDays":"0"
+                , "quantityPerOuter":"0"
+                , "isChillerStock":null
                 , "itemLength":"0"
                 , "itemWidth":"0"
                 , "itemHeight":"0"
@@ -125,9 +136,12 @@ class StockItemsGatlingTest extends Simulation {
                 , "sellStartDate":"2020-01-01T00:00:00.000Z"
                 , "sellEndDate":"2020-01-01T00:00:00.000Z"
                 , "sellCount":"0"
-                , "customFields":"SAMPLE_TEXT"
+                , "tags":"SAMPLE_TEXT"
+                , "searchDetails":"SAMPLE_TEXT"
+                , "customFields":null
                 , "thumbnailUrl":"SAMPLE_TEXT"
                 , "activeInd":null
+                , "liveInd":null
                 , "cashOnDeliveryInd":null
                 , "lastEditedBy":"SAMPLE_TEXT"
                 , "lastEditedWhen":"2020-01-01T00:00:00.000Z"

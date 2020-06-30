@@ -1,11 +1,11 @@
-id;amount;is_percentage;is_allow_combination_discount;is_final_bill_discount;name;start_count;end_count;multiply_count;modified_date
-1;70612;true;true;true;revolutionize;49678;95201;4956;2020-06-10T13:32:49
-2;97769;true;true;true;Credit Card Account;40704;98269;73328;2020-06-10T13:24:28
-3;68541;true;false;true;transmit;43254;94883;16686;2020-06-09T18:58:34
-4;14091;false;true;true;Bedfordshire copy bypass;65568;47622;13696;2020-06-10T10:33:18
-5;77031;false;true;true;clear-thinking;97899;71328;73060;2020-06-10T05:57:47
-6;80651;false;false;false;Handcrafted Fresh Table;27895;79935;41896;2020-06-10T11:56:52
-7;17099;false;true;true;Chips;84318;52016;42789;2020-06-09T23:11:01
-8;3303;true;false;true;24/365 Group;52628;22992;45583;2020-06-09T22:12:51
-9;54850;false;true;false;Cambridgeshire concept;81459;39497;2179;2020-06-10T02:07:26
-10;93410;false;false;true;Wooden Associate;26802;50060;74755;2020-06-09T16:08:12
+id;name;amount;is_percentage;is_allow_combination_discount;is_final_bill_discount;start_count;end_count;multiply_count;min_amount;max_amount;min_volume_weight;max_volume_weight;modified_date
+1;haptic Research revolutionize;49678;true;false;false;97769;65102;69530;92820;30136;61517;74075;2020-06-17T06:39:55
+2;protocol Rand Namibia Dollar Metal;12716;true;true;false;94883;16686;83970;14091;44145;83454;73338;2020-06-16T19:34:14
+3;reciprocal pricing structure;9559;true;false;false;19057;77031;14364;54319;74376;3300;28864;2020-06-17T12:32:10
+4;monitor engineer blue;49297;false;false;true;84662;42120;27895;79935;41896;13254;17099;2020-06-17T08:39:45
+5;Central African Republic Chips;84318;true;false;true;3303;57842;1955;59349;54452;34869;38884;2020-06-16T17:20:48
+6;Denmark River;54850;false;true;false;37240;50881;84413;30888;21083;81459;39497;2020-06-17T15:54:39
+7;Identity Sleek Cotton Keyboard;12879;true;false;false;50060;74755;95801;5319;25723;66817;29569;2020-06-16T23:10:30
+8;Accounts redefine;66011;false;true;false;39575;23924;70994;16852;48390;44924;46603;2020-06-17T00:12:35
+9;Maryland strategy;12035;true;false;true;61695;35722;26029;62441;92007;56402;5839;2020-06-17T00:17:43
+10;indexing synergies firmware;46866;false;false;false;32154;41258;9244;93670;2944;78681;382;2020-06-16T19:05:45

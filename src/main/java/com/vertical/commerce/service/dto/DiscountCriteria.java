@@ -31,7 +31,13 @@ public class DiscountCriteria implements Serializable, Criteria {
 
     private StringFilter description;
 
-    private InstantFilter modifiedDate;
+    private InstantFilter validFrom;
+
+    private InstantFilter validTo;
+
+    private LongFilter supplierId;
+
+    private LongFilter discountTypeId;
 
     public DiscountCriteria() {
     }
@@ -40,7 +46,10 @@ public class DiscountCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.description = other.description == null ? null : other.description.copy();
-        this.modifiedDate = other.modifiedDate == null ? null : other.modifiedDate.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
+        this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
+        this.discountTypeId = other.discountTypeId == null ? null : other.discountTypeId.copy();
     }
 
     @Override
@@ -72,12 +81,36 @@ public class DiscountCriteria implements Serializable, Criteria {
         this.description = description;
     }
 
-    public InstantFilter getModifiedDate() {
-        return modifiedDate;
+    public InstantFilter getValidFrom() {
+        return validFrom;
     }
 
-    public void setModifiedDate(InstantFilter modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public InstantFilter getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
+    }
+
+    public LongFilter getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(LongFilter supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public LongFilter getDiscountTypeId() {
+        return discountTypeId;
+    }
+
+    public void setDiscountTypeId(LongFilter discountTypeId) {
+        this.discountTypeId = discountTypeId;
     }
 
 
@@ -94,7 +127,10 @@ public class DiscountCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
             Objects.equals(description, that.description) &&
-            Objects.equals(modifiedDate, that.modifiedDate);
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo) &&
+            Objects.equals(supplierId, that.supplierId) &&
+            Objects.equals(discountTypeId, that.discountTypeId);
     }
 
     @Override
@@ -103,7 +139,10 @@ public class DiscountCriteria implements Serializable, Criteria {
         id,
         name,
         description,
-        modifiedDate
+        validFrom,
+        validTo,
+        supplierId,
+        discountTypeId
         );
     }
 
@@ -114,7 +153,10 @@ public class DiscountCriteria implements Serializable, Criteria {
                 (id != null ? "id=" + id + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
                 (description != null ? "description=" + description + ", " : "") +
-                (modifiedDate != null ? "modifiedDate=" + modifiedDate + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
+                (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
+                (discountTypeId != null ? "discountTypeId=" + discountTypeId + ", " : "") +
             "}";
     }
 

@@ -28,6 +28,8 @@ public class CustomersCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter name;
+
     private StringFilter accountNumber;
 
     private InstantFilter accountOpenedDate;
@@ -44,6 +46,10 @@ public class CustomersCriteria implements Serializable, Criteria {
 
     private StringFilter runPosition;
 
+    private StringFilter thumbnailUrl;
+
+    private BooleanFilter billToAddressSameAsDeliveryAddress;
+
     private StringFilter lastEditedBy;
 
     private InstantFilter validFrom;
@@ -56,11 +62,14 @@ public class CustomersCriteria implements Serializable, Criteria {
 
     private LongFilter deliveryAddressId;
 
+    private LongFilter billToAddressId;
+
     public CustomersCriteria() {
     }
 
     public CustomersCriteria(CustomersCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.name = other.name == null ? null : other.name.copy();
         this.accountNumber = other.accountNumber == null ? null : other.accountNumber.copy();
         this.accountOpenedDate = other.accountOpenedDate == null ? null : other.accountOpenedDate.copy();
         this.standardDiscountPercentage = other.standardDiscountPercentage == null ? null : other.standardDiscountPercentage.copy();
@@ -69,12 +78,15 @@ public class CustomersCriteria implements Serializable, Criteria {
         this.paymentDays = other.paymentDays == null ? null : other.paymentDays.copy();
         this.deliveryRun = other.deliveryRun == null ? null : other.deliveryRun.copy();
         this.runPosition = other.runPosition == null ? null : other.runPosition.copy();
+        this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
+        this.billToAddressSameAsDeliveryAddress = other.billToAddressSameAsDeliveryAddress == null ? null : other.billToAddressSameAsDeliveryAddress.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.peopleId = other.peopleId == null ? null : other.peopleId.copy();
         this.deliveryMethodId = other.deliveryMethodId == null ? null : other.deliveryMethodId.copy();
         this.deliveryAddressId = other.deliveryAddressId == null ? null : other.deliveryAddressId.copy();
+        this.billToAddressId = other.billToAddressId == null ? null : other.billToAddressId.copy();
     }
 
     @Override
@@ -88,6 +100,14 @@ public class CustomersCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public StringFilter getName() {
+        return name;
+    }
+
+    public void setName(StringFilter name) {
+        this.name = name;
     }
 
     public StringFilter getAccountNumber() {
@@ -154,6 +174,22 @@ public class CustomersCriteria implements Serializable, Criteria {
         this.runPosition = runPosition;
     }
 
+    public StringFilter getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(StringFilter thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public BooleanFilter getBillToAddressSameAsDeliveryAddress() {
+        return billToAddressSameAsDeliveryAddress;
+    }
+
+    public void setBillToAddressSameAsDeliveryAddress(BooleanFilter billToAddressSameAsDeliveryAddress) {
+        this.billToAddressSameAsDeliveryAddress = billToAddressSameAsDeliveryAddress;
+    }
+
     public StringFilter getLastEditedBy() {
         return lastEditedBy;
     }
@@ -202,6 +238,14 @@ public class CustomersCriteria implements Serializable, Criteria {
         this.deliveryAddressId = deliveryAddressId;
     }
 
+    public LongFilter getBillToAddressId() {
+        return billToAddressId;
+    }
+
+    public void setBillToAddressId(LongFilter billToAddressId) {
+        this.billToAddressId = billToAddressId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -214,6 +258,7 @@ public class CustomersCriteria implements Serializable, Criteria {
         final CustomersCriteria that = (CustomersCriteria) o;
         return
             Objects.equals(id, that.id) &&
+            Objects.equals(name, that.name) &&
             Objects.equals(accountNumber, that.accountNumber) &&
             Objects.equals(accountOpenedDate, that.accountOpenedDate) &&
             Objects.equals(standardDiscountPercentage, that.standardDiscountPercentage) &&
@@ -222,18 +267,22 @@ public class CustomersCriteria implements Serializable, Criteria {
             Objects.equals(paymentDays, that.paymentDays) &&
             Objects.equals(deliveryRun, that.deliveryRun) &&
             Objects.equals(runPosition, that.runPosition) &&
+            Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
+            Objects.equals(billToAddressSameAsDeliveryAddress, that.billToAddressSameAsDeliveryAddress) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo) &&
             Objects.equals(peopleId, that.peopleId) &&
             Objects.equals(deliveryMethodId, that.deliveryMethodId) &&
-            Objects.equals(deliveryAddressId, that.deliveryAddressId);
+            Objects.equals(deliveryAddressId, that.deliveryAddressId) &&
+            Objects.equals(billToAddressId, that.billToAddressId);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
         id,
+        name,
         accountNumber,
         accountOpenedDate,
         standardDiscountPercentage,
@@ -242,12 +291,15 @@ public class CustomersCriteria implements Serializable, Criteria {
         paymentDays,
         deliveryRun,
         runPosition,
+        thumbnailUrl,
+        billToAddressSameAsDeliveryAddress,
         lastEditedBy,
         validFrom,
         validTo,
         peopleId,
         deliveryMethodId,
-        deliveryAddressId
+        deliveryAddressId,
+        billToAddressId
         );
     }
 
@@ -256,6 +308,7 @@ public class CustomersCriteria implements Serializable, Criteria {
     public String toString() {
         return "CustomersCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
+                (name != null ? "name=" + name + ", " : "") +
                 (accountNumber != null ? "accountNumber=" + accountNumber + ", " : "") +
                 (accountOpenedDate != null ? "accountOpenedDate=" + accountOpenedDate + ", " : "") +
                 (standardDiscountPercentage != null ? "standardDiscountPercentage=" + standardDiscountPercentage + ", " : "") +
@@ -264,12 +317,15 @@ public class CustomersCriteria implements Serializable, Criteria {
                 (paymentDays != null ? "paymentDays=" + paymentDays + ", " : "") +
                 (deliveryRun != null ? "deliveryRun=" + deliveryRun + ", " : "") +
                 (runPosition != null ? "runPosition=" + runPosition + ", " : "") +
+                (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
+                (billToAddressSameAsDeliveryAddress != null ? "billToAddressSameAsDeliveryAddress=" + billToAddressSameAsDeliveryAddress + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (peopleId != null ? "peopleId=" + peopleId + ", " : "") +
                 (deliveryMethodId != null ? "deliveryMethodId=" + deliveryMethodId + ", " : "") +
                 (deliveryAddressId != null ? "deliveryAddressId=" + deliveryAddressId + ", " : "") +
+                (billToAddressId != null ? "billToAddressId=" + billToAddressId + ", " : "") +
             "}";
     }
 

@@ -35,19 +35,19 @@ public class Products implements Serializable {
     @Column(name = "handle")
     private String handle;
 
-    @Column(name = "product_number")
-    private String productNumber;
-
     @Column(name = "search_details")
     private String searchDetails;
+
+    @Column(name = "product_number")
+    private String productNumber;
 
     @Column(name = "sell_count")
     private Integer sellCount;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "stock_item_string")
-    private String stockItemString;
+    @Column(name = "product_details")
+    private String productDetails;
 
     @Column(name = "total_wishlist")
     private Integer totalWishlist;
@@ -141,19 +141,6 @@ public class Products implements Serializable {
         this.handle = handle;
     }
 
-    public String getProductNumber() {
-        return productNumber;
-    }
-
-    public Products productNumber(String productNumber) {
-        this.productNumber = productNumber;
-        return this;
-    }
-
-    public void setProductNumber(String productNumber) {
-        this.productNumber = productNumber;
-    }
-
     public String getSearchDetails() {
         return searchDetails;
     }
@@ -165,6 +152,19 @@ public class Products implements Serializable {
 
     public void setSearchDetails(String searchDetails) {
         this.searchDetails = searchDetails;
+    }
+
+    public String getProductNumber() {
+        return productNumber;
+    }
+
+    public Products productNumber(String productNumber) {
+        this.productNumber = productNumber;
+        return this;
+    }
+
+    public void setProductNumber(String productNumber) {
+        this.productNumber = productNumber;
     }
 
     public Integer getSellCount() {
@@ -180,17 +180,17 @@ public class Products implements Serializable {
         this.sellCount = sellCount;
     }
 
-    public String getStockItemString() {
-        return stockItemString;
+    public String getProductDetails() {
+        return productDetails;
     }
 
-    public Products stockItemString(String stockItemString) {
-        this.stockItemString = stockItemString;
+    public Products productDetails(String productDetails) {
+        this.productDetails = productDetails;
         return this;
     }
 
-    public void setStockItemString(String stockItemString) {
-        this.stockItemString = stockItemString;
+    public void setProductDetails(String productDetails) {
+        this.productDetails = productDetails;
     }
 
     public Integer getTotalWishlist() {
@@ -437,10 +437,10 @@ public class Products implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", handle='" + getHandle() + "'" +
-            ", productNumber='" + getProductNumber() + "'" +
             ", searchDetails='" + getSearchDetails() + "'" +
+            ", productNumber='" + getProductNumber() + "'" +
             ", sellCount=" + getSellCount() +
-            ", stockItemString='" + getStockItemString() + "'" +
+            ", productDetails='" + getProductDetails() + "'" +
             ", totalWishlist=" + getTotalWishlist() +
             ", totalStars=" + getTotalStars() +
             ", discountedPercentage=" + getDiscountedPercentage() +

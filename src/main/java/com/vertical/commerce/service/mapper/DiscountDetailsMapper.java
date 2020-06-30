@@ -9,19 +9,19 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link DiscountDetails} and its DTO {@link DiscountDetailsDTO}.
  */
-@Mapper(componentModel = "spring", uses = {DiscountMapper.class, ProductsMapper.class, ProductCategoryMapper.class})
+@Mapper(componentModel = "spring", uses = {DiscountMapper.class, StockItemsMapper.class, ProductCategoryMapper.class})
 public interface DiscountDetailsMapper extends EntityMapper<DiscountDetailsDTO, DiscountDetails> {
 
     @Mapping(source = "discount.id", target = "discountId")
     @Mapping(source = "discount.name", target = "discountName")
-    @Mapping(source = "product.id", target = "productId")
-    @Mapping(source = "product.name", target = "productName")
+    @Mapping(source = "stockItem.id", target = "stockItemId")
+    @Mapping(source = "stockItem.name", target = "stockItemName")
     @Mapping(source = "productCategory.id", target = "productCategoryId")
     @Mapping(source = "productCategory.name", target = "productCategoryName")
     DiscountDetailsDTO toDto(DiscountDetails discountDetails);
 
     @Mapping(source = "discountId", target = "discount")
-    @Mapping(source = "productId", target = "product")
+    @Mapping(source = "stockItemId", target = "stockItem")
     @Mapping(source = "productCategoryId", target = "productCategory")
     DiscountDetails toEntity(DiscountDetailsDTO discountDetailsDTO);
 

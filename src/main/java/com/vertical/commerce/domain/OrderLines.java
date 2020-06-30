@@ -29,24 +29,21 @@ public class OrderLines implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @Column(name = "description")
+    private String description;
+
     @NotNull
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "tax_rate", precision = 21, scale = 2)
+    private BigDecimal taxRate;
 
     @Column(name = "unit_price", precision = 21, scale = 2)
     private BigDecimal unitPrice;
 
     @Column(name = "unit_price_discount", precision = 21, scale = 2)
     private BigDecimal unitPriceDiscount;
-
-    @Column(name = "line_total", precision = 21, scale = 2)
-    private BigDecimal lineTotal;
-
-    @Column(name = "tax_rate", precision = 21, scale = 2)
-    private BigDecimal taxRate;
 
     @Column(name = "picked_quantity")
     private Integer pickedQuantity;
@@ -92,10 +89,6 @@ public class OrderLines implements Serializable {
     @Column(name = "last_edited_when", nullable = false)
     private Instant lastEditedWhen;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private Suppliers supplier;
-
     @ManyToOne
     @JsonIgnoreProperties(value = "orderLines", allowSetters = true)
     private StockItems stockItem;
@@ -109,8 +102,12 @@ public class OrderLines implements Serializable {
     private Photos reviewImage;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = "orderLines", allowSetters = true)
+    private Suppliers supplier;
+
+    @ManyToOne
     @JsonIgnoreProperties(value = "orderLineLists", allowSetters = true)
-    private Orders order;
+    private OrderPackages orderPackage;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -119,6 +116,19 @@ public class OrderLines implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public OrderLines description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getQuantity() {
@@ -134,17 +144,17 @@ public class OrderLines implements Serializable {
         this.quantity = quantity;
     }
 
-    public String getDescription() {
-        return description;
+    public BigDecimal getTaxRate() {
+        return taxRate;
     }
 
-    public OrderLines description(String description) {
-        this.description = description;
+    public OrderLines taxRate(BigDecimal taxRate) {
+        this.taxRate = taxRate;
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTaxRate(BigDecimal taxRate) {
+        this.taxRate = taxRate;
     }
 
     public BigDecimal getUnitPrice() {
@@ -171,32 +181,6 @@ public class OrderLines implements Serializable {
 
     public void setUnitPriceDiscount(BigDecimal unitPriceDiscount) {
         this.unitPriceDiscount = unitPriceDiscount;
-    }
-
-    public BigDecimal getLineTotal() {
-        return lineTotal;
-    }
-
-    public OrderLines lineTotal(BigDecimal lineTotal) {
-        this.lineTotal = lineTotal;
-        return this;
-    }
-
-    public void setLineTotal(BigDecimal lineTotal) {
-        this.lineTotal = lineTotal;
-    }
-
-    public BigDecimal getTaxRate() {
-        return taxRate;
-    }
-
-    public OrderLines taxRate(BigDecimal taxRate) {
-        this.taxRate = taxRate;
-        return this;
-    }
-
-    public void setTaxRate(BigDecimal taxRate) {
-        this.taxRate = taxRate;
     }
 
     public Integer getPickedQuantity() {
@@ -355,19 +339,6 @@ public class OrderLines implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public Suppliers getSupplier() {
-        return supplier;
-    }
-
-    public OrderLines supplier(Suppliers suppliers) {
-        this.supplier = suppliers;
-        return this;
-    }
-
-    public void setSupplier(Suppliers suppliers) {
-        this.supplier = suppliers;
-    }
-
     public StockItems getStockItem() {
         return stockItem;
     }
@@ -407,17 +378,30 @@ public class OrderLines implements Serializable {
         this.reviewImage = photos;
     }
 
-    public Orders getOrder() {
-        return order;
+    public Suppliers getSupplier() {
+        return supplier;
     }
 
-    public OrderLines order(Orders orders) {
-        this.order = orders;
+    public OrderLines supplier(Suppliers suppliers) {
+        this.supplier = suppliers;
         return this;
     }
 
-    public void setOrder(Orders orders) {
-        this.order = orders;
+    public void setSupplier(Suppliers suppliers) {
+        this.supplier = suppliers;
+    }
+
+    public OrderPackages getOrderPackage() {
+        return orderPackage;
+    }
+
+    public OrderLines orderPackage(OrderPackages orderPackages) {
+        this.orderPackage = orderPackages;
+        return this;
+    }
+
+    public void setOrderPackage(OrderPackages orderPackages) {
+        this.orderPackage = orderPackages;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -442,12 +426,11 @@ public class OrderLines implements Serializable {
     public String toString() {
         return "OrderLines{" +
             "id=" + getId() +
-            ", quantity=" + getQuantity() +
             ", description='" + getDescription() + "'" +
+            ", quantity=" + getQuantity() +
+            ", taxRate=" + getTaxRate() +
             ", unitPrice=" + getUnitPrice() +
             ", unitPriceDiscount=" + getUnitPriceDiscount() +
-            ", lineTotal=" + getLineTotal() +
-            ", taxRate=" + getTaxRate() +
             ", pickedQuantity=" + getPickedQuantity() +
             ", pickingCompletedWhen='" + getPickingCompletedWhen() + "'" +
             ", status='" + getStatus() + "'" +

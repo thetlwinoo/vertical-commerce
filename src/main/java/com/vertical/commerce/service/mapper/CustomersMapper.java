@@ -17,11 +17,13 @@ public interface CustomersMapper extends EntityMapper<CustomersDTO, Customers> {
     @Mapping(source = "deliveryMethod.id", target = "deliveryMethodId")
     @Mapping(source = "deliveryMethod.name", target = "deliveryMethodName")
     @Mapping(source = "deliveryAddress.id", target = "deliveryAddressId")
+    @Mapping(source = "billToAddress.id", target = "billToAddressId")
     CustomersDTO toDto(Customers customers);
 
     @Mapping(source = "peopleId", target = "people")
     @Mapping(source = "deliveryMethodId", target = "deliveryMethod")
     @Mapping(source = "deliveryAddressId", target = "deliveryAddress")
+    @Mapping(source = "billToAddressId", target = "billToAddress")
     Customers toEntity(CustomersDTO customersDTO);
 
     default Customers fromId(Long id) {

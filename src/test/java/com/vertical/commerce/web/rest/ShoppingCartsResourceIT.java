@@ -48,9 +48,28 @@ public class ShoppingCartsResourceIT {
     private static final BigDecimal UPDATED_TOTAL_PRICE = new BigDecimal(2);
     private static final BigDecimal SMALLER_TOTAL_PRICE = new BigDecimal(1 - 1);
 
-    private static final BigDecimal DEFAULT_TOTAL_CARGO_PRICE = new BigDecimal(1);
-    private static final BigDecimal UPDATED_TOTAL_CARGO_PRICE = new BigDecimal(2);
-    private static final BigDecimal SMALLER_TOTAL_CARGO_PRICE = new BigDecimal(1 - 1);
+    private static final BigDecimal DEFAULT_SUB_TOTAL_PRICE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_SUB_TOTAL_PRICE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_SUB_TOTAL_PRICE = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_TOTAL_SHIPPING_FEE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_SHIPPING_FEE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TOTAL_SHIPPING_FEE = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_PROMOTION_TOTAL = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PROMOTION_TOTAL = new BigDecimal(2);
+    private static final BigDecimal SMALLER_PROMOTION_TOTAL = new BigDecimal(1 - 1);
+
+    private static final BigDecimal DEFAULT_VOUCHER_TOTAL = new BigDecimal(1);
+    private static final BigDecimal UPDATED_VOUCHER_TOTAL = new BigDecimal(2);
+    private static final BigDecimal SMALLER_VOUCHER_TOTAL = new BigDecimal(1 - 1);
+
+    private static final String DEFAULT_PACKAGE_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_PACKAGE_DETAILS = "BBBBBBBBBB";
 
     private static final String DEFAULT_CART_STRING = "AAAAAAAAAA";
     private static final String UPDATED_CART_STRING = "BBBBBBBBBB";
@@ -93,7 +112,12 @@ public class ShoppingCartsResourceIT {
     public static ShoppingCarts createEntity(EntityManager em) {
         ShoppingCarts shoppingCarts = new ShoppingCarts()
             .totalPrice(DEFAULT_TOTAL_PRICE)
-            .totalCargoPrice(DEFAULT_TOTAL_CARGO_PRICE)
+            .subTotalPrice(DEFAULT_SUB_TOTAL_PRICE)
+            .totalShippingFee(DEFAULT_TOTAL_SHIPPING_FEE)
+            .totalShippingFeeDiscount(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT)
+            .promotionTotal(DEFAULT_PROMOTION_TOTAL)
+            .voucherTotal(DEFAULT_VOUCHER_TOTAL)
+            .packageDetails(DEFAULT_PACKAGE_DETAILS)
             .cartString(DEFAULT_CART_STRING)
             .dealString(DEFAULT_DEAL_STRING)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
@@ -109,7 +133,12 @@ public class ShoppingCartsResourceIT {
     public static ShoppingCarts createUpdatedEntity(EntityManager em) {
         ShoppingCarts shoppingCarts = new ShoppingCarts()
             .totalPrice(UPDATED_TOTAL_PRICE)
-            .totalCargoPrice(UPDATED_TOTAL_CARGO_PRICE)
+            .subTotalPrice(UPDATED_SUB_TOTAL_PRICE)
+            .totalShippingFee(UPDATED_TOTAL_SHIPPING_FEE)
+            .totalShippingFeeDiscount(UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT)
+            .promotionTotal(UPDATED_PROMOTION_TOTAL)
+            .voucherTotal(UPDATED_VOUCHER_TOTAL)
+            .packageDetails(UPDATED_PACKAGE_DETAILS)
             .cartString(UPDATED_CART_STRING)
             .dealString(UPDATED_DEAL_STRING)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
@@ -138,7 +167,12 @@ public class ShoppingCartsResourceIT {
         assertThat(shoppingCartsList).hasSize(databaseSizeBeforeCreate + 1);
         ShoppingCarts testShoppingCarts = shoppingCartsList.get(shoppingCartsList.size() - 1);
         assertThat(testShoppingCarts.getTotalPrice()).isEqualTo(DEFAULT_TOTAL_PRICE);
-        assertThat(testShoppingCarts.getTotalCargoPrice()).isEqualTo(DEFAULT_TOTAL_CARGO_PRICE);
+        assertThat(testShoppingCarts.getSubTotalPrice()).isEqualTo(DEFAULT_SUB_TOTAL_PRICE);
+        assertThat(testShoppingCarts.getTotalShippingFee()).isEqualTo(DEFAULT_TOTAL_SHIPPING_FEE);
+        assertThat(testShoppingCarts.getTotalShippingFeeDiscount()).isEqualTo(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+        assertThat(testShoppingCarts.getPromotionTotal()).isEqualTo(DEFAULT_PROMOTION_TOTAL);
+        assertThat(testShoppingCarts.getVoucherTotal()).isEqualTo(DEFAULT_VOUCHER_TOTAL);
+        assertThat(testShoppingCarts.getPackageDetails()).isEqualTo(DEFAULT_PACKAGE_DETAILS);
         assertThat(testShoppingCarts.getCartString()).isEqualTo(DEFAULT_CART_STRING);
         assertThat(testShoppingCarts.getDealString()).isEqualTo(DEFAULT_DEAL_STRING);
         assertThat(testShoppingCarts.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
@@ -218,7 +252,12 @@ public class ShoppingCartsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(shoppingCarts.getId().intValue())))
             .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(DEFAULT_TOTAL_PRICE.intValue())))
-            .andExpect(jsonPath("$.[*].totalCargoPrice").value(hasItem(DEFAULT_TOTAL_CARGO_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].subTotalPrice").value(hasItem(DEFAULT_SUB_TOTAL_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].totalShippingFee").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE.intValue())))
+            .andExpect(jsonPath("$.[*].totalShippingFeeDiscount").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].promotionTotal").value(hasItem(DEFAULT_PROMOTION_TOTAL.intValue())))
+            .andExpect(jsonPath("$.[*].voucherTotal").value(hasItem(DEFAULT_VOUCHER_TOTAL.intValue())))
+            .andExpect(jsonPath("$.[*].packageDetails").value(hasItem(DEFAULT_PACKAGE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].cartString").value(hasItem(DEFAULT_CART_STRING.toString())))
             .andExpect(jsonPath("$.[*].dealString").value(hasItem(DEFAULT_DEAL_STRING.toString())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
@@ -237,7 +276,12 @@ public class ShoppingCartsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(shoppingCarts.getId().intValue()))
             .andExpect(jsonPath("$.totalPrice").value(DEFAULT_TOTAL_PRICE.intValue()))
-            .andExpect(jsonPath("$.totalCargoPrice").value(DEFAULT_TOTAL_CARGO_PRICE.intValue()))
+            .andExpect(jsonPath("$.subTotalPrice").value(DEFAULT_SUB_TOTAL_PRICE.intValue()))
+            .andExpect(jsonPath("$.totalShippingFee").value(DEFAULT_TOTAL_SHIPPING_FEE.intValue()))
+            .andExpect(jsonPath("$.totalShippingFeeDiscount").value(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT.intValue()))
+            .andExpect(jsonPath("$.promotionTotal").value(DEFAULT_PROMOTION_TOTAL.intValue()))
+            .andExpect(jsonPath("$.voucherTotal").value(DEFAULT_VOUCHER_TOTAL.intValue()))
+            .andExpect(jsonPath("$.packageDetails").value(DEFAULT_PACKAGE_DETAILS.toString()))
             .andExpect(jsonPath("$.cartString").value(DEFAULT_CART_STRING.toString()))
             .andExpect(jsonPath("$.dealString").value(DEFAULT_DEAL_STRING.toString()))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
@@ -371,106 +415,526 @@ public class ShoppingCartsResourceIT {
 
     @Test
     @Transactional
-    public void getAllShoppingCartsByTotalCargoPriceIsEqualToSomething() throws Exception {
+    public void getAllShoppingCartsBySubTotalPriceIsEqualToSomething() throws Exception {
         // Initialize the database
         shoppingCartsRepository.saveAndFlush(shoppingCarts);
 
-        // Get all the shoppingCartsList where totalCargoPrice equals to DEFAULT_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldBeFound("totalCargoPrice.equals=" + DEFAULT_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice equals to DEFAULT_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldBeFound("subTotalPrice.equals=" + DEFAULT_SUB_TOTAL_PRICE);
 
-        // Get all the shoppingCartsList where totalCargoPrice equals to UPDATED_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldNotBeFound("totalCargoPrice.equals=" + UPDATED_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice equals to UPDATED_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldNotBeFound("subTotalPrice.equals=" + UPDATED_SUB_TOTAL_PRICE);
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartsByTotalCargoPriceIsNotEqualToSomething() throws Exception {
+    public void getAllShoppingCartsBySubTotalPriceIsNotEqualToSomething() throws Exception {
         // Initialize the database
         shoppingCartsRepository.saveAndFlush(shoppingCarts);
 
-        // Get all the shoppingCartsList where totalCargoPrice not equals to DEFAULT_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldNotBeFound("totalCargoPrice.notEquals=" + DEFAULT_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice not equals to DEFAULT_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldNotBeFound("subTotalPrice.notEquals=" + DEFAULT_SUB_TOTAL_PRICE);
 
-        // Get all the shoppingCartsList where totalCargoPrice not equals to UPDATED_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldBeFound("totalCargoPrice.notEquals=" + UPDATED_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice not equals to UPDATED_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldBeFound("subTotalPrice.notEquals=" + UPDATED_SUB_TOTAL_PRICE);
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartsByTotalCargoPriceIsInShouldWork() throws Exception {
+    public void getAllShoppingCartsBySubTotalPriceIsInShouldWork() throws Exception {
         // Initialize the database
         shoppingCartsRepository.saveAndFlush(shoppingCarts);
 
-        // Get all the shoppingCartsList where totalCargoPrice in DEFAULT_TOTAL_CARGO_PRICE or UPDATED_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldBeFound("totalCargoPrice.in=" + DEFAULT_TOTAL_CARGO_PRICE + "," + UPDATED_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice in DEFAULT_SUB_TOTAL_PRICE or UPDATED_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldBeFound("subTotalPrice.in=" + DEFAULT_SUB_TOTAL_PRICE + "," + UPDATED_SUB_TOTAL_PRICE);
 
-        // Get all the shoppingCartsList where totalCargoPrice equals to UPDATED_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldNotBeFound("totalCargoPrice.in=" + UPDATED_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice equals to UPDATED_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldNotBeFound("subTotalPrice.in=" + UPDATED_SUB_TOTAL_PRICE);
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartsByTotalCargoPriceIsNullOrNotNull() throws Exception {
+    public void getAllShoppingCartsBySubTotalPriceIsNullOrNotNull() throws Exception {
         // Initialize the database
         shoppingCartsRepository.saveAndFlush(shoppingCarts);
 
-        // Get all the shoppingCartsList where totalCargoPrice is not null
-        defaultShoppingCartsShouldBeFound("totalCargoPrice.specified=true");
+        // Get all the shoppingCartsList where subTotalPrice is not null
+        defaultShoppingCartsShouldBeFound("subTotalPrice.specified=true");
 
-        // Get all the shoppingCartsList where totalCargoPrice is null
-        defaultShoppingCartsShouldNotBeFound("totalCargoPrice.specified=false");
+        // Get all the shoppingCartsList where subTotalPrice is null
+        defaultShoppingCartsShouldNotBeFound("subTotalPrice.specified=false");
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartsByTotalCargoPriceIsGreaterThanOrEqualToSomething() throws Exception {
+    public void getAllShoppingCartsBySubTotalPriceIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         shoppingCartsRepository.saveAndFlush(shoppingCarts);
 
-        // Get all the shoppingCartsList where totalCargoPrice is greater than or equal to DEFAULT_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldBeFound("totalCargoPrice.greaterThanOrEqual=" + DEFAULT_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice is greater than or equal to DEFAULT_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldBeFound("subTotalPrice.greaterThanOrEqual=" + DEFAULT_SUB_TOTAL_PRICE);
 
-        // Get all the shoppingCartsList where totalCargoPrice is greater than or equal to UPDATED_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldNotBeFound("totalCargoPrice.greaterThanOrEqual=" + UPDATED_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice is greater than or equal to UPDATED_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldNotBeFound("subTotalPrice.greaterThanOrEqual=" + UPDATED_SUB_TOTAL_PRICE);
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartsByTotalCargoPriceIsLessThanOrEqualToSomething() throws Exception {
+    public void getAllShoppingCartsBySubTotalPriceIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         shoppingCartsRepository.saveAndFlush(shoppingCarts);
 
-        // Get all the shoppingCartsList where totalCargoPrice is less than or equal to DEFAULT_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldBeFound("totalCargoPrice.lessThanOrEqual=" + DEFAULT_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice is less than or equal to DEFAULT_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldBeFound("subTotalPrice.lessThanOrEqual=" + DEFAULT_SUB_TOTAL_PRICE);
 
-        // Get all the shoppingCartsList where totalCargoPrice is less than or equal to SMALLER_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldNotBeFound("totalCargoPrice.lessThanOrEqual=" + SMALLER_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice is less than or equal to SMALLER_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldNotBeFound("subTotalPrice.lessThanOrEqual=" + SMALLER_SUB_TOTAL_PRICE);
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartsByTotalCargoPriceIsLessThanSomething() throws Exception {
+    public void getAllShoppingCartsBySubTotalPriceIsLessThanSomething() throws Exception {
         // Initialize the database
         shoppingCartsRepository.saveAndFlush(shoppingCarts);
 
-        // Get all the shoppingCartsList where totalCargoPrice is less than DEFAULT_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldNotBeFound("totalCargoPrice.lessThan=" + DEFAULT_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice is less than DEFAULT_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldNotBeFound("subTotalPrice.lessThan=" + DEFAULT_SUB_TOTAL_PRICE);
 
-        // Get all the shoppingCartsList where totalCargoPrice is less than UPDATED_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldBeFound("totalCargoPrice.lessThan=" + UPDATED_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice is less than UPDATED_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldBeFound("subTotalPrice.lessThan=" + UPDATED_SUB_TOTAL_PRICE);
     }
 
     @Test
     @Transactional
-    public void getAllShoppingCartsByTotalCargoPriceIsGreaterThanSomething() throws Exception {
+    public void getAllShoppingCartsBySubTotalPriceIsGreaterThanSomething() throws Exception {
         // Initialize the database
         shoppingCartsRepository.saveAndFlush(shoppingCarts);
 
-        // Get all the shoppingCartsList where totalCargoPrice is greater than DEFAULT_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldNotBeFound("totalCargoPrice.greaterThan=" + DEFAULT_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice is greater than DEFAULT_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldNotBeFound("subTotalPrice.greaterThan=" + DEFAULT_SUB_TOTAL_PRICE);
 
-        // Get all the shoppingCartsList where totalCargoPrice is greater than SMALLER_TOTAL_CARGO_PRICE
-        defaultShoppingCartsShouldBeFound("totalCargoPrice.greaterThan=" + SMALLER_TOTAL_CARGO_PRICE);
+        // Get all the shoppingCartsList where subTotalPrice is greater than SMALLER_SUB_TOTAL_PRICE
+        defaultShoppingCartsShouldBeFound("subTotalPrice.greaterThan=" + SMALLER_SUB_TOTAL_PRICE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFee equals to DEFAULT_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldBeFound("totalShippingFee.equals=" + DEFAULT_TOTAL_SHIPPING_FEE);
+
+        // Get all the shoppingCartsList where totalShippingFee equals to UPDATED_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldNotBeFound("totalShippingFee.equals=" + UPDATED_TOTAL_SHIPPING_FEE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFee not equals to DEFAULT_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldNotBeFound("totalShippingFee.notEquals=" + DEFAULT_TOTAL_SHIPPING_FEE);
+
+        // Get all the shoppingCartsList where totalShippingFee not equals to UPDATED_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldBeFound("totalShippingFee.notEquals=" + UPDATED_TOTAL_SHIPPING_FEE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeIsInShouldWork() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFee in DEFAULT_TOTAL_SHIPPING_FEE or UPDATED_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldBeFound("totalShippingFee.in=" + DEFAULT_TOTAL_SHIPPING_FEE + "," + UPDATED_TOTAL_SHIPPING_FEE);
+
+        // Get all the shoppingCartsList where totalShippingFee equals to UPDATED_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldNotBeFound("totalShippingFee.in=" + UPDATED_TOTAL_SHIPPING_FEE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFee is not null
+        defaultShoppingCartsShouldBeFound("totalShippingFee.specified=true");
+
+        // Get all the shoppingCartsList where totalShippingFee is null
+        defaultShoppingCartsShouldNotBeFound("totalShippingFee.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFee is greater than or equal to DEFAULT_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldBeFound("totalShippingFee.greaterThanOrEqual=" + DEFAULT_TOTAL_SHIPPING_FEE);
+
+        // Get all the shoppingCartsList where totalShippingFee is greater than or equal to UPDATED_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldNotBeFound("totalShippingFee.greaterThanOrEqual=" + UPDATED_TOTAL_SHIPPING_FEE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFee is less than or equal to DEFAULT_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldBeFound("totalShippingFee.lessThanOrEqual=" + DEFAULT_TOTAL_SHIPPING_FEE);
+
+        // Get all the shoppingCartsList where totalShippingFee is less than or equal to SMALLER_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldNotBeFound("totalShippingFee.lessThanOrEqual=" + SMALLER_TOTAL_SHIPPING_FEE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeIsLessThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFee is less than DEFAULT_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldNotBeFound("totalShippingFee.lessThan=" + DEFAULT_TOTAL_SHIPPING_FEE);
+
+        // Get all the shoppingCartsList where totalShippingFee is less than UPDATED_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldBeFound("totalShippingFee.lessThan=" + UPDATED_TOTAL_SHIPPING_FEE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFee is greater than DEFAULT_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldNotBeFound("totalShippingFee.greaterThan=" + DEFAULT_TOTAL_SHIPPING_FEE);
+
+        // Get all the shoppingCartsList where totalShippingFee is greater than SMALLER_TOTAL_SHIPPING_FEE
+        defaultShoppingCartsShouldBeFound("totalShippingFee.greaterThan=" + SMALLER_TOTAL_SHIPPING_FEE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeDiscountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount equals to DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldBeFound("totalShippingFeeDiscount.equals=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount equals to UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldNotBeFound("totalShippingFeeDiscount.equals=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeDiscountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount not equals to DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldNotBeFound("totalShippingFeeDiscount.notEquals=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount not equals to UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldBeFound("totalShippingFeeDiscount.notEquals=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeDiscountIsInShouldWork() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount in DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT or UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldBeFound("totalShippingFeeDiscount.in=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT + "," + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount equals to UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldNotBeFound("totalShippingFeeDiscount.in=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeDiscountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is not null
+        defaultShoppingCartsShouldBeFound("totalShippingFeeDiscount.specified=true");
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is null
+        defaultShoppingCartsShouldNotBeFound("totalShippingFeeDiscount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeDiscountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is greater than or equal to DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldBeFound("totalShippingFeeDiscount.greaterThanOrEqual=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is greater than or equal to UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldNotBeFound("totalShippingFeeDiscount.greaterThanOrEqual=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeDiscountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is less than or equal to DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldBeFound("totalShippingFeeDiscount.lessThanOrEqual=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is less than or equal to SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldNotBeFound("totalShippingFeeDiscount.lessThanOrEqual=" + SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeDiscountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is less than DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldNotBeFound("totalShippingFeeDiscount.lessThan=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is less than UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldBeFound("totalShippingFeeDiscount.lessThan=" + UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalShippingFeeDiscountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is greater than DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldNotBeFound("totalShippingFeeDiscount.greaterThan=" + DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
+
+        // Get all the shoppingCartsList where totalShippingFeeDiscount is greater than SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT
+        defaultShoppingCartsShouldBeFound("totalShippingFeeDiscount.greaterThan=" + SMALLER_TOTAL_SHIPPING_FEE_DISCOUNT);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByPromotionTotalIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where promotionTotal equals to DEFAULT_PROMOTION_TOTAL
+        defaultShoppingCartsShouldBeFound("promotionTotal.equals=" + DEFAULT_PROMOTION_TOTAL);
+
+        // Get all the shoppingCartsList where promotionTotal equals to UPDATED_PROMOTION_TOTAL
+        defaultShoppingCartsShouldNotBeFound("promotionTotal.equals=" + UPDATED_PROMOTION_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByPromotionTotalIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where promotionTotal not equals to DEFAULT_PROMOTION_TOTAL
+        defaultShoppingCartsShouldNotBeFound("promotionTotal.notEquals=" + DEFAULT_PROMOTION_TOTAL);
+
+        // Get all the shoppingCartsList where promotionTotal not equals to UPDATED_PROMOTION_TOTAL
+        defaultShoppingCartsShouldBeFound("promotionTotal.notEquals=" + UPDATED_PROMOTION_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByPromotionTotalIsInShouldWork() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where promotionTotal in DEFAULT_PROMOTION_TOTAL or UPDATED_PROMOTION_TOTAL
+        defaultShoppingCartsShouldBeFound("promotionTotal.in=" + DEFAULT_PROMOTION_TOTAL + "," + UPDATED_PROMOTION_TOTAL);
+
+        // Get all the shoppingCartsList where promotionTotal equals to UPDATED_PROMOTION_TOTAL
+        defaultShoppingCartsShouldNotBeFound("promotionTotal.in=" + UPDATED_PROMOTION_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByPromotionTotalIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where promotionTotal is not null
+        defaultShoppingCartsShouldBeFound("promotionTotal.specified=true");
+
+        // Get all the shoppingCartsList where promotionTotal is null
+        defaultShoppingCartsShouldNotBeFound("promotionTotal.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByPromotionTotalIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where promotionTotal is greater than or equal to DEFAULT_PROMOTION_TOTAL
+        defaultShoppingCartsShouldBeFound("promotionTotal.greaterThanOrEqual=" + DEFAULT_PROMOTION_TOTAL);
+
+        // Get all the shoppingCartsList where promotionTotal is greater than or equal to UPDATED_PROMOTION_TOTAL
+        defaultShoppingCartsShouldNotBeFound("promotionTotal.greaterThanOrEqual=" + UPDATED_PROMOTION_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByPromotionTotalIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where promotionTotal is less than or equal to DEFAULT_PROMOTION_TOTAL
+        defaultShoppingCartsShouldBeFound("promotionTotal.lessThanOrEqual=" + DEFAULT_PROMOTION_TOTAL);
+
+        // Get all the shoppingCartsList where promotionTotal is less than or equal to SMALLER_PROMOTION_TOTAL
+        defaultShoppingCartsShouldNotBeFound("promotionTotal.lessThanOrEqual=" + SMALLER_PROMOTION_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByPromotionTotalIsLessThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where promotionTotal is less than DEFAULT_PROMOTION_TOTAL
+        defaultShoppingCartsShouldNotBeFound("promotionTotal.lessThan=" + DEFAULT_PROMOTION_TOTAL);
+
+        // Get all the shoppingCartsList where promotionTotal is less than UPDATED_PROMOTION_TOTAL
+        defaultShoppingCartsShouldBeFound("promotionTotal.lessThan=" + UPDATED_PROMOTION_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByPromotionTotalIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where promotionTotal is greater than DEFAULT_PROMOTION_TOTAL
+        defaultShoppingCartsShouldNotBeFound("promotionTotal.greaterThan=" + DEFAULT_PROMOTION_TOTAL);
+
+        // Get all the shoppingCartsList where promotionTotal is greater than SMALLER_PROMOTION_TOTAL
+        defaultShoppingCartsShouldBeFound("promotionTotal.greaterThan=" + SMALLER_PROMOTION_TOTAL);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByVoucherTotalIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where voucherTotal equals to DEFAULT_VOUCHER_TOTAL
+        defaultShoppingCartsShouldBeFound("voucherTotal.equals=" + DEFAULT_VOUCHER_TOTAL);
+
+        // Get all the shoppingCartsList where voucherTotal equals to UPDATED_VOUCHER_TOTAL
+        defaultShoppingCartsShouldNotBeFound("voucherTotal.equals=" + UPDATED_VOUCHER_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByVoucherTotalIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where voucherTotal not equals to DEFAULT_VOUCHER_TOTAL
+        defaultShoppingCartsShouldNotBeFound("voucherTotal.notEquals=" + DEFAULT_VOUCHER_TOTAL);
+
+        // Get all the shoppingCartsList where voucherTotal not equals to UPDATED_VOUCHER_TOTAL
+        defaultShoppingCartsShouldBeFound("voucherTotal.notEquals=" + UPDATED_VOUCHER_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByVoucherTotalIsInShouldWork() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where voucherTotal in DEFAULT_VOUCHER_TOTAL or UPDATED_VOUCHER_TOTAL
+        defaultShoppingCartsShouldBeFound("voucherTotal.in=" + DEFAULT_VOUCHER_TOTAL + "," + UPDATED_VOUCHER_TOTAL);
+
+        // Get all the shoppingCartsList where voucherTotal equals to UPDATED_VOUCHER_TOTAL
+        defaultShoppingCartsShouldNotBeFound("voucherTotal.in=" + UPDATED_VOUCHER_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByVoucherTotalIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where voucherTotal is not null
+        defaultShoppingCartsShouldBeFound("voucherTotal.specified=true");
+
+        // Get all the shoppingCartsList where voucherTotal is null
+        defaultShoppingCartsShouldNotBeFound("voucherTotal.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByVoucherTotalIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where voucherTotal is greater than or equal to DEFAULT_VOUCHER_TOTAL
+        defaultShoppingCartsShouldBeFound("voucherTotal.greaterThanOrEqual=" + DEFAULT_VOUCHER_TOTAL);
+
+        // Get all the shoppingCartsList where voucherTotal is greater than or equal to UPDATED_VOUCHER_TOTAL
+        defaultShoppingCartsShouldNotBeFound("voucherTotal.greaterThanOrEqual=" + UPDATED_VOUCHER_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByVoucherTotalIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where voucherTotal is less than or equal to DEFAULT_VOUCHER_TOTAL
+        defaultShoppingCartsShouldBeFound("voucherTotal.lessThanOrEqual=" + DEFAULT_VOUCHER_TOTAL);
+
+        // Get all the shoppingCartsList where voucherTotal is less than or equal to SMALLER_VOUCHER_TOTAL
+        defaultShoppingCartsShouldNotBeFound("voucherTotal.lessThanOrEqual=" + SMALLER_VOUCHER_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByVoucherTotalIsLessThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where voucherTotal is less than DEFAULT_VOUCHER_TOTAL
+        defaultShoppingCartsShouldNotBeFound("voucherTotal.lessThan=" + DEFAULT_VOUCHER_TOTAL);
+
+        // Get all the shoppingCartsList where voucherTotal is less than UPDATED_VOUCHER_TOTAL
+        defaultShoppingCartsShouldBeFound("voucherTotal.lessThan=" + UPDATED_VOUCHER_TOTAL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByVoucherTotalIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where voucherTotal is greater than DEFAULT_VOUCHER_TOTAL
+        defaultShoppingCartsShouldNotBeFound("voucherTotal.greaterThan=" + DEFAULT_VOUCHER_TOTAL);
+
+        // Get all the shoppingCartsList where voucherTotal is greater than SMALLER_VOUCHER_TOTAL
+        defaultShoppingCartsShouldBeFound("voucherTotal.greaterThan=" + SMALLER_VOUCHER_TOTAL);
     }
 
 
@@ -692,7 +1156,12 @@ public class ShoppingCartsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(shoppingCarts.getId().intValue())))
             .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(DEFAULT_TOTAL_PRICE.intValue())))
-            .andExpect(jsonPath("$.[*].totalCargoPrice").value(hasItem(DEFAULT_TOTAL_CARGO_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].subTotalPrice").value(hasItem(DEFAULT_SUB_TOTAL_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].totalShippingFee").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE.intValue())))
+            .andExpect(jsonPath("$.[*].totalShippingFeeDiscount").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT.intValue())))
+            .andExpect(jsonPath("$.[*].promotionTotal").value(hasItem(DEFAULT_PROMOTION_TOTAL.intValue())))
+            .andExpect(jsonPath("$.[*].voucherTotal").value(hasItem(DEFAULT_VOUCHER_TOTAL.intValue())))
+            .andExpect(jsonPath("$.[*].packageDetails").value(hasItem(DEFAULT_PACKAGE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].cartString").value(hasItem(DEFAULT_CART_STRING.toString())))
             .andExpect(jsonPath("$.[*].dealString").value(hasItem(DEFAULT_DEAL_STRING.toString())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
@@ -744,7 +1213,12 @@ public class ShoppingCartsResourceIT {
         em.detach(updatedShoppingCarts);
         updatedShoppingCarts
             .totalPrice(UPDATED_TOTAL_PRICE)
-            .totalCargoPrice(UPDATED_TOTAL_CARGO_PRICE)
+            .subTotalPrice(UPDATED_SUB_TOTAL_PRICE)
+            .totalShippingFee(UPDATED_TOTAL_SHIPPING_FEE)
+            .totalShippingFeeDiscount(UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT)
+            .promotionTotal(UPDATED_PROMOTION_TOTAL)
+            .voucherTotal(UPDATED_VOUCHER_TOTAL)
+            .packageDetails(UPDATED_PACKAGE_DETAILS)
             .cartString(UPDATED_CART_STRING)
             .dealString(UPDATED_DEAL_STRING)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
@@ -761,7 +1235,12 @@ public class ShoppingCartsResourceIT {
         assertThat(shoppingCartsList).hasSize(databaseSizeBeforeUpdate);
         ShoppingCarts testShoppingCarts = shoppingCartsList.get(shoppingCartsList.size() - 1);
         assertThat(testShoppingCarts.getTotalPrice()).isEqualTo(UPDATED_TOTAL_PRICE);
-        assertThat(testShoppingCarts.getTotalCargoPrice()).isEqualTo(UPDATED_TOTAL_CARGO_PRICE);
+        assertThat(testShoppingCarts.getSubTotalPrice()).isEqualTo(UPDATED_SUB_TOTAL_PRICE);
+        assertThat(testShoppingCarts.getTotalShippingFee()).isEqualTo(UPDATED_TOTAL_SHIPPING_FEE);
+        assertThat(testShoppingCarts.getTotalShippingFeeDiscount()).isEqualTo(UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
+        assertThat(testShoppingCarts.getPromotionTotal()).isEqualTo(UPDATED_PROMOTION_TOTAL);
+        assertThat(testShoppingCarts.getVoucherTotal()).isEqualTo(UPDATED_VOUCHER_TOTAL);
+        assertThat(testShoppingCarts.getPackageDetails()).isEqualTo(UPDATED_PACKAGE_DETAILS);
         assertThat(testShoppingCarts.getCartString()).isEqualTo(UPDATED_CART_STRING);
         assertThat(testShoppingCarts.getDealString()).isEqualTo(UPDATED_DEAL_STRING);
         assertThat(testShoppingCarts.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);

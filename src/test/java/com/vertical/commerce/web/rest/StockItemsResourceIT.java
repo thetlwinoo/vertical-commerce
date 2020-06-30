@@ -3,15 +3,14 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.StockItems;
-import com.vertical.commerce.domain.Photos;
 import com.vertical.commerce.domain.SpecialDeals;
+import com.vertical.commerce.domain.Photos;
 import com.vertical.commerce.domain.UnitMeasure;
 import com.vertical.commerce.domain.ProductAttribute;
 import com.vertical.commerce.domain.ProductOption;
 import com.vertical.commerce.domain.Materials;
 import com.vertical.commerce.domain.Currency;
 import com.vertical.commerce.domain.BarcodeTypes;
-import com.vertical.commerce.domain.StockItemHoldings;
 import com.vertical.commerce.domain.Products;
 import com.vertical.commerce.repository.StockItemsRepository;
 import com.vertical.commerce.service.StockItemsService;
@@ -29,6 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -64,6 +64,10 @@ public class StockItemsResourceIT {
     private static final String DEFAULT_BARCODE = "AAAAAAAAAA";
     private static final String UPDATED_BARCODE = "BBBBBBBBBB";
 
+    private static final BigDecimal DEFAULT_TAX_RATE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TAX_RATE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TAX_RATE = new BigDecimal(1 - 1);
+
     private static final BigDecimal DEFAULT_UNIT_PRICE = new BigDecimal(1);
     private static final BigDecimal UPDATED_UNIT_PRICE = new BigDecimal(2);
     private static final BigDecimal SMALLER_UNIT_PRICE = new BigDecimal(1 - 1);
@@ -72,9 +76,46 @@ public class StockItemsResourceIT {
     private static final BigDecimal UPDATED_RECOMMENDED_RETAIL_PRICE = new BigDecimal(2);
     private static final BigDecimal SMALLER_RECOMMENDED_RETAIL_PRICE = new BigDecimal(1 - 1);
 
+    private static final BigDecimal DEFAULT_TYPICAL_WEIGHT_PER_UNIT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TYPICAL_WEIGHT_PER_UNIT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TYPICAL_WEIGHT_PER_UNIT = new BigDecimal(1 - 1);
+
     private static final Integer DEFAULT_QUANTITY_ON_HAND = 1;
     private static final Integer UPDATED_QUANTITY_ON_HAND = 2;
     private static final Integer SMALLER_QUANTITY_ON_HAND = 1 - 1;
+
+    private static final String DEFAULT_SHELF = "AAAAAAAAAA";
+    private static final String UPDATED_SHELF = "BBBBBBBBBB";
+
+    private static final String DEFAULT_BIN = "AAAAAAAAAA";
+    private static final String UPDATED_BIN = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_LAST_STOCK_TAKE_QUANTITY = 1;
+    private static final Integer UPDATED_LAST_STOCK_TAKE_QUANTITY = 2;
+    private static final Integer SMALLER_LAST_STOCK_TAKE_QUANTITY = 1 - 1;
+
+    private static final BigDecimal DEFAULT_LAST_COST_PRICE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_LAST_COST_PRICE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_LAST_COST_PRICE = new BigDecimal(1 - 1);
+
+    private static final Integer DEFAULT_REORDER_LEVEL = 1;
+    private static final Integer UPDATED_REORDER_LEVEL = 2;
+    private static final Integer SMALLER_REORDER_LEVEL = 1 - 1;
+
+    private static final Integer DEFAULT_TARGET_STOCK_LEVEL = 1;
+    private static final Integer UPDATED_TARGET_STOCK_LEVEL = 2;
+    private static final Integer SMALLER_TARGET_STOCK_LEVEL = 1 - 1;
+
+    private static final Integer DEFAULT_LEAD_TIME_DAYS = 1;
+    private static final Integer UPDATED_LEAD_TIME_DAYS = 2;
+    private static final Integer SMALLER_LEAD_TIME_DAYS = 1 - 1;
+
+    private static final Integer DEFAULT_QUANTITY_PER_OUTER = 1;
+    private static final Integer UPDATED_QUANTITY_PER_OUTER = 2;
+    private static final Integer SMALLER_QUANTITY_PER_OUTER = 1 - 1;
+
+    private static final Boolean DEFAULT_IS_CHILLER_STOCK = false;
+    private static final Boolean UPDATED_IS_CHILLER_STOCK = true;
 
     private static final Integer DEFAULT_ITEM_LENGTH = 1;
     private static final Integer UPDATED_ITEM_LENGTH = 2;
@@ -135,6 +176,12 @@ public class StockItemsResourceIT {
     private static final Integer UPDATED_SELL_COUNT = 2;
     private static final Integer SMALLER_SELL_COUNT = 1 - 1;
 
+    private static final String DEFAULT_TAGS = "AAAAAAAAAA";
+    private static final String UPDATED_TAGS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_SEARCH_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_SEARCH_DETAILS = "BBBBBBBBBB";
+
     private static final String DEFAULT_CUSTOM_FIELDS = "AAAAAAAAAA";
     private static final String UPDATED_CUSTOM_FIELDS = "BBBBBBBBBB";
 
@@ -143,6 +190,9 @@ public class StockItemsResourceIT {
 
     private static final Boolean DEFAULT_ACTIVE_IND = false;
     private static final Boolean UPDATED_ACTIVE_IND = true;
+
+    private static final Boolean DEFAULT_LIVE_IND = false;
+    private static final Boolean UPDATED_LIVE_IND = true;
 
     private static final Boolean DEFAULT_CASH_ON_DELIVERY_IND = false;
     private static final Boolean UPDATED_CASH_ON_DELIVERY_IND = true;
@@ -186,9 +236,20 @@ public class StockItemsResourceIT {
             .vendorSKU(DEFAULT_VENDOR_SKU)
             .generatedSKU(DEFAULT_GENERATED_SKU)
             .barcode(DEFAULT_BARCODE)
+            .taxRate(DEFAULT_TAX_RATE)
             .unitPrice(DEFAULT_UNIT_PRICE)
             .recommendedRetailPrice(DEFAULT_RECOMMENDED_RETAIL_PRICE)
+            .typicalWeightPerUnit(DEFAULT_TYPICAL_WEIGHT_PER_UNIT)
             .quantityOnHand(DEFAULT_QUANTITY_ON_HAND)
+            .shelf(DEFAULT_SHELF)
+            .bin(DEFAULT_BIN)
+            .lastStockTakeQuantity(DEFAULT_LAST_STOCK_TAKE_QUANTITY)
+            .lastCostPrice(DEFAULT_LAST_COST_PRICE)
+            .reorderLevel(DEFAULT_REORDER_LEVEL)
+            .targetStockLevel(DEFAULT_TARGET_STOCK_LEVEL)
+            .leadTimeDays(DEFAULT_LEAD_TIME_DAYS)
+            .quantityPerOuter(DEFAULT_QUANTITY_PER_OUTER)
+            .isChillerStock(DEFAULT_IS_CHILLER_STOCK)
             .itemLength(DEFAULT_ITEM_LENGTH)
             .itemWidth(DEFAULT_ITEM_WIDTH)
             .itemHeight(DEFAULT_ITEM_HEIGHT)
@@ -205,9 +266,12 @@ public class StockItemsResourceIT {
             .sellStartDate(DEFAULT_SELL_START_DATE)
             .sellEndDate(DEFAULT_SELL_END_DATE)
             .sellCount(DEFAULT_SELL_COUNT)
+            .tags(DEFAULT_TAGS)
+            .searchDetails(DEFAULT_SEARCH_DETAILS)
             .customFields(DEFAULT_CUSTOM_FIELDS)
             .thumbnailUrl(DEFAULT_THUMBNAIL_URL)
             .activeInd(DEFAULT_ACTIVE_IND)
+            .liveInd(DEFAULT_LIVE_IND)
             .cashOnDeliveryInd(DEFAULT_CASH_ON_DELIVERY_IND)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
             .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN);
@@ -226,9 +290,20 @@ public class StockItemsResourceIT {
             .vendorSKU(UPDATED_VENDOR_SKU)
             .generatedSKU(UPDATED_GENERATED_SKU)
             .barcode(UPDATED_BARCODE)
+            .taxRate(UPDATED_TAX_RATE)
             .unitPrice(UPDATED_UNIT_PRICE)
             .recommendedRetailPrice(UPDATED_RECOMMENDED_RETAIL_PRICE)
+            .typicalWeightPerUnit(UPDATED_TYPICAL_WEIGHT_PER_UNIT)
             .quantityOnHand(UPDATED_QUANTITY_ON_HAND)
+            .shelf(UPDATED_SHELF)
+            .bin(UPDATED_BIN)
+            .lastStockTakeQuantity(UPDATED_LAST_STOCK_TAKE_QUANTITY)
+            .lastCostPrice(UPDATED_LAST_COST_PRICE)
+            .reorderLevel(UPDATED_REORDER_LEVEL)
+            .targetStockLevel(UPDATED_TARGET_STOCK_LEVEL)
+            .leadTimeDays(UPDATED_LEAD_TIME_DAYS)
+            .quantityPerOuter(UPDATED_QUANTITY_PER_OUTER)
+            .isChillerStock(UPDATED_IS_CHILLER_STOCK)
             .itemLength(UPDATED_ITEM_LENGTH)
             .itemWidth(UPDATED_ITEM_WIDTH)
             .itemHeight(UPDATED_ITEM_HEIGHT)
@@ -245,9 +320,12 @@ public class StockItemsResourceIT {
             .sellStartDate(UPDATED_SELL_START_DATE)
             .sellEndDate(UPDATED_SELL_END_DATE)
             .sellCount(UPDATED_SELL_COUNT)
+            .tags(UPDATED_TAGS)
+            .searchDetails(UPDATED_SEARCH_DETAILS)
             .customFields(UPDATED_CUSTOM_FIELDS)
             .thumbnailUrl(UPDATED_THUMBNAIL_URL)
             .activeInd(UPDATED_ACTIVE_IND)
+            .liveInd(UPDATED_LIVE_IND)
             .cashOnDeliveryInd(UPDATED_CASH_ON_DELIVERY_IND)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
@@ -279,9 +357,20 @@ public class StockItemsResourceIT {
         assertThat(testStockItems.getVendorSKU()).isEqualTo(DEFAULT_VENDOR_SKU);
         assertThat(testStockItems.getGeneratedSKU()).isEqualTo(DEFAULT_GENERATED_SKU);
         assertThat(testStockItems.getBarcode()).isEqualTo(DEFAULT_BARCODE);
+        assertThat(testStockItems.getTaxRate()).isEqualTo(DEFAULT_TAX_RATE);
         assertThat(testStockItems.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
         assertThat(testStockItems.getRecommendedRetailPrice()).isEqualTo(DEFAULT_RECOMMENDED_RETAIL_PRICE);
+        assertThat(testStockItems.getTypicalWeightPerUnit()).isEqualTo(DEFAULT_TYPICAL_WEIGHT_PER_UNIT);
         assertThat(testStockItems.getQuantityOnHand()).isEqualTo(DEFAULT_QUANTITY_ON_HAND);
+        assertThat(testStockItems.getShelf()).isEqualTo(DEFAULT_SHELF);
+        assertThat(testStockItems.getBin()).isEqualTo(DEFAULT_BIN);
+        assertThat(testStockItems.getLastStockTakeQuantity()).isEqualTo(DEFAULT_LAST_STOCK_TAKE_QUANTITY);
+        assertThat(testStockItems.getLastCostPrice()).isEqualTo(DEFAULT_LAST_COST_PRICE);
+        assertThat(testStockItems.getReorderLevel()).isEqualTo(DEFAULT_REORDER_LEVEL);
+        assertThat(testStockItems.getTargetStockLevel()).isEqualTo(DEFAULT_TARGET_STOCK_LEVEL);
+        assertThat(testStockItems.getLeadTimeDays()).isEqualTo(DEFAULT_LEAD_TIME_DAYS);
+        assertThat(testStockItems.getQuantityPerOuter()).isEqualTo(DEFAULT_QUANTITY_PER_OUTER);
+        assertThat(testStockItems.isIsChillerStock()).isEqualTo(DEFAULT_IS_CHILLER_STOCK);
         assertThat(testStockItems.getItemLength()).isEqualTo(DEFAULT_ITEM_LENGTH);
         assertThat(testStockItems.getItemWidth()).isEqualTo(DEFAULT_ITEM_WIDTH);
         assertThat(testStockItems.getItemHeight()).isEqualTo(DEFAULT_ITEM_HEIGHT);
@@ -298,9 +387,12 @@ public class StockItemsResourceIT {
         assertThat(testStockItems.getSellStartDate()).isEqualTo(DEFAULT_SELL_START_DATE);
         assertThat(testStockItems.getSellEndDate()).isEqualTo(DEFAULT_SELL_END_DATE);
         assertThat(testStockItems.getSellCount()).isEqualTo(DEFAULT_SELL_COUNT);
+        assertThat(testStockItems.getTags()).isEqualTo(DEFAULT_TAGS);
+        assertThat(testStockItems.getSearchDetails()).isEqualTo(DEFAULT_SEARCH_DETAILS);
         assertThat(testStockItems.getCustomFields()).isEqualTo(DEFAULT_CUSTOM_FIELDS);
         assertThat(testStockItems.getThumbnailUrl()).isEqualTo(DEFAULT_THUMBNAIL_URL);
         assertThat(testStockItems.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
+        assertThat(testStockItems.isLiveInd()).isEqualTo(DEFAULT_LIVE_IND);
         assertThat(testStockItems.isCashOnDeliveryInd()).isEqualTo(DEFAULT_CASH_ON_DELIVERY_IND);
         assertThat(testStockItems.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
         assertThat(testStockItems.getLastEditedWhen()).isEqualTo(DEFAULT_LAST_EDITED_WHEN);
@@ -389,6 +481,106 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
+    public void checkLastCostPriceIsRequired() throws Exception {
+        int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
+        // set the field null
+        stockItems.setLastCostPrice(null);
+
+        // Create the StockItems, which fails.
+        StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(stockItems);
+
+
+        restStockItemsMockMvc.perform(post("/api/stock-items").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stockItemsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StockItems> stockItemsList = stockItemsRepository.findAll();
+        assertThat(stockItemsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkIsChillerStockIsRequired() throws Exception {
+        int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
+        // set the field null
+        stockItems.setIsChillerStock(null);
+
+        // Create the StockItems, which fails.
+        StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(stockItems);
+
+
+        restStockItemsMockMvc.perform(post("/api/stock-items").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stockItemsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StockItems> stockItemsList = stockItemsRepository.findAll();
+        assertThat(stockItemsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkActiveIndIsRequired() throws Exception {
+        int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
+        // set the field null
+        stockItems.setActiveInd(null);
+
+        // Create the StockItems, which fails.
+        StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(stockItems);
+
+
+        restStockItemsMockMvc.perform(post("/api/stock-items").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stockItemsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StockItems> stockItemsList = stockItemsRepository.findAll();
+        assertThat(stockItemsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkLiveIndIsRequired() throws Exception {
+        int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
+        // set the field null
+        stockItems.setLiveInd(null);
+
+        // Create the StockItems, which fails.
+        StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(stockItems);
+
+
+        restStockItemsMockMvc.perform(post("/api/stock-items").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stockItemsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StockItems> stockItemsList = stockItemsRepository.findAll();
+        assertThat(stockItemsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCashOnDeliveryIndIsRequired() throws Exception {
+        int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
+        // set the field null
+        stockItems.setCashOnDeliveryInd(null);
+
+        // Create the StockItems, which fails.
+        StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(stockItems);
+
+
+        restStockItemsMockMvc.perform(post("/api/stock-items").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stockItemsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StockItems> stockItemsList = stockItemsRepository.findAll();
+        assertThat(stockItemsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void checkLastEditedByIsRequired() throws Exception {
         int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
         // set the field null
@@ -443,9 +635,20 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.[*].vendorSKU").value(hasItem(DEFAULT_VENDOR_SKU)))
             .andExpect(jsonPath("$.[*].generatedSKU").value(hasItem(DEFAULT_GENERATED_SKU)))
             .andExpect(jsonPath("$.[*].barcode").value(hasItem(DEFAULT_BARCODE)))
+            .andExpect(jsonPath("$.[*].taxRate").value(hasItem(DEFAULT_TAX_RATE.intValue())))
             .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.intValue())))
             .andExpect(jsonPath("$.[*].recommendedRetailPrice").value(hasItem(DEFAULT_RECOMMENDED_RETAIL_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].typicalWeightPerUnit").value(hasItem(DEFAULT_TYPICAL_WEIGHT_PER_UNIT.intValue())))
             .andExpect(jsonPath("$.[*].quantityOnHand").value(hasItem(DEFAULT_QUANTITY_ON_HAND)))
+            .andExpect(jsonPath("$.[*].shelf").value(hasItem(DEFAULT_SHELF)))
+            .andExpect(jsonPath("$.[*].bin").value(hasItem(DEFAULT_BIN)))
+            .andExpect(jsonPath("$.[*].lastStockTakeQuantity").value(hasItem(DEFAULT_LAST_STOCK_TAKE_QUANTITY)))
+            .andExpect(jsonPath("$.[*].lastCostPrice").value(hasItem(DEFAULT_LAST_COST_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].reorderLevel").value(hasItem(DEFAULT_REORDER_LEVEL)))
+            .andExpect(jsonPath("$.[*].targetStockLevel").value(hasItem(DEFAULT_TARGET_STOCK_LEVEL)))
+            .andExpect(jsonPath("$.[*].leadTimeDays").value(hasItem(DEFAULT_LEAD_TIME_DAYS)))
+            .andExpect(jsonPath("$.[*].quantityPerOuter").value(hasItem(DEFAULT_QUANTITY_PER_OUTER)))
+            .andExpect(jsonPath("$.[*].isChillerStock").value(hasItem(DEFAULT_IS_CHILLER_STOCK.booleanValue())))
             .andExpect(jsonPath("$.[*].itemLength").value(hasItem(DEFAULT_ITEM_LENGTH)))
             .andExpect(jsonPath("$.[*].itemWidth").value(hasItem(DEFAULT_ITEM_WIDTH)))
             .andExpect(jsonPath("$.[*].itemHeight").value(hasItem(DEFAULT_ITEM_HEIGHT)))
@@ -462,9 +665,12 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.[*].sellStartDate").value(hasItem(DEFAULT_SELL_START_DATE.toString())))
             .andExpect(jsonPath("$.[*].sellEndDate").value(hasItem(DEFAULT_SELL_END_DATE.toString())))
             .andExpect(jsonPath("$.[*].sellCount").value(hasItem(DEFAULT_SELL_COUNT)))
-            .andExpect(jsonPath("$.[*].customFields").value(hasItem(DEFAULT_CUSTOM_FIELDS)))
+            .andExpect(jsonPath("$.[*].tags").value(hasItem(DEFAULT_TAGS)))
+            .andExpect(jsonPath("$.[*].searchDetails").value(hasItem(DEFAULT_SEARCH_DETAILS)))
+            .andExpect(jsonPath("$.[*].customFields").value(hasItem(DEFAULT_CUSTOM_FIELDS.toString())))
             .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
             .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
+            .andExpect(jsonPath("$.[*].liveInd").value(hasItem(DEFAULT_LIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].cashOnDeliveryInd").value(hasItem(DEFAULT_CASH_ON_DELIVERY_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
@@ -486,9 +692,20 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.vendorSKU").value(DEFAULT_VENDOR_SKU))
             .andExpect(jsonPath("$.generatedSKU").value(DEFAULT_GENERATED_SKU))
             .andExpect(jsonPath("$.barcode").value(DEFAULT_BARCODE))
+            .andExpect(jsonPath("$.taxRate").value(DEFAULT_TAX_RATE.intValue()))
             .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.intValue()))
             .andExpect(jsonPath("$.recommendedRetailPrice").value(DEFAULT_RECOMMENDED_RETAIL_PRICE.intValue()))
+            .andExpect(jsonPath("$.typicalWeightPerUnit").value(DEFAULT_TYPICAL_WEIGHT_PER_UNIT.intValue()))
             .andExpect(jsonPath("$.quantityOnHand").value(DEFAULT_QUANTITY_ON_HAND))
+            .andExpect(jsonPath("$.shelf").value(DEFAULT_SHELF))
+            .andExpect(jsonPath("$.bin").value(DEFAULT_BIN))
+            .andExpect(jsonPath("$.lastStockTakeQuantity").value(DEFAULT_LAST_STOCK_TAKE_QUANTITY))
+            .andExpect(jsonPath("$.lastCostPrice").value(DEFAULT_LAST_COST_PRICE.intValue()))
+            .andExpect(jsonPath("$.reorderLevel").value(DEFAULT_REORDER_LEVEL))
+            .andExpect(jsonPath("$.targetStockLevel").value(DEFAULT_TARGET_STOCK_LEVEL))
+            .andExpect(jsonPath("$.leadTimeDays").value(DEFAULT_LEAD_TIME_DAYS))
+            .andExpect(jsonPath("$.quantityPerOuter").value(DEFAULT_QUANTITY_PER_OUTER))
+            .andExpect(jsonPath("$.isChillerStock").value(DEFAULT_IS_CHILLER_STOCK.booleanValue()))
             .andExpect(jsonPath("$.itemLength").value(DEFAULT_ITEM_LENGTH))
             .andExpect(jsonPath("$.itemWidth").value(DEFAULT_ITEM_WIDTH))
             .andExpect(jsonPath("$.itemHeight").value(DEFAULT_ITEM_HEIGHT))
@@ -505,9 +722,12 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.sellStartDate").value(DEFAULT_SELL_START_DATE.toString()))
             .andExpect(jsonPath("$.sellEndDate").value(DEFAULT_SELL_END_DATE.toString()))
             .andExpect(jsonPath("$.sellCount").value(DEFAULT_SELL_COUNT))
-            .andExpect(jsonPath("$.customFields").value(DEFAULT_CUSTOM_FIELDS))
+            .andExpect(jsonPath("$.tags").value(DEFAULT_TAGS))
+            .andExpect(jsonPath("$.searchDetails").value(DEFAULT_SEARCH_DETAILS))
+            .andExpect(jsonPath("$.customFields").value(DEFAULT_CUSTOM_FIELDS.toString()))
             .andExpect(jsonPath("$.thumbnailUrl").value(DEFAULT_THUMBNAIL_URL))
             .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()))
+            .andExpect(jsonPath("$.liveInd").value(DEFAULT_LIVE_IND.booleanValue()))
             .andExpect(jsonPath("$.cashOnDeliveryInd").value(DEFAULT_CASH_ON_DELIVERY_IND.booleanValue()))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
             .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()));
@@ -925,6 +1145,111 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
+    public void getAllStockItemsByTaxRateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where taxRate equals to DEFAULT_TAX_RATE
+        defaultStockItemsShouldBeFound("taxRate.equals=" + DEFAULT_TAX_RATE);
+
+        // Get all the stockItemsList where taxRate equals to UPDATED_TAX_RATE
+        defaultStockItemsShouldNotBeFound("taxRate.equals=" + UPDATED_TAX_RATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTaxRateIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where taxRate not equals to DEFAULT_TAX_RATE
+        defaultStockItemsShouldNotBeFound("taxRate.notEquals=" + DEFAULT_TAX_RATE);
+
+        // Get all the stockItemsList where taxRate not equals to UPDATED_TAX_RATE
+        defaultStockItemsShouldBeFound("taxRate.notEquals=" + UPDATED_TAX_RATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTaxRateIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where taxRate in DEFAULT_TAX_RATE or UPDATED_TAX_RATE
+        defaultStockItemsShouldBeFound("taxRate.in=" + DEFAULT_TAX_RATE + "," + UPDATED_TAX_RATE);
+
+        // Get all the stockItemsList where taxRate equals to UPDATED_TAX_RATE
+        defaultStockItemsShouldNotBeFound("taxRate.in=" + UPDATED_TAX_RATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTaxRateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where taxRate is not null
+        defaultStockItemsShouldBeFound("taxRate.specified=true");
+
+        // Get all the stockItemsList where taxRate is null
+        defaultStockItemsShouldNotBeFound("taxRate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTaxRateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where taxRate is greater than or equal to DEFAULT_TAX_RATE
+        defaultStockItemsShouldBeFound("taxRate.greaterThanOrEqual=" + DEFAULT_TAX_RATE);
+
+        // Get all the stockItemsList where taxRate is greater than or equal to UPDATED_TAX_RATE
+        defaultStockItemsShouldNotBeFound("taxRate.greaterThanOrEqual=" + UPDATED_TAX_RATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTaxRateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where taxRate is less than or equal to DEFAULT_TAX_RATE
+        defaultStockItemsShouldBeFound("taxRate.lessThanOrEqual=" + DEFAULT_TAX_RATE);
+
+        // Get all the stockItemsList where taxRate is less than or equal to SMALLER_TAX_RATE
+        defaultStockItemsShouldNotBeFound("taxRate.lessThanOrEqual=" + SMALLER_TAX_RATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTaxRateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where taxRate is less than DEFAULT_TAX_RATE
+        defaultStockItemsShouldNotBeFound("taxRate.lessThan=" + DEFAULT_TAX_RATE);
+
+        // Get all the stockItemsList where taxRate is less than UPDATED_TAX_RATE
+        defaultStockItemsShouldBeFound("taxRate.lessThan=" + UPDATED_TAX_RATE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTaxRateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where taxRate is greater than DEFAULT_TAX_RATE
+        defaultStockItemsShouldNotBeFound("taxRate.greaterThan=" + DEFAULT_TAX_RATE);
+
+        // Get all the stockItemsList where taxRate is greater than SMALLER_TAX_RATE
+        defaultStockItemsShouldBeFound("taxRate.greaterThan=" + SMALLER_TAX_RATE);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllStockItemsByUnitPriceIsEqualToSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
@@ -1135,6 +1460,111 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
+    public void getAllStockItemsByTypicalWeightPerUnitIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where typicalWeightPerUnit equals to DEFAULT_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldBeFound("typicalWeightPerUnit.equals=" + DEFAULT_TYPICAL_WEIGHT_PER_UNIT);
+
+        // Get all the stockItemsList where typicalWeightPerUnit equals to UPDATED_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldNotBeFound("typicalWeightPerUnit.equals=" + UPDATED_TYPICAL_WEIGHT_PER_UNIT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTypicalWeightPerUnitIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where typicalWeightPerUnit not equals to DEFAULT_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldNotBeFound("typicalWeightPerUnit.notEquals=" + DEFAULT_TYPICAL_WEIGHT_PER_UNIT);
+
+        // Get all the stockItemsList where typicalWeightPerUnit not equals to UPDATED_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldBeFound("typicalWeightPerUnit.notEquals=" + UPDATED_TYPICAL_WEIGHT_PER_UNIT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTypicalWeightPerUnitIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where typicalWeightPerUnit in DEFAULT_TYPICAL_WEIGHT_PER_UNIT or UPDATED_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldBeFound("typicalWeightPerUnit.in=" + DEFAULT_TYPICAL_WEIGHT_PER_UNIT + "," + UPDATED_TYPICAL_WEIGHT_PER_UNIT);
+
+        // Get all the stockItemsList where typicalWeightPerUnit equals to UPDATED_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldNotBeFound("typicalWeightPerUnit.in=" + UPDATED_TYPICAL_WEIGHT_PER_UNIT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTypicalWeightPerUnitIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where typicalWeightPerUnit is not null
+        defaultStockItemsShouldBeFound("typicalWeightPerUnit.specified=true");
+
+        // Get all the stockItemsList where typicalWeightPerUnit is null
+        defaultStockItemsShouldNotBeFound("typicalWeightPerUnit.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTypicalWeightPerUnitIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where typicalWeightPerUnit is greater than or equal to DEFAULT_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldBeFound("typicalWeightPerUnit.greaterThanOrEqual=" + DEFAULT_TYPICAL_WEIGHT_PER_UNIT);
+
+        // Get all the stockItemsList where typicalWeightPerUnit is greater than or equal to UPDATED_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldNotBeFound("typicalWeightPerUnit.greaterThanOrEqual=" + UPDATED_TYPICAL_WEIGHT_PER_UNIT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTypicalWeightPerUnitIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where typicalWeightPerUnit is less than or equal to DEFAULT_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldBeFound("typicalWeightPerUnit.lessThanOrEqual=" + DEFAULT_TYPICAL_WEIGHT_PER_UNIT);
+
+        // Get all the stockItemsList where typicalWeightPerUnit is less than or equal to SMALLER_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldNotBeFound("typicalWeightPerUnit.lessThanOrEqual=" + SMALLER_TYPICAL_WEIGHT_PER_UNIT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTypicalWeightPerUnitIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where typicalWeightPerUnit is less than DEFAULT_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldNotBeFound("typicalWeightPerUnit.lessThan=" + DEFAULT_TYPICAL_WEIGHT_PER_UNIT);
+
+        // Get all the stockItemsList where typicalWeightPerUnit is less than UPDATED_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldBeFound("typicalWeightPerUnit.lessThan=" + UPDATED_TYPICAL_WEIGHT_PER_UNIT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTypicalWeightPerUnitIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where typicalWeightPerUnit is greater than DEFAULT_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldNotBeFound("typicalWeightPerUnit.greaterThan=" + DEFAULT_TYPICAL_WEIGHT_PER_UNIT);
+
+        // Get all the stockItemsList where typicalWeightPerUnit is greater than SMALLER_TYPICAL_WEIGHT_PER_UNIT
+        defaultStockItemsShouldBeFound("typicalWeightPerUnit.greaterThan=" + SMALLER_TYPICAL_WEIGHT_PER_UNIT);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllStockItemsByQuantityOnHandIsEqualToSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
@@ -1237,6 +1667,844 @@ public class StockItemsResourceIT {
         defaultStockItemsShouldBeFound("quantityOnHand.greaterThan=" + SMALLER_QUANTITY_ON_HAND);
     }
 
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByShelfIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where shelf equals to DEFAULT_SHELF
+        defaultStockItemsShouldBeFound("shelf.equals=" + DEFAULT_SHELF);
+
+        // Get all the stockItemsList where shelf equals to UPDATED_SHELF
+        defaultStockItemsShouldNotBeFound("shelf.equals=" + UPDATED_SHELF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByShelfIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where shelf not equals to DEFAULT_SHELF
+        defaultStockItemsShouldNotBeFound("shelf.notEquals=" + DEFAULT_SHELF);
+
+        // Get all the stockItemsList where shelf not equals to UPDATED_SHELF
+        defaultStockItemsShouldBeFound("shelf.notEquals=" + UPDATED_SHELF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByShelfIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where shelf in DEFAULT_SHELF or UPDATED_SHELF
+        defaultStockItemsShouldBeFound("shelf.in=" + DEFAULT_SHELF + "," + UPDATED_SHELF);
+
+        // Get all the stockItemsList where shelf equals to UPDATED_SHELF
+        defaultStockItemsShouldNotBeFound("shelf.in=" + UPDATED_SHELF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByShelfIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where shelf is not null
+        defaultStockItemsShouldBeFound("shelf.specified=true");
+
+        // Get all the stockItemsList where shelf is null
+        defaultStockItemsShouldNotBeFound("shelf.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllStockItemsByShelfContainsSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where shelf contains DEFAULT_SHELF
+        defaultStockItemsShouldBeFound("shelf.contains=" + DEFAULT_SHELF);
+
+        // Get all the stockItemsList where shelf contains UPDATED_SHELF
+        defaultStockItemsShouldNotBeFound("shelf.contains=" + UPDATED_SHELF);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByShelfNotContainsSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where shelf does not contain DEFAULT_SHELF
+        defaultStockItemsShouldNotBeFound("shelf.doesNotContain=" + DEFAULT_SHELF);
+
+        // Get all the stockItemsList where shelf does not contain UPDATED_SHELF
+        defaultStockItemsShouldBeFound("shelf.doesNotContain=" + UPDATED_SHELF);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByBinIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where bin equals to DEFAULT_BIN
+        defaultStockItemsShouldBeFound("bin.equals=" + DEFAULT_BIN);
+
+        // Get all the stockItemsList where bin equals to UPDATED_BIN
+        defaultStockItemsShouldNotBeFound("bin.equals=" + UPDATED_BIN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByBinIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where bin not equals to DEFAULT_BIN
+        defaultStockItemsShouldNotBeFound("bin.notEquals=" + DEFAULT_BIN);
+
+        // Get all the stockItemsList where bin not equals to UPDATED_BIN
+        defaultStockItemsShouldBeFound("bin.notEquals=" + UPDATED_BIN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByBinIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where bin in DEFAULT_BIN or UPDATED_BIN
+        defaultStockItemsShouldBeFound("bin.in=" + DEFAULT_BIN + "," + UPDATED_BIN);
+
+        // Get all the stockItemsList where bin equals to UPDATED_BIN
+        defaultStockItemsShouldNotBeFound("bin.in=" + UPDATED_BIN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByBinIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where bin is not null
+        defaultStockItemsShouldBeFound("bin.specified=true");
+
+        // Get all the stockItemsList where bin is null
+        defaultStockItemsShouldNotBeFound("bin.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllStockItemsByBinContainsSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where bin contains DEFAULT_BIN
+        defaultStockItemsShouldBeFound("bin.contains=" + DEFAULT_BIN);
+
+        // Get all the stockItemsList where bin contains UPDATED_BIN
+        defaultStockItemsShouldNotBeFound("bin.contains=" + UPDATED_BIN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByBinNotContainsSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where bin does not contain DEFAULT_BIN
+        defaultStockItemsShouldNotBeFound("bin.doesNotContain=" + DEFAULT_BIN);
+
+        // Get all the stockItemsList where bin does not contain UPDATED_BIN
+        defaultStockItemsShouldBeFound("bin.doesNotContain=" + UPDATED_BIN);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastStockTakeQuantityIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastStockTakeQuantity equals to DEFAULT_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldBeFound("lastStockTakeQuantity.equals=" + DEFAULT_LAST_STOCK_TAKE_QUANTITY);
+
+        // Get all the stockItemsList where lastStockTakeQuantity equals to UPDATED_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldNotBeFound("lastStockTakeQuantity.equals=" + UPDATED_LAST_STOCK_TAKE_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastStockTakeQuantityIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastStockTakeQuantity not equals to DEFAULT_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldNotBeFound("lastStockTakeQuantity.notEquals=" + DEFAULT_LAST_STOCK_TAKE_QUANTITY);
+
+        // Get all the stockItemsList where lastStockTakeQuantity not equals to UPDATED_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldBeFound("lastStockTakeQuantity.notEquals=" + UPDATED_LAST_STOCK_TAKE_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastStockTakeQuantityIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastStockTakeQuantity in DEFAULT_LAST_STOCK_TAKE_QUANTITY or UPDATED_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldBeFound("lastStockTakeQuantity.in=" + DEFAULT_LAST_STOCK_TAKE_QUANTITY + "," + UPDATED_LAST_STOCK_TAKE_QUANTITY);
+
+        // Get all the stockItemsList where lastStockTakeQuantity equals to UPDATED_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldNotBeFound("lastStockTakeQuantity.in=" + UPDATED_LAST_STOCK_TAKE_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastStockTakeQuantityIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastStockTakeQuantity is not null
+        defaultStockItemsShouldBeFound("lastStockTakeQuantity.specified=true");
+
+        // Get all the stockItemsList where lastStockTakeQuantity is null
+        defaultStockItemsShouldNotBeFound("lastStockTakeQuantity.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastStockTakeQuantityIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastStockTakeQuantity is greater than or equal to DEFAULT_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldBeFound("lastStockTakeQuantity.greaterThanOrEqual=" + DEFAULT_LAST_STOCK_TAKE_QUANTITY);
+
+        // Get all the stockItemsList where lastStockTakeQuantity is greater than or equal to UPDATED_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldNotBeFound("lastStockTakeQuantity.greaterThanOrEqual=" + UPDATED_LAST_STOCK_TAKE_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastStockTakeQuantityIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastStockTakeQuantity is less than or equal to DEFAULT_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldBeFound("lastStockTakeQuantity.lessThanOrEqual=" + DEFAULT_LAST_STOCK_TAKE_QUANTITY);
+
+        // Get all the stockItemsList where lastStockTakeQuantity is less than or equal to SMALLER_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldNotBeFound("lastStockTakeQuantity.lessThanOrEqual=" + SMALLER_LAST_STOCK_TAKE_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastStockTakeQuantityIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastStockTakeQuantity is less than DEFAULT_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldNotBeFound("lastStockTakeQuantity.lessThan=" + DEFAULT_LAST_STOCK_TAKE_QUANTITY);
+
+        // Get all the stockItemsList where lastStockTakeQuantity is less than UPDATED_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldBeFound("lastStockTakeQuantity.lessThan=" + UPDATED_LAST_STOCK_TAKE_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastStockTakeQuantityIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastStockTakeQuantity is greater than DEFAULT_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldNotBeFound("lastStockTakeQuantity.greaterThan=" + DEFAULT_LAST_STOCK_TAKE_QUANTITY);
+
+        // Get all the stockItemsList where lastStockTakeQuantity is greater than SMALLER_LAST_STOCK_TAKE_QUANTITY
+        defaultStockItemsShouldBeFound("lastStockTakeQuantity.greaterThan=" + SMALLER_LAST_STOCK_TAKE_QUANTITY);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastCostPriceIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastCostPrice equals to DEFAULT_LAST_COST_PRICE
+        defaultStockItemsShouldBeFound("lastCostPrice.equals=" + DEFAULT_LAST_COST_PRICE);
+
+        // Get all the stockItemsList where lastCostPrice equals to UPDATED_LAST_COST_PRICE
+        defaultStockItemsShouldNotBeFound("lastCostPrice.equals=" + UPDATED_LAST_COST_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastCostPriceIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastCostPrice not equals to DEFAULT_LAST_COST_PRICE
+        defaultStockItemsShouldNotBeFound("lastCostPrice.notEquals=" + DEFAULT_LAST_COST_PRICE);
+
+        // Get all the stockItemsList where lastCostPrice not equals to UPDATED_LAST_COST_PRICE
+        defaultStockItemsShouldBeFound("lastCostPrice.notEquals=" + UPDATED_LAST_COST_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastCostPriceIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastCostPrice in DEFAULT_LAST_COST_PRICE or UPDATED_LAST_COST_PRICE
+        defaultStockItemsShouldBeFound("lastCostPrice.in=" + DEFAULT_LAST_COST_PRICE + "," + UPDATED_LAST_COST_PRICE);
+
+        // Get all the stockItemsList where lastCostPrice equals to UPDATED_LAST_COST_PRICE
+        defaultStockItemsShouldNotBeFound("lastCostPrice.in=" + UPDATED_LAST_COST_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastCostPriceIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastCostPrice is not null
+        defaultStockItemsShouldBeFound("lastCostPrice.specified=true");
+
+        // Get all the stockItemsList where lastCostPrice is null
+        defaultStockItemsShouldNotBeFound("lastCostPrice.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastCostPriceIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastCostPrice is greater than or equal to DEFAULT_LAST_COST_PRICE
+        defaultStockItemsShouldBeFound("lastCostPrice.greaterThanOrEqual=" + DEFAULT_LAST_COST_PRICE);
+
+        // Get all the stockItemsList where lastCostPrice is greater than or equal to UPDATED_LAST_COST_PRICE
+        defaultStockItemsShouldNotBeFound("lastCostPrice.greaterThanOrEqual=" + UPDATED_LAST_COST_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastCostPriceIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastCostPrice is less than or equal to DEFAULT_LAST_COST_PRICE
+        defaultStockItemsShouldBeFound("lastCostPrice.lessThanOrEqual=" + DEFAULT_LAST_COST_PRICE);
+
+        // Get all the stockItemsList where lastCostPrice is less than or equal to SMALLER_LAST_COST_PRICE
+        defaultStockItemsShouldNotBeFound("lastCostPrice.lessThanOrEqual=" + SMALLER_LAST_COST_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastCostPriceIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastCostPrice is less than DEFAULT_LAST_COST_PRICE
+        defaultStockItemsShouldNotBeFound("lastCostPrice.lessThan=" + DEFAULT_LAST_COST_PRICE);
+
+        // Get all the stockItemsList where lastCostPrice is less than UPDATED_LAST_COST_PRICE
+        defaultStockItemsShouldBeFound("lastCostPrice.lessThan=" + UPDATED_LAST_COST_PRICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLastCostPriceIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where lastCostPrice is greater than DEFAULT_LAST_COST_PRICE
+        defaultStockItemsShouldNotBeFound("lastCostPrice.greaterThan=" + DEFAULT_LAST_COST_PRICE);
+
+        // Get all the stockItemsList where lastCostPrice is greater than SMALLER_LAST_COST_PRICE
+        defaultStockItemsShouldBeFound("lastCostPrice.greaterThan=" + SMALLER_LAST_COST_PRICE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByReorderLevelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where reorderLevel equals to DEFAULT_REORDER_LEVEL
+        defaultStockItemsShouldBeFound("reorderLevel.equals=" + DEFAULT_REORDER_LEVEL);
+
+        // Get all the stockItemsList where reorderLevel equals to UPDATED_REORDER_LEVEL
+        defaultStockItemsShouldNotBeFound("reorderLevel.equals=" + UPDATED_REORDER_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByReorderLevelIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where reorderLevel not equals to DEFAULT_REORDER_LEVEL
+        defaultStockItemsShouldNotBeFound("reorderLevel.notEquals=" + DEFAULT_REORDER_LEVEL);
+
+        // Get all the stockItemsList where reorderLevel not equals to UPDATED_REORDER_LEVEL
+        defaultStockItemsShouldBeFound("reorderLevel.notEquals=" + UPDATED_REORDER_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByReorderLevelIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where reorderLevel in DEFAULT_REORDER_LEVEL or UPDATED_REORDER_LEVEL
+        defaultStockItemsShouldBeFound("reorderLevel.in=" + DEFAULT_REORDER_LEVEL + "," + UPDATED_REORDER_LEVEL);
+
+        // Get all the stockItemsList where reorderLevel equals to UPDATED_REORDER_LEVEL
+        defaultStockItemsShouldNotBeFound("reorderLevel.in=" + UPDATED_REORDER_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByReorderLevelIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where reorderLevel is not null
+        defaultStockItemsShouldBeFound("reorderLevel.specified=true");
+
+        // Get all the stockItemsList where reorderLevel is null
+        defaultStockItemsShouldNotBeFound("reorderLevel.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByReorderLevelIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where reorderLevel is greater than or equal to DEFAULT_REORDER_LEVEL
+        defaultStockItemsShouldBeFound("reorderLevel.greaterThanOrEqual=" + DEFAULT_REORDER_LEVEL);
+
+        // Get all the stockItemsList where reorderLevel is greater than or equal to UPDATED_REORDER_LEVEL
+        defaultStockItemsShouldNotBeFound("reorderLevel.greaterThanOrEqual=" + UPDATED_REORDER_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByReorderLevelIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where reorderLevel is less than or equal to DEFAULT_REORDER_LEVEL
+        defaultStockItemsShouldBeFound("reorderLevel.lessThanOrEqual=" + DEFAULT_REORDER_LEVEL);
+
+        // Get all the stockItemsList where reorderLevel is less than or equal to SMALLER_REORDER_LEVEL
+        defaultStockItemsShouldNotBeFound("reorderLevel.lessThanOrEqual=" + SMALLER_REORDER_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByReorderLevelIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where reorderLevel is less than DEFAULT_REORDER_LEVEL
+        defaultStockItemsShouldNotBeFound("reorderLevel.lessThan=" + DEFAULT_REORDER_LEVEL);
+
+        // Get all the stockItemsList where reorderLevel is less than UPDATED_REORDER_LEVEL
+        defaultStockItemsShouldBeFound("reorderLevel.lessThan=" + UPDATED_REORDER_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByReorderLevelIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where reorderLevel is greater than DEFAULT_REORDER_LEVEL
+        defaultStockItemsShouldNotBeFound("reorderLevel.greaterThan=" + DEFAULT_REORDER_LEVEL);
+
+        // Get all the stockItemsList where reorderLevel is greater than SMALLER_REORDER_LEVEL
+        defaultStockItemsShouldBeFound("reorderLevel.greaterThan=" + SMALLER_REORDER_LEVEL);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTargetStockLevelIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where targetStockLevel equals to DEFAULT_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldBeFound("targetStockLevel.equals=" + DEFAULT_TARGET_STOCK_LEVEL);
+
+        // Get all the stockItemsList where targetStockLevel equals to UPDATED_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldNotBeFound("targetStockLevel.equals=" + UPDATED_TARGET_STOCK_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTargetStockLevelIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where targetStockLevel not equals to DEFAULT_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldNotBeFound("targetStockLevel.notEquals=" + DEFAULT_TARGET_STOCK_LEVEL);
+
+        // Get all the stockItemsList where targetStockLevel not equals to UPDATED_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldBeFound("targetStockLevel.notEquals=" + UPDATED_TARGET_STOCK_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTargetStockLevelIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where targetStockLevel in DEFAULT_TARGET_STOCK_LEVEL or UPDATED_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldBeFound("targetStockLevel.in=" + DEFAULT_TARGET_STOCK_LEVEL + "," + UPDATED_TARGET_STOCK_LEVEL);
+
+        // Get all the stockItemsList where targetStockLevel equals to UPDATED_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldNotBeFound("targetStockLevel.in=" + UPDATED_TARGET_STOCK_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTargetStockLevelIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where targetStockLevel is not null
+        defaultStockItemsShouldBeFound("targetStockLevel.specified=true");
+
+        // Get all the stockItemsList where targetStockLevel is null
+        defaultStockItemsShouldNotBeFound("targetStockLevel.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTargetStockLevelIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where targetStockLevel is greater than or equal to DEFAULT_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldBeFound("targetStockLevel.greaterThanOrEqual=" + DEFAULT_TARGET_STOCK_LEVEL);
+
+        // Get all the stockItemsList where targetStockLevel is greater than or equal to UPDATED_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldNotBeFound("targetStockLevel.greaterThanOrEqual=" + UPDATED_TARGET_STOCK_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTargetStockLevelIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where targetStockLevel is less than or equal to DEFAULT_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldBeFound("targetStockLevel.lessThanOrEqual=" + DEFAULT_TARGET_STOCK_LEVEL);
+
+        // Get all the stockItemsList where targetStockLevel is less than or equal to SMALLER_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldNotBeFound("targetStockLevel.lessThanOrEqual=" + SMALLER_TARGET_STOCK_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTargetStockLevelIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where targetStockLevel is less than DEFAULT_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldNotBeFound("targetStockLevel.lessThan=" + DEFAULT_TARGET_STOCK_LEVEL);
+
+        // Get all the stockItemsList where targetStockLevel is less than UPDATED_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldBeFound("targetStockLevel.lessThan=" + UPDATED_TARGET_STOCK_LEVEL);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByTargetStockLevelIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where targetStockLevel is greater than DEFAULT_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldNotBeFound("targetStockLevel.greaterThan=" + DEFAULT_TARGET_STOCK_LEVEL);
+
+        // Get all the stockItemsList where targetStockLevel is greater than SMALLER_TARGET_STOCK_LEVEL
+        defaultStockItemsShouldBeFound("targetStockLevel.greaterThan=" + SMALLER_TARGET_STOCK_LEVEL);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLeadTimeDaysIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where leadTimeDays equals to DEFAULT_LEAD_TIME_DAYS
+        defaultStockItemsShouldBeFound("leadTimeDays.equals=" + DEFAULT_LEAD_TIME_DAYS);
+
+        // Get all the stockItemsList where leadTimeDays equals to UPDATED_LEAD_TIME_DAYS
+        defaultStockItemsShouldNotBeFound("leadTimeDays.equals=" + UPDATED_LEAD_TIME_DAYS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLeadTimeDaysIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where leadTimeDays not equals to DEFAULT_LEAD_TIME_DAYS
+        defaultStockItemsShouldNotBeFound("leadTimeDays.notEquals=" + DEFAULT_LEAD_TIME_DAYS);
+
+        // Get all the stockItemsList where leadTimeDays not equals to UPDATED_LEAD_TIME_DAYS
+        defaultStockItemsShouldBeFound("leadTimeDays.notEquals=" + UPDATED_LEAD_TIME_DAYS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLeadTimeDaysIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where leadTimeDays in DEFAULT_LEAD_TIME_DAYS or UPDATED_LEAD_TIME_DAYS
+        defaultStockItemsShouldBeFound("leadTimeDays.in=" + DEFAULT_LEAD_TIME_DAYS + "," + UPDATED_LEAD_TIME_DAYS);
+
+        // Get all the stockItemsList where leadTimeDays equals to UPDATED_LEAD_TIME_DAYS
+        defaultStockItemsShouldNotBeFound("leadTimeDays.in=" + UPDATED_LEAD_TIME_DAYS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLeadTimeDaysIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where leadTimeDays is not null
+        defaultStockItemsShouldBeFound("leadTimeDays.specified=true");
+
+        // Get all the stockItemsList where leadTimeDays is null
+        defaultStockItemsShouldNotBeFound("leadTimeDays.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLeadTimeDaysIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where leadTimeDays is greater than or equal to DEFAULT_LEAD_TIME_DAYS
+        defaultStockItemsShouldBeFound("leadTimeDays.greaterThanOrEqual=" + DEFAULT_LEAD_TIME_DAYS);
+
+        // Get all the stockItemsList where leadTimeDays is greater than or equal to UPDATED_LEAD_TIME_DAYS
+        defaultStockItemsShouldNotBeFound("leadTimeDays.greaterThanOrEqual=" + UPDATED_LEAD_TIME_DAYS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLeadTimeDaysIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where leadTimeDays is less than or equal to DEFAULT_LEAD_TIME_DAYS
+        defaultStockItemsShouldBeFound("leadTimeDays.lessThanOrEqual=" + DEFAULT_LEAD_TIME_DAYS);
+
+        // Get all the stockItemsList where leadTimeDays is less than or equal to SMALLER_LEAD_TIME_DAYS
+        defaultStockItemsShouldNotBeFound("leadTimeDays.lessThanOrEqual=" + SMALLER_LEAD_TIME_DAYS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLeadTimeDaysIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where leadTimeDays is less than DEFAULT_LEAD_TIME_DAYS
+        defaultStockItemsShouldNotBeFound("leadTimeDays.lessThan=" + DEFAULT_LEAD_TIME_DAYS);
+
+        // Get all the stockItemsList where leadTimeDays is less than UPDATED_LEAD_TIME_DAYS
+        defaultStockItemsShouldBeFound("leadTimeDays.lessThan=" + UPDATED_LEAD_TIME_DAYS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLeadTimeDaysIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where leadTimeDays is greater than DEFAULT_LEAD_TIME_DAYS
+        defaultStockItemsShouldNotBeFound("leadTimeDays.greaterThan=" + DEFAULT_LEAD_TIME_DAYS);
+
+        // Get all the stockItemsList where leadTimeDays is greater than SMALLER_LEAD_TIME_DAYS
+        defaultStockItemsShouldBeFound("leadTimeDays.greaterThan=" + SMALLER_LEAD_TIME_DAYS);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByQuantityPerOuterIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where quantityPerOuter equals to DEFAULT_QUANTITY_PER_OUTER
+        defaultStockItemsShouldBeFound("quantityPerOuter.equals=" + DEFAULT_QUANTITY_PER_OUTER);
+
+        // Get all the stockItemsList where quantityPerOuter equals to UPDATED_QUANTITY_PER_OUTER
+        defaultStockItemsShouldNotBeFound("quantityPerOuter.equals=" + UPDATED_QUANTITY_PER_OUTER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByQuantityPerOuterIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where quantityPerOuter not equals to DEFAULT_QUANTITY_PER_OUTER
+        defaultStockItemsShouldNotBeFound("quantityPerOuter.notEquals=" + DEFAULT_QUANTITY_PER_OUTER);
+
+        // Get all the stockItemsList where quantityPerOuter not equals to UPDATED_QUANTITY_PER_OUTER
+        defaultStockItemsShouldBeFound("quantityPerOuter.notEquals=" + UPDATED_QUANTITY_PER_OUTER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByQuantityPerOuterIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where quantityPerOuter in DEFAULT_QUANTITY_PER_OUTER or UPDATED_QUANTITY_PER_OUTER
+        defaultStockItemsShouldBeFound("quantityPerOuter.in=" + DEFAULT_QUANTITY_PER_OUTER + "," + UPDATED_QUANTITY_PER_OUTER);
+
+        // Get all the stockItemsList where quantityPerOuter equals to UPDATED_QUANTITY_PER_OUTER
+        defaultStockItemsShouldNotBeFound("quantityPerOuter.in=" + UPDATED_QUANTITY_PER_OUTER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByQuantityPerOuterIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where quantityPerOuter is not null
+        defaultStockItemsShouldBeFound("quantityPerOuter.specified=true");
+
+        // Get all the stockItemsList where quantityPerOuter is null
+        defaultStockItemsShouldNotBeFound("quantityPerOuter.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByQuantityPerOuterIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where quantityPerOuter is greater than or equal to DEFAULT_QUANTITY_PER_OUTER
+        defaultStockItemsShouldBeFound("quantityPerOuter.greaterThanOrEqual=" + DEFAULT_QUANTITY_PER_OUTER);
+
+        // Get all the stockItemsList where quantityPerOuter is greater than or equal to UPDATED_QUANTITY_PER_OUTER
+        defaultStockItemsShouldNotBeFound("quantityPerOuter.greaterThanOrEqual=" + UPDATED_QUANTITY_PER_OUTER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByQuantityPerOuterIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where quantityPerOuter is less than or equal to DEFAULT_QUANTITY_PER_OUTER
+        defaultStockItemsShouldBeFound("quantityPerOuter.lessThanOrEqual=" + DEFAULT_QUANTITY_PER_OUTER);
+
+        // Get all the stockItemsList where quantityPerOuter is less than or equal to SMALLER_QUANTITY_PER_OUTER
+        defaultStockItemsShouldNotBeFound("quantityPerOuter.lessThanOrEqual=" + SMALLER_QUANTITY_PER_OUTER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByQuantityPerOuterIsLessThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where quantityPerOuter is less than DEFAULT_QUANTITY_PER_OUTER
+        defaultStockItemsShouldNotBeFound("quantityPerOuter.lessThan=" + DEFAULT_QUANTITY_PER_OUTER);
+
+        // Get all the stockItemsList where quantityPerOuter is less than UPDATED_QUANTITY_PER_OUTER
+        defaultStockItemsShouldBeFound("quantityPerOuter.lessThan=" + UPDATED_QUANTITY_PER_OUTER);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByQuantityPerOuterIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where quantityPerOuter is greater than DEFAULT_QUANTITY_PER_OUTER
+        defaultStockItemsShouldNotBeFound("quantityPerOuter.greaterThan=" + DEFAULT_QUANTITY_PER_OUTER);
+
+        // Get all the stockItemsList where quantityPerOuter is greater than SMALLER_QUANTITY_PER_OUTER
+        defaultStockItemsShouldBeFound("quantityPerOuter.greaterThan=" + SMALLER_QUANTITY_PER_OUTER);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByIsChillerStockIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where isChillerStock equals to DEFAULT_IS_CHILLER_STOCK
+        defaultStockItemsShouldBeFound("isChillerStock.equals=" + DEFAULT_IS_CHILLER_STOCK);
+
+        // Get all the stockItemsList where isChillerStock equals to UPDATED_IS_CHILLER_STOCK
+        defaultStockItemsShouldNotBeFound("isChillerStock.equals=" + UPDATED_IS_CHILLER_STOCK);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByIsChillerStockIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where isChillerStock not equals to DEFAULT_IS_CHILLER_STOCK
+        defaultStockItemsShouldNotBeFound("isChillerStock.notEquals=" + DEFAULT_IS_CHILLER_STOCK);
+
+        // Get all the stockItemsList where isChillerStock not equals to UPDATED_IS_CHILLER_STOCK
+        defaultStockItemsShouldBeFound("isChillerStock.notEquals=" + UPDATED_IS_CHILLER_STOCK);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByIsChillerStockIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where isChillerStock in DEFAULT_IS_CHILLER_STOCK or UPDATED_IS_CHILLER_STOCK
+        defaultStockItemsShouldBeFound("isChillerStock.in=" + DEFAULT_IS_CHILLER_STOCK + "," + UPDATED_IS_CHILLER_STOCK);
+
+        // Get all the stockItemsList where isChillerStock equals to UPDATED_IS_CHILLER_STOCK
+        defaultStockItemsShouldNotBeFound("isChillerStock.in=" + UPDATED_IS_CHILLER_STOCK);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByIsChillerStockIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where isChillerStock is not null
+        defaultStockItemsShouldBeFound("isChillerStock.specified=true");
+
+        // Get all the stockItemsList where isChillerStock is null
+        defaultStockItemsShouldNotBeFound("isChillerStock.specified=false");
+    }
 
     @Test
     @Transactional
@@ -2733,79 +4001,157 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
-    public void getAllStockItemsByCustomFieldsIsEqualToSomething() throws Exception {
+    public void getAllStockItemsByTagsIsEqualToSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where customFields equals to DEFAULT_CUSTOM_FIELDS
-        defaultStockItemsShouldBeFound("customFields.equals=" + DEFAULT_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags equals to DEFAULT_TAGS
+        defaultStockItemsShouldBeFound("tags.equals=" + DEFAULT_TAGS);
 
-        // Get all the stockItemsList where customFields equals to UPDATED_CUSTOM_FIELDS
-        defaultStockItemsShouldNotBeFound("customFields.equals=" + UPDATED_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags equals to UPDATED_TAGS
+        defaultStockItemsShouldNotBeFound("tags.equals=" + UPDATED_TAGS);
     }
 
     @Test
     @Transactional
-    public void getAllStockItemsByCustomFieldsIsNotEqualToSomething() throws Exception {
+    public void getAllStockItemsByTagsIsNotEqualToSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where customFields not equals to DEFAULT_CUSTOM_FIELDS
-        defaultStockItemsShouldNotBeFound("customFields.notEquals=" + DEFAULT_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags not equals to DEFAULT_TAGS
+        defaultStockItemsShouldNotBeFound("tags.notEquals=" + DEFAULT_TAGS);
 
-        // Get all the stockItemsList where customFields not equals to UPDATED_CUSTOM_FIELDS
-        defaultStockItemsShouldBeFound("customFields.notEquals=" + UPDATED_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags not equals to UPDATED_TAGS
+        defaultStockItemsShouldBeFound("tags.notEquals=" + UPDATED_TAGS);
     }
 
     @Test
     @Transactional
-    public void getAllStockItemsByCustomFieldsIsInShouldWork() throws Exception {
+    public void getAllStockItemsByTagsIsInShouldWork() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where customFields in DEFAULT_CUSTOM_FIELDS or UPDATED_CUSTOM_FIELDS
-        defaultStockItemsShouldBeFound("customFields.in=" + DEFAULT_CUSTOM_FIELDS + "," + UPDATED_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags in DEFAULT_TAGS or UPDATED_TAGS
+        defaultStockItemsShouldBeFound("tags.in=" + DEFAULT_TAGS + "," + UPDATED_TAGS);
 
-        // Get all the stockItemsList where customFields equals to UPDATED_CUSTOM_FIELDS
-        defaultStockItemsShouldNotBeFound("customFields.in=" + UPDATED_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags equals to UPDATED_TAGS
+        defaultStockItemsShouldNotBeFound("tags.in=" + UPDATED_TAGS);
     }
 
     @Test
     @Transactional
-    public void getAllStockItemsByCustomFieldsIsNullOrNotNull() throws Exception {
+    public void getAllStockItemsByTagsIsNullOrNotNull() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where customFields is not null
-        defaultStockItemsShouldBeFound("customFields.specified=true");
+        // Get all the stockItemsList where tags is not null
+        defaultStockItemsShouldBeFound("tags.specified=true");
 
-        // Get all the stockItemsList where customFields is null
-        defaultStockItemsShouldNotBeFound("customFields.specified=false");
+        // Get all the stockItemsList where tags is null
+        defaultStockItemsShouldNotBeFound("tags.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllStockItemsByCustomFieldsContainsSomething() throws Exception {
+    public void getAllStockItemsByTagsContainsSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where customFields contains DEFAULT_CUSTOM_FIELDS
-        defaultStockItemsShouldBeFound("customFields.contains=" + DEFAULT_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags contains DEFAULT_TAGS
+        defaultStockItemsShouldBeFound("tags.contains=" + DEFAULT_TAGS);
 
-        // Get all the stockItemsList where customFields contains UPDATED_CUSTOM_FIELDS
-        defaultStockItemsShouldNotBeFound("customFields.contains=" + UPDATED_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags contains UPDATED_TAGS
+        defaultStockItemsShouldNotBeFound("tags.contains=" + UPDATED_TAGS);
     }
 
     @Test
     @Transactional
-    public void getAllStockItemsByCustomFieldsNotContainsSomething() throws Exception {
+    public void getAllStockItemsByTagsNotContainsSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where customFields does not contain DEFAULT_CUSTOM_FIELDS
-        defaultStockItemsShouldNotBeFound("customFields.doesNotContain=" + DEFAULT_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags does not contain DEFAULT_TAGS
+        defaultStockItemsShouldNotBeFound("tags.doesNotContain=" + DEFAULT_TAGS);
 
-        // Get all the stockItemsList where customFields does not contain UPDATED_CUSTOM_FIELDS
-        defaultStockItemsShouldBeFound("customFields.doesNotContain=" + UPDATED_CUSTOM_FIELDS);
+        // Get all the stockItemsList where tags does not contain UPDATED_TAGS
+        defaultStockItemsShouldBeFound("tags.doesNotContain=" + UPDATED_TAGS);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsBySearchDetailsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where searchDetails equals to DEFAULT_SEARCH_DETAILS
+        defaultStockItemsShouldBeFound("searchDetails.equals=" + DEFAULT_SEARCH_DETAILS);
+
+        // Get all the stockItemsList where searchDetails equals to UPDATED_SEARCH_DETAILS
+        defaultStockItemsShouldNotBeFound("searchDetails.equals=" + UPDATED_SEARCH_DETAILS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsBySearchDetailsIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where searchDetails not equals to DEFAULT_SEARCH_DETAILS
+        defaultStockItemsShouldNotBeFound("searchDetails.notEquals=" + DEFAULT_SEARCH_DETAILS);
+
+        // Get all the stockItemsList where searchDetails not equals to UPDATED_SEARCH_DETAILS
+        defaultStockItemsShouldBeFound("searchDetails.notEquals=" + UPDATED_SEARCH_DETAILS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsBySearchDetailsIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where searchDetails in DEFAULT_SEARCH_DETAILS or UPDATED_SEARCH_DETAILS
+        defaultStockItemsShouldBeFound("searchDetails.in=" + DEFAULT_SEARCH_DETAILS + "," + UPDATED_SEARCH_DETAILS);
+
+        // Get all the stockItemsList where searchDetails equals to UPDATED_SEARCH_DETAILS
+        defaultStockItemsShouldNotBeFound("searchDetails.in=" + UPDATED_SEARCH_DETAILS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsBySearchDetailsIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where searchDetails is not null
+        defaultStockItemsShouldBeFound("searchDetails.specified=true");
+
+        // Get all the stockItemsList where searchDetails is null
+        defaultStockItemsShouldNotBeFound("searchDetails.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllStockItemsBySearchDetailsContainsSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where searchDetails contains DEFAULT_SEARCH_DETAILS
+        defaultStockItemsShouldBeFound("searchDetails.contains=" + DEFAULT_SEARCH_DETAILS);
+
+        // Get all the stockItemsList where searchDetails contains UPDATED_SEARCH_DETAILS
+        defaultStockItemsShouldNotBeFound("searchDetails.contains=" + UPDATED_SEARCH_DETAILS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsBySearchDetailsNotContainsSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where searchDetails does not contain DEFAULT_SEARCH_DETAILS
+        defaultStockItemsShouldNotBeFound("searchDetails.doesNotContain=" + DEFAULT_SEARCH_DETAILS);
+
+        // Get all the stockItemsList where searchDetails does not contain UPDATED_SEARCH_DETAILS
+        defaultStockItemsShouldBeFound("searchDetails.doesNotContain=" + UPDATED_SEARCH_DETAILS);
     }
 
 
@@ -2937,6 +4283,58 @@ public class StockItemsResourceIT {
 
         // Get all the stockItemsList where activeInd is null
         defaultStockItemsShouldNotBeFound("activeInd.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLiveIndIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where liveInd equals to DEFAULT_LIVE_IND
+        defaultStockItemsShouldBeFound("liveInd.equals=" + DEFAULT_LIVE_IND);
+
+        // Get all the stockItemsList where liveInd equals to UPDATED_LIVE_IND
+        defaultStockItemsShouldNotBeFound("liveInd.equals=" + UPDATED_LIVE_IND);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLiveIndIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where liveInd not equals to DEFAULT_LIVE_IND
+        defaultStockItemsShouldNotBeFound("liveInd.notEquals=" + DEFAULT_LIVE_IND);
+
+        // Get all the stockItemsList where liveInd not equals to UPDATED_LIVE_IND
+        defaultStockItemsShouldBeFound("liveInd.notEquals=" + UPDATED_LIVE_IND);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLiveIndIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where liveInd in DEFAULT_LIVE_IND or UPDATED_LIVE_IND
+        defaultStockItemsShouldBeFound("liveInd.in=" + DEFAULT_LIVE_IND + "," + UPDATED_LIVE_IND);
+
+        // Get all the stockItemsList where liveInd equals to UPDATED_LIVE_IND
+        defaultStockItemsShouldNotBeFound("liveInd.in=" + UPDATED_LIVE_IND);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByLiveIndIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where liveInd is not null
+        defaultStockItemsShouldBeFound("liveInd.specified=true");
+
+        // Get all the stockItemsList where liveInd is null
+        defaultStockItemsShouldNotBeFound("liveInd.specified=false");
     }
 
     @Test
@@ -3123,26 +4521,6 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
-    public void getAllStockItemsByPhotoListIsEqualToSomething() throws Exception {
-        // Initialize the database
-        stockItemsRepository.saveAndFlush(stockItems);
-        Photos photoList = PhotosResourceIT.createEntity(em);
-        em.persist(photoList);
-        em.flush();
-        stockItems.addPhotoList(photoList);
-        stockItemsRepository.saveAndFlush(stockItems);
-        Long photoListId = photoList.getId();
-
-        // Get all the stockItemsList where photoList equals to photoListId
-        defaultStockItemsShouldBeFound("photoListId.equals=" + photoListId);
-
-        // Get all the stockItemsList where photoList equals to photoListId + 1
-        defaultStockItemsShouldNotBeFound("photoListId.equals=" + (photoListId + 1));
-    }
-
-
-    @Test
-    @Transactional
     public void getAllStockItemsBySpecialDealListIsEqualToSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
@@ -3158,6 +4536,26 @@ public class StockItemsResourceIT {
 
         // Get all the stockItemsList where specialDealList equals to specialDealListId + 1
         defaultStockItemsShouldNotBeFound("specialDealListId.equals=" + (specialDealListId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByPhotoListIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+        Photos photoList = PhotosResourceIT.createEntity(em);
+        em.persist(photoList);
+        em.flush();
+        stockItems.addPhotoList(photoList);
+        stockItemsRepository.saveAndFlush(stockItems);
+        Long photoListId = photoList.getId();
+
+        // Get all the stockItemsList where photoList equals to photoListId
+        defaultStockItemsShouldBeFound("photoListId.equals=" + photoListId);
+
+        // Get all the stockItemsList where photoList equals to photoListId + 1
+        defaultStockItemsShouldNotBeFound("photoListId.equals=" + (photoListId + 1));
     }
 
 
@@ -3403,27 +4801,6 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
-    public void getAllStockItemsByStockItemHoldingIsEqualToSomething() throws Exception {
-        // Initialize the database
-        stockItemsRepository.saveAndFlush(stockItems);
-        StockItemHoldings stockItemHolding = StockItemHoldingsResourceIT.createEntity(em);
-        em.persist(stockItemHolding);
-        em.flush();
-        stockItems.setStockItemHolding(stockItemHolding);
-        stockItemHolding.setStockItem(stockItems);
-        stockItemsRepository.saveAndFlush(stockItems);
-        Long stockItemHoldingId = stockItemHolding.getId();
-
-        // Get all the stockItemsList where stockItemHolding equals to stockItemHoldingId
-        defaultStockItemsShouldBeFound("stockItemHoldingId.equals=" + stockItemHoldingId);
-
-        // Get all the stockItemsList where stockItemHolding equals to stockItemHoldingId + 1
-        defaultStockItemsShouldNotBeFound("stockItemHoldingId.equals=" + (stockItemHoldingId + 1));
-    }
-
-
-    @Test
-    @Transactional
     public void getAllStockItemsByProductIsEqualToSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
@@ -3454,9 +4831,20 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.[*].vendorSKU").value(hasItem(DEFAULT_VENDOR_SKU)))
             .andExpect(jsonPath("$.[*].generatedSKU").value(hasItem(DEFAULT_GENERATED_SKU)))
             .andExpect(jsonPath("$.[*].barcode").value(hasItem(DEFAULT_BARCODE)))
+            .andExpect(jsonPath("$.[*].taxRate").value(hasItem(DEFAULT_TAX_RATE.intValue())))
             .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.intValue())))
             .andExpect(jsonPath("$.[*].recommendedRetailPrice").value(hasItem(DEFAULT_RECOMMENDED_RETAIL_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].typicalWeightPerUnit").value(hasItem(DEFAULT_TYPICAL_WEIGHT_PER_UNIT.intValue())))
             .andExpect(jsonPath("$.[*].quantityOnHand").value(hasItem(DEFAULT_QUANTITY_ON_HAND)))
+            .andExpect(jsonPath("$.[*].shelf").value(hasItem(DEFAULT_SHELF)))
+            .andExpect(jsonPath("$.[*].bin").value(hasItem(DEFAULT_BIN)))
+            .andExpect(jsonPath("$.[*].lastStockTakeQuantity").value(hasItem(DEFAULT_LAST_STOCK_TAKE_QUANTITY)))
+            .andExpect(jsonPath("$.[*].lastCostPrice").value(hasItem(DEFAULT_LAST_COST_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].reorderLevel").value(hasItem(DEFAULT_REORDER_LEVEL)))
+            .andExpect(jsonPath("$.[*].targetStockLevel").value(hasItem(DEFAULT_TARGET_STOCK_LEVEL)))
+            .andExpect(jsonPath("$.[*].leadTimeDays").value(hasItem(DEFAULT_LEAD_TIME_DAYS)))
+            .andExpect(jsonPath("$.[*].quantityPerOuter").value(hasItem(DEFAULT_QUANTITY_PER_OUTER)))
+            .andExpect(jsonPath("$.[*].isChillerStock").value(hasItem(DEFAULT_IS_CHILLER_STOCK.booleanValue())))
             .andExpect(jsonPath("$.[*].itemLength").value(hasItem(DEFAULT_ITEM_LENGTH)))
             .andExpect(jsonPath("$.[*].itemWidth").value(hasItem(DEFAULT_ITEM_WIDTH)))
             .andExpect(jsonPath("$.[*].itemHeight").value(hasItem(DEFAULT_ITEM_HEIGHT)))
@@ -3473,9 +4861,12 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.[*].sellStartDate").value(hasItem(DEFAULT_SELL_START_DATE.toString())))
             .andExpect(jsonPath("$.[*].sellEndDate").value(hasItem(DEFAULT_SELL_END_DATE.toString())))
             .andExpect(jsonPath("$.[*].sellCount").value(hasItem(DEFAULT_SELL_COUNT)))
-            .andExpect(jsonPath("$.[*].customFields").value(hasItem(DEFAULT_CUSTOM_FIELDS)))
+            .andExpect(jsonPath("$.[*].tags").value(hasItem(DEFAULT_TAGS)))
+            .andExpect(jsonPath("$.[*].searchDetails").value(hasItem(DEFAULT_SEARCH_DETAILS)))
+            .andExpect(jsonPath("$.[*].customFields").value(hasItem(DEFAULT_CUSTOM_FIELDS.toString())))
             .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
             .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
+            .andExpect(jsonPath("$.[*].liveInd").value(hasItem(DEFAULT_LIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].cashOnDeliveryInd").value(hasItem(DEFAULT_CASH_ON_DELIVERY_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
@@ -3530,9 +4921,20 @@ public class StockItemsResourceIT {
             .vendorSKU(UPDATED_VENDOR_SKU)
             .generatedSKU(UPDATED_GENERATED_SKU)
             .barcode(UPDATED_BARCODE)
+            .taxRate(UPDATED_TAX_RATE)
             .unitPrice(UPDATED_UNIT_PRICE)
             .recommendedRetailPrice(UPDATED_RECOMMENDED_RETAIL_PRICE)
+            .typicalWeightPerUnit(UPDATED_TYPICAL_WEIGHT_PER_UNIT)
             .quantityOnHand(UPDATED_QUANTITY_ON_HAND)
+            .shelf(UPDATED_SHELF)
+            .bin(UPDATED_BIN)
+            .lastStockTakeQuantity(UPDATED_LAST_STOCK_TAKE_QUANTITY)
+            .lastCostPrice(UPDATED_LAST_COST_PRICE)
+            .reorderLevel(UPDATED_REORDER_LEVEL)
+            .targetStockLevel(UPDATED_TARGET_STOCK_LEVEL)
+            .leadTimeDays(UPDATED_LEAD_TIME_DAYS)
+            .quantityPerOuter(UPDATED_QUANTITY_PER_OUTER)
+            .isChillerStock(UPDATED_IS_CHILLER_STOCK)
             .itemLength(UPDATED_ITEM_LENGTH)
             .itemWidth(UPDATED_ITEM_WIDTH)
             .itemHeight(UPDATED_ITEM_HEIGHT)
@@ -3549,9 +4951,12 @@ public class StockItemsResourceIT {
             .sellStartDate(UPDATED_SELL_START_DATE)
             .sellEndDate(UPDATED_SELL_END_DATE)
             .sellCount(UPDATED_SELL_COUNT)
+            .tags(UPDATED_TAGS)
+            .searchDetails(UPDATED_SEARCH_DETAILS)
             .customFields(UPDATED_CUSTOM_FIELDS)
             .thumbnailUrl(UPDATED_THUMBNAIL_URL)
             .activeInd(UPDATED_ACTIVE_IND)
+            .liveInd(UPDATED_LIVE_IND)
             .cashOnDeliveryInd(UPDATED_CASH_ON_DELIVERY_IND)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
@@ -3571,9 +4976,20 @@ public class StockItemsResourceIT {
         assertThat(testStockItems.getVendorSKU()).isEqualTo(UPDATED_VENDOR_SKU);
         assertThat(testStockItems.getGeneratedSKU()).isEqualTo(UPDATED_GENERATED_SKU);
         assertThat(testStockItems.getBarcode()).isEqualTo(UPDATED_BARCODE);
+        assertThat(testStockItems.getTaxRate()).isEqualTo(UPDATED_TAX_RATE);
         assertThat(testStockItems.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
         assertThat(testStockItems.getRecommendedRetailPrice()).isEqualTo(UPDATED_RECOMMENDED_RETAIL_PRICE);
+        assertThat(testStockItems.getTypicalWeightPerUnit()).isEqualTo(UPDATED_TYPICAL_WEIGHT_PER_UNIT);
         assertThat(testStockItems.getQuantityOnHand()).isEqualTo(UPDATED_QUANTITY_ON_HAND);
+        assertThat(testStockItems.getShelf()).isEqualTo(UPDATED_SHELF);
+        assertThat(testStockItems.getBin()).isEqualTo(UPDATED_BIN);
+        assertThat(testStockItems.getLastStockTakeQuantity()).isEqualTo(UPDATED_LAST_STOCK_TAKE_QUANTITY);
+        assertThat(testStockItems.getLastCostPrice()).isEqualTo(UPDATED_LAST_COST_PRICE);
+        assertThat(testStockItems.getReorderLevel()).isEqualTo(UPDATED_REORDER_LEVEL);
+        assertThat(testStockItems.getTargetStockLevel()).isEqualTo(UPDATED_TARGET_STOCK_LEVEL);
+        assertThat(testStockItems.getLeadTimeDays()).isEqualTo(UPDATED_LEAD_TIME_DAYS);
+        assertThat(testStockItems.getQuantityPerOuter()).isEqualTo(UPDATED_QUANTITY_PER_OUTER);
+        assertThat(testStockItems.isIsChillerStock()).isEqualTo(UPDATED_IS_CHILLER_STOCK);
         assertThat(testStockItems.getItemLength()).isEqualTo(UPDATED_ITEM_LENGTH);
         assertThat(testStockItems.getItemWidth()).isEqualTo(UPDATED_ITEM_WIDTH);
         assertThat(testStockItems.getItemHeight()).isEqualTo(UPDATED_ITEM_HEIGHT);
@@ -3590,9 +5006,12 @@ public class StockItemsResourceIT {
         assertThat(testStockItems.getSellStartDate()).isEqualTo(UPDATED_SELL_START_DATE);
         assertThat(testStockItems.getSellEndDate()).isEqualTo(UPDATED_SELL_END_DATE);
         assertThat(testStockItems.getSellCount()).isEqualTo(UPDATED_SELL_COUNT);
+        assertThat(testStockItems.getTags()).isEqualTo(UPDATED_TAGS);
+        assertThat(testStockItems.getSearchDetails()).isEqualTo(UPDATED_SEARCH_DETAILS);
         assertThat(testStockItems.getCustomFields()).isEqualTo(UPDATED_CUSTOM_FIELDS);
         assertThat(testStockItems.getThumbnailUrl()).isEqualTo(UPDATED_THUMBNAIL_URL);
         assertThat(testStockItems.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
+        assertThat(testStockItems.isLiveInd()).isEqualTo(UPDATED_LIVE_IND);
         assertThat(testStockItems.isCashOnDeliveryInd()).isEqualTo(UPDATED_CASH_ON_DELIVERY_IND);
         assertThat(testStockItems.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
         assertThat(testStockItems.getLastEditedWhen()).isEqualTo(UPDATED_LAST_EDITED_WHEN);

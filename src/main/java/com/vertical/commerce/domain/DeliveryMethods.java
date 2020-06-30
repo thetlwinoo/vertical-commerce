@@ -1,5 +1,6 @@
 package com.vertical.commerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,6 +9,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A DeliveryMethods.
@@ -28,6 +31,24 @@ public class DeliveryMethods implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "third_party_name")
+    private String thirdPartyName;
+
+    @Column(name = "expected_min_arrival_days")
+    private Integer expectedMinArrivalDays;
+
+    @Column(name = "expected_max_arrival_days")
+    private Integer expectedMaxArrivalDays;
+
+    @Column(name = "active_ind")
+    private Boolean activeInd;
+
+    @Column(name = "default_ind")
+    private Boolean defaultInd;
+
+    @Column(name = "delivery_note")
+    private String deliveryNote;
+
     @NotNull
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
@@ -35,6 +56,11 @@ public class DeliveryMethods implements Serializable {
     @NotNull
     @Column(name = "valid_to", nullable = false)
     private Instant validTo;
+
+    @ManyToMany(mappedBy = "deliveryMethods")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnore
+    private Set<Suppliers> suppliers = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -56,6 +82,84 @@ public class DeliveryMethods implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getThirdPartyName() {
+        return thirdPartyName;
+    }
+
+    public DeliveryMethods thirdPartyName(String thirdPartyName) {
+        this.thirdPartyName = thirdPartyName;
+        return this;
+    }
+
+    public void setThirdPartyName(String thirdPartyName) {
+        this.thirdPartyName = thirdPartyName;
+    }
+
+    public Integer getExpectedMinArrivalDays() {
+        return expectedMinArrivalDays;
+    }
+
+    public DeliveryMethods expectedMinArrivalDays(Integer expectedMinArrivalDays) {
+        this.expectedMinArrivalDays = expectedMinArrivalDays;
+        return this;
+    }
+
+    public void setExpectedMinArrivalDays(Integer expectedMinArrivalDays) {
+        this.expectedMinArrivalDays = expectedMinArrivalDays;
+    }
+
+    public Integer getExpectedMaxArrivalDays() {
+        return expectedMaxArrivalDays;
+    }
+
+    public DeliveryMethods expectedMaxArrivalDays(Integer expectedMaxArrivalDays) {
+        this.expectedMaxArrivalDays = expectedMaxArrivalDays;
+        return this;
+    }
+
+    public void setExpectedMaxArrivalDays(Integer expectedMaxArrivalDays) {
+        this.expectedMaxArrivalDays = expectedMaxArrivalDays;
+    }
+
+    public Boolean isActiveInd() {
+        return activeInd;
+    }
+
+    public DeliveryMethods activeInd(Boolean activeInd) {
+        this.activeInd = activeInd;
+        return this;
+    }
+
+    public void setActiveInd(Boolean activeInd) {
+        this.activeInd = activeInd;
+    }
+
+    public Boolean isDefaultInd() {
+        return defaultInd;
+    }
+
+    public DeliveryMethods defaultInd(Boolean defaultInd) {
+        this.defaultInd = defaultInd;
+        return this;
+    }
+
+    public void setDefaultInd(Boolean defaultInd) {
+        this.defaultInd = defaultInd;
+    }
+
+    public String getDeliveryNote() {
+        return deliveryNote;
+    }
+
+    public DeliveryMethods deliveryNote(String deliveryNote) {
+        this.deliveryNote = deliveryNote;
+        return this;
+    }
+
+    public void setDeliveryNote(String deliveryNote) {
+        this.deliveryNote = deliveryNote;
     }
 
     public Instant getValidFrom() {
@@ -83,6 +187,31 @@ public class DeliveryMethods implements Serializable {
     public void setValidTo(Instant validTo) {
         this.validTo = validTo;
     }
+
+    public Set<Suppliers> getSuppliers() {
+        return suppliers;
+    }
+
+    public DeliveryMethods suppliers(Set<Suppliers> suppliers) {
+        this.suppliers = suppliers;
+        return this;
+    }
+
+    public DeliveryMethods addSupplier(Suppliers suppliers) {
+        this.suppliers.add(suppliers);
+        suppliers.getDeliveryMethods().add(this);
+        return this;
+    }
+
+    public DeliveryMethods removeSupplier(Suppliers suppliers) {
+        this.suppliers.remove(suppliers);
+        suppliers.getDeliveryMethods().remove(this);
+        return this;
+    }
+
+    public void setSuppliers(Set<Suppliers> suppliers) {
+        this.suppliers = suppliers;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -107,6 +236,12 @@ public class DeliveryMethods implements Serializable {
         return "DeliveryMethods{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", thirdPartyName='" + getThirdPartyName() + "'" +
+            ", expectedMinArrivalDays=" + getExpectedMinArrivalDays() +
+            ", expectedMaxArrivalDays=" + getExpectedMaxArrivalDays() +
+            ", activeInd='" + isActiveInd() + "'" +
+            ", defaultInd='" + isDefaultInd() + "'" +
+            ", deliveryNote='" + getDeliveryNote() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

@@ -57,7 +57,7 @@ public class Addresses implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "addresses", allowSetters = true)
-    private StateProvinces stateProvince;
+    private Zone zone;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "addresses", allowSetters = true)
@@ -193,17 +193,17 @@ public class Addresses implements Serializable {
         this.activeInd = activeInd;
     }
 
-    public StateProvinces getStateProvince() {
-        return stateProvince;
+    public Zone getZone() {
+        return zone;
     }
 
-    public Addresses stateProvince(StateProvinces stateProvinces) {
-        this.stateProvince = stateProvinces;
+    public Addresses zone(Zone zone) {
+        this.zone = zone;
         return this;
     }
 
-    public void setStateProvince(StateProvinces stateProvinces) {
-        this.stateProvince = stateProvinces;
+    public void setZone(Zone zone) {
+        this.zone = zone;
     }
 
     public AddressTypes getAddressType() {

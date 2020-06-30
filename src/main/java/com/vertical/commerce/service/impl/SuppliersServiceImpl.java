@@ -8,6 +8,8 @@ import com.vertical.commerce.service.mapper.SuppliersMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,11 +59,20 @@ public class SuppliersServiceImpl implements SuppliersService {
     @Transactional(readOnly = true)
     public List<SuppliersDTO> findAll() {
         log.debug("Request to get all Suppliers");
-        return suppliersRepository.findAll().stream()
+        return suppliersRepository.findAllWithEagerRelationships().stream()
             .map(suppliersMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
+    /**
+     * Get all the suppliers with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<SuppliersDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return suppliersRepository.findAllWithEagerRelationships(pageable).map(suppliersMapper::toDto);
+    }
 
     /**
      * Get one suppliers by id.
@@ -73,7 +84,7 @@ public class SuppliersServiceImpl implements SuppliersService {
     @Transactional(readOnly = true)
     public Optional<SuppliersDTO> findOne(Long id) {
         log.debug("Request to get Suppliers : {}", id);
-        return suppliersRepository.findById(id)
+        return suppliersRepository.findOneWithEagerRelationships(id)
             .map(suppliersMapper::toDto);
     }
 

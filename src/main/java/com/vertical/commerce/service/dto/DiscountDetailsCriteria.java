@@ -28,6 +28,8 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter name;
+
     private BigDecimalFilter amount;
 
     private BooleanFilter isPercentage;
@@ -36,19 +38,25 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
 
     private BooleanFilter isFinalBillDiscount;
 
-    private StringFilter name;
-
     private IntegerFilter startCount;
 
     private IntegerFilter endCount;
 
     private IntegerFilter multiplyCount;
 
+    private BigDecimalFilter minAmount;
+
+    private BigDecimalFilter maxAmount;
+
+    private IntegerFilter minVolumeWeight;
+
+    private IntegerFilter maxVolumeWeight;
+
     private InstantFilter modifiedDate;
 
     private LongFilter discountId;
 
-    private LongFilter productId;
+    private LongFilter stockItemId;
 
     private LongFilter productCategoryId;
 
@@ -57,17 +65,21 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
 
     public DiscountDetailsCriteria(DiscountDetailsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.name = other.name == null ? null : other.name.copy();
         this.amount = other.amount == null ? null : other.amount.copy();
         this.isPercentage = other.isPercentage == null ? null : other.isPercentage.copy();
         this.isAllowCombinationDiscount = other.isAllowCombinationDiscount == null ? null : other.isAllowCombinationDiscount.copy();
         this.isFinalBillDiscount = other.isFinalBillDiscount == null ? null : other.isFinalBillDiscount.copy();
-        this.name = other.name == null ? null : other.name.copy();
         this.startCount = other.startCount == null ? null : other.startCount.copy();
         this.endCount = other.endCount == null ? null : other.endCount.copy();
         this.multiplyCount = other.multiplyCount == null ? null : other.multiplyCount.copy();
+        this.minAmount = other.minAmount == null ? null : other.minAmount.copy();
+        this.maxAmount = other.maxAmount == null ? null : other.maxAmount.copy();
+        this.minVolumeWeight = other.minVolumeWeight == null ? null : other.minVolumeWeight.copy();
+        this.maxVolumeWeight = other.maxVolumeWeight == null ? null : other.maxVolumeWeight.copy();
         this.modifiedDate = other.modifiedDate == null ? null : other.modifiedDate.copy();
         this.discountId = other.discountId == null ? null : other.discountId.copy();
-        this.productId = other.productId == null ? null : other.productId.copy();
+        this.stockItemId = other.stockItemId == null ? null : other.stockItemId.copy();
         this.productCategoryId = other.productCategoryId == null ? null : other.productCategoryId.copy();
     }
 
@@ -82,6 +94,14 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public StringFilter getName() {
+        return name;
+    }
+
+    public void setName(StringFilter name) {
+        this.name = name;
     }
 
     public BigDecimalFilter getAmount() {
@@ -116,14 +136,6 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
         this.isFinalBillDiscount = isFinalBillDiscount;
     }
 
-    public StringFilter getName() {
-        return name;
-    }
-
-    public void setName(StringFilter name) {
-        this.name = name;
-    }
-
     public IntegerFilter getStartCount() {
         return startCount;
     }
@@ -148,6 +160,38 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
         this.multiplyCount = multiplyCount;
     }
 
+    public BigDecimalFilter getMinAmount() {
+        return minAmount;
+    }
+
+    public void setMinAmount(BigDecimalFilter minAmount) {
+        this.minAmount = minAmount;
+    }
+
+    public BigDecimalFilter getMaxAmount() {
+        return maxAmount;
+    }
+
+    public void setMaxAmount(BigDecimalFilter maxAmount) {
+        this.maxAmount = maxAmount;
+    }
+
+    public IntegerFilter getMinVolumeWeight() {
+        return minVolumeWeight;
+    }
+
+    public void setMinVolumeWeight(IntegerFilter minVolumeWeight) {
+        this.minVolumeWeight = minVolumeWeight;
+    }
+
+    public IntegerFilter getMaxVolumeWeight() {
+        return maxVolumeWeight;
+    }
+
+    public void setMaxVolumeWeight(IntegerFilter maxVolumeWeight) {
+        this.maxVolumeWeight = maxVolumeWeight;
+    }
+
     public InstantFilter getModifiedDate() {
         return modifiedDate;
     }
@@ -164,12 +208,12 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
         this.discountId = discountId;
     }
 
-    public LongFilter getProductId() {
-        return productId;
+    public LongFilter getStockItemId() {
+        return stockItemId;
     }
 
-    public void setProductId(LongFilter productId) {
-        this.productId = productId;
+    public void setStockItemId(LongFilter stockItemId) {
+        this.stockItemId = stockItemId;
     }
 
     public LongFilter getProductCategoryId() {
@@ -192,17 +236,21 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
         final DiscountDetailsCriteria that = (DiscountDetailsCriteria) o;
         return
             Objects.equals(id, that.id) &&
+            Objects.equals(name, that.name) &&
             Objects.equals(amount, that.amount) &&
             Objects.equals(isPercentage, that.isPercentage) &&
             Objects.equals(isAllowCombinationDiscount, that.isAllowCombinationDiscount) &&
             Objects.equals(isFinalBillDiscount, that.isFinalBillDiscount) &&
-            Objects.equals(name, that.name) &&
             Objects.equals(startCount, that.startCount) &&
             Objects.equals(endCount, that.endCount) &&
             Objects.equals(multiplyCount, that.multiplyCount) &&
+            Objects.equals(minAmount, that.minAmount) &&
+            Objects.equals(maxAmount, that.maxAmount) &&
+            Objects.equals(minVolumeWeight, that.minVolumeWeight) &&
+            Objects.equals(maxVolumeWeight, that.maxVolumeWeight) &&
             Objects.equals(modifiedDate, that.modifiedDate) &&
             Objects.equals(discountId, that.discountId) &&
-            Objects.equals(productId, that.productId) &&
+            Objects.equals(stockItemId, that.stockItemId) &&
             Objects.equals(productCategoryId, that.productCategoryId);
     }
 
@@ -210,17 +258,21 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
         id,
+        name,
         amount,
         isPercentage,
         isAllowCombinationDiscount,
         isFinalBillDiscount,
-        name,
         startCount,
         endCount,
         multiplyCount,
+        minAmount,
+        maxAmount,
+        minVolumeWeight,
+        maxVolumeWeight,
         modifiedDate,
         discountId,
-        productId,
+        stockItemId,
         productCategoryId
         );
     }
@@ -230,17 +282,21 @@ public class DiscountDetailsCriteria implements Serializable, Criteria {
     public String toString() {
         return "DiscountDetailsCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
+                (name != null ? "name=" + name + ", " : "") +
                 (amount != null ? "amount=" + amount + ", " : "") +
                 (isPercentage != null ? "isPercentage=" + isPercentage + ", " : "") +
                 (isAllowCombinationDiscount != null ? "isAllowCombinationDiscount=" + isAllowCombinationDiscount + ", " : "") +
                 (isFinalBillDiscount != null ? "isFinalBillDiscount=" + isFinalBillDiscount + ", " : "") +
-                (name != null ? "name=" + name + ", " : "") +
                 (startCount != null ? "startCount=" + startCount + ", " : "") +
                 (endCount != null ? "endCount=" + endCount + ", " : "") +
                 (multiplyCount != null ? "multiplyCount=" + multiplyCount + ", " : "") +
+                (minAmount != null ? "minAmount=" + minAmount + ", " : "") +
+                (maxAmount != null ? "maxAmount=" + maxAmount + ", " : "") +
+                (minVolumeWeight != null ? "minVolumeWeight=" + minVolumeWeight + ", " : "") +
+                (maxVolumeWeight != null ? "maxVolumeWeight=" + maxVolumeWeight + ", " : "") +
                 (modifiedDate != null ? "modifiedDate=" + modifiedDate + ", " : "") +
                 (discountId != null ? "discountId=" + discountId + ", " : "") +
-                (productId != null ? "productId=" + productId + ", " : "") +
+                (stockItemId != null ? "stockItemId=" + stockItemId + ", " : "") +
                 (productCategoryId != null ? "productCategoryId=" + productCategoryId + ", " : "") +
             "}";
     }

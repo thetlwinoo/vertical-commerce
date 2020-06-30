@@ -112,7 +112,7 @@ class InvoicesGatlingTest extends Simulation {
                 , "totalChillerItems":"0"
                 , "deliveryRun":"SAMPLE_TEXT"
                 , "runPosition":"SAMPLE_TEXT"
-                , "returnedDeliveryData":"SAMPLE_TEXT"
+                , "returnedDeliveryData":null
                 , "confirmedDeliveryTime":"2020-01-01T00:00:00.000Z"
                 , "confirmedReceivedBy":"SAMPLE_TEXT"
                 , "status":"PAID"

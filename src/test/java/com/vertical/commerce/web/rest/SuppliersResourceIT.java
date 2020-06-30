@@ -5,8 +5,8 @@ import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.Suppliers;
 import com.vertical.commerce.domain.People;
 import com.vertical.commerce.domain.SupplierCategories;
+import com.vertical.commerce.domain.Addresses;
 import com.vertical.commerce.domain.DeliveryMethods;
-import com.vertical.commerce.domain.Cities;
 import com.vertical.commerce.repository.SuppliersRepository;
 import com.vertical.commerce.service.SuppliersService;
 import com.vertical.commerce.service.dto.SuppliersDTO;
@@ -16,9 +16,14 @@ import com.vertical.commerce.service.SuppliersQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,11 +31,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -38,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link SuppliersResource} REST controller.
  */
 @SpringBootTest(classes = { VscommerceApp.class, TestSecurityConfiguration.class })
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 public class SuppliersResourceIT {
@@ -92,6 +100,9 @@ public class SuppliersResourceIT {
     private static final String DEFAULT_THUMBNAIL_URL = "AAAAAAAAAA";
     private static final String UPDATED_THUMBNAIL_URL = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE = false;
+    private static final Boolean UPDATED_PICKUP_SAME_AS_HEAD_OFFICE = true;
+
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -101,8 +112,14 @@ public class SuppliersResourceIT {
     @Autowired
     private SuppliersRepository suppliersRepository;
 
+    @Mock
+    private SuppliersRepository suppliersRepositoryMock;
+
     @Autowired
     private SuppliersMapper suppliersMapper;
+
+    @Mock
+    private SuppliersService suppliersServiceMock;
 
     @Autowired
     private SuppliersService suppliersService;
@@ -142,6 +159,7 @@ public class SuppliersResourceIT {
             .creditRating(DEFAULT_CREDIT_RATING)
             .activeFlag(DEFAULT_ACTIVE_FLAG)
             .thumbnailUrl(DEFAULT_THUMBNAIL_URL)
+            .pickupSameAsHeadOffice(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return suppliers;
@@ -170,6 +188,7 @@ public class SuppliersResourceIT {
             .creditRating(UPDATED_CREDIT_RATING)
             .activeFlag(UPDATED_ACTIVE_FLAG)
             .thumbnailUrl(UPDATED_THUMBNAIL_URL)
+            .pickupSameAsHeadOffice(UPDATED_PICKUP_SAME_AS_HEAD_OFFICE)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return suppliers;
@@ -211,6 +230,7 @@ public class SuppliersResourceIT {
         assertThat(testSuppliers.getCreditRating()).isEqualTo(DEFAULT_CREDIT_RATING);
         assertThat(testSuppliers.isActiveFlag()).isEqualTo(DEFAULT_ACTIVE_FLAG);
         assertThat(testSuppliers.getThumbnailUrl()).isEqualTo(DEFAULT_THUMBNAIL_URL);
+        assertThat(testSuppliers.isPickupSameAsHeadOffice()).isEqualTo(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE);
         assertThat(testSuppliers.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testSuppliers.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -363,10 +383,31 @@ public class SuppliersResourceIT {
             .andExpect(jsonPath("$.[*].creditRating").value(hasItem(DEFAULT_CREDIT_RATING)))
             .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
+            .andExpect(jsonPath("$.[*].pickupSameAsHeadOffice").value(hasItem(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllSuppliersWithEagerRelationshipsIsEnabled() throws Exception {
+        when(suppliersServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restSuppliersMockMvc.perform(get("/api/suppliers?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(suppliersServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllSuppliersWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(suppliersServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restSuppliersMockMvc.perform(get("/api/suppliers?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(suppliersServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getSuppliers() throws Exception {
@@ -394,6 +435,7 @@ public class SuppliersResourceIT {
             .andExpect(jsonPath("$.creditRating").value(DEFAULT_CREDIT_RATING))
             .andExpect(jsonPath("$.activeFlag").value(DEFAULT_ACTIVE_FLAG.booleanValue()))
             .andExpect(jsonPath("$.thumbnailUrl").value(DEFAULT_THUMBNAIL_URL))
+            .andExpect(jsonPath("$.pickupSameAsHeadOffice").value(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE.booleanValue()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -1696,6 +1738,58 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
+    public void getAllSuppliersByPickupSameAsHeadOfficeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where pickupSameAsHeadOffice equals to DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE
+        defaultSuppliersShouldBeFound("pickupSameAsHeadOffice.equals=" + DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE);
+
+        // Get all the suppliersList where pickupSameAsHeadOffice equals to UPDATED_PICKUP_SAME_AS_HEAD_OFFICE
+        defaultSuppliersShouldNotBeFound("pickupSameAsHeadOffice.equals=" + UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByPickupSameAsHeadOfficeIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where pickupSameAsHeadOffice not equals to DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE
+        defaultSuppliersShouldNotBeFound("pickupSameAsHeadOffice.notEquals=" + DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE);
+
+        // Get all the suppliersList where pickupSameAsHeadOffice not equals to UPDATED_PICKUP_SAME_AS_HEAD_OFFICE
+        defaultSuppliersShouldBeFound("pickupSameAsHeadOffice.notEquals=" + UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByPickupSameAsHeadOfficeIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where pickupSameAsHeadOffice in DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE or UPDATED_PICKUP_SAME_AS_HEAD_OFFICE
+        defaultSuppliersShouldBeFound("pickupSameAsHeadOffice.in=" + DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE + "," + UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
+
+        // Get all the suppliersList where pickupSameAsHeadOffice equals to UPDATED_PICKUP_SAME_AS_HEAD_OFFICE
+        defaultSuppliersShouldNotBeFound("pickupSameAsHeadOffice.in=" + UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByPickupSameAsHeadOfficeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where pickupSameAsHeadOffice is not null
+        defaultSuppliersShouldBeFound("pickupSameAsHeadOffice.specified=true");
+
+        // Get all the suppliersList where pickupSameAsHeadOffice is null
+        defaultSuppliersShouldNotBeFound("pickupSameAsHeadOffice.specified=false");
+    }
+
+    @Test
+    @Transactional
     public void getAllSuppliersByValidFromIsEqualToSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
@@ -1840,13 +1934,53 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
+    public void getAllSuppliersByPickupAddressIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+        Addresses pickupAddress = AddressesResourceIT.createEntity(em);
+        em.persist(pickupAddress);
+        em.flush();
+        suppliers.setPickupAddress(pickupAddress);
+        suppliersRepository.saveAndFlush(suppliers);
+        Long pickupAddressId = pickupAddress.getId();
+
+        // Get all the suppliersList where pickupAddress equals to pickupAddressId
+        defaultSuppliersShouldBeFound("pickupAddressId.equals=" + pickupAddressId);
+
+        // Get all the suppliersList where pickupAddress equals to pickupAddressId + 1
+        defaultSuppliersShouldNotBeFound("pickupAddressId.equals=" + (pickupAddressId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByHeadOfficeAddressIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+        Addresses headOfficeAddress = AddressesResourceIT.createEntity(em);
+        em.persist(headOfficeAddress);
+        em.flush();
+        suppliers.setHeadOfficeAddress(headOfficeAddress);
+        suppliersRepository.saveAndFlush(suppliers);
+        Long headOfficeAddressId = headOfficeAddress.getId();
+
+        // Get all the suppliersList where headOfficeAddress equals to headOfficeAddressId
+        defaultSuppliersShouldBeFound("headOfficeAddressId.equals=" + headOfficeAddressId);
+
+        // Get all the suppliersList where headOfficeAddress equals to headOfficeAddressId + 1
+        defaultSuppliersShouldNotBeFound("headOfficeAddressId.equals=" + (headOfficeAddressId + 1));
+    }
+
+
+    @Test
+    @Transactional
     public void getAllSuppliersByDeliveryMethodIsEqualToSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
         DeliveryMethods deliveryMethod = DeliveryMethodsResourceIT.createEntity(em);
         em.persist(deliveryMethod);
         em.flush();
-        suppliers.setDeliveryMethod(deliveryMethod);
+        suppliers.addDeliveryMethod(deliveryMethod);
         suppliersRepository.saveAndFlush(suppliers);
         Long deliveryMethodId = deliveryMethod.getId();
 
@@ -1855,46 +1989,6 @@ public class SuppliersResourceIT {
 
         // Get all the suppliersList where deliveryMethod equals to deliveryMethodId + 1
         defaultSuppliersShouldNotBeFound("deliveryMethodId.equals=" + (deliveryMethodId + 1));
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByDeliveryCityIsEqualToSomething() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-        Cities deliveryCity = CitiesResourceIT.createEntity(em);
-        em.persist(deliveryCity);
-        em.flush();
-        suppliers.setDeliveryCity(deliveryCity);
-        suppliersRepository.saveAndFlush(suppliers);
-        Long deliveryCityId = deliveryCity.getId();
-
-        // Get all the suppliersList where deliveryCity equals to deliveryCityId
-        defaultSuppliersShouldBeFound("deliveryCityId.equals=" + deliveryCityId);
-
-        // Get all the suppliersList where deliveryCity equals to deliveryCityId + 1
-        defaultSuppliersShouldNotBeFound("deliveryCityId.equals=" + (deliveryCityId + 1));
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByPostalCityIsEqualToSomething() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-        Cities postalCity = CitiesResourceIT.createEntity(em);
-        em.persist(postalCity);
-        em.flush();
-        suppliers.setPostalCity(postalCity);
-        suppliersRepository.saveAndFlush(suppliers);
-        Long postalCityId = postalCity.getId();
-
-        // Get all the suppliersList where postalCity equals to postalCityId
-        defaultSuppliersShouldBeFound("postalCityId.equals=" + postalCityId);
-
-        // Get all the suppliersList where postalCity equals to postalCityId + 1
-        defaultSuppliersShouldNotBeFound("postalCityId.equals=" + (postalCityId + 1));
     }
 
     /**
@@ -1921,6 +2015,7 @@ public class SuppliersResourceIT {
             .andExpect(jsonPath("$.[*].creditRating").value(hasItem(DEFAULT_CREDIT_RATING)))
             .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
+            .andExpect(jsonPath("$.[*].pickupSameAsHeadOffice").value(hasItem(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -1985,6 +2080,7 @@ public class SuppliersResourceIT {
             .creditRating(UPDATED_CREDIT_RATING)
             .activeFlag(UPDATED_ACTIVE_FLAG)
             .thumbnailUrl(UPDATED_THUMBNAIL_URL)
+            .pickupSameAsHeadOffice(UPDATED_PICKUP_SAME_AS_HEAD_OFFICE)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         SuppliersDTO suppliersDTO = suppliersMapper.toDto(updatedSuppliers);
@@ -2014,6 +2110,7 @@ public class SuppliersResourceIT {
         assertThat(testSuppliers.getCreditRating()).isEqualTo(UPDATED_CREDIT_RATING);
         assertThat(testSuppliers.isActiveFlag()).isEqualTo(UPDATED_ACTIVE_FLAG);
         assertThat(testSuppliers.getThumbnailUrl()).isEqualTo(UPDATED_THUMBNAIL_URL);
+        assertThat(testSuppliers.isPickupSameAsHeadOffice()).isEqualTo(UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
         assertThat(testSuppliers.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testSuppliers.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

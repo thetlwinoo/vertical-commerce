@@ -3,7 +3,7 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.Addresses;
-import com.vertical.commerce.domain.StateProvinces;
+import com.vertical.commerce.domain.Zone;
 import com.vertical.commerce.domain.AddressTypes;
 import com.vertical.commerce.domain.People;
 import com.vertical.commerce.repository.AddressesRepository;
@@ -953,21 +953,21 @@ public class AddressesResourceIT {
 
     @Test
     @Transactional
-    public void getAllAddressesByStateProvinceIsEqualToSomething() throws Exception {
+    public void getAllAddressesByZoneIsEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
-        StateProvinces stateProvince = StateProvincesResourceIT.createEntity(em);
-        em.persist(stateProvince);
+        Zone zone = ZoneResourceIT.createEntity(em);
+        em.persist(zone);
         em.flush();
-        addresses.setStateProvince(stateProvince);
+        addresses.setZone(zone);
         addressesRepository.saveAndFlush(addresses);
-        Long stateProvinceId = stateProvince.getId();
+        Long zoneId = zone.getId();
 
-        // Get all the addressesList where stateProvince equals to stateProvinceId
-        defaultAddressesShouldBeFound("stateProvinceId.equals=" + stateProvinceId);
+        // Get all the addressesList where zone equals to zoneId
+        defaultAddressesShouldBeFound("zoneId.equals=" + zoneId);
 
-        // Get all the addressesList where stateProvince equals to stateProvinceId + 1
-        defaultAddressesShouldNotBeFound("stateProvinceId.equals=" + (stateProvinceId + 1));
+        // Get all the addressesList where zone equals to zoneId + 1
+        defaultAddressesShouldNotBeFound("zoneId.equals=" + (zoneId + 1));
     }
 
 

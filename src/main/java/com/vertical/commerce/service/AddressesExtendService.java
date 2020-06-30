@@ -10,9 +10,9 @@ public interface AddressesExtendService {
 
     void clearDefaultAddress(Principal principal);
 
-    void setDefaultAddress(Long addressId, Principal principal);
+    AddressesDTO setDefaultAddress(Long addressId,Boolean isShippingAddress, Principal principal);
 
-    AddressesDTO crateAddresses(AddressesDTO addressesDTO, Principal principal);
+    AddressesDTO crateAddresses(AddressesDTO addressesDTO,Boolean isShippingAddress, Principal principal);
 
-    AddressesDTO updateAddresses(AddressesDTO addressesDTO, Principal principal);
+    AddressesDTO updateAddresses(AddressesDTO addressesDTO,Boolean isShippingAddress, Principal principal);
 }

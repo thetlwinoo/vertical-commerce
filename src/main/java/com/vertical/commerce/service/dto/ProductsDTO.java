@@ -17,14 +17,14 @@ public class ProductsDTO implements Serializable {
 
     private String handle;
 
-    private String productNumber;
-
     private String searchDetails;
+
+    private String productNumber;
 
     private Integer sellCount;
 
     @Lob
-    private String stockItemString;
+    private String productDetails;
 
     private Integer totalWishlist;
 
@@ -91,20 +91,20 @@ public class ProductsDTO implements Serializable {
         this.handle = handle;
     }
 
-    public String getProductNumber() {
-        return productNumber;
-    }
-
-    public void setProductNumber(String productNumber) {
-        this.productNumber = productNumber;
-    }
-
     public String getSearchDetails() {
         return searchDetails;
     }
 
     public void setSearchDetails(String searchDetails) {
         this.searchDetails = searchDetails;
+    }
+
+    public String getProductNumber() {
+        return productNumber;
+    }
+
+    public void setProductNumber(String productNumber) {
+        this.productNumber = productNumber;
     }
 
     public Integer getSellCount() {
@@ -115,12 +115,12 @@ public class ProductsDTO implements Serializable {
         this.sellCount = sellCount;
     }
 
-    public String getStockItemString() {
-        return stockItemString;
+    public String getProductDetails() {
+        return productDetails;
     }
 
-    public void setStockItemString(String stockItemString) {
-        this.stockItemString = stockItemString;
+    public void setProductDetails(String productDetails) {
+        this.productDetails = productDetails;
     }
 
     public Integer getTotalWishlist() {
@@ -291,10 +291,10 @@ public class ProductsDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", handle='" + getHandle() + "'" +
-            ", productNumber='" + getProductNumber() + "'" +
             ", searchDetails='" + getSearchDetails() + "'" +
+            ", productNumber='" + getProductNumber() + "'" +
             ", sellCount=" + getSellCount() +
-            ", stockItemString='" + getStockItemString() + "'" +
+            ", productDetails='" + getProductDetails() + "'" +
             ", totalWishlist=" + getTotalWishlist() +
             ", totalStars=" + getTotalStars() +
             ", discountedPercentage=" + getDiscountedPercentage() +

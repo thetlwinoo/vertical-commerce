@@ -91,6 +91,9 @@ public class DiscountDetailsQueryService extends QueryService<DiscountDetails> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), DiscountDetails_.id));
             }
+            if (criteria.getName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getName(), DiscountDetails_.name));
+            }
             if (criteria.getAmount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getAmount(), DiscountDetails_.amount));
             }
@@ -103,9 +106,6 @@ public class DiscountDetailsQueryService extends QueryService<DiscountDetails> {
             if (criteria.getIsFinalBillDiscount() != null) {
                 specification = specification.and(buildSpecification(criteria.getIsFinalBillDiscount(), DiscountDetails_.isFinalBillDiscount));
             }
-            if (criteria.getName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getName(), DiscountDetails_.name));
-            }
             if (criteria.getStartCount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getStartCount(), DiscountDetails_.startCount));
             }
@@ -115,6 +115,18 @@ public class DiscountDetailsQueryService extends QueryService<DiscountDetails> {
             if (criteria.getMultiplyCount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getMultiplyCount(), DiscountDetails_.multiplyCount));
             }
+            if (criteria.getMinAmount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getMinAmount(), DiscountDetails_.minAmount));
+            }
+            if (criteria.getMaxAmount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getMaxAmount(), DiscountDetails_.maxAmount));
+            }
+            if (criteria.getMinVolumeWeight() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getMinVolumeWeight(), DiscountDetails_.minVolumeWeight));
+            }
+            if (criteria.getMaxVolumeWeight() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getMaxVolumeWeight(), DiscountDetails_.maxVolumeWeight));
+            }
             if (criteria.getModifiedDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getModifiedDate(), DiscountDetails_.modifiedDate));
             }
@@ -122,9 +134,9 @@ public class DiscountDetailsQueryService extends QueryService<DiscountDetails> {
                 specification = specification.and(buildSpecification(criteria.getDiscountId(),
                     root -> root.join(DiscountDetails_.discount, JoinType.LEFT).get(Discount_.id)));
             }
-            if (criteria.getProductId() != null) {
-                specification = specification.and(buildSpecification(criteria.getProductId(),
-                    root -> root.join(DiscountDetails_.product, JoinType.LEFT).get(Products_.id)));
+            if (criteria.getStockItemId() != null) {
+                specification = specification.and(buildSpecification(criteria.getStockItemId(),
+                    root -> root.join(DiscountDetails_.stockItem, JoinType.LEFT).get(StockItems_.id)));
             }
             if (criteria.getProductCategoryId() != null) {
                 specification = specification.and(buildSpecification(criteria.getProductCategoryId(),

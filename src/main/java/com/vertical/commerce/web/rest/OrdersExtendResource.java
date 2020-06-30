@@ -1,7 +1,9 @@
 package com.vertical.commerce.web.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vertical.commerce.service.OrdersExtendService;
 import com.vertical.commerce.service.dto.OrdersDTO;
+import net.minidev.json.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,7 @@ public class OrdersExtendResource {
 
 
     @RequestMapping(value = "/orders-extend/order", method = RequestMethod.POST)
-    public ResponseEntity postOrder(@Valid @RequestBody OrdersDTO ordersDTO, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity postOrder(@Valid @RequestBody OrdersDTO ordersDTO, BindingResult bindingResult, Principal principal) throws JsonProcessingException, ParseException {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }

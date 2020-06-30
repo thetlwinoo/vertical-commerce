@@ -14,18 +14,16 @@ public class OrderLinesDTO implements Serializable {
     
     private Long id;
 
+    private String description;
+
     @NotNull
     private Integer quantity;
 
-    private String description;
+    private BigDecimal taxRate;
 
     private BigDecimal unitPrice;
 
     private BigDecimal unitPriceDiscount;
-
-    private BigDecimal lineTotal;
-
-    private BigDecimal taxRate;
 
     private Integer pickedQuantity;
 
@@ -57,10 +55,6 @@ public class OrderLinesDTO implements Serializable {
     private Instant lastEditedWhen;
 
 
-    private Long supplierId;
-
-    private String supplierName;
-
     private Long stockItemId;
 
     private String stockItemName;
@@ -73,7 +67,11 @@ public class OrderLinesDTO implements Serializable {
 
     private String reviewImageThumbnailUrl;
 
-    private Long orderId;
+    private Long supplierId;
+
+    private String supplierName;
+
+    private Long orderPackageId;
     
     public Long getId() {
         return id;
@@ -81,6 +79,14 @@ public class OrderLinesDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getQuantity() {
@@ -91,12 +97,12 @@ public class OrderLinesDTO implements Serializable {
         this.quantity = quantity;
     }
 
-    public String getDescription() {
-        return description;
+    public BigDecimal getTaxRate() {
+        return taxRate;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTaxRate(BigDecimal taxRate) {
+        this.taxRate = taxRate;
     }
 
     public BigDecimal getUnitPrice() {
@@ -113,22 +119,6 @@ public class OrderLinesDTO implements Serializable {
 
     public void setUnitPriceDiscount(BigDecimal unitPriceDiscount) {
         this.unitPriceDiscount = unitPriceDiscount;
-    }
-
-    public BigDecimal getLineTotal() {
-        return lineTotal;
-    }
-
-    public void setLineTotal(BigDecimal lineTotal) {
-        this.lineTotal = lineTotal;
-    }
-
-    public BigDecimal getTaxRate() {
-        return taxRate;
-    }
-
-    public void setTaxRate(BigDecimal taxRate) {
-        this.taxRate = taxRate;
     }
 
     public Integer getPickedQuantity() {
@@ -227,22 +217,6 @@ public class OrderLinesDTO implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Long suppliersId) {
-        this.supplierId = suppliersId;
-    }
-
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    public void setSupplierName(String suppliersName) {
-        this.supplierName = suppliersName;
-    }
-
     public Long getStockItemId() {
         return stockItemId;
     }
@@ -291,12 +265,28 @@ public class OrderLinesDTO implements Serializable {
         this.reviewImageThumbnailUrl = photosThumbnailUrl;
     }
 
-    public Long getOrderId() {
-        return orderId;
+    public Long getSupplierId() {
+        return supplierId;
     }
 
-    public void setOrderId(Long ordersId) {
-        this.orderId = ordersId;
+    public void setSupplierId(Long suppliersId) {
+        this.supplierId = suppliersId;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String suppliersName) {
+        this.supplierName = suppliersName;
+    }
+
+    public Long getOrderPackageId() {
+        return orderPackageId;
+    }
+
+    public void setOrderPackageId(Long orderPackagesId) {
+        this.orderPackageId = orderPackagesId;
     }
 
     @Override
@@ -321,12 +311,11 @@ public class OrderLinesDTO implements Serializable {
     public String toString() {
         return "OrderLinesDTO{" +
             "id=" + getId() +
-            ", quantity=" + getQuantity() +
             ", description='" + getDescription() + "'" +
+            ", quantity=" + getQuantity() +
+            ", taxRate=" + getTaxRate() +
             ", unitPrice=" + getUnitPrice() +
             ", unitPriceDiscount=" + getUnitPriceDiscount() +
-            ", lineTotal=" + getLineTotal() +
-            ", taxRate=" + getTaxRate() +
             ", pickedQuantity=" + getPickedQuantity() +
             ", pickingCompletedWhen='" + getPickingCompletedWhen() + "'" +
             ", status='" + getStatus() + "'" +
@@ -339,15 +328,15 @@ public class OrderLinesDTO implements Serializable {
             ", likeCount=" + getLikeCount() +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
-            ", supplierId=" + getSupplierId() +
-            ", supplierName='" + getSupplierName() + "'" +
             ", stockItemId=" + getStockItemId() +
             ", stockItemName='" + getStockItemName() + "'" +
             ", packageTypeId=" + getPackageTypeId() +
             ", packageTypeName='" + getPackageTypeName() + "'" +
             ", reviewImageId=" + getReviewImageId() +
             ", reviewImageThumbnailUrl='" + getReviewImageThumbnailUrl() + "'" +
-            ", orderId=" + getOrderId() +
+            ", supplierId=" + getSupplierId() +
+            ", supplierName='" + getSupplierName() + "'" +
+            ", orderPackageId=" + getOrderPackageId() +
             "}";
     }
 }

@@ -47,17 +47,15 @@ public class OrderLinesCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter description;
+
     private IntegerFilter quantity;
 
-    private StringFilter description;
+    private BigDecimalFilter taxRate;
 
     private BigDecimalFilter unitPrice;
 
     private BigDecimalFilter unitPriceDiscount;
-
-    private BigDecimalFilter lineTotal;
-
-    private BigDecimalFilter taxRate;
 
     private IntegerFilter pickedQuantity;
 
@@ -79,27 +77,26 @@ public class OrderLinesCriteria implements Serializable, Criteria {
 
     private InstantFilter lastEditedWhen;
 
-    private LongFilter supplierId;
-
     private LongFilter stockItemId;
 
     private LongFilter packageTypeId;
 
     private LongFilter reviewImageId;
 
-    private LongFilter orderId;
+    private LongFilter supplierId;
+
+    private LongFilter orderPackageId;
 
     public OrderLinesCriteria() {
     }
 
     public OrderLinesCriteria(OrderLinesCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.quantity = other.quantity == null ? null : other.quantity.copy();
         this.description = other.description == null ? null : other.description.copy();
+        this.quantity = other.quantity == null ? null : other.quantity.copy();
+        this.taxRate = other.taxRate == null ? null : other.taxRate.copy();
         this.unitPrice = other.unitPrice == null ? null : other.unitPrice.copy();
         this.unitPriceDiscount = other.unitPriceDiscount == null ? null : other.unitPriceDiscount.copy();
-        this.lineTotal = other.lineTotal == null ? null : other.lineTotal.copy();
-        this.taxRate = other.taxRate == null ? null : other.taxRate.copy();
         this.pickedQuantity = other.pickedQuantity == null ? null : other.pickedQuantity.copy();
         this.pickingCompletedWhen = other.pickingCompletedWhen == null ? null : other.pickingCompletedWhen.copy();
         this.status = other.status == null ? null : other.status.copy();
@@ -110,11 +107,11 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         this.likeCount = other.likeCount == null ? null : other.likeCount.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
-        this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
         this.stockItemId = other.stockItemId == null ? null : other.stockItemId.copy();
         this.packageTypeId = other.packageTypeId == null ? null : other.packageTypeId.copy();
         this.reviewImageId = other.reviewImageId == null ? null : other.reviewImageId.copy();
-        this.orderId = other.orderId == null ? null : other.orderId.copy();
+        this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
+        this.orderPackageId = other.orderPackageId == null ? null : other.orderPackageId.copy();
     }
 
     @Override
@@ -130,6 +127,14 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         this.id = id;
     }
 
+    public StringFilter getDescription() {
+        return description;
+    }
+
+    public void setDescription(StringFilter description) {
+        this.description = description;
+    }
+
     public IntegerFilter getQuantity() {
         return quantity;
     }
@@ -138,12 +143,12 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         this.quantity = quantity;
     }
 
-    public StringFilter getDescription() {
-        return description;
+    public BigDecimalFilter getTaxRate() {
+        return taxRate;
     }
 
-    public void setDescription(StringFilter description) {
-        this.description = description;
+    public void setTaxRate(BigDecimalFilter taxRate) {
+        this.taxRate = taxRate;
     }
 
     public BigDecimalFilter getUnitPrice() {
@@ -160,22 +165,6 @@ public class OrderLinesCriteria implements Serializable, Criteria {
 
     public void setUnitPriceDiscount(BigDecimalFilter unitPriceDiscount) {
         this.unitPriceDiscount = unitPriceDiscount;
-    }
-
-    public BigDecimalFilter getLineTotal() {
-        return lineTotal;
-    }
-
-    public void setLineTotal(BigDecimalFilter lineTotal) {
-        this.lineTotal = lineTotal;
-    }
-
-    public BigDecimalFilter getTaxRate() {
-        return taxRate;
-    }
-
-    public void setTaxRate(BigDecimalFilter taxRate) {
-        this.taxRate = taxRate;
     }
 
     public IntegerFilter getPickedQuantity() {
@@ -258,14 +247,6 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public LongFilter getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(LongFilter supplierId) {
-        this.supplierId = supplierId;
-    }
-
     public LongFilter getStockItemId() {
         return stockItemId;
     }
@@ -290,12 +271,20 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         this.reviewImageId = reviewImageId;
     }
 
-    public LongFilter getOrderId() {
-        return orderId;
+    public LongFilter getSupplierId() {
+        return supplierId;
     }
 
-    public void setOrderId(LongFilter orderId) {
-        this.orderId = orderId;
+    public void setSupplierId(LongFilter supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public LongFilter getOrderPackageId() {
+        return orderPackageId;
+    }
+
+    public void setOrderPackageId(LongFilter orderPackageId) {
+        this.orderPackageId = orderPackageId;
     }
 
 
@@ -310,12 +299,11 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         final OrderLinesCriteria that = (OrderLinesCriteria) o;
         return
             Objects.equals(id, that.id) &&
-            Objects.equals(quantity, that.quantity) &&
             Objects.equals(description, that.description) &&
+            Objects.equals(quantity, that.quantity) &&
+            Objects.equals(taxRate, that.taxRate) &&
             Objects.equals(unitPrice, that.unitPrice) &&
             Objects.equals(unitPriceDiscount, that.unitPriceDiscount) &&
-            Objects.equals(lineTotal, that.lineTotal) &&
-            Objects.equals(taxRate, that.taxRate) &&
             Objects.equals(pickedQuantity, that.pickedQuantity) &&
             Objects.equals(pickingCompletedWhen, that.pickingCompletedWhen) &&
             Objects.equals(status, that.status) &&
@@ -326,23 +314,22 @@ public class OrderLinesCriteria implements Serializable, Criteria {
             Objects.equals(likeCount, that.likeCount) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
-            Objects.equals(supplierId, that.supplierId) &&
             Objects.equals(stockItemId, that.stockItemId) &&
             Objects.equals(packageTypeId, that.packageTypeId) &&
             Objects.equals(reviewImageId, that.reviewImageId) &&
-            Objects.equals(orderId, that.orderId);
+            Objects.equals(supplierId, that.supplierId) &&
+            Objects.equals(orderPackageId, that.orderPackageId);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
         id,
-        quantity,
         description,
+        quantity,
+        taxRate,
         unitPrice,
         unitPriceDiscount,
-        lineTotal,
-        taxRate,
         pickedQuantity,
         pickingCompletedWhen,
         status,
@@ -353,11 +340,11 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         likeCount,
         lastEditedBy,
         lastEditedWhen,
-        supplierId,
         stockItemId,
         packageTypeId,
         reviewImageId,
-        orderId
+        supplierId,
+        orderPackageId
         );
     }
 
@@ -366,12 +353,11 @@ public class OrderLinesCriteria implements Serializable, Criteria {
     public String toString() {
         return "OrderLinesCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
-                (quantity != null ? "quantity=" + quantity + ", " : "") +
                 (description != null ? "description=" + description + ", " : "") +
+                (quantity != null ? "quantity=" + quantity + ", " : "") +
+                (taxRate != null ? "taxRate=" + taxRate + ", " : "") +
                 (unitPrice != null ? "unitPrice=" + unitPrice + ", " : "") +
                 (unitPriceDiscount != null ? "unitPriceDiscount=" + unitPriceDiscount + ", " : "") +
-                (lineTotal != null ? "lineTotal=" + lineTotal + ", " : "") +
-                (taxRate != null ? "taxRate=" + taxRate + ", " : "") +
                 (pickedQuantity != null ? "pickedQuantity=" + pickedQuantity + ", " : "") +
                 (pickingCompletedWhen != null ? "pickingCompletedWhen=" + pickingCompletedWhen + ", " : "") +
                 (status != null ? "status=" + status + ", " : "") +
@@ -382,11 +368,11 @@ public class OrderLinesCriteria implements Serializable, Criteria {
                 (likeCount != null ? "likeCount=" + likeCount + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
-                (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
                 (stockItemId != null ? "stockItemId=" + stockItemId + ", " : "") +
                 (packageTypeId != null ? "packageTypeId=" + packageTypeId + ", " : "") +
                 (reviewImageId != null ? "reviewImageId=" + reviewImageId + ", " : "") +
-                (orderId != null ? "orderId=" + orderId + ", " : "") +
+                (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
+                (orderPackageId != null ? "orderPackageId=" + orderPackageId + ", " : "") +
             "}";
     }
 

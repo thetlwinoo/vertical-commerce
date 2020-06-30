@@ -1,13 +1,16 @@
 package com.vertical.commerce.service;
 
 import com.stripe.model.Customer;
+import com.vertical.commerce.service.dto.CustomerPaymentBankTransferDTO;
 
 import java.security.Principal;
 import java.util.Map;
 
 public interface CustomerPaymentExtendService {
 
-    Map<String, Object> cashOnDelivery(Long orderId,Long paymentMethodId, Principal principal);
+    Map<String, Object> cashOnDelivery(Long orderId,Principal principal);
+
+    Map<String, Object> bankTransfer(CustomerPaymentBankTransferDTO customerPaymentBankTransferDTO, Long orderId, Principal principal);
 
     //Stripe Serivces
     Customer createStripeCustomer(String token, String email) throws Exception;
@@ -17,7 +20,7 @@ public interface CustomerPaymentExtendService {
     Map<String, Object> chargeStripeCustomerCard(String customerId, int amount) throws Exception;
 
     //Paypal Services
-    Map<String, Object> createPaypalPayment(String sum, String returnUrl, String cancelUrl);
+    Map<String, Object> createPaypalPayment(String sum, String returnUrl, String cancelUrl, Long orderId);
 
     Map<String, Object> completePaypalPayment(String paymentId, String payerId, Long orderId, Principal principal);
 

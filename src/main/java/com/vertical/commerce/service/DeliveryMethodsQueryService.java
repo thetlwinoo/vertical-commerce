@@ -94,11 +94,33 @@ public class DeliveryMethodsQueryService extends QueryService<DeliveryMethods> {
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), DeliveryMethods_.name));
             }
+            if (criteria.getThirdPartyName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getThirdPartyName(), DeliveryMethods_.thirdPartyName));
+            }
+            if (criteria.getExpectedMinArrivalDays() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getExpectedMinArrivalDays(), DeliveryMethods_.expectedMinArrivalDays));
+            }
+            if (criteria.getExpectedMaxArrivalDays() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getExpectedMaxArrivalDays(), DeliveryMethods_.expectedMaxArrivalDays));
+            }
+            if (criteria.getActiveInd() != null) {
+                specification = specification.and(buildSpecification(criteria.getActiveInd(), DeliveryMethods_.activeInd));
+            }
+            if (criteria.getDefaultInd() != null) {
+                specification = specification.and(buildSpecification(criteria.getDefaultInd(), DeliveryMethods_.defaultInd));
+            }
+            if (criteria.getDeliveryNote() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDeliveryNote(), DeliveryMethods_.deliveryNote));
+            }
             if (criteria.getValidFrom() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), DeliveryMethods_.validFrom));
             }
             if (criteria.getValidTo() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidTo(), DeliveryMethods_.validTo));
+            }
+            if (criteria.getSupplierId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierId(),
+                    root -> root.join(DeliveryMethods_.suppliers, JoinType.LEFT).get(Suppliers_.id)));
             }
         }
         return specification;

@@ -33,9 +33,9 @@ public class AddressesDTO implements Serializable {
     private Boolean activeInd;
 
 
-    private Long stateProvinceId;
+    private Long zoneId;
 
-    private String stateProvinceName;
+    private String zoneCode;
 
     private Long addressTypeId;
 
@@ -123,20 +123,20 @@ public class AddressesDTO implements Serializable {
         this.activeInd = activeInd;
     }
 
-    public Long getStateProvinceId() {
-        return stateProvinceId;
+    public Long getZoneId() {
+        return zoneId;
     }
 
-    public void setStateProvinceId(Long stateProvincesId) {
-        this.stateProvinceId = stateProvincesId;
+    public void setZoneId(Long zoneId) {
+        this.zoneId = zoneId;
     }
 
-    public String getStateProvinceName() {
-        return stateProvinceName;
+    public String getZoneCode() {
+        return zoneCode;
     }
 
-    public void setStateProvinceName(String stateProvincesName) {
-        this.stateProvinceName = stateProvincesName;
+    public void setZoneCode(String zoneCode) {
+        this.zoneCode = zoneCode;
     }
 
     public Long getAddressTypeId() {
@@ -194,8 +194,8 @@ public class AddressesDTO implements Serializable {
             ", postalCode='" + getPostalCode() + "'" +
             ", defaultInd='" + isDefaultInd() + "'" +
             ", activeInd='" + isActiveInd() + "'" +
-            ", stateProvinceId=" + getStateProvinceId() +
-            ", stateProvinceName='" + getStateProvinceName() + "'" +
+            ", zoneId=" + getZoneId() +
+            ", zoneCode='" + getZoneCode() + "'" +
             ", addressTypeId=" + getAddressTypeId() +
             ", addressTypeName='" + getAddressTypeName() + "'" +
             ", personId=" + getPersonId() +

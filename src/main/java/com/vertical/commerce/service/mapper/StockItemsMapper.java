@@ -39,10 +39,10 @@ public interface StockItemsMapper extends EntityMapper<StockItemsDTO, StockItems
     @Mapping(source = "product.id", target = "productId")
     StockItemsDTO toDto(StockItems stockItems);
 
-    @Mapping(target = "photoLists", ignore = true)
-    @Mapping(target = "removePhotoList", ignore = true)
     @Mapping(target = "specialDealLists", ignore = true)
     @Mapping(target = "removeSpecialDealList", ignore = true)
+    @Mapping(target = "photoLists", ignore = true)
+    @Mapping(target = "removePhotoList", ignore = true)
     @Mapping(source = "itemLengthUnitId", target = "itemLengthUnit")
     @Mapping(source = "itemWidthUnitId", target = "itemWidthUnit")
     @Mapping(source = "itemHeightUnitId", target = "itemHeightUnit")
@@ -55,7 +55,6 @@ public interface StockItemsMapper extends EntityMapper<StockItemsDTO, StockItems
     @Mapping(source = "materialId", target = "material")
     @Mapping(source = "currencyId", target = "currency")
     @Mapping(source = "barcodeTypeId", target = "barcodeType")
-    @Mapping(target = "stockItemHolding", ignore = true)
     @Mapping(source = "productId", target = "product")
     StockItems toEntity(StockItemsDTO stockItemsDTO);
 

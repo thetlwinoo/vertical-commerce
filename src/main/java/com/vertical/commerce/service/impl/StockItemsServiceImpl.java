@@ -13,11 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Service Implementation for managing {@link StockItems}.
@@ -65,21 +61,6 @@ public class StockItemsServiceImpl implements StockItemsService {
             .map(stockItemsMapper::toDto);
     }
 
-
-
-    /**
-     *  Get all the stockItems where StockItemHolding is {@code null}.
-     *  @return the list of entities.
-     */
-    @Transactional(readOnly = true) 
-    public List<StockItemsDTO> findAllWhereStockItemHoldingIsNull() {
-        log.debug("Request to get all stockItems where StockItemHolding is null");
-        return StreamSupport
-            .stream(stockItemsRepository.findAll().spliterator(), false)
-            .filter(stockItems -> stockItems.getStockItemHolding() == null)
-            .map(stockItemsMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
 
     /**
      * Get one stockItems by id.
