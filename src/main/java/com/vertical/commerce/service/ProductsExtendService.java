@@ -49,4 +49,8 @@ public interface ProductsExtendService {
     List<Long> getProductIdsBySupplier(Long supplierId);
 
     String getProductDetails(Long productId);
+
+    String getFilterProducts(Long categoryId,String brandIdList,String tag,String attributes,String options,String priceRange,Integer rating,Integer page,Integer limit);
+
+    String getFilterControllers(Long categoryId,String tag);
 }

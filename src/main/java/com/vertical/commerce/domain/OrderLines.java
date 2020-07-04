@@ -105,7 +105,7 @@ public class OrderLines implements Serializable {
     @JsonIgnoreProperties(value = "orderLines", allowSetters = true)
     private Suppliers supplier;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "orderLineLists", allowSetters = true)
     private OrderPackages orderPackage;
 

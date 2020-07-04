@@ -251,4 +251,30 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
     public String getProductDetails(Long productId) {
         return productsExtendFilterRepository.getProductDetails(productId);
     }
+
+    @Override
+    public String getFilterProducts(Long categoryId,String brandIdList,String tag,String attributes,String options,String priceRange,Integer rating,Integer page,Integer limit) {
+        try{
+//            String.join(",", attributes)
+
+            String result =  productsExtendFilterRepository.filterProducts(categoryId,"{" + brandIdList + "}",tag, "{" + attributes + "}","{" + options + "}","{" + priceRange + "}",rating,page,limit);
+            return result;
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+
+    }
+
+    @Override
+    public String getFilterControllers(Long categoryId,String tag) {
+        try{
+            String result =  productsExtendFilterRepository.getFilterControllers(categoryId,tag);
+            return result;
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+
+    }
 }

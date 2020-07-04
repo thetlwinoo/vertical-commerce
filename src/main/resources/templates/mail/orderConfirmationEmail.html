@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+<head>
+    <title th:text="#{email.confirmation.title}">Your order is confirmed!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}" />
+
+    <style>
+        html,body{
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
+            color: #333333;
+            font-size: 19px;
+            line-height: 27px;
+            font-weight: 400;
+            letter-spacing: 0.012em;
+        }
+
+        .main-wrapper{
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        table, table > *{
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Arial, sans-serif;
+            color: #333333;
+            font-size: 19px;
+            line-height: 27px;
+            font-weight: 400;
+            letter-spacing: 0.012em;
+        }
+
+        table.table-outer-wrapper > tbody> tr> td{
+            padding-top: 12px;
+            padding-left: 10px;
+            padding-right: 10px;
+            min-width: 740px;
+        }
+
+        table.table-inner-wrapper{
+            margin: 0 auto;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        table.footer-privacy a{
+            color: #555555;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 11px;
+            line-height: 14px;
+            white-space: nowrap;
+            text-decoration: none
+        }
+
+        .price, .order-number{
+            color: #dd3937;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <table class="table-outer-wrapper" width="100%" cellpadding=0 cellspacing=0 border="0" align="center">
+        <tbody>
+        <tr>
+            <td bgcolor="#f2f2f2" style="padding-top:12px;padding-left:10px;padding-right:10px;min-width:740px;">
+                <table class="table-inner-wrapper" width="740" cellspacing="0" cellpadding="0" border="0" align="center">
+                    <tbody>
+                        <tr>
+                            <td valign="top" align="center" width="740" style="background-color:#ffffff;">
+
+                                <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center" style="padding-top: 20px;padding-bottom: 10px;">
+                                    <tbody>
+                                    <tr>
+                                        <td valign="top" align="center" style="padding-bottom:0;">
+                                            <img width="190" src="https://res.cloudinary.com/www-pixsurf-com/image/upload/v1593839058/social_media/mail-logo.png"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="center" style="padding-bottom:0;">
+                                            <div style="color: #0f146d;font-weight: 600;font-size: 25px;line-height: 36px;letter-spacing: 0.004em;" th:text="#{email.confirmation.title2}">
+                                                Your order is confirmed!
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="688" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:0 auto;">
+                                    <tbody>
+                                    <tr>
+                                        <td style="border-top:1px solid #dfdfdf;font-size:1px;line-height:2px;padding-bottom:0px;">&nbsp;</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                    <tbody>
+                                    <tr>
+                                        <td valign="top" align="left" style="padding:26px;padding-bottom: 15px;">
+                                            <div th:text="#{email.confirmation.greeting(${customer.getName()})}">
+                                                Dear Customer,
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="left" style="padding:26px;padding-bottom: 15px;padding-top: 0px;">
+                                            <span th:text="#{email.confirmation.text1}">
+                                                Thank you for ordering from ZeZaWar!
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="left" style="padding:26px;padding-bottom: 15px;padding-top: 0px;">
+                                            We are excited for you to receive your order <span class="order-number" th:text="#{email.confirmation.ordernumber(${orders.getCustomerPurchaseOrderNumber()})}"></span> soon and will notity you once it's on its way.
+                                            If you have ordered from multiple sellers, your items will be delivered in separate packages.
+                                            We hope you had a great shopping experience! You can check your order status here.
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="688" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:0 auto;">
+                                    <tbody>
+                                    <tr>
+                                        <td style="border-top:1px solid #dfdfdf;font-size:1px;line-height:2px;padding-bottom:0px;">&nbsp;</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                    <tbody>
+                                    <tr>
+                                        <td valign="top" align="left" style="padding:26px;padding-bottom: 0px;">
+                                            <p style="margin-top: 0px;margin-bottom: 15px;color: #111111;font-weight: 600;font-size: 25px;line-height: 36px;letter-spacing: 0.004em;">
+                                                Delivery Details
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="left" style="padding:26px;padding-bottom: 15px;padding-top: 0px;">
+                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                <tbody>
+                                                <tr>
+                                                    <th align="left">Name:</th>
+                                                    <td><span th:text="${customer.getName()}">Customer</span></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th align="left">Address:</th>
+                                                    <td>
+                                                        <span th:text="${customer.getDeliveryAddress().getAddressLine1()}">address1</span>,
+                                                        <span th:text="${customer.getDeliveryAddress().getAddressLine2()}">address2</span>,
+                                                        <span th:text="${customer.getDeliveryAddress().getCity()}">city</span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th align="left">Phone:</th>
+                                                    <td><span th:text="${customer.getDeliveryAddress().getContactNumber()}">mobile</span></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th align="left">Email:</th>
+                                                    <td><span th:text="${customer.getDeliveryAddress().getContactEmailAddress()}">email</span></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="688" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:0 auto;">
+                                    <tbody>
+                                    <tr>
+                                        <td style="border-top:1px solid #dfdfdf;font-size:1px;line-height:2px;padding-bottom:0px;">&nbsp;</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table th:each="orderPackage, iLoop: ${orders.getOrderPackageLists()}" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                    <tbody>
+                                        <tr>
+                                            <td valign="top" align="left" style="padding:26px;padding-bottom: 0px;">
+                                                <p th:text="#{email.confirmation.package(${iLoop.index + 1})}" style="margin-top: 0px;margin-bottom: 15px;color: #111111;font-weight: 600;font-size: 25px;line-height: 20px;letter-spacing: 0.004em;">
+                                                    Package X
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" align="left" style="padding:26px;padding-bottom: 0px;padding-top: 0px;">
+                                                <span th:text="#{email.confirmation.soldby(${orderPackage.getSupplier().getName()})}" style="color: #585858;font-weight: 600;font-size: 14px;letter-spacing: 0.004em;">
+                                                    Sold By XXX
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" align="left" style="padding:26px;padding-bottom: 0px;padding-top: 0px;">
+                                                <span th:text="#{email.confirmation.estdelivery(${#dates.format(orderPackage.getExpectedDeliveryDate(), 'dd-MM-yyyy HH:mm')})}" style="color: #585858;font-weight: 600;font-size: 14px;letter-spacing: 0.004em;">
+                                                    Estimated delivery on 08 Jun, 2020, 7 PM to 9 PM
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" align="left" style="padding:26px;padding-bottom: 15px;padding-top: 0px;">
+                                                <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                <tbody>
+                                                <tr th:each="orderLine: ${orderPackage.getOrderLineLists()}">
+                                                    <td align="left" width="40%">
+<!--                                                        <img th:src="@{|${baseUrl}/services/cloudblob/api/images-extend/${orderLine.getThumbnailUrl()}|}" width="150" src="https://res.cloudinary.com/www-pixsurf-com/image/upload/v1593837998/social_media/JamIcons_instagram.png"/>-->
+                                                        <img width="150" src="https://res.cloudinary.com/www-pixsurf-com/image/upload/v1593837998/social_media/JamIcons_instagram.png"/>
+                                                    </td>
+                                                    <td>
+                                                        <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><span th:text="${orderLine.getStockItem().getName()}">Stock Item Name</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><span class="price" th:text="#{email.confirmation.currency(${orderLine.getStockItem().getUnitPrice()})}">Unit Price</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <span th:text="#{email.confirmation.quantity(${orderLine.getQuantity()})}">Quantity</span>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="688" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:0 auto;">
+                                    <tbody>
+                                    <tr>
+                                        <td style="border-top:1px solid #dfdfdf;font-size:1px;line-height:2px;padding-bottom:0px;">&nbsp;</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                    <tbody>
+                                    <tr>
+                                        <td valign="top" align="left" style="padding:26px;padding-bottom: 15px;padding-top: 0px;">
+                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                <tbody>
+                                                    <tr>
+                                                        <th align="left" width="60%">Subtotal:</th>
+                                                        <td><span th:text="#{email.confirmation.currency(${orders.getSubTotal()})}">Sub Total</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left">Shipping Fee:</th>
+                                                        <td><span th:text="#{email.confirmation.currency(${orders.getTotalShippingFee()})}">Shipping Fee</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left">Total Saving:</th>
+                                                        <td><span th:text="#{email.confirmation.currency(${orders.getTotalShippingFeeDiscount()})}">Total Saving</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left">Total (GST Incl.):</th>
+                                                        <td><span class="price" th:text="#{email.confirmation.currency(${orders.getTotalDue()})}">Total Saving</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="688" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:0 auto;">
+                                    <tbody>
+                                    <tr>
+                                        <td style="border-top:1px solid #dfdfdf;font-size:1px;line-height:2px;padding-bottom:0px;">&nbsp;</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                    <tbody>
+                                    <tr>
+                                        <td valign="top" align="left" style="padding:26px;padding-bottom: 15px;padding-top: 0px;">
+                                            <table width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+                                                <tbody>
+                                                    <tr>
+                                                        <th align="left"  width="60%">Shipping Option:</th>
+                                                        <td><span>STANDARD</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th align="left">Paid By:</th>
+                                                        <td><span th:text="${orders.getPaymentMethod().getName()}">Payment Method</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="688" cellspacing="0" cellpadding="0" border="0" align="center" style="margin:0 auto;">
+                                    <tbody>
+                                    <tr>
+                                        <td style="border-top:1px solid #dfdfdf;font-size:1px;line-height:2px;padding-bottom:0px;">&nbsp;</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                    <tbody>
+                                    <tr>
+                                        <td valign="top" align="left" style="padding:26px;padding-bottom: 0px;">
+                                            <p style="margin-top: 0px;margin-bottom: 15px;color: #111111;font-weight: 600;font-size: 25px;line-height: 20px;letter-spacing: 0.004em;">
+                                                Notes
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="left" style="padding:26px;padding-bottom: 15px;padding-top: 0px;">
+                                            <h3>For Order Items</h3>
+                                            <p>Your invoice will be sent in a separate email upon successful delivery.</p>
+                                            <p>For more information, visit our ZeZaWar Help Center or check our full return policy here.</p>
+                                            <p>Please also note that any transactions made off the ZeZaWar Plaform violate our Terms of Service. If a seller on ZeZaWar asks you to pay-off site or through another channel, please do not send them money and report the matter to us.</p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table-footer" width="740" cellspacing="0" cellpadding="0" border="0" align="center">
+                    <tbody>
+                    <tr>
+                        <td align="center" style="padding-top: 25px;">
+                            <table align="center" cellspacing="0" cellpadding="0" border="0" style="display:inline-block;">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <a rel="nofollow" target="_blank" href="https://www.facebook.com/ZeZaWarMyanmar" style="text-decoration:none;">
+                                            <img height="22" alt="Facebook" style="display:block;margin:0 auto;border:0;" src="https://res.cloudinary.com/www-pixsurf-com/image/upload/v1593837902/social_media/footer_FACEBOOK_1.png">
+                                        </a>
+                                    </td>
+                                    <td width="12"></td>
+                                    <td>
+                                        <a rel="nofollow" target="_blank" href="https://twitter.com/zezawar9" style="text-decoration:none;">
+                                            <img height="22" alt="Facebook" style="display:block;margin:0 auto;border:0;" src="https://res.cloudinary.com/www-pixsurf-com/image/upload/v1593837994/social_media/twitter_2.png">
+                                        </a>
+                                    </td>
+                                    <td width="12"></td>
+                                    <td>
+                                        <a rel="nofollow" target="_blank" href="https://www.instagram.com/zezawar.myanmar/" style="text-decoration:none;">
+                                            <img height="22" alt="Facebook" style="display:block;margin:0 auto;border:0;" src="https://res.cloudinary.com/www-pixsurf-com/image/upload/v1593837998/social_media/JamIcons_instagram.png">
+                                        </a>
+                                    </td>
+                                    <td width="12"></td>
+                                    <td>
+                                        <a rel="nofollow" target="_blank" href="https://www.youtube.com/channel/UC3-RNG-uk9spxR6OnnKH1_Q/featured?view_as=subscriber" style="text-decoration:none;">
+                                            <img height="22" alt="Facebook" style="display:block;margin:0 auto;border:0;" src="https://res.cloudinary.com/www-pixsurf-com/image/upload/v1593837990/social_media/you-tube.png">
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding-bottom:60px;">
+                            <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                <tr>
+                                    <td align="center" style="padding-top:21px;padding-bottom:14px;padding-left:50px;padding-right:50px;">
+                                        <div style="color: #888888;font-size: 11px;line-height: 15px;max-width: 680px;">
+                                            <p th:text="#{email.confirmation.address1}">
+                                                Serangoon Company Limited
+                                            </p>
+
+                                            <p th:text="#{email.confirmation.address2}">
+                                                Blk 155, Hougang Street 11, #11-174, Singapore 530155.
+                                            </p>
+
+                                            <img width="100" src="https://res.cloudinary.com/www-pixsurf-com/image/upload/v1593839058/social_media/mail-logo.png"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" style="padding-top:0;padding-bottom:15px;padding-left:50px;padding-right:50px;">
+                                        <div style="color: #888888;font-size: 11px;line-height: 15px;">
+                                            Copyright © 2020 Serangoon Company Limited.
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="footer-privacy" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                <tbody>
+                                <tr>
+                                    <td align="center" style="font-family:Helvetica Neue, Helvetica, Lucida Grande, Arial, sans-serif;color:#999999;font-size:9px;line-height:1.32em;padding:0;">
+                                        <a rel="nofollow" target="_blank" href="#">Privacy Policy</a>
+                                        &nbsp;|&nbsp;
+                                        <a rel="nofollow" target="_blank" href="#"> Terms & Conditions </a>
+                                        &nbsp;|&nbsp;
+                                        <a rel="nofollow" target="_blank" href="#"> Support </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                                <tbody>
+                                <tr>
+                                    <td align="center" style="padding-top:0;padding-bottom:15px;padding-left:50px;padding-right:50px;">
+                                        <div style="color: #888888;font-size: 11px;line-height: 15px;">
+                                            <p th:text="#{email.confirmation.footer}">
+                                                This is an automatically generated email from our subscription list. Please do not reply to this email.
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+
+</html>

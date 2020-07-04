@@ -103,7 +103,7 @@ public class OrderPackages implements Serializable {
     @Column(name = "last_edited_when", nullable = false)
     private Instant lastEditedWhen;
 
-    @OneToMany(mappedBy = "orderPackage")
+    @OneToMany(mappedBy = "orderPackage",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<OrderLines> orderLineLists = new HashSet<>();
 
@@ -119,7 +119,7 @@ public class OrderPackages implements Serializable {
     @JsonIgnoreProperties(value = "orderPackageLists", allowSetters = true)
     private SpecialDeals specialDeals;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "orderPackageLists", allowSetters = true)
     private Orders order;
 

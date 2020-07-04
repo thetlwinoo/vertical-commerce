@@ -1,5 +1,8 @@
 package com.vertical.commerce.web.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vertical.commerce.domain.Products;
 import com.vertical.commerce.service.ProductsExtendService;
 import com.vertical.commerce.service.dto.ProductCategoryDTO;
@@ -25,6 +28,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -201,5 +207,29 @@ public class ProductsExtendResource {
         Page<ProductsDTO> page = productsExtendService.searchProductsWithPaging(criteria, pageable,colors);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @RequestMapping(value = "/products-extend/filter", method = RequestMethod.GET)
+    public ResponseEntity<String> filterProducts(
+        @RequestParam(value = "tag", required = false) String tag,
+        @RequestParam(value = "categoryId", required = false) Long categoryId,
+        @RequestParam(value = "brandIdList", required = false) String brandIdList,
+        @RequestParam(value = "attributes", required = false) String attributes,
+        @RequestParam(value = "options", required = false) String options,
+        @RequestParam(value = "priceRange", required = false) String priceRange,
+        @RequestParam(value = "rating", required = false) Integer rating,
+        Pageable pageable
+    ) throws JsonProcessingException {
+        String result = productsExtendService.getFilterProducts(categoryId == null? -1:categoryId,brandIdList == null ? "" : brandIdList,tag == null?"":tag,attributes == null? "": attributes,options == null? "":options,priceRange == null?"":priceRange,rating == null?-1:rating,pageable.getPageNumber(),pageable.getPageSize());
+        return ResponseEntity.ok().body(result);
+    }
+
+    @RequestMapping(value = "/products-extend/filter-controllers", method = RequestMethod.GET)
+    public ResponseEntity<String> getFilterControllers(
+        @RequestParam(value = "tag", required = false) String tag,
+        @RequestParam(value = "categoryId", required = false) Long categoryId
+    ) throws JsonProcessingException {
+        String result = productsExtendService.getFilterControllers(categoryId == null? -1:categoryId,tag == null?"":tag);
+        return ResponseEntity.ok().body(result);
     }
 }

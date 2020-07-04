@@ -11,16 +11,12 @@ import com.vertical.commerce.domain.*;
 import com.vertical.commerce.domain.enumeration.OrderStatus;
 import com.vertical.commerce.domain.enumeration.PaymentStatus;
 import com.vertical.commerce.repository.*;
-import com.vertical.commerce.service.CommonService;
-import com.vertical.commerce.service.CustomerPaymentBankTransferService;
-import com.vertical.commerce.service.CustomerPaymentExtendService;
-import com.vertical.commerce.service.CustomerPaymentService;
+import com.vertical.commerce.service.*;
 import com.vertical.commerce.service.dto.CustomerPaymentBankTransferDTO;
 import com.vertical.commerce.service.dto.CustomerPaymentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,11 +47,12 @@ public class CustomerPaymentExtendServiceImpl implements CustomerPaymentExtendSe
     private final InvoicesExtendRepository invoicesExtendRepository;
     private final ShoppingCartsRepository shoppingCartsRepository;
     private final CustomerPaymentBankTransferService customerPaymentBankTransferService;
+    private final MailService mailService;
     public static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
     public static final MathContext ROUND_VALUE = new MathContext(2);
 
     @Autowired
-    public CustomerPaymentExtendServiceImpl(CustomerPaymentRepository customerPaymentRepository, CustomerPaymentService customerPaymentService, PaymentMethodsRepository paymentMethodsRepository, InvoicesRepository invoicesRepository, InvoiceLinesRepository invoiceLinesRepository, OrdersRepository ordersRepository, StockItemHoldingsExtendRepository stockItemHoldingsExtendRepository, CommonService commonService, InvoicesExtendRepository invoicesExtendRepository, ShoppingCartsRepository shoppingCartsRepository,CustomerPaymentBankTransferService customerPaymentBankTransferService) {
+    public CustomerPaymentExtendServiceImpl(CustomerPaymentRepository customerPaymentRepository, CustomerPaymentService customerPaymentService, PaymentMethodsRepository paymentMethodsRepository, InvoicesRepository invoicesRepository, InvoiceLinesRepository invoiceLinesRepository, OrdersRepository ordersRepository, StockItemHoldingsExtendRepository stockItemHoldingsExtendRepository, CommonService commonService, InvoicesExtendRepository invoicesExtendRepository, ShoppingCartsRepository shoppingCartsRepository, CustomerPaymentBankTransferService customerPaymentBankTransferService, MailService mailService) {
         this.customerPaymentRepository = customerPaymentRepository;
         this.customerPaymentService = customerPaymentService;
         this.paymentMethodsRepository = paymentMethodsRepository;
@@ -67,6 +64,7 @@ public class CustomerPaymentExtendServiceImpl implements CustomerPaymentExtendSe
         this.invoicesExtendRepository = invoicesExtendRepository;
         this.shoppingCartsRepository = shoppingCartsRepository;
         this.customerPaymentBankTransferService = customerPaymentBankTransferService;
+        this.mailService = mailService;
 
 //        System.out.println(API_SECRET_KEY);
         Stripe.apiKey = Constants.STRIPE_SECRET_KEY;
@@ -87,7 +85,7 @@ public class CustomerPaymentExtendServiceImpl implements CustomerPaymentExtendSe
             orders.setPaymentMethod(paymentMethods);
             orders = ordersRepository.save(orders);
 
-            errorMessage = generateInvoices(people,orders);
+            errorMessage = generateInvoices(principal,people,orders);
 
             if(errorMessage == null){
                 response.put("invoiceStatus", "succeeded");
@@ -123,7 +121,7 @@ public class CustomerPaymentExtendServiceImpl implements CustomerPaymentExtendSe
 
             customerPaymentBankTransferService.save(customerPaymentBankTransferDTO);
 
-            errorMessage = generateInvoices(people,orders);
+            errorMessage = generateInvoices(principal,people,orders);
 
             if(errorMessage == null){
                 response.put("invoiceStatus", "succeeded");
@@ -181,7 +179,7 @@ public class CustomerPaymentExtendServiceImpl implements CustomerPaymentExtendSe
                 completePayment(orderId,principal);
 
                 String errorMessage= null;
-                errorMessage = generateInvoices(people,orders);
+                errorMessage = generateInvoices(principal,people,orders);
 
                 if(errorMessage == null){
                     response.put("invoiceStatus", "succeeded");
@@ -298,7 +296,7 @@ public class CustomerPaymentExtendServiceImpl implements CustomerPaymentExtendSe
                 completePayment(orderId,principal);
 
                 String errorMessage= null;
-                errorMessage = generateInvoices(people,orders);
+                errorMessage = generateInvoices(principal,people,orders);
 
                 if(errorMessage == null){
                     response.put("invoiceStatus", "succeeded");
@@ -368,9 +366,14 @@ public class CustomerPaymentExtendServiceImpl implements CustomerPaymentExtendSe
         return response;
     }
 
-    private String generateInvoices(People people,Orders orders){
+    private String generateInvoices(Principal principal,People people,Orders orders){
+
        String errorMessage =  invoicesExtendRepository.invoiceCustomerOrders(orders.getId(), people.getId(),people.getId());
 
+        if(errorMessage == null){
+            Customers customers = commonService.getCustomerByPrincipal(principal);
+            mailService.sendOrderConfirmationMail(customers,orders);
+        }
        return errorMessage;
     }
 

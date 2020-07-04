@@ -126,7 +126,7 @@ spring:
     allow-bean-definition-overriding: true
   mvc:
     favicon:
-      enabled: false
+      enabled: true
   task:
     execution:
       thread-name-prefix: vscommerce-task-
@@ -183,7 +183,7 @@ jhipster:
   #     allow-credentials: true
   #     max-age: 1800
   mail:
-    from: vscommerce@localhost
+    from: zezawarmyanmar@gmail.com
   swagger:
     default-include-pattern: /api/.*
     title: vscommerce API

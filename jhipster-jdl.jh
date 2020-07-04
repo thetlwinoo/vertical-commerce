@@ -562,7 +562,7 @@ entity Products {
     totalStars Integer
     discountedPercentage Integer
     preferredInd Boolean
-    availableDeliveryInd Boolean
+    freeShippingInd Boolean
     activeInd Boolean
     questionsAboutProductInd Boolean
     lastEditedBy String required

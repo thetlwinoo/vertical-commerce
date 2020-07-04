@@ -87,7 +87,7 @@ public class Orders implements Serializable {
     @Column(name = "last_edited_when", nullable = false)
     private Instant lastEditedWhen;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<OrderPackages> orderPackageLists = new HashSet<>();
 
