@@ -29,7 +29,8 @@ entity Addresses{
     city String
     postalCode String
     defaultInd Boolean
-    activeInd Boolean
+    validFrom Instant required
+    validTo Instant
 }
 
 entity BusinessEntityAddress
@@ -39,14 +40,17 @@ entity BusinessEntityContact
 entity PersonEmailAddress{
 	emailAddress String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
     defaultInd Boolean
-    activeInd Boolean
+    validFrom Instant required
+    validTo Instant
 }
 
 entity PersonPhone{
 	phoneNumber String required
     defaultInd Boolean
-    activeInd Boolean
+    validFrom Instant required
+    validTo Instant
 }
+
 entity PhoneNumberType{
 	name String required
 }
@@ -57,6 +61,7 @@ entity ContactType{
 
 entity Countries {
     name String required
+    cultureDetails TextBlob
     formalName String required
     isoAplha3Code String
     isoNumericCode Integer
@@ -67,32 +72,64 @@ entity Countries {
     subregion String required
     border String
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
+}
+
+entity CountriesCulture {
+    name String required
 }
 
 entity StateProvinces {
     code String required
     name String required
+    cultureDetails TextBlob
     salesTerritory String required
     border String
     latestRecordedPopulation Long
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
+}
+
+entity StateProvincesCulture {
+    name String required
 }
 
 entity Cities {
     name String required
+    cultureDetails TextBlob
     location String
     latestRecordedPopulation Long
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
-entity Zone{
+entity CitiesCulture {
+    name String required
+}
+
+
+entity Districts{
+    code String
+    name String required
+    cultureDetails TextBlob
+    validFrom Instant required
+    validTo Instant
+}
+
+entity DistrictsCulture {
+    name String required
+}
+
+entity Regions{
     code String required
     name String required
+    cultureDetails TextBlob
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
+}
+
+entity RegionsCulture {
+    name String required
 }
 
 entity SystemParameters {
@@ -102,14 +139,14 @@ entity SystemParameters {
 entity TransactionTypes {
     name String required
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity People {
     fullName String required
     preferredName String required
     searchName String required
-    gender Gender required
+    gender Gender
     dateOfBirth Instant
     isPermittedToLogon Boolean required
     logonName String
@@ -121,12 +158,12 @@ entity People {
     emailPromotion Boolean required
     userPreferences String
     phoneNumber String
-    emailAddress String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    emailAddress String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/) required
     customFields String
     otherLanguages String
     userId String required
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 enum Gender {
@@ -138,18 +175,18 @@ entity DeliveryMethods {
     thirdPartyName String
     expectedMinArrivalDays Integer
     expectedMaxArrivalDays Integer
-    activeInd Boolean
     defaultInd Boolean
     deliveryNote String
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity SupplierCategories {
     name String required
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
+
 entity Suppliers{
     name String required
     supplierReference String
@@ -166,10 +203,12 @@ entity Suppliers{
     webServiceUrl String
     creditRating Integer
     activeFlag Boolean
-    thumbnailUrl String
+    imageBlob String
     pickupSameAsHeadOffice Boolean
+    officialStoreInd Boolean
+    storeName String
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity SupplierTransactions {
@@ -228,13 +267,13 @@ entity PurchaseOrderLines {
 entity BuyingGroups {
     name String
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity CustomerCategories {
     name String
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity Customers {
@@ -247,11 +286,11 @@ entity Customers {
     paymentDays Integer required
     deliveryRun String
     runPosition String
-    thumbnailUrl String
+    imageBlob String
     billToAddressSameAsDeliveryAddress Boolean
     lastEditedBy String required
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity CustomerPayment{
@@ -363,16 +402,17 @@ entity Receipts{
 }
 
 enum InvoiceStatus {
-    PAID, ISSUED, CANCELLED
+    PAID, ISSUED, CANCELLED, PRINTED
 }
 
 entity PaymentMethods{
     name String
     code String
     disabled Boolean
-    activeInd Boolean
     sortOrder Integer
     iconFont String
+    validFrom Instant required
+    validTo Instant
 }
 
 entity BankAccounts{
@@ -385,7 +425,7 @@ entity BankAccounts{
     internationalCode String
     lastEditedBy String required
     validForm Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity Cards{
@@ -420,7 +460,7 @@ entity OrderLines {
     pickedQuantity Integer
     pickingCompletedWhen Instant
     status OrderLineStatus required
-    thumbnailUrl String
+    imageBlob String
     lineRating Integer
     lineReview TextBlob
     customerReviewedOn Instant
@@ -432,7 +472,7 @@ entity OrderLines {
 }
 
 enum OrderLineStatus {
-    AVAILABLE, OUT_OF_STOCK, BACK_ORDER
+    AVAILABLE, OUT_OF_STOCK, BACK_ORDER, CANCELLED
 }
 
 entity Orders {
@@ -455,6 +495,8 @@ entity Orders {
 
 entity OrderPackages{
     expectedDeliveryDate Instant
+    orderPlacedOn Instant
+    orderDeliveredOn Instant
     comments String
     deliveryInstructions String
     comments String
@@ -464,6 +506,7 @@ entity OrderPackages{
     packagePrice BigDecimal
     packageSubTotal BigDecimal
     packageTaxAmount BigDecimal
+    packageVoucherDiscount BigDecimal
     packageVoucherDiscount BigDecimal
     packagePromotionDiscount BigDecimal
     pickingCompletedWhen Instant
@@ -487,6 +530,7 @@ entity OrderTracking{
 
 entity TrackingEvent{
     name String required
+    description String
 }
 
 enum OrderStatus {
@@ -514,11 +558,12 @@ entity DiscountTypes{
     modifiedDate Instant required
 }
 
-entity Discount{
+entity Discounts{
     name String required
     description String
+    discountCode String
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity DiscountDetails{
@@ -542,33 +587,40 @@ entity ColdRoomTemperatures {
     recordedWhen Instant required
     temperature BigDecimal required
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity PackageTypes {
     name String required
     validFrom Instant required
-    validTo Instant required
+    validTo Instant
 }
 
 entity Products {
     name String required
+    cultureDetails TextBlob
     handle String
     searchDetails String
     productNumber String
     sellCount Integer
     productDetails TextBlob
     totalWishlist Integer
-    totalStars Integer
-    discountedPercentage Integer
+    overallRating Integer
     preferredInd Boolean
     freeShippingInd Boolean
-    activeInd Boolean
+    madeInMyanmarInd Boolean
     questionsAboutProductInd Boolean
     lastEditedBy String required
     lastEditedWhen Instant required
     releaseDate Instant required
     availableDate Instant required
+    activeInd Boolean
+    validFrom Instant required
+    validTo Instant
+}
+
+entity ProductsCulture {
+    name String required
 }
 
 entity ProductListPriceHistory{
@@ -584,6 +636,7 @@ entity BarcodeTypes{
 
 entity StockItems{
 	name String required
+	cultureDetails TextBlob
     vendorCode String
     vendorSKU String
     generatedSKU String
@@ -621,12 +674,18 @@ entity StockItems{
     tags String
     searchDetails String
     customFields TextBlob
-    thumbnailUrl String
-    activeInd Boolean required
+    imageBlob String
     liveInd Boolean required
     cashOnDeliveryInd Boolean required
     lastEditedBy String required
     lastEditedWhen Instant required
+    activeInd Boolean
+    validFrom Instant required
+    validTo Instant
+}
+
+entity StockItemsCulture {
+    name String required
 }
 
 entity UploadTransactions{
@@ -702,6 +761,7 @@ entity ProductSetDetailPrice{
 
 entity ProductDocument{
     videoUrl String
+    cultureDetails TextBlob
     highlights TextBlob
     longDescription TextBlob
     shortDescription TextBlob
@@ -724,26 +784,47 @@ entity ProductDocument{
     lastEditedWhen Instant required
 }
 
+entity ProductDocumentCulture {
+    name String required
+}
+
 entity Materials{
 	name String required
+	cultureDetails TextBlob
+}
+
+entity MaterialsCulture {
+    name String required
 }
 
 entity ProductBrand{
 	name String required
+	cultureDetails TextBlob
     shortLabel String
     sortOrder Integer
     iconFont String
-    thumbnailUrl String
+    validFrom Instant required
+    validTo Instant
+}
+
+entity ProductBrandCulture {
+    name String required
 }
 
 entity ProductCategory{
     name String required
+    cultureDetails TextBlob
     shortLabel String
     sortOrder Integer
     iconFont String
     justForYouInd Boolean
     showInNavInd Boolean
-    activeInd Boolean
+    validFrom Instant required
+    validTo Instant
+}
+
+entity ProductCategoryCulture {
+    name String required
 }
 
 entity Campaign{
@@ -751,7 +832,6 @@ entity Campaign{
     shortLabel String
     sortOrder Integer
     iconFont String
-    thumbnailUrl String
 }
 
 entity ProductCatalog
@@ -825,18 +905,16 @@ entity Questions{
     customerQuestionOn Instant required
     supplierAnswer TextBlob
     supplierAnswerOn Instant
-    activeInd Boolean
-}
-
-entity ProductTags{
-	name String unique required
+    validFrom Instant required
+    validTo Instant
 }
 
 entity Logistics{
     name String required
-    activeInd Boolean required
     lastEditedBy String required
     lastEditedWhen Instant required
+    validFrom Instant required
+    validTo Instant
 }
 
 entity ShippingFeeChart{
@@ -853,6 +931,8 @@ entity ShippingFeeChart{
 entity Subscriptions{
     emailAddress String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/) required
     subscribedOn Instant required
+    validFrom Instant required
+    validTo Instant
 }
 
 relationship ManyToOne {
@@ -875,9 +955,10 @@ relationship ManyToOne {
     PurchaseOrders{supplier(name)} to Suppliers
     StateProvinces{country(name)} to Countries
     Cities{stateProvince(name)} to StateProvinces
-    Zone{city(name)} to Cities
-    ShippingFeeChart{sourceZone(code)} to Zone
-    ShippingFeeChart{destinationZone(code)} to Zone
+    Regions{city(name)} to Cities
+    Regions{district(name)} to Districts
+    ShippingFeeChart{sourceRegion(code)} to Regions
+    ShippingFeeChart{destinationRegion(code)} to Regions
     ShippingFeeChart{deliveryMethod(name)} to DeliveryMethods
     SystemParameters{deliveryCity(name)} to Cities
     SystemParameters{postalCity(name)} to Cities
@@ -923,7 +1004,6 @@ relationship ManyToOne {
     WishlistLines{stockItem(name)} to StockItems
     CompareLines{stockItem(name)} to StockItems
     ProductDocument{warrantyType(name)} to WarrantyTypes,
-    ProductDocument{culture(name)} to Culture
     StockItems{itemLengthUnit(code)} to UnitMeasure
     StockItems{itemWidthUnit(code)} to UnitMeasure
     StockItems{itemHeightUnit(code)} to UnitMeasure
@@ -954,7 +1034,7 @@ relationship ManyToOne {
     SupplierTransactions{order} to Orders
     CustomerTransactions{order} to Orders
     SupplierTransactions{invoice} to Invoices
-    Addresses{zone(code)} to Zone
+    Addresses{region(code)} to Regions
     Addresses{addressType(name)} to AddressTypes
     Addresses{person} to People
     BusinessEntityAddress{address} to Addresses
@@ -979,16 +1059,17 @@ relationship ManyToOne {
     OrderTracking{trackingEvent(name)} to TrackingEvent
     Receipts{order} to Orders
     Receipts{invoice} to Invoices
-    DiscountDetails{discount(name)} to Discount
+    DiscountDetails{discount(name)} to Discounts
     DiscountDetails{stockItem(name)} to StockItems
     DiscountDetails{productCategory(name)} to ProductCategory
-    Discount{supplier(name)} to Suppliers
-    Discount{discountType(name)} to DiscountTypes
+    Discounts{supplier(name)} to Suppliers
+    Discounts{discountType(name)} to DiscountTypes
     People{profile(blobId)} to Photos
     PaymentMethods{icon(blobId)} to Photos
     ProductCategory{icon(blobId)} to Photos
     Campaign{icon(blobId)} to Photos
     ProductBrand{icon(blobId)} to Photos
+    Suppliers{icon(blobId)} to Photos
     OrderLines{reviewImage(blobId)} to Photos
     BankAccounts{logo(blobId)} to Photos
     Questions{supplier(name)} to Suppliers
@@ -1015,10 +1096,10 @@ relationship OneToMany{
     Products{stockItemList} to StockItems{product}
     PurchaseOrders{purchaseOrderLineList} to PurchaseOrderLines{purchaseOrder}
     StockItems{photoList} to Photos{stockItem}
+    Suppliers{userList} to People{supplier(name)}
 }
 
 relationship OneToOne{
-    Suppliers{people(fullName)} to People
     Customers{people(fullName)} to People
     ShoppingCarts{cartUser(fullName)} to People{cart}
     Wishlists{wishlistUser(fullName)} to People{wishlist}
@@ -1033,7 +1114,18 @@ relationship OneToOne{
 }
 
 relationship ManyToMany{
-    Suppliers{deliveryMethod(name)} to DeliveryMethods{supplier}
+    Suppliers{deliveryMethod(name)} to DeliveryMethods{supplier(name)}
+    Countries{culture(code)} to Culture{country(name)}
+    StateProvinces{culture(code)} to Culture{stateProvince(name)}
+    Cities{culture(code)} to Culture{city(name)}
+    Districts{culture(code)} to Culture{district(name)}
+    Regions{culture(code)} to Culture{region(name)}
+    Products{culture(code)} to Culture{product(name)}
+    StockItems{culture(code)} to Culture{stockItem(name)}
+    ProductDocument{culture(code)} to Culture
+    Materials{culture(code)} to Culture{material(name)}
+    ProductBrand{culture(code)} to Culture{productBrand(name)}
+    ProductCategory{culture(code)} to Culture{productCategory(name)}
 }
 
 //paginate JobHistory Employee with infinite-scroll

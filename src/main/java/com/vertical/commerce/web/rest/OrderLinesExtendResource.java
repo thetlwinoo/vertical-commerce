@@ -1,5 +1,6 @@
 package com.vertical.commerce.web.rest;
 
+import com.vertical.commerce.domain.Orders;
 import com.vertical.commerce.service.OrderLinesExtendService;
 import com.vertical.commerce.service.dto.OrderLinesCriteria;
 import com.vertical.commerce.service.dto.OrderLinesDTO;
@@ -11,9 +12,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OrderLinesExtendResource controller
@@ -50,5 +54,16 @@ public class OrderLinesExtendResource {
     public ResponseEntity<List<OrderLinesDTO>> getOrderLinesByProduct(@RequestParam(value = "productId", required = false) Long productId) {
         List<OrderLinesDTO> entityList = orderLinesExtendService.getOrderLinesByProduct(productId);
         return ResponseEntity.ok().body(entityList);
+    }
+
+    @DeleteMapping("/order-lines-extend/cancel/{id}")
+    public ResponseEntity<Map<String, Object>> deleteOrderLines(@PathVariable Long id) {
+        log.debug("REST request to delete OrderLines : {}", id);
+
+        Map<String, Object> response = orderLinesExtendService.cancelOrderLine(id);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .body(response);
     }
 }

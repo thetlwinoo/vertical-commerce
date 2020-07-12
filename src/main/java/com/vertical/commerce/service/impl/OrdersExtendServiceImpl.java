@@ -8,21 +8,26 @@ import com.vertical.commerce.domain.enumeration.OrderStatus;
 import com.vertical.commerce.domain.enumeration.PaymentStatus;
 import com.vertical.commerce.repository.*;
 import com.vertical.commerce.service.CommonService;
+import com.vertical.commerce.service.OrderPackagesService;
 import com.vertical.commerce.service.OrdersExtendService;
+import com.vertical.commerce.service.OrdersQueryService;
+import com.vertical.commerce.service.dto.OrdersCriteria;
 import com.vertical.commerce.service.dto.OrdersDTO;
 import com.vertical.commerce.service.mapper.OrdersMapper;
-import net.minidev.json.JSONArray;
+import io.github.jhipster.service.filter.LongFilter;
 import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.Instant;
 import java.time.Period;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -41,11 +46,15 @@ public class OrdersExtendServiceImpl implements OrdersExtendService {
     private final SuppliersRepository suppliersRepository;
     private final ShoppingCartItemsExtendRepository shoppingCartItemsExtendRepository;
     private final OrderPackagesRepository orderPackagesRepository;
+    private final OrderPackagesService orderPackagesService;
     private final OrderPackagesExtendRepository orderPackagesExtendRepository;
     private final StockItemsRepository stockItemsRepository;
     private final DeliveryMethodsRepository deliveryMethodsRepository;
+    private final OrdersQueryService ordersQueryService;
+    private final TrackingEventExtendRepository trackingEventExtendRepository;
+    private final OrderTrackingRepository orderTrackingRepository;
 
-    public OrdersExtendServiceImpl(PeopleExtendRepository peopleExtendRepository, CustomersExtendRepository customersExtendRepository, OrdersExtendRepository ordersExtendRepository, AddressesRepository addressesRepository, OrdersMapper ordersMapper, UserRepository userRepository, CommonService commonService, OrderLinesRepository orderLinesRepository, SuppliersRepository suppliersRepository, ShoppingCartItemsExtendRepository shoppingCartItemsExtendRepository, OrderPackagesRepository orderPackagesRepository, OrderPackagesExtendRepository orderPackagesExtendRepository, StockItemsRepository stockItemsRepository, DeliveryMethodsRepository deliveryMethodsRepository) {
+    public OrdersExtendServiceImpl(PeopleExtendRepository peopleExtendRepository, CustomersExtendRepository customersExtendRepository, OrdersExtendRepository ordersExtendRepository, AddressesRepository addressesRepository, OrdersMapper ordersMapper, UserRepository userRepository, CommonService commonService, OrderLinesRepository orderLinesRepository, SuppliersRepository suppliersRepository, ShoppingCartItemsExtendRepository shoppingCartItemsExtendRepository, OrderPackagesRepository orderPackagesRepository, OrderPackagesService orderPackagesService, OrderPackagesExtendRepository orderPackagesExtendRepository, StockItemsRepository stockItemsRepository, DeliveryMethodsRepository deliveryMethodsRepository, OrdersQueryService ordersQueryService, TrackingEventExtendRepository trackingEventExtendRepository, OrderTrackingRepository orderTrackingRepository) {
         this.peopleExtendRepository = peopleExtendRepository;
         this.customersExtendRepository = customersExtendRepository;
         this.ordersExtendRepository = ordersExtendRepository;
@@ -57,9 +66,13 @@ public class OrdersExtendServiceImpl implements OrdersExtendService {
         this.suppliersRepository = suppliersRepository;
         this.shoppingCartItemsExtendRepository = shoppingCartItemsExtendRepository;
         this.orderPackagesRepository = orderPackagesRepository;
+        this.orderPackagesService = orderPackagesService;
         this.orderPackagesExtendRepository = orderPackagesExtendRepository;
         this.stockItemsRepository = stockItemsRepository;
         this.deliveryMethodsRepository = deliveryMethodsRepository;
+        this.ordersQueryService = ordersQueryService;
+        this.trackingEventExtendRepository = trackingEventExtendRepository;
+        this.orderTrackingRepository = orderTrackingRepository;
     }
 
     @Override
@@ -154,6 +167,50 @@ public class OrdersExtendServiceImpl implements OrdersExtendService {
         saveOrder.setOrderDetails(ordersExtendRepository.getOrderPackageDetails(saveOrder.getId()));
         saveOrder = ordersExtendRepository.save(saveOrder);
 
+        OrderTracking orderTracking = new OrderTracking();
+        TrackingEvent trackingEvent = trackingEventExtendRepository.findTrackingEventByNameEquals("Payment Pending");
+        orderTracking.setTrackingEvent(trackingEvent);
+        orderTracking.setOrder(saveOrder);
+        orderTracking.setEventDate(Instant.now());
+        orderTracking.setEventDetails("Thank you for shopping at ZeZaWar! If you did not select a payment method, click PAY NOW above. Otherwise, your order will be cancelled automatically after 45 minutes or item is out of stock. An update will be sent via email once your order is successfully placed.");
+        orderTrackingRepository.save(orderTracking);
+
         return ordersMapper.toDto(saveOrder);
+    }
+
+    @Override
+    public Page<OrdersDTO> getCustomerOrdersReviews(Boolean completedReview, OrdersCriteria criteria, Pageable pageable, Principal principal) {
+        Customers customer = commonService.getCustomerByPrincipal(principal);
+
+        LongFilter customerIdFilter = new LongFilter();
+        customerIdFilter.setEquals(customer.getId());
+        criteria.setCustomerId(customerIdFilter);
+
+        OrdersCriteria.OrderStatusFilter orderStatusFilter=new OrdersCriteria.OrderStatusFilter();
+        orderStatusFilter.setEquals(OrderStatus.COMPLETED);
+        criteria.setStatus(orderStatusFilter);
+
+        List<Long> orderPackageIds = ordersExtendRepository.getOrderPackagesIdsByFilter(customer.getId(),completedReview);
+        LongFilter orderPackageListIdFilter = new LongFilter();
+        orderPackageListIdFilter.setIn(orderPackageIds);
+        criteria.setOrderPackageListId(orderPackageListIdFilter);
+
+        Page<OrdersDTO> page = ordersQueryService.findByCriteria(criteria, pageable);
+
+        return page;
+    }
+
+    @Override
+    public Page<OrdersDTO> getAllOrders(OrdersCriteria criteria, Pageable pageable, Principal principal){
+
+        Customers customer = commonService.getCustomerByPrincipal(principal);
+
+        LongFilter customerIdFilter = new LongFilter();
+        customerIdFilter.setEquals(customer.getId());
+        criteria.setCustomerId(customerIdFilter);
+
+        Page<OrdersDTO> page = ordersQueryService.findByCriteria(criteria, pageable);
+
+        return page;
     }
 }

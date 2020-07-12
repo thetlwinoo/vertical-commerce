@@ -8,3 +8,7 @@ domain>
 	@OneToOne(mappedBy = "cartUser", cascade = CascadeType.ALL, orphanRemoval = true)
 	>>
 	>>
+
+	Orders
+	OrderPackages
+	OrderLines

@@ -157,7 +157,7 @@ public class ProductsExtendResource {
     }
 
     @RequestMapping(value = "/products-extend/recent", method = RequestMethod.GET)
-    public ResponseEntity getByNewlyAdded() {
+    public ResponseEntity getByNewlyAdded(Principal principal) {
         List returnList = productsExtendService.findTop18ByOrderByLastEditedWhenDesc();
         return new ResponseEntity<List>(returnList, HttpStatus.OK);
     }
@@ -231,5 +231,10 @@ public class ProductsExtendResource {
     ) throws JsonProcessingException {
         String result = productsExtendService.getFilterControllers(categoryId == null? -1:categoryId,tag == null?"":tag);
         return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/products-extend/details-batch-update")
+    public void productDetailsBatchUpdate() throws JsonProcessingException {
+        productsExtendService.productDetailsBatchUpdate();
     }
 }

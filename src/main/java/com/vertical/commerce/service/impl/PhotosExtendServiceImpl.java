@@ -9,6 +9,7 @@ import com.vertical.commerce.repository.ProductsRepository;
 import com.vertical.commerce.repository.StockItemsRepository;
 import com.vertical.commerce.service.CommonService;
 import com.vertical.commerce.service.PhotosExtendService;
+import com.vertical.commerce.service.ProductsExtendService;
 import com.vertical.commerce.service.dto.PhotosDTO;
 import com.vertical.commerce.service.mapper.PhotosMapper;
 import org.slf4j.Logger;
@@ -29,14 +30,16 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
     private final PhotosExtendRepository photosExtendRepository;
     private final StockItemsRepository stockItemsRepository;
     private final ProductsRepository productsRepository;
+    private final ProductsExtendService productsExtendService;
     private final PhotosMapper photosMapper;
     private final CommonService commonService;
 
-    public PhotosExtendServiceImpl(PhotosRepository photosRepository, PhotosExtendRepository photosExtendRepository, StockItemsRepository stockItemsRepository, ProductsRepository productsRepository, PhotosMapper photosMapper, CommonService commonService) {
+    public PhotosExtendServiceImpl(PhotosRepository photosRepository, PhotosExtendRepository photosExtendRepository, StockItemsRepository stockItemsRepository, ProductsRepository productsRepository, ProductsExtendService productsExtendService, PhotosMapper photosMapper, CommonService commonService) {
         this.photosRepository = photosRepository;
         this.photosExtendRepository = photosExtendRepository;
         this.stockItemsRepository = stockItemsRepository;
         this.productsRepository = productsRepository;
+        this.productsExtendService = productsExtendService;
         this.photosMapper = photosMapper;
         this.commonService = commonService;
     }
@@ -54,7 +57,7 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
             stockItemsRepository.save(stockItems);
 
             Products products = productsRepository.getOne(stockItems.getProduct().getId());
-            products.setProductDetails(commonService.getProductDetails(products).toJSONString());
+            products.setProductDetails(productsExtendService.getProductDetailsShort(products.getId()));
 
             productsRepository.save(products);
         }else{
@@ -81,11 +84,11 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
                 i.setDefaultInd(true);
                 photosRepository.save(i);
                 StockItems stockItems = stockItemsRepository.getOne(i.getStockItem().getId());
-                stockItems.setThumbnailUrl(i.getThumbnailUrl());
+                stockItems.setThumbnailUrl(i.getBlobId());
                 stockItemsRepository.save(stockItems);
 
                 Products products = productsRepository.getOne(stockItems.getProduct().getId());
-                products.setProductDetails(commonService.getProductDetails(products).toJSONString());
+                products.setProductDetails(productsExtendService.getProductDetailsShort(products.getId()));
                 productsRepository.save(products);
             } else {
                 if (i.isDefaultInd()) {

@@ -3,6 +3,7 @@ package com.vertical.commerce.service.impl;
 import com.vertical.commerce.domain.Customers;
 import com.vertical.commerce.domain.Orders;
 import com.vertical.commerce.domain.User;
+import com.vertical.commerce.domain.enumeration.OrderLineStatus;
 import com.vertical.commerce.service.MailService;
 import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.Logger;
@@ -38,6 +39,10 @@ public class MailServiceImpl implements MailService {
     private static final String ORDERS = "orders";
 
     private static final String BASE_URL = "baseUrl";
+
+    private static final String AVAILABLE_STATUS = "availableStatus";
+
+    private static final String CANCELLED_STATUS = "cancelledStatus";
 
     private final JHipsterProperties jHipsterProperties;
 
@@ -132,6 +137,8 @@ public class MailServiceImpl implements MailService {
         context.setVariable(CUSTOMER, customers);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(ORDERS, orders);
+        context.setVariable(AVAILABLE_STATUS, OrderLineStatus.AVAILABLE);
+        context.setVariable(CANCELLED_STATUS, OrderLineStatus.CANCELLED);
 
         String content = templateEngine.process("mail/orderConfirmationEmail", context);
         String subject = messageSource.getMessage("email.confirmation.title", null, locale);

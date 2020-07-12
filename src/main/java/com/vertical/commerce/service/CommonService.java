@@ -58,7 +58,7 @@ public interface CommonService {
 
     Customers getCustomerByPrincipal(Principal principal);
 
-    JSONArray getProductDetails(Products product);
+//    JSONArray getProductDetails(Products product);
 
     JSONArray getCartDetails(ShoppingCarts cart);
 

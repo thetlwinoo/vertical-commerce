@@ -1,11 +1,9 @@
 package com.vertical.commerce.service.impl;
 
-import com.vertical.commerce.domain.People;
-import com.vertical.commerce.domain.StockItems;
-import com.vertical.commerce.domain.WishlistLines;
-import com.vertical.commerce.domain.Wishlists;
+import com.vertical.commerce.domain.*;
 import com.vertical.commerce.repository.*;
 import com.vertical.commerce.service.CommonService;
+import com.vertical.commerce.service.ProductsExtendService;
 import com.vertical.commerce.service.WishlistsExtendService;
 import com.vertical.commerce.service.dto.StockItemsDTO;
 import com.vertical.commerce.service.dto.WishlistsDTO;
@@ -35,9 +33,11 @@ public class WishlistsExtendServiceImpl implements WishlistsExtendService {
     private final StockItemsMapper stockItemsMapper;
     private final UserRepository userRepository;
     private final WishlistsMapper wishlistsMapper;
+    private final ProductsExtendService productsExtendService;
+    private final ProductsRepository productsRepository;
     private final CommonService commonService;
 
-    public WishlistsExtendServiceImpl(PeopleExtendRepository peopleExtendRepository, WishlistsRepository wishlistsRepository, WishlistLinesRepository wishlistLinesRepository, StockItemsRepository stockItemsRepository, StockItemsMapper stockItemsMapper, UserRepository userRepository, WishlistsMapper wishlistsMapper, CommonService commonService) {
+    public WishlistsExtendServiceImpl(PeopleExtendRepository peopleExtendRepository, WishlistsRepository wishlistsRepository, WishlistLinesRepository wishlistLinesRepository, StockItemsRepository stockItemsRepository, StockItemsMapper stockItemsMapper, UserRepository userRepository, WishlistsMapper wishlistsMapper, ProductsExtendService productsExtendService, ProductsRepository productsRepository, CommonService commonService) {
         this.peopleExtendRepository = peopleExtendRepository;
         this.wishlistsRepository = wishlistsRepository;
         this.wishlistLinesRepository = wishlistLinesRepository;
@@ -45,6 +45,8 @@ public class WishlistsExtendServiceImpl implements WishlistsExtendService {
         this.stockItemsMapper = stockItemsMapper;
         this.userRepository = userRepository;
         this.wishlistsMapper = wishlistsMapper;
+        this.productsExtendService = productsExtendService;
+        this.productsRepository = productsRepository;
         this.commonService = commonService;
     }
 
@@ -74,6 +76,11 @@ public class WishlistsExtendServiceImpl implements WishlistsExtendService {
             wishlistLines.setWishlist(wishlists);
             wishlists.getWishlistLineLists().add(wishlistLines);
             wishlistLinesRepository.save(wishlistLines);
+
+            Products products = stockItems.getProduct();
+            String productDetails = productsExtendService.getProductDetailsShort(products.getId());
+            products.setProductDetails(productDetails);
+            productsRepository.save(products);
 
             return wishlistsMapper.toDto(wishlists) ;
         } catch (Exception ex) {
@@ -151,6 +158,11 @@ public class WishlistsExtendServiceImpl implements WishlistsExtendService {
 
         wishlists.setWishlistLineLists(wishlistLineList);
         wishlistLinesRepository.delete(wishlistLineToDelete);
+
+        Products products = wishlistLineToDelete.getStockItem().getProduct();
+        String productDetails = productsExtendService.getProductDetailsShort(products.getId());
+        products.setProductDetails(productDetails);
+        productsRepository.save(products);
 
         return wishlistsMapper.toDto(wishlists);
     }

@@ -37,9 +37,15 @@ public interface ProductsExtendFilterRepository extends JpaRepository<ProductCat
     @Query(value = "SELECT * FROM get_product_details(:productId)", nativeQuery = true)
     String getProductDetails(@Param("productId") Long productId);
 
+    @Query(value = "SELECT * FROM get_product_details_short(:productId)", nativeQuery = true)
+    String getProductDetailsShort(@Param("productId") Long productId);
+
     @Query(value = "SELECT * FROM filter_products(:categoryId,:brandIdList,:tag,:attributes,:options,:priceRange,:rating,:page,:limit)",nativeQuery = true)
     String filterProducts(@Param("categoryId") Long categoryId, @Param("brandIdList") String brandIdList, @Param("tag") String tag, @Param("attributes") String attributes, @Param("options") String options, @Param("priceRange") String priceRange, @Param("rating") Integer rating, @Param("page") Integer page, @Param("limit") Integer limit);
 
     @Query(value = "SELECT * FROM get_filter_controllers(:categoryId,:tag)",nativeQuery = true)
     String getFilterControllers(@Param("categoryId") Long categoryId, @Param("tag") String tag);
+
+    @Query(value = "SELECT * FROM get_products_ids_by_order(:orderId)",nativeQuery = true)
+    List<Long> getProductsIdsByOrder(@Param("orderId") Long orderId);
 }

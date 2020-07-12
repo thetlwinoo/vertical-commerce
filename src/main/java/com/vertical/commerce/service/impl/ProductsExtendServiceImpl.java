@@ -1,5 +1,8 @@
 package com.vertical.commerce.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vertical.commerce.domain.*;
 import com.vertical.commerce.repository.*;
 import com.vertical.commerce.service.CommonService;
@@ -231,6 +234,7 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
             ProductDocument productDocument = productDocumentRepository.getOne(productsDTO.getProductDocumentId());
             saveProduct.setProductDocument(productDocument);
             String prefixNumber = saveProduct.getName().replaceAll("[^a-zA-Z0-9]", "").toUpperCase();
+            prefixNumber = prefixNumber.length() > 7 ? prefixNumber.substring(0,7): prefixNumber;
             Random random= new Random();
             int pnum = random.nextInt(10000);
             prefixNumber = prefixNumber + pnum;
@@ -250,6 +254,11 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
     @Override
     public String getProductDetails(Long productId) {
         return productsExtendFilterRepository.getProductDetails(productId);
+    }
+
+    @Override
+    public String getProductDetailsShort(Long productId) {
+        return productsExtendFilterRepository.getProductDetailsShort(productId);
     }
 
     @Override
@@ -276,5 +285,62 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
             throw ex;
         }
 
+    }
+
+    @Override
+    public List<Long> getProductsIdsByOrder(Long orderId) {
+        try{
+            List<Long> result =  productsExtendFilterRepository.getProductsIdsByOrder(orderId);
+            return result;
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+
+    }
+
+    @Override
+    public void productDetailsBatchUpdate() throws JsonProcessingException {
+        for(Products product:productsRepository.findAll()){
+            String productDetails = getProductDetailsShort(product.getId());
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode actualObj = mapper.readTree(productDetails);
+            JsonNode jsonNode1 = actualObj.get("ratings").get("overallRating");
+            JsonNode jsonNode2 = actualObj.get("totalWishlists");
+
+            Integer overallRating = jsonNode1.intValue();
+            Integer totalWishlist = jsonNode2.intValue();
+
+            product.setProductDetails(productDetails);
+            product.setTotalStars(overallRating);
+            product.setTotalWishlist(totalWishlist);
+
+            productsRepository.save(product);
+        }
+    }
+
+    @Override
+    public void updateProductDetailsByOrder(Long orderId) throws JsonProcessingException {
+        List<Long> productIds = getProductsIdsByOrder(orderId);
+        for(Long productId: productIds){
+            String productDetails = getProductDetailsShort(productId);
+            Products products = productsRepository.getOne(productId);
+            products.setProductDetails(productDetails);
+
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode actualObj = mapper.readTree(productDetails);
+            JsonNode jsonNode1 = actualObj.get("ratings").get("overallRating");
+            JsonNode jsonNode2 = actualObj.get("totalWishlists");
+
+            Integer overallRating = jsonNode1.intValue();
+            Integer totalWishlist = jsonNode2.intValue();
+
+            products.setProductDetails(productDetails);
+            products.setTotalStars(overallRating);
+            products.setTotalWishlist(totalWishlist);
+
+            productsRepository.save(products);
+        }
     }
 }

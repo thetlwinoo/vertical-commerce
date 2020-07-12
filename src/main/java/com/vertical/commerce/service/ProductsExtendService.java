@@ -1,5 +1,6 @@
 package com.vertical.commerce.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vertical.commerce.domain.Products;
 import com.vertical.commerce.service.dto.ProductCategoryDTO;
 import com.vertical.commerce.service.dto.ProductsCriteria;
@@ -50,7 +51,15 @@ public interface ProductsExtendService {
 
     String getProductDetails(Long productId);
 
+    String getProductDetailsShort(Long productId);
+
     String getFilterProducts(Long categoryId,String brandIdList,String tag,String attributes,String options,String priceRange,Integer rating,Integer page,Integer limit);
 
     String getFilterControllers(Long categoryId,String tag);
+
+    void productDetailsBatchUpdate() throws JsonProcessingException;
+
+    List<Long> getProductsIdsByOrder(Long productId);
+
+    void updateProductDetailsByOrder(Long orderId) throws JsonProcessingException;
 }

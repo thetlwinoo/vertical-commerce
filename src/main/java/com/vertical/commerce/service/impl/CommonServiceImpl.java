@@ -517,7 +517,8 @@ public class CommonServiceImpl implements CommonService {
 
         Optional<People> people = peopleExtendRepository.findPeopleByUserId(principal.getName());
         if (!people.isPresent()) {
-            throw new IllegalArgumentException("People not found");
+//            throw new IllegalArgumentException("People not found");
+            return null;
         }
         return people.get();
     }
@@ -542,20 +543,20 @@ public class CommonServiceImpl implements CommonService {
         return customer;
     }
 
-    @Override
-    public JSONArray getProductDetails(Products product){
-        JSONArray stockItemArray = new JSONArray();
-
-        for (StockItems i : product.getStockItemLists()) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("stockItemId",i.getId());
-            jsonObject.put("thumbnail",i.getThumbnailUrl());
-            jsonObject.put("unitPrice",i.getUnitPrice());
-            jsonObject.put("recommendedRetailPrice",i.getRecommendedRetailPrice());
-            stockItemArray.add(jsonObject);
-        }
-        return stockItemArray;
-    }
+//    @Override
+//    public JSONArray getProductDetails(Products product){
+//        JSONArray stockItemArray = new JSONArray();
+//
+//        for (StockItems i : product.getStockItemLists()) {
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("stockItemId",i.getId());
+//            jsonObject.put("thumbnail",i.getThumbnailUrl());
+//            jsonObject.put("unitPrice",i.getUnitPrice());
+//            jsonObject.put("recommendedRetailPrice",i.getRecommendedRetailPrice());
+//            stockItemArray.add(jsonObject);
+//        }
+//        return stockItemArray;
+//    }
 
     @Override
     public JSONArray getCartDetails(ShoppingCarts cart){
