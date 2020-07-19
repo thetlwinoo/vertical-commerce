@@ -19,10 +19,6 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "activeInd",
-      "fieldType": "Boolean"
-    },
-    {
       "fieldName": "defaultInd",
       "fieldType": "Boolean"
     },
@@ -37,8 +33,7 @@
     },
     {
       "fieldName": "validTo",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
@@ -47,11 +42,11 @@
       "otherEntityName": "suppliers",
       "otherEntityRelationshipName": "deliveryMethod",
       "relationshipName": "supplier",
-      "otherEntityField": "id",
+      "otherEntityField": "name",
       "ownerSide": false
     }
   ],
-  "changelogDate": "20200617155104",
+  "changelogDate": "20200718074112",
   "entityTableName": "delivery_methods",
   "dto": "mapstruct",
   "pagination": "no",

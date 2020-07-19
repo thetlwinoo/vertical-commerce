@@ -49,11 +49,11 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
         log.debug("Request to save Photos : {}", photosDTO);
         Photos photos = photosMapper.toEntity(photosDTO);
         StockItems stockItems = stockItemsRepository.getOne(photos.getStockItem().getId());
-        if(stockItems.getThumbnailUrl() == null){
+        if(stockItems.getThumbnailPhoto() == null){
             photos.setDefaultInd(true);
             photos = photosRepository.save(photos);
-            stockItems.setThumbnailUrl(photos.getThumbnailUrl());
-            stockItems.setActiveInd(true);
+            stockItems.setThumbnailPhoto(photos.getBlobId());
+            stockItems.setActiveFlag(true);
             stockItemsRepository.save(stockItems);
 
             Products products = productsRepository.getOne(stockItems.getProduct().getId());
@@ -84,7 +84,7 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
                 i.setDefaultInd(true);
                 photosRepository.save(i);
                 StockItems stockItems = stockItemsRepository.getOne(i.getStockItem().getId());
-                stockItems.setThumbnailUrl(i.getBlobId());
+                stockItems.setThumbnailPhoto(i.getBlobId());
                 stockItemsRepository.save(stockItems);
 
                 Products products = productsRepository.getOne(stockItems.getProduct().getId());

@@ -3,6 +3,7 @@ package com.vertical.commerce.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -33,8 +34,12 @@ public class StateProvinces implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
-    @Column(name = "sales_territory", nullable = false)
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "culture_details")
+    private String cultureDetails;
+
+    @Column(name = "sales_territory")
     private String salesTerritory;
 
     @Column(name = "border")
@@ -47,8 +52,7 @@ public class StateProvinces implements Serializable {
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
 
-    @NotNull
-    @Column(name = "valid_to", nullable = false)
+    @Column(name = "valid_to")
     private Instant validTo;
 
     @ManyToOne
@@ -88,6 +92,19 @@ public class StateProvinces implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public StateProvinces cultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
+        return this;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getSalesTerritory() {
@@ -192,6 +209,7 @@ public class StateProvinces implements Serializable {
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", salesTerritory='" + getSalesTerritory() + "'" +
             ", border='" + getBorder() + "'" +
             ", latestRecordedPopulation=" + getLatestRecordedPopulation() +

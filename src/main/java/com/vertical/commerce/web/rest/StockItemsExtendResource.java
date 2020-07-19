@@ -41,12 +41,12 @@ public class StockItemsExtendResource {
         this.stockItemsExtendService = stockItemsExtendService;
     }
 
-    @GetMapping("/stock-items-extend/filter/vendor")
-    public ResponseEntity<List<StockItemsDTO>> getAllStockItems(StockItemsCriteria criteria, Pageable pageable, Principal principal) {
+    @GetMapping("/stock-items-extend")
+    public ResponseEntity<List<StockItemsDTO>> getAllStockItems(@RequestParam(value="supplierId") Long supplierId, StockItemsCriteria criteria, Pageable pageable, Principal principal) {
         log.debug("REST request to get StockItems by criteria: {}", criteria);
 
-        Page<StockItemsDTO> page = stockItemsExtendService.getAllStockItems(criteria, pageable, principal);
-        JSONObject jsonObject = stockItemsExtendService.getStatistics(principal);
+        Page<StockItemsDTO> page = stockItemsExtendService.getAllStockItems(supplierId, criteria, pageable, principal);
+        JSONObject jsonObject = stockItemsExtendService.getStatistics(supplierId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         headers.add("Extra",jsonObject.toJSONString());
         return ResponseEntity.ok().headers(headers).body(page.getContent());

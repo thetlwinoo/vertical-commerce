@@ -31,7 +31,9 @@ public class QuestionsCriteria implements Serializable, Criteria {
 
     private InstantFilter supplierAnswerOn;
 
-    private BooleanFilter activeInd;
+    private InstantFilter validFrom;
+
+    private InstantFilter validTo;
 
     private LongFilter supplierId;
 
@@ -46,7 +48,8 @@ public class QuestionsCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.customerQuestionOn = other.customerQuestionOn == null ? null : other.customerQuestionOn.copy();
         this.supplierAnswerOn = other.supplierAnswerOn == null ? null : other.supplierAnswerOn.copy();
-        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
         this.personId = other.personId == null ? null : other.personId.copy();
         this.productId = other.productId == null ? null : other.productId.copy();
@@ -81,12 +84,20 @@ public class QuestionsCriteria implements Serializable, Criteria {
         this.supplierAnswerOn = supplierAnswerOn;
     }
 
-    public BooleanFilter getActiveInd() {
-        return activeInd;
+    public InstantFilter getValidFrom() {
+        return validFrom;
     }
 
-    public void setActiveInd(BooleanFilter activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public InstantFilter getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
     }
 
     public LongFilter getSupplierId() {
@@ -127,7 +138,8 @@ public class QuestionsCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(customerQuestionOn, that.customerQuestionOn) &&
             Objects.equals(supplierAnswerOn, that.supplierAnswerOn) &&
-            Objects.equals(activeInd, that.activeInd) &&
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo) &&
             Objects.equals(supplierId, that.supplierId) &&
             Objects.equals(personId, that.personId) &&
             Objects.equals(productId, that.productId);
@@ -139,7 +151,8 @@ public class QuestionsCriteria implements Serializable, Criteria {
         id,
         customerQuestionOn,
         supplierAnswerOn,
-        activeInd,
+        validFrom,
+        validTo,
         supplierId,
         personId,
         productId
@@ -153,7 +166,8 @@ public class QuestionsCriteria implements Serializable, Criteria {
                 (id != null ? "id=" + id + ", " : "") +
                 (customerQuestionOn != null ? "customerQuestionOn=" + customerQuestionOn + ", " : "") +
                 (supplierAnswerOn != null ? "supplierAnswerOn=" + supplierAnswerOn + ", " : "") +
-                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
                 (personId != null ? "personId=" + personId + ", " : "") +
                 (productId != null ? "productId=" + productId + ", " : "") +

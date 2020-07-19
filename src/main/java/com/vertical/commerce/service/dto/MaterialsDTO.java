@@ -2,6 +2,7 @@ package com.vertical.commerce.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.vertical.commerce.domain.Materials} entity.
@@ -12,6 +13,9 @@ public class MaterialsDTO implements Serializable {
 
     @NotNull
     private String name;
+
+    @Lob
+    private String cultureDetails;
 
     
     public Long getId() {
@@ -28,6 +32,14 @@ public class MaterialsDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     @Override
@@ -53,6 +65,7 @@ public class MaterialsDTO implements Serializable {
         return "MaterialsDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             "}";
     }
 }

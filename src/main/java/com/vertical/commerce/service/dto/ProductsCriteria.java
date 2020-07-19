@@ -39,25 +39,29 @@ public class ProductsCriteria implements Serializable, Criteria {
 
     private IntegerFilter totalWishlist;
 
-    private IntegerFilter totalStars;
-
-    private IntegerFilter discountedPercentage;
+    private IntegerFilter overallRating;
 
     private BooleanFilter preferredInd;
 
-    private BooleanFilter availableDeliveryInd;
+    private BooleanFilter freeShippingInd;
 
-    private BooleanFilter activeInd;
+    private BooleanFilter madeInMyanmarInd;
 
     private BooleanFilter questionsAboutProductInd;
+
+    private InstantFilter releaseDate;
+
+    private InstantFilter availableDate;
+
+    private BooleanFilter activeFlag;
 
     private StringFilter lastEditedBy;
 
     private InstantFilter lastEditedWhen;
 
-    private InstantFilter releaseDate;
+    private InstantFilter validFrom;
 
-    private InstantFilter availableDate;
+    private InstantFilter validTo;
 
     private LongFilter productDocumentId;
 
@@ -80,16 +84,18 @@ public class ProductsCriteria implements Serializable, Criteria {
         this.productNumber = other.productNumber == null ? null : other.productNumber.copy();
         this.sellCount = other.sellCount == null ? null : other.sellCount.copy();
         this.totalWishlist = other.totalWishlist == null ? null : other.totalWishlist.copy();
-        this.totalStars = other.totalStars == null ? null : other.totalStars.copy();
-        this.discountedPercentage = other.discountedPercentage == null ? null : other.discountedPercentage.copy();
+        this.overallRating = other.overallRating == null ? null : other.overallRating.copy();
         this.preferredInd = other.preferredInd == null ? null : other.preferredInd.copy();
-        this.availableDeliveryInd = other.availableDeliveryInd == null ? null : other.availableDeliveryInd.copy();
-        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
+        this.freeShippingInd = other.freeShippingInd == null ? null : other.freeShippingInd.copy();
+        this.madeInMyanmarInd = other.madeInMyanmarInd == null ? null : other.madeInMyanmarInd.copy();
         this.questionsAboutProductInd = other.questionsAboutProductInd == null ? null : other.questionsAboutProductInd.copy();
-        this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
-        this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
         this.releaseDate = other.releaseDate == null ? null : other.releaseDate.copy();
         this.availableDate = other.availableDate == null ? null : other.availableDate.copy();
+        this.activeFlag = other.activeFlag == null ? null : other.activeFlag.copy();
+        this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
+        this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.productDocumentId = other.productDocumentId == null ? null : other.productDocumentId.copy();
         this.stockItemListId = other.stockItemListId == null ? null : other.stockItemListId.copy();
         this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
@@ -158,20 +164,12 @@ public class ProductsCriteria implements Serializable, Criteria {
         this.totalWishlist = totalWishlist;
     }
 
-    public IntegerFilter getTotalStars() {
-        return totalStars;
+    public IntegerFilter getOverallRating() {
+        return overallRating;
     }
 
-    public void setTotalStars(IntegerFilter totalStars) {
-        this.totalStars = totalStars;
-    }
-
-    public IntegerFilter getDiscountedPercentage() {
-        return discountedPercentage;
-    }
-
-    public void setDiscountedPercentage(IntegerFilter discountedPercentage) {
-        this.discountedPercentage = discountedPercentage;
+    public void setOverallRating(IntegerFilter overallRating) {
+        this.overallRating = overallRating;
     }
 
     public BooleanFilter getPreferredInd() {
@@ -182,20 +180,20 @@ public class ProductsCriteria implements Serializable, Criteria {
         this.preferredInd = preferredInd;
     }
 
-    public BooleanFilter getAvailableDeliveryInd() {
-        return availableDeliveryInd;
+    public BooleanFilter getFreeShippingInd() {
+        return freeShippingInd;
     }
 
-    public void setAvailableDeliveryInd(BooleanFilter availableDeliveryInd) {
-        this.availableDeliveryInd = availableDeliveryInd;
+    public void setFreeShippingInd(BooleanFilter freeShippingInd) {
+        this.freeShippingInd = freeShippingInd;
     }
 
-    public BooleanFilter getActiveInd() {
-        return activeInd;
+    public BooleanFilter getMadeInMyanmarInd() {
+        return madeInMyanmarInd;
     }
 
-    public void setActiveInd(BooleanFilter activeInd) {
-        this.activeInd = activeInd;
+    public void setMadeInMyanmarInd(BooleanFilter madeInMyanmarInd) {
+        this.madeInMyanmarInd = madeInMyanmarInd;
     }
 
     public BooleanFilter getQuestionsAboutProductInd() {
@@ -204,6 +202,30 @@ public class ProductsCriteria implements Serializable, Criteria {
 
     public void setQuestionsAboutProductInd(BooleanFilter questionsAboutProductInd) {
         this.questionsAboutProductInd = questionsAboutProductInd;
+    }
+
+    public InstantFilter getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(InstantFilter releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public InstantFilter getAvailableDate() {
+        return availableDate;
+    }
+
+    public void setAvailableDate(InstantFilter availableDate) {
+        this.availableDate = availableDate;
+    }
+
+    public BooleanFilter getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(BooleanFilter activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public StringFilter getLastEditedBy() {
@@ -222,20 +244,20 @@ public class ProductsCriteria implements Serializable, Criteria {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public InstantFilter getReleaseDate() {
-        return releaseDate;
+    public InstantFilter getValidFrom() {
+        return validFrom;
     }
 
-    public void setReleaseDate(InstantFilter releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
     }
 
-    public InstantFilter getAvailableDate() {
-        return availableDate;
+    public InstantFilter getValidTo() {
+        return validTo;
     }
 
-    public void setAvailableDate(InstantFilter availableDate) {
-        this.availableDate = availableDate;
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
     }
 
     public LongFilter getProductDocumentId() {
@@ -296,16 +318,18 @@ public class ProductsCriteria implements Serializable, Criteria {
             Objects.equals(productNumber, that.productNumber) &&
             Objects.equals(sellCount, that.sellCount) &&
             Objects.equals(totalWishlist, that.totalWishlist) &&
-            Objects.equals(totalStars, that.totalStars) &&
-            Objects.equals(discountedPercentage, that.discountedPercentage) &&
+            Objects.equals(overallRating, that.overallRating) &&
             Objects.equals(preferredInd, that.preferredInd) &&
-            Objects.equals(availableDeliveryInd, that.availableDeliveryInd) &&
-            Objects.equals(activeInd, that.activeInd) &&
+            Objects.equals(freeShippingInd, that.freeShippingInd) &&
+            Objects.equals(madeInMyanmarInd, that.madeInMyanmarInd) &&
             Objects.equals(questionsAboutProductInd, that.questionsAboutProductInd) &&
-            Objects.equals(lastEditedBy, that.lastEditedBy) &&
-            Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
             Objects.equals(releaseDate, that.releaseDate) &&
             Objects.equals(availableDate, that.availableDate) &&
+            Objects.equals(activeFlag, that.activeFlag) &&
+            Objects.equals(lastEditedBy, that.lastEditedBy) &&
+            Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo) &&
             Objects.equals(productDocumentId, that.productDocumentId) &&
             Objects.equals(stockItemListId, that.stockItemListId) &&
             Objects.equals(supplierId, that.supplierId) &&
@@ -323,16 +347,18 @@ public class ProductsCriteria implements Serializable, Criteria {
         productNumber,
         sellCount,
         totalWishlist,
-        totalStars,
-        discountedPercentage,
+        overallRating,
         preferredInd,
-        availableDeliveryInd,
-        activeInd,
+        freeShippingInd,
+        madeInMyanmarInd,
         questionsAboutProductInd,
-        lastEditedBy,
-        lastEditedWhen,
         releaseDate,
         availableDate,
+        activeFlag,
+        lastEditedBy,
+        lastEditedWhen,
+        validFrom,
+        validTo,
         productDocumentId,
         stockItemListId,
         supplierId,
@@ -352,16 +378,18 @@ public class ProductsCriteria implements Serializable, Criteria {
                 (productNumber != null ? "productNumber=" + productNumber + ", " : "") +
                 (sellCount != null ? "sellCount=" + sellCount + ", " : "") +
                 (totalWishlist != null ? "totalWishlist=" + totalWishlist + ", " : "") +
-                (totalStars != null ? "totalStars=" + totalStars + ", " : "") +
-                (discountedPercentage != null ? "discountedPercentage=" + discountedPercentage + ", " : "") +
+                (overallRating != null ? "overallRating=" + overallRating + ", " : "") +
                 (preferredInd != null ? "preferredInd=" + preferredInd + ", " : "") +
-                (availableDeliveryInd != null ? "availableDeliveryInd=" + availableDeliveryInd + ", " : "") +
-                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
+                (freeShippingInd != null ? "freeShippingInd=" + freeShippingInd + ", " : "") +
+                (madeInMyanmarInd != null ? "madeInMyanmarInd=" + madeInMyanmarInd + ", " : "") +
                 (questionsAboutProductInd != null ? "questionsAboutProductInd=" + questionsAboutProductInd + ", " : "") +
-                (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
-                (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
                 (releaseDate != null ? "releaseDate=" + releaseDate + ", " : "") +
                 (availableDate != null ? "availableDate=" + availableDate + ", " : "") +
+                (activeFlag != null ? "activeFlag=" + activeFlag + ", " : "") +
+                (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
+                (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (productDocumentId != null ? "productDocumentId=" + productDocumentId + ", " : "") +
                 (stockItemListId != null ? "stockItemListId=" + stockItemListId + ", " : "") +
                 (supplierId != null ? "supplierId=" + supplierId + ", " : "") +

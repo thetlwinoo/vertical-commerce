@@ -39,6 +39,9 @@ public class TrackingEventResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
     @Autowired
     private TrackingEventRepository trackingEventRepository;
 
@@ -67,7 +70,8 @@ public class TrackingEventResourceIT {
      */
     public static TrackingEvent createEntity(EntityManager em) {
         TrackingEvent trackingEvent = new TrackingEvent()
-            .name(DEFAULT_NAME);
+            .name(DEFAULT_NAME)
+            .description(DEFAULT_DESCRIPTION);
         return trackingEvent;
     }
     /**
@@ -78,7 +82,8 @@ public class TrackingEventResourceIT {
      */
     public static TrackingEvent createUpdatedEntity(EntityManager em) {
         TrackingEvent trackingEvent = new TrackingEvent()
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION);
         return trackingEvent;
     }
 
@@ -103,6 +108,7 @@ public class TrackingEventResourceIT {
         assertThat(trackingEventList).hasSize(databaseSizeBeforeCreate + 1);
         TrackingEvent testTrackingEvent = trackingEventList.get(trackingEventList.size() - 1);
         assertThat(testTrackingEvent.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testTrackingEvent.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
     @Test
@@ -157,7 +163,8 @@ public class TrackingEventResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(trackingEvent.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
     
     @Test
@@ -171,7 +178,8 @@ public class TrackingEventResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(trackingEvent.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
 
@@ -271,6 +279,84 @@ public class TrackingEventResourceIT {
         defaultTrackingEventShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
     }
 
+
+    @Test
+    @Transactional
+    public void getAllTrackingEventsByDescriptionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        trackingEventRepository.saveAndFlush(trackingEvent);
+
+        // Get all the trackingEventList where description equals to DEFAULT_DESCRIPTION
+        defaultTrackingEventShouldBeFound("description.equals=" + DEFAULT_DESCRIPTION);
+
+        // Get all the trackingEventList where description equals to UPDATED_DESCRIPTION
+        defaultTrackingEventShouldNotBeFound("description.equals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTrackingEventsByDescriptionIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        trackingEventRepository.saveAndFlush(trackingEvent);
+
+        // Get all the trackingEventList where description not equals to DEFAULT_DESCRIPTION
+        defaultTrackingEventShouldNotBeFound("description.notEquals=" + DEFAULT_DESCRIPTION);
+
+        // Get all the trackingEventList where description not equals to UPDATED_DESCRIPTION
+        defaultTrackingEventShouldBeFound("description.notEquals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTrackingEventsByDescriptionIsInShouldWork() throws Exception {
+        // Initialize the database
+        trackingEventRepository.saveAndFlush(trackingEvent);
+
+        // Get all the trackingEventList where description in DEFAULT_DESCRIPTION or UPDATED_DESCRIPTION
+        defaultTrackingEventShouldBeFound("description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION);
+
+        // Get all the trackingEventList where description equals to UPDATED_DESCRIPTION
+        defaultTrackingEventShouldNotBeFound("description.in=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTrackingEventsByDescriptionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        trackingEventRepository.saveAndFlush(trackingEvent);
+
+        // Get all the trackingEventList where description is not null
+        defaultTrackingEventShouldBeFound("description.specified=true");
+
+        // Get all the trackingEventList where description is null
+        defaultTrackingEventShouldNotBeFound("description.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllTrackingEventsByDescriptionContainsSomething() throws Exception {
+        // Initialize the database
+        trackingEventRepository.saveAndFlush(trackingEvent);
+
+        // Get all the trackingEventList where description contains DEFAULT_DESCRIPTION
+        defaultTrackingEventShouldBeFound("description.contains=" + DEFAULT_DESCRIPTION);
+
+        // Get all the trackingEventList where description contains UPDATED_DESCRIPTION
+        defaultTrackingEventShouldNotBeFound("description.contains=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTrackingEventsByDescriptionNotContainsSomething() throws Exception {
+        // Initialize the database
+        trackingEventRepository.saveAndFlush(trackingEvent);
+
+        // Get all the trackingEventList where description does not contain DEFAULT_DESCRIPTION
+        defaultTrackingEventShouldNotBeFound("description.doesNotContain=" + DEFAULT_DESCRIPTION);
+
+        // Get all the trackingEventList where description does not contain UPDATED_DESCRIPTION
+        defaultTrackingEventShouldBeFound("description.doesNotContain=" + UPDATED_DESCRIPTION);
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -279,7 +365,8 @@ public class TrackingEventResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(trackingEvent.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
 
         // Check, that the count call also returns 1
         restTrackingEventMockMvc.perform(get("/api/tracking-events/count?sort=id,desc&" + filter))
@@ -326,7 +413,8 @@ public class TrackingEventResourceIT {
         // Disconnect from session so that the updates on updatedTrackingEvent are not directly saved in db
         em.detach(updatedTrackingEvent);
         updatedTrackingEvent
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION);
         TrackingEventDTO trackingEventDTO = trackingEventMapper.toDto(updatedTrackingEvent);
 
         restTrackingEventMockMvc.perform(put("/api/tracking-events").with(csrf())
@@ -339,6 +427,7 @@ public class TrackingEventResourceIT {
         assertThat(trackingEventList).hasSize(databaseSizeBeforeUpdate);
         TrackingEvent testTrackingEvent = trackingEventList.get(trackingEventList.size() - 1);
         assertThat(testTrackingEvent.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testTrackingEvent.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     @Test

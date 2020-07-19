@@ -102,6 +102,7 @@ class StockItemsGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
+                , "cultureDetails":null
                 , "vendorCode":"SAMPLE_TEXT"
                 , "vendorSKU":"SAMPLE_TEXT"
                 , "generatedSKU":"SAMPLE_TEXT"
@@ -139,12 +140,14 @@ class StockItemsGatlingTest extends Simulation {
                 , "tags":"SAMPLE_TEXT"
                 , "searchDetails":"SAMPLE_TEXT"
                 , "customFields":null
-                , "thumbnailUrl":"SAMPLE_TEXT"
-                , "activeInd":null
+                , "thumbnailPhoto":"SAMPLE_TEXT"
                 , "liveInd":null
                 , "cashOnDeliveryInd":null
                 , "lastEditedBy":"SAMPLE_TEXT"
                 , "lastEditedWhen":"2020-01-01T00:00:00.000Z"
+                , "activeFlag":null
+                , "validFrom":"2020-01-01T00:00:00.000Z"
+                , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_stockItems_url"))).exitHereIfFailed

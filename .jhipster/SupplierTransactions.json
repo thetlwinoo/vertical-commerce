@@ -93,7 +93,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617155404",
+  "changelogDate": "20200718074412",
   "entityTableName": "supplier_transactions",
   "dto": "mapstruct",
   "pagination": "no",

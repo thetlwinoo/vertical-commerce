@@ -12,9 +12,13 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "cultureDetails",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
       "fieldName": "salesTerritory",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldType": "String"
     },
     {
       "fieldName": "border",
@@ -31,8 +35,7 @@
     },
     {
       "fieldName": "validTo",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
@@ -44,7 +47,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617154504",
+  "changelogDate": "20200718072812",
   "entityTableName": "state_provinces",
   "dto": "mapstruct",
   "pagination": "no",

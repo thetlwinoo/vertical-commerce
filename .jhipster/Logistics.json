@@ -7,11 +7,6 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "activeInd",
-      "fieldType": "Boolean",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "lastEditedBy",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
@@ -20,10 +15,19 @@
       "fieldName": "lastEditedWhen",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validTo",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [],
-  "changelogDate": "20200617170304",
+  "changelogDate": "20200718085812",
   "entityTableName": "logistics",
   "dto": "mapstruct",
   "pagination": "no",

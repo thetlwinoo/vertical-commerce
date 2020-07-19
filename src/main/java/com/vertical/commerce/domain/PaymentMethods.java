@@ -1,12 +1,13 @@
 package com.vertical.commerce.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * A PaymentMethods.
@@ -32,18 +33,21 @@ public class PaymentMethods implements Serializable {
     @Column(name = "disabled")
     private Boolean disabled;
 
-    @Column(name = "active_ind")
-    private Boolean activeInd;
-
     @Column(name = "sort_order")
     private Integer sortOrder;
 
     @Column(name = "icon_font")
     private String iconFont;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "paymentMethods", allowSetters = true)
-    private Photos icon;
+    @Column(name = "icon_photo")
+    private String iconPhoto;
+
+    @NotNull
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
+
+    @Column(name = "valid_to")
+    private Instant validTo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -93,19 +97,6 @@ public class PaymentMethods implements Serializable {
         this.disabled = disabled;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
-    }
-
-    public PaymentMethods activeInd(Boolean activeInd) {
-        this.activeInd = activeInd;
-        return this;
-    }
-
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
-    }
-
     public Integer getSortOrder() {
         return sortOrder;
     }
@@ -132,17 +123,43 @@ public class PaymentMethods implements Serializable {
         this.iconFont = iconFont;
     }
 
-    public Photos getIcon() {
-        return icon;
+    public String getIconPhoto() {
+        return iconPhoto;
     }
 
-    public PaymentMethods icon(Photos photos) {
-        this.icon = photos;
+    public PaymentMethods iconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
         return this;
     }
 
-    public void setIcon(Photos photos) {
-        this.icon = photos;
+    public void setIconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
+    }
+
+    public Instant getValidFrom() {
+        return validFrom;
+    }
+
+    public PaymentMethods validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+        return this;
+    }
+
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public PaymentMethods validTo(Instant validTo) {
+        this.validTo = validTo;
+        return this;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -170,9 +187,11 @@ public class PaymentMethods implements Serializable {
             ", name='" + getName() + "'" +
             ", code='" + getCode() + "'" +
             ", disabled='" + isDisabled() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
+            ", iconPhoto='" + getIconPhoto() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

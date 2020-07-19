@@ -73,7 +73,7 @@ public class DiscountDetails implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "discountDetails", allowSetters = true)
-    private Discount discount;
+    private Discounts discount;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "discountDetails", allowSetters = true)
@@ -261,17 +261,17 @@ public class DiscountDetails implements Serializable {
         this.modifiedDate = modifiedDate;
     }
 
-    public Discount getDiscount() {
+    public Discounts getDiscount() {
         return discount;
     }
 
-    public DiscountDetails discount(Discount discount) {
-        this.discount = discount;
+    public DiscountDetails discount(Discounts discounts) {
+        this.discount = discounts;
         return this;
     }
 
-    public void setDiscount(Discount discount) {
-        this.discount = discount;
+    public void setDiscount(Discounts discounts) {
+        this.discount = discounts;
     }
 
     public StockItems getStockItem() {

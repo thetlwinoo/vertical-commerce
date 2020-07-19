@@ -9,15 +9,10 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link PaymentMethods} and its DTO {@link PaymentMethodsDTO}.
  */
-@Mapper(componentModel = "spring", uses = {PhotosMapper.class})
+@Mapper(componentModel = "spring", uses = {})
 public interface PaymentMethodsMapper extends EntityMapper<PaymentMethodsDTO, PaymentMethods> {
 
-    @Mapping(source = "icon.id", target = "iconId")
-    @Mapping(source = "icon.thumbnailUrl", target = "iconThumbnailUrl")
-    PaymentMethodsDTO toDto(PaymentMethods paymentMethods);
 
-    @Mapping(source = "iconId", target = "icon")
-    PaymentMethods toEntity(PaymentMethodsDTO paymentMethodsDTO);
 
     default PaymentMethods fromId(Long id) {
         if (id == null) {

@@ -24,7 +24,10 @@ public class QuestionsDTO implements Serializable {
 
     private Instant supplierAnswerOn;
 
-    private Boolean activeInd;
+    @NotNull
+    private Instant validFrom;
+
+    private Instant validTo;
 
 
     private Long supplierId;
@@ -79,12 +82,20 @@ public class QuestionsDTO implements Serializable {
         this.supplierAnswerOn = supplierAnswerOn;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     public Long getSupplierId() {
@@ -161,7 +172,8 @@ public class QuestionsDTO implements Serializable {
             ", customerQuestionOn='" + getCustomerQuestionOn() + "'" +
             ", supplierAnswer='" + getSupplierAnswer() + "'" +
             ", supplierAnswerOn='" + getSupplierAnswerOn() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             ", supplierId=" + getSupplierId() +
             ", supplierName='" + getSupplierName() + "'" +
             ", personId=" + getPersonId() +

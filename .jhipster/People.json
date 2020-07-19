@@ -19,8 +19,7 @@
     {
       "fieldName": "gender",
       "fieldType": "Gender",
-      "fieldValues": "MALE,FEMALE,OTHER",
-      "fieldValidateRules": ["required"]
+      "fieldValues": "MALE,FEMALE,OTHER"
     },
     {
       "fieldName": "dateOfBirth",
@@ -76,7 +75,7 @@
     {
       "fieldName": "emailAddress",
       "fieldType": "String",
-      "fieldValidateRules": ["pattern"],
+      "fieldValidateRules": ["pattern", "required"],
       "fieldValidateRulesPattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
     },
     {
@@ -93,23 +92,27 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "profilePhoto",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "validFrom",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "validTo",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
     {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "photos",
+      "relationshipType": "many-to-many",
+      "otherEntityName": "suppliers",
       "otherEntityRelationshipName": "people",
-      "relationshipName": "profile",
-      "otherEntityField": "thumbnailUrl"
+      "relationshipName": "supplier",
+      "otherEntityField": "name",
+      "ownerSide": true
     },
     {
       "relationshipType": "one-to-one",
@@ -133,7 +136,7 @@
       "ownerSide": false
     }
   ],
-  "changelogDate": "20200617155004",
+  "changelogDate": "20200718074012",
   "entityTableName": "people",
   "dto": "mapstruct",
   "pagination": "no",

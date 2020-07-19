@@ -118,14 +118,17 @@ public class CustomersQueryService extends QueryService<Customers> {
             if (criteria.getRunPosition() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getRunPosition(), Customers_.runPosition));
             }
-            if (criteria.getThumbnailUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), Customers_.thumbnailUrl));
+            if (criteria.getProfilePhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getProfilePhoto(), Customers_.profilePhoto));
             }
             if (criteria.getBillToAddressSameAsDeliveryAddress() != null) {
                 specification = specification.and(buildSpecification(criteria.getBillToAddressSameAsDeliveryAddress(), Customers_.billToAddressSameAsDeliveryAddress));
             }
             if (criteria.getLastEditedBy() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLastEditedBy(), Customers_.lastEditedBy));
+            }
+            if (criteria.getActiveFlag() != null) {
+                specification = specification.and(buildSpecification(criteria.getActiveFlag(), Customers_.activeFlag));
             }
             if (criteria.getValidFrom() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), Customers_.validFrom));

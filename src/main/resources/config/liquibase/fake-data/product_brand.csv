@@ -1,11 +1,11 @@
-id;name;short_label;sort_order;icon_font;thumbnail_url
-1;1080p;deposit Vista;55253;Saint Vincent and the Grenadines;Avon e-enable partnerships
-2;SMTP Kyat;Cambridgeshire mobile users;95238;Small Soft Towels Analyst;deposit program Cotton
-3;Fantastic Internal North Dakota;action-items Fresh Human;51607;New Jersey connecting Personal Loan Account;SAS
-4;alarm;transmitting;35148;service-desk;incubate Grass-roots matrix
-5;Rhode Island Future;Home Loan Account Refined asymmetric;86129;Gourde US Dollar artificial intelligence 1080p;zero administration Cambridgeshire
-6;invoice;Customer-focused;91924;Kids foreground Tools;bypassing Specialist
-7;cross-platform Kyrgyz Republic California;XSS Practical Cotton Chair;246;Assistant;Paradigm recontextualize
-8;zero tolerance Incredible;blue Managed Expressway;76420;Directives synthesizing;iterate wireless Money Market Account
-9;architect;Concrete;76723;Grocery;Mountains
-10;lime;monitor Gorgeous Concrete Chips;65512;Licensed Grove;Fundamental copy SDD
+id;name;culture_details;short_label;sort_order;icon_font;icon_photo;active_flag;valid_from;valid_to
+1;1080p;../fake-data/blob/hipster.txt;deposit Vista;55253;Saint Vincent and the Grenadines;Avon e-enable partnerships;true;2020-07-17T12:10:26;2020-07-17T16:38:51
+2;Tonga Cambridgeshire mobile;../fake-data/blob/hipster.txt;mobile Austria;821;Zimbabwe Stream deposit;hacking engineer Fantastic;true;2020-07-17T12:10:34;2020-07-17T18:46:35
+3;District innovative Human;../fake-data/blob/hipster.txt;Cambridgeshire New Jersey connecting;61274;Refined auxiliary alarm;transmitting;false;2020-07-18T08:41:07;2020-07-18T01:06:38
+4;navigate Illinois bricks-and-clicks;../fake-data/blob/hipster.txt;Borders reboot needs-based;59859;Refined asymmetric;Quality flexibility Licensed;true;2020-07-17T23:59:02;2020-07-18T01:44:15
+5;Cambridgeshire model Solutions;../fake-data/blob/hipster.txt;Frozen;99101;Money Market Account;Tools Cambridgeshire;false;2020-07-17T09:25:36;2020-07-18T01:51:13
+6;cross-platform Kyrgyz Republic California;../fake-data/blob/hipster.txt;XSS Practical Cotton Chair;246;Assistant;Paradigm recontextualize;false;2020-07-18T01:55:38;2020-07-17T08:48:23
+7;time-frame;../fake-data/blob/hipster.txt;Intelligent;42653;ivory Personal Loan Account;synthesizing;true;2020-07-17T23:23:26;2020-07-17T10:55:13
+8;Norwegian Krone algorithm architect;../fake-data/blob/hipster.txt;Concrete;76723;Grocery;Mountains;false;2020-07-18T03:43:27;2020-07-17T15:07:59
+9;monitor Gorgeous Concrete Chips;../fake-data/blob/hipster.txt;Checking Account online;30619;Fundamental copy SDD;Hat quantifying;false;2020-07-17T22:54:20;2020-07-18T00:34:26
+10;Consultant Fall payment;../fake-data/blob/hipster.txt;out-of-the-box Extension neural;86353;Agent Personal Loan Account;uniform;false;2020-07-18T04:28:45;2020-07-18T04:31:26

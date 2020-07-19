@@ -2,6 +2,7 @@ package com.vertical.commerce.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -27,6 +28,11 @@ public class Materials implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "culture_details")
+    private String cultureDetails;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -47,6 +53,19 @@ public class Materials implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public Materials cultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
+        return this;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -72,6 +91,7 @@ public class Materials implements Serializable {
         return "Materials{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             "}";
     }
 }

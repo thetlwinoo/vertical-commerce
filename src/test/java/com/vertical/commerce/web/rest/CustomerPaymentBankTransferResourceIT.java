@@ -41,8 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class CustomerPaymentBankTransferResourceIT {
 
-    private static final String DEFAULT_RECEIPT_IMAGE_URL = "AAAAAAAAAA";
-    private static final String UPDATED_RECEIPT_IMAGE_URL = "BBBBBBBBBB";
+    private static final String DEFAULT_RECEIPT_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_RECEIPT_PHOTO = "BBBBBBBBBB";
 
     private static final String DEFAULT_NAME_IN_BANK_ACCOUNT = "AAAAAAAAAA";
     private static final String UPDATED_NAME_IN_BANK_ACCOUNT = "BBBBBBBBBB";
@@ -54,8 +54,11 @@ public class CustomerPaymentBankTransferResourceIT {
     private static final BigDecimal UPDATED_AMOUNT_TRANSFERRED = new BigDecimal(2);
     private static final BigDecimal SMALLER_AMOUNT_TRANSFERRED = new BigDecimal(1 - 1);
 
-    private static final String DEFAULT_LAST_EDITY_BY = "AAAAAAAAAA";
-    private static final String UPDATED_LAST_EDITY_BY = "BBBBBBBBBB";
+    private static final String DEFAULT_BANK_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_BANK_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LAST_EDITED_BY = "AAAAAAAAAA";
+    private static final String UPDATED_LAST_EDITED_BY = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_LAST_EDITED_WHEN = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_LAST_EDITED_WHEN = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -88,11 +91,12 @@ public class CustomerPaymentBankTransferResourceIT {
      */
     public static CustomerPaymentBankTransfer createEntity(EntityManager em) {
         CustomerPaymentBankTransfer customerPaymentBankTransfer = new CustomerPaymentBankTransfer()
-            .receiptImageUrl(DEFAULT_RECEIPT_IMAGE_URL)
+            .receiptPhoto(DEFAULT_RECEIPT_PHOTO)
             .nameInBankAccount(DEFAULT_NAME_IN_BANK_ACCOUNT)
             .dateOfTransfer(DEFAULT_DATE_OF_TRANSFER)
             .amountTransferred(DEFAULT_AMOUNT_TRANSFERRED)
-            .lastEdityBy(DEFAULT_LAST_EDITY_BY)
+            .bankName(DEFAULT_BANK_NAME)
+            .lastEditedBy(DEFAULT_LAST_EDITED_BY)
             .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN);
         return customerPaymentBankTransfer;
     }
@@ -104,11 +108,12 @@ public class CustomerPaymentBankTransferResourceIT {
      */
     public static CustomerPaymentBankTransfer createUpdatedEntity(EntityManager em) {
         CustomerPaymentBankTransfer customerPaymentBankTransfer = new CustomerPaymentBankTransfer()
-            .receiptImageUrl(UPDATED_RECEIPT_IMAGE_URL)
+            .receiptPhoto(UPDATED_RECEIPT_PHOTO)
             .nameInBankAccount(UPDATED_NAME_IN_BANK_ACCOUNT)
             .dateOfTransfer(UPDATED_DATE_OF_TRANSFER)
             .amountTransferred(UPDATED_AMOUNT_TRANSFERRED)
-            .lastEdityBy(UPDATED_LAST_EDITY_BY)
+            .bankName(UPDATED_BANK_NAME)
+            .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
         return customerPaymentBankTransfer;
     }
@@ -133,11 +138,12 @@ public class CustomerPaymentBankTransferResourceIT {
         List<CustomerPaymentBankTransfer> customerPaymentBankTransferList = customerPaymentBankTransferRepository.findAll();
         assertThat(customerPaymentBankTransferList).hasSize(databaseSizeBeforeCreate + 1);
         CustomerPaymentBankTransfer testCustomerPaymentBankTransfer = customerPaymentBankTransferList.get(customerPaymentBankTransferList.size() - 1);
-        assertThat(testCustomerPaymentBankTransfer.getReceiptImageUrl()).isEqualTo(DEFAULT_RECEIPT_IMAGE_URL);
+        assertThat(testCustomerPaymentBankTransfer.getReceiptPhoto()).isEqualTo(DEFAULT_RECEIPT_PHOTO);
         assertThat(testCustomerPaymentBankTransfer.getNameInBankAccount()).isEqualTo(DEFAULT_NAME_IN_BANK_ACCOUNT);
         assertThat(testCustomerPaymentBankTransfer.getDateOfTransfer()).isEqualTo(DEFAULT_DATE_OF_TRANSFER);
         assertThat(testCustomerPaymentBankTransfer.getAmountTransferred()).isEqualTo(DEFAULT_AMOUNT_TRANSFERRED);
-        assertThat(testCustomerPaymentBankTransfer.getLastEdityBy()).isEqualTo(DEFAULT_LAST_EDITY_BY);
+        assertThat(testCustomerPaymentBankTransfer.getBankName()).isEqualTo(DEFAULT_BANK_NAME);
+        assertThat(testCustomerPaymentBankTransfer.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
         assertThat(testCustomerPaymentBankTransfer.getLastEditedWhen()).isEqualTo(DEFAULT_LAST_EDITED_WHEN);
     }
 
@@ -164,10 +170,10 @@ public class CustomerPaymentBankTransferResourceIT {
 
     @Test
     @Transactional
-    public void checkReceiptImageUrlIsRequired() throws Exception {
+    public void checkReceiptPhotoIsRequired() throws Exception {
         int databaseSizeBeforeTest = customerPaymentBankTransferRepository.findAll().size();
         // set the field null
-        customerPaymentBankTransfer.setReceiptImageUrl(null);
+        customerPaymentBankTransfer.setReceiptPhoto(null);
 
         // Create the CustomerPaymentBankTransfer, which fails.
         CustomerPaymentBankTransferDTO customerPaymentBankTransferDTO = customerPaymentBankTransferMapper.toDto(customerPaymentBankTransfer);
@@ -244,10 +250,10 @@ public class CustomerPaymentBankTransferResourceIT {
 
     @Test
     @Transactional
-    public void checkLastEdityByIsRequired() throws Exception {
+    public void checkLastEditedByIsRequired() throws Exception {
         int databaseSizeBeforeTest = customerPaymentBankTransferRepository.findAll().size();
         // set the field null
-        customerPaymentBankTransfer.setLastEdityBy(null);
+        customerPaymentBankTransfer.setLastEditedBy(null);
 
         // Create the CustomerPaymentBankTransfer, which fails.
         CustomerPaymentBankTransferDTO customerPaymentBankTransferDTO = customerPaymentBankTransferMapper.toDto(customerPaymentBankTransfer);
@@ -293,11 +299,12 @@ public class CustomerPaymentBankTransferResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(customerPaymentBankTransfer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].receiptImageUrl").value(hasItem(DEFAULT_RECEIPT_IMAGE_URL)))
+            .andExpect(jsonPath("$.[*].receiptPhoto").value(hasItem(DEFAULT_RECEIPT_PHOTO)))
             .andExpect(jsonPath("$.[*].nameInBankAccount").value(hasItem(DEFAULT_NAME_IN_BANK_ACCOUNT)))
             .andExpect(jsonPath("$.[*].dateOfTransfer").value(hasItem(DEFAULT_DATE_OF_TRANSFER.toString())))
             .andExpect(jsonPath("$.[*].amountTransferred").value(hasItem(DEFAULT_AMOUNT_TRANSFERRED.intValue())))
-            .andExpect(jsonPath("$.[*].lastEdityBy").value(hasItem(DEFAULT_LAST_EDITY_BY)))
+            .andExpect(jsonPath("$.[*].bankName").value(hasItem(DEFAULT_BANK_NAME)))
+            .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
     }
     
@@ -312,11 +319,12 @@ public class CustomerPaymentBankTransferResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(customerPaymentBankTransfer.getId().intValue()))
-            .andExpect(jsonPath("$.receiptImageUrl").value(DEFAULT_RECEIPT_IMAGE_URL))
+            .andExpect(jsonPath("$.receiptPhoto").value(DEFAULT_RECEIPT_PHOTO))
             .andExpect(jsonPath("$.nameInBankAccount").value(DEFAULT_NAME_IN_BANK_ACCOUNT))
             .andExpect(jsonPath("$.dateOfTransfer").value(DEFAULT_DATE_OF_TRANSFER.toString()))
             .andExpect(jsonPath("$.amountTransferred").value(DEFAULT_AMOUNT_TRANSFERRED.intValue()))
-            .andExpect(jsonPath("$.lastEdityBy").value(DEFAULT_LAST_EDITY_BY))
+            .andExpect(jsonPath("$.bankName").value(DEFAULT_BANK_NAME))
+            .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
             .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()));
     }
 
@@ -342,79 +350,79 @@ public class CustomerPaymentBankTransferResourceIT {
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByReceiptImageUrlIsEqualToSomething() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByReceiptPhotoIsEqualToSomething() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl equals to DEFAULT_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldBeFound("receiptImageUrl.equals=" + DEFAULT_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto equals to DEFAULT_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldBeFound("receiptPhoto.equals=" + DEFAULT_RECEIPT_PHOTO);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl equals to UPDATED_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptImageUrl.equals=" + UPDATED_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto equals to UPDATED_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptPhoto.equals=" + UPDATED_RECEIPT_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByReceiptImageUrlIsNotEqualToSomething() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByReceiptPhotoIsNotEqualToSomething() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl not equals to DEFAULT_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptImageUrl.notEquals=" + DEFAULT_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto not equals to DEFAULT_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptPhoto.notEquals=" + DEFAULT_RECEIPT_PHOTO);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl not equals to UPDATED_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldBeFound("receiptImageUrl.notEquals=" + UPDATED_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto not equals to UPDATED_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldBeFound("receiptPhoto.notEquals=" + UPDATED_RECEIPT_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByReceiptImageUrlIsInShouldWork() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByReceiptPhotoIsInShouldWork() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl in DEFAULT_RECEIPT_IMAGE_URL or UPDATED_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldBeFound("receiptImageUrl.in=" + DEFAULT_RECEIPT_IMAGE_URL + "," + UPDATED_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto in DEFAULT_RECEIPT_PHOTO or UPDATED_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldBeFound("receiptPhoto.in=" + DEFAULT_RECEIPT_PHOTO + "," + UPDATED_RECEIPT_PHOTO);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl equals to UPDATED_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptImageUrl.in=" + UPDATED_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto equals to UPDATED_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptPhoto.in=" + UPDATED_RECEIPT_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByReceiptImageUrlIsNullOrNotNull() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByReceiptPhotoIsNullOrNotNull() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl is not null
-        defaultCustomerPaymentBankTransferShouldBeFound("receiptImageUrl.specified=true");
+        // Get all the customerPaymentBankTransferList where receiptPhoto is not null
+        defaultCustomerPaymentBankTransferShouldBeFound("receiptPhoto.specified=true");
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl is null
-        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptImageUrl.specified=false");
+        // Get all the customerPaymentBankTransferList where receiptPhoto is null
+        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptPhoto.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByReceiptImageUrlContainsSomething() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByReceiptPhotoContainsSomething() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl contains DEFAULT_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldBeFound("receiptImageUrl.contains=" + DEFAULT_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto contains DEFAULT_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldBeFound("receiptPhoto.contains=" + DEFAULT_RECEIPT_PHOTO);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl contains UPDATED_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptImageUrl.contains=" + UPDATED_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto contains UPDATED_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptPhoto.contains=" + UPDATED_RECEIPT_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByReceiptImageUrlNotContainsSomething() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByReceiptPhotoNotContainsSomething() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl does not contain DEFAULT_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptImageUrl.doesNotContain=" + DEFAULT_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto does not contain DEFAULT_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldNotBeFound("receiptPhoto.doesNotContain=" + DEFAULT_RECEIPT_PHOTO);
 
-        // Get all the customerPaymentBankTransferList where receiptImageUrl does not contain UPDATED_RECEIPT_IMAGE_URL
-        defaultCustomerPaymentBankTransferShouldBeFound("receiptImageUrl.doesNotContain=" + UPDATED_RECEIPT_IMAGE_URL);
+        // Get all the customerPaymentBankTransferList where receiptPhoto does not contain UPDATED_RECEIPT_PHOTO
+        defaultCustomerPaymentBankTransferShouldBeFound("receiptPhoto.doesNotContain=" + UPDATED_RECEIPT_PHOTO);
     }
 
 
@@ -655,79 +663,157 @@ public class CustomerPaymentBankTransferResourceIT {
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByLastEdityByIsEqualToSomething() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByBankNameIsEqualToSomething() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy equals to DEFAULT_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldBeFound("lastEdityBy.equals=" + DEFAULT_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName equals to DEFAULT_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldBeFound("bankName.equals=" + DEFAULT_BANK_NAME);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy equals to UPDATED_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEdityBy.equals=" + UPDATED_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName equals to UPDATED_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldNotBeFound("bankName.equals=" + UPDATED_BANK_NAME);
     }
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByLastEdityByIsNotEqualToSomething() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByBankNameIsNotEqualToSomething() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy not equals to DEFAULT_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEdityBy.notEquals=" + DEFAULT_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName not equals to DEFAULT_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldNotBeFound("bankName.notEquals=" + DEFAULT_BANK_NAME);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy not equals to UPDATED_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldBeFound("lastEdityBy.notEquals=" + UPDATED_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName not equals to UPDATED_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldBeFound("bankName.notEquals=" + UPDATED_BANK_NAME);
     }
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByLastEdityByIsInShouldWork() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByBankNameIsInShouldWork() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy in DEFAULT_LAST_EDITY_BY or UPDATED_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldBeFound("lastEdityBy.in=" + DEFAULT_LAST_EDITY_BY + "," + UPDATED_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName in DEFAULT_BANK_NAME or UPDATED_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldBeFound("bankName.in=" + DEFAULT_BANK_NAME + "," + UPDATED_BANK_NAME);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy equals to UPDATED_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEdityBy.in=" + UPDATED_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName equals to UPDATED_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldNotBeFound("bankName.in=" + UPDATED_BANK_NAME);
     }
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByLastEdityByIsNullOrNotNull() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByBankNameIsNullOrNotNull() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy is not null
-        defaultCustomerPaymentBankTransferShouldBeFound("lastEdityBy.specified=true");
+        // Get all the customerPaymentBankTransferList where bankName is not null
+        defaultCustomerPaymentBankTransferShouldBeFound("bankName.specified=true");
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy is null
-        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEdityBy.specified=false");
+        // Get all the customerPaymentBankTransferList where bankName is null
+        defaultCustomerPaymentBankTransferShouldNotBeFound("bankName.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByLastEdityByContainsSomething() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByBankNameContainsSomething() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy contains DEFAULT_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldBeFound("lastEdityBy.contains=" + DEFAULT_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName contains DEFAULT_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldBeFound("bankName.contains=" + DEFAULT_BANK_NAME);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy contains UPDATED_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEdityBy.contains=" + UPDATED_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName contains UPDATED_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldNotBeFound("bankName.contains=" + UPDATED_BANK_NAME);
     }
 
     @Test
     @Transactional
-    public void getAllCustomerPaymentBankTransfersByLastEdityByNotContainsSomething() throws Exception {
+    public void getAllCustomerPaymentBankTransfersByBankNameNotContainsSomething() throws Exception {
         // Initialize the database
         customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy does not contain DEFAULT_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEdityBy.doesNotContain=" + DEFAULT_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName does not contain DEFAULT_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldNotBeFound("bankName.doesNotContain=" + DEFAULT_BANK_NAME);
 
-        // Get all the customerPaymentBankTransferList where lastEdityBy does not contain UPDATED_LAST_EDITY_BY
-        defaultCustomerPaymentBankTransferShouldBeFound("lastEdityBy.doesNotContain=" + UPDATED_LAST_EDITY_BY);
+        // Get all the customerPaymentBankTransferList where bankName does not contain UPDATED_BANK_NAME
+        defaultCustomerPaymentBankTransferShouldBeFound("bankName.doesNotContain=" + UPDATED_BANK_NAME);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCustomerPaymentBankTransfersByLastEditedByIsEqualToSomething() throws Exception {
+        // Initialize the database
+        customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy equals to DEFAULT_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldBeFound("lastEditedBy.equals=" + DEFAULT_LAST_EDITED_BY);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy equals to UPDATED_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEditedBy.equals=" + UPDATED_LAST_EDITED_BY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomerPaymentBankTransfersByLastEditedByIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy not equals to DEFAULT_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEditedBy.notEquals=" + DEFAULT_LAST_EDITED_BY);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy not equals to UPDATED_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldBeFound("lastEditedBy.notEquals=" + UPDATED_LAST_EDITED_BY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomerPaymentBankTransfersByLastEditedByIsInShouldWork() throws Exception {
+        // Initialize the database
+        customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy in DEFAULT_LAST_EDITED_BY or UPDATED_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldBeFound("lastEditedBy.in=" + DEFAULT_LAST_EDITED_BY + "," + UPDATED_LAST_EDITED_BY);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy equals to UPDATED_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEditedBy.in=" + UPDATED_LAST_EDITED_BY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomerPaymentBankTransfersByLastEditedByIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy is not null
+        defaultCustomerPaymentBankTransferShouldBeFound("lastEditedBy.specified=true");
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy is null
+        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEditedBy.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllCustomerPaymentBankTransfersByLastEditedByContainsSomething() throws Exception {
+        // Initialize the database
+        customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy contains DEFAULT_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldBeFound("lastEditedBy.contains=" + DEFAULT_LAST_EDITED_BY);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy contains UPDATED_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEditedBy.contains=" + UPDATED_LAST_EDITED_BY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomerPaymentBankTransfersByLastEditedByNotContainsSomething() throws Exception {
+        // Initialize the database
+        customerPaymentBankTransferRepository.saveAndFlush(customerPaymentBankTransfer);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy does not contain DEFAULT_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldNotBeFound("lastEditedBy.doesNotContain=" + DEFAULT_LAST_EDITED_BY);
+
+        // Get all the customerPaymentBankTransferList where lastEditedBy does not contain UPDATED_LAST_EDITED_BY
+        defaultCustomerPaymentBankTransferShouldBeFound("lastEditedBy.doesNotContain=" + UPDATED_LAST_EDITED_BY);
     }
 
 
@@ -830,11 +916,12 @@ public class CustomerPaymentBankTransferResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(customerPaymentBankTransfer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].receiptImageUrl").value(hasItem(DEFAULT_RECEIPT_IMAGE_URL)))
+            .andExpect(jsonPath("$.[*].receiptPhoto").value(hasItem(DEFAULT_RECEIPT_PHOTO)))
             .andExpect(jsonPath("$.[*].nameInBankAccount").value(hasItem(DEFAULT_NAME_IN_BANK_ACCOUNT)))
             .andExpect(jsonPath("$.[*].dateOfTransfer").value(hasItem(DEFAULT_DATE_OF_TRANSFER.toString())))
             .andExpect(jsonPath("$.[*].amountTransferred").value(hasItem(DEFAULT_AMOUNT_TRANSFERRED.intValue())))
-            .andExpect(jsonPath("$.[*].lastEdityBy").value(hasItem(DEFAULT_LAST_EDITY_BY)))
+            .andExpect(jsonPath("$.[*].bankName").value(hasItem(DEFAULT_BANK_NAME)))
+            .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
 
         // Check, that the count call also returns 1
@@ -882,11 +969,12 @@ public class CustomerPaymentBankTransferResourceIT {
         // Disconnect from session so that the updates on updatedCustomerPaymentBankTransfer are not directly saved in db
         em.detach(updatedCustomerPaymentBankTransfer);
         updatedCustomerPaymentBankTransfer
-            .receiptImageUrl(UPDATED_RECEIPT_IMAGE_URL)
+            .receiptPhoto(UPDATED_RECEIPT_PHOTO)
             .nameInBankAccount(UPDATED_NAME_IN_BANK_ACCOUNT)
             .dateOfTransfer(UPDATED_DATE_OF_TRANSFER)
             .amountTransferred(UPDATED_AMOUNT_TRANSFERRED)
-            .lastEdityBy(UPDATED_LAST_EDITY_BY)
+            .bankName(UPDATED_BANK_NAME)
+            .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
         CustomerPaymentBankTransferDTO customerPaymentBankTransferDTO = customerPaymentBankTransferMapper.toDto(updatedCustomerPaymentBankTransfer);
 
@@ -899,11 +987,12 @@ public class CustomerPaymentBankTransferResourceIT {
         List<CustomerPaymentBankTransfer> customerPaymentBankTransferList = customerPaymentBankTransferRepository.findAll();
         assertThat(customerPaymentBankTransferList).hasSize(databaseSizeBeforeUpdate);
         CustomerPaymentBankTransfer testCustomerPaymentBankTransfer = customerPaymentBankTransferList.get(customerPaymentBankTransferList.size() - 1);
-        assertThat(testCustomerPaymentBankTransfer.getReceiptImageUrl()).isEqualTo(UPDATED_RECEIPT_IMAGE_URL);
+        assertThat(testCustomerPaymentBankTransfer.getReceiptPhoto()).isEqualTo(UPDATED_RECEIPT_PHOTO);
         assertThat(testCustomerPaymentBankTransfer.getNameInBankAccount()).isEqualTo(UPDATED_NAME_IN_BANK_ACCOUNT);
         assertThat(testCustomerPaymentBankTransfer.getDateOfTransfer()).isEqualTo(UPDATED_DATE_OF_TRANSFER);
         assertThat(testCustomerPaymentBankTransfer.getAmountTransferred()).isEqualTo(UPDATED_AMOUNT_TRANSFERRED);
-        assertThat(testCustomerPaymentBankTransfer.getLastEdityBy()).isEqualTo(UPDATED_LAST_EDITY_BY);
+        assertThat(testCustomerPaymentBankTransfer.getBankName()).isEqualTo(UPDATED_BANK_NAME);
+        assertThat(testCustomerPaymentBankTransfer.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
         assertThat(testCustomerPaymentBankTransfer.getLastEditedWhen()).isEqualTo(UPDATED_LAST_EDITED_WHEN);
     }
 

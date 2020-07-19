@@ -45,17 +45,17 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "zone",
+      "otherEntityName": "towns",
       "otherEntityRelationshipName": "shippingFeeChart",
-      "relationshipName": "sourceZone",
-      "otherEntityField": "code"
+      "relationshipName": "sourceTown",
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "zone",
+      "otherEntityName": "towns",
       "otherEntityRelationshipName": "shippingFeeChart",
-      "relationshipName": "destinationZone",
-      "otherEntityField": "code"
+      "relationshipName": "destinationTown",
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
@@ -65,7 +65,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617170404",
+  "changelogDate": "20200718085912",
   "entityTableName": "shipping_fee_chart",
   "dto": "mapstruct",
   "pagination": "no",

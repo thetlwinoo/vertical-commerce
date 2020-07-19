@@ -3,50 +3,65 @@
   "fields": [
     {
       "fieldName": "blobId",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "thumbnailUrl",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "originalUrl",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "bannerTallUrl",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "bannerWideUrl",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "circleUrl",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "sharpenedUrl",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "squareUrl",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "watermarkUrl",
-      "fieldType": "String"
     },
     {
       "fieldName": "priority",
       "fieldType": "Integer"
     },
     {
+      "fieldName": "uid",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "size",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "fileName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "url",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "thumbUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "percent",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "defaultInd",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "activeFlag",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "lastModified",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
@@ -56,9 +71,23 @@
       "otherEntityRelationshipName": "photoList",
       "relationshipName": "stockItem",
       "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "suppliers",
+      "otherEntityRelationshipName": "bannerList",
+      "relationshipName": "supplierBanner",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "suppliers",
+      "otherEntityRelationshipName": "documentList",
+      "relationshipName": "supplierDocument",
+      "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617165204",
+  "changelogDate": "20200718084812",
   "entityTableName": "photos",
   "dto": "mapstruct",
   "pagination": "no",

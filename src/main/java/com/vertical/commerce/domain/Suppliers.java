@@ -1,5 +1,6 @@
 package com.vertical.commerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -49,8 +50,7 @@ public class Suppliers implements Serializable {
     @Column(name = "bank_international_code")
     private String bankInternationalCode;
 
-    @NotNull
-    @Column(name = "payment_days", nullable = false)
+    @Column(name = "payment_days")
     private Integer paymentDays;
 
     @Column(name = "internal_comments")
@@ -60,11 +60,20 @@ public class Suppliers implements Serializable {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
+    @Column(name = "email_address")
+    private String emailAddress;
+
+    @Column(name = "nric")
+    private String nric;
+
+    @Column(name = "company_registration_no")
+    private String companyRegistrationNo;
+
     @Column(name = "fax_number")
     private String faxNumber;
 
     @Column(name = "website_url")
-    private String websiteURL;
+    private String websiteUrl;
 
     @Column(name = "web_service_url")
     private String webServiceUrl;
@@ -72,26 +81,49 @@ public class Suppliers implements Serializable {
     @Column(name = "credit_rating")
     private Integer creditRating;
 
-    @Column(name = "active_flag")
+    @Column(name = "official_store_ind")
+    private Boolean officialStoreInd;
+
+    @Column(name = "store_name")
+    private String storeName;
+
+    @Column(name = "logo")
+    private String logo;
+
+    @Column(name = "nric_front_photo")
+    private String nricFrontPhoto;
+
+    @Column(name = "nric_back_photo")
+    private String nricBackPhoto;
+
+    @NotNull
+    @Column(name = "bank_book_photo", nullable = false)
+    private String bankBookPhoto;
+
+    @Column(name = "company_registration_photo")
+    private String companyRegistrationPhoto;
+
+    @Column(name = "distributor_certificate_photo")
+    private String distributorCertificatePhoto;
+
+    @NotNull
+    @Column(name = "active_flag", nullable = false)
     private Boolean activeFlag;
-
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
-
-    @Column(name = "pickup_same_as_head_office")
-    private Boolean pickupSameAsHeadOffice;
 
     @NotNull
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
 
-    @NotNull
-    @Column(name = "valid_to", nullable = false)
+    @Column(name = "valid_to")
     private Instant validTo;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private People people;
+    @OneToMany(mappedBy = "supplierBanner")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Photos> bannerLists = new HashSet<>();
+
+    @OneToMany(mappedBy = "supplierDocument")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Photos> documentLists = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = "suppliers", allowSetters = true)
@@ -105,12 +137,25 @@ public class Suppliers implements Serializable {
     @JsonIgnoreProperties(value = "suppliers", allowSetters = true)
     private Addresses headOfficeAddress;
 
+    @ManyToOne
+    @JsonIgnoreProperties(value = "suppliers", allowSetters = true)
+    private Addresses returnAddress;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "suppliers", allowSetters = true)
+    private People contactPerson;
+
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(name = "suppliers_delivery_method",
                joinColumns = @JoinColumn(name = "suppliers_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "delivery_method_id", referencedColumnName = "id"))
     private Set<DeliveryMethods> deliveryMethods = new HashSet<>();
+
+    @ManyToMany(mappedBy = "suppliers")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnore
+    private Set<People> people = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -251,6 +296,45 @@ public class Suppliers implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public Suppliers emailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+        return this;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getNric() {
+        return nric;
+    }
+
+    public Suppliers nric(String nric) {
+        this.nric = nric;
+        return this;
+    }
+
+    public void setNric(String nric) {
+        this.nric = nric;
+    }
+
+    public String getCompanyRegistrationNo() {
+        return companyRegistrationNo;
+    }
+
+    public Suppliers companyRegistrationNo(String companyRegistrationNo) {
+        this.companyRegistrationNo = companyRegistrationNo;
+        return this;
+    }
+
+    public void setCompanyRegistrationNo(String companyRegistrationNo) {
+        this.companyRegistrationNo = companyRegistrationNo;
+    }
+
     public String getFaxNumber() {
         return faxNumber;
     }
@@ -264,17 +348,17 @@ public class Suppliers implements Serializable {
         this.faxNumber = faxNumber;
     }
 
-    public String getWebsiteURL() {
-        return websiteURL;
+    public String getWebsiteUrl() {
+        return websiteUrl;
     }
 
-    public Suppliers websiteURL(String websiteURL) {
-        this.websiteURL = websiteURL;
+    public Suppliers websiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
         return this;
     }
 
-    public void setWebsiteURL(String websiteURL) {
-        this.websiteURL = websiteURL;
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
     }
 
     public String getWebServiceUrl() {
@@ -303,6 +387,110 @@ public class Suppliers implements Serializable {
         this.creditRating = creditRating;
     }
 
+    public Boolean isOfficialStoreInd() {
+        return officialStoreInd;
+    }
+
+    public Suppliers officialStoreInd(Boolean officialStoreInd) {
+        this.officialStoreInd = officialStoreInd;
+        return this;
+    }
+
+    public void setOfficialStoreInd(Boolean officialStoreInd) {
+        this.officialStoreInd = officialStoreInd;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public Suppliers storeName(String storeName) {
+        this.storeName = storeName;
+        return this;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public Suppliers logo(String logo) {
+        this.logo = logo;
+        return this;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getNricFrontPhoto() {
+        return nricFrontPhoto;
+    }
+
+    public Suppliers nricFrontPhoto(String nricFrontPhoto) {
+        this.nricFrontPhoto = nricFrontPhoto;
+        return this;
+    }
+
+    public void setNricFrontPhoto(String nricFrontPhoto) {
+        this.nricFrontPhoto = nricFrontPhoto;
+    }
+
+    public String getNricBackPhoto() {
+        return nricBackPhoto;
+    }
+
+    public Suppliers nricBackPhoto(String nricBackPhoto) {
+        this.nricBackPhoto = nricBackPhoto;
+        return this;
+    }
+
+    public void setNricBackPhoto(String nricBackPhoto) {
+        this.nricBackPhoto = nricBackPhoto;
+    }
+
+    public String getBankBookPhoto() {
+        return bankBookPhoto;
+    }
+
+    public Suppliers bankBookPhoto(String bankBookPhoto) {
+        this.bankBookPhoto = bankBookPhoto;
+        return this;
+    }
+
+    public void setBankBookPhoto(String bankBookPhoto) {
+        this.bankBookPhoto = bankBookPhoto;
+    }
+
+    public String getCompanyRegistrationPhoto() {
+        return companyRegistrationPhoto;
+    }
+
+    public Suppliers companyRegistrationPhoto(String companyRegistrationPhoto) {
+        this.companyRegistrationPhoto = companyRegistrationPhoto;
+        return this;
+    }
+
+    public void setCompanyRegistrationPhoto(String companyRegistrationPhoto) {
+        this.companyRegistrationPhoto = companyRegistrationPhoto;
+    }
+
+    public String getDistributorCertificatePhoto() {
+        return distributorCertificatePhoto;
+    }
+
+    public Suppliers distributorCertificatePhoto(String distributorCertificatePhoto) {
+        this.distributorCertificatePhoto = distributorCertificatePhoto;
+        return this;
+    }
+
+    public void setDistributorCertificatePhoto(String distributorCertificatePhoto) {
+        this.distributorCertificatePhoto = distributorCertificatePhoto;
+    }
+
     public Boolean isActiveFlag() {
         return activeFlag;
     }
@@ -314,32 +502,6 @@ public class Suppliers implements Serializable {
 
     public void setActiveFlag(Boolean activeFlag) {
         this.activeFlag = activeFlag;
-    }
-
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public Suppliers thumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-        return this;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public Boolean isPickupSameAsHeadOffice() {
-        return pickupSameAsHeadOffice;
-    }
-
-    public Suppliers pickupSameAsHeadOffice(Boolean pickupSameAsHeadOffice) {
-        this.pickupSameAsHeadOffice = pickupSameAsHeadOffice;
-        return this;
-    }
-
-    public void setPickupSameAsHeadOffice(Boolean pickupSameAsHeadOffice) {
-        this.pickupSameAsHeadOffice = pickupSameAsHeadOffice;
     }
 
     public Instant getValidFrom() {
@@ -368,17 +530,54 @@ public class Suppliers implements Serializable {
         this.validTo = validTo;
     }
 
-    public People getPeople() {
-        return people;
+    public Set<Photos> getBannerLists() {
+        return bannerLists;
     }
 
-    public Suppliers people(People people) {
-        this.people = people;
+    public Suppliers bannerLists(Set<Photos> photos) {
+        this.bannerLists = photos;
         return this;
     }
 
-    public void setPeople(People people) {
-        this.people = people;
+    public Suppliers addBannerList(Photos photos) {
+        this.bannerLists.add(photos);
+        photos.setSupplierBanner(this);
+        return this;
+    }
+
+    public Suppliers removeBannerList(Photos photos) {
+        this.bannerLists.remove(photos);
+        photos.setSupplierBanner(null);
+        return this;
+    }
+
+    public void setBannerLists(Set<Photos> photos) {
+        this.bannerLists = photos;
+    }
+
+    public Set<Photos> getDocumentLists() {
+        return documentLists;
+    }
+
+    public Suppliers documentLists(Set<Photos> photos) {
+        this.documentLists = photos;
+        return this;
+    }
+
+    public Suppliers addDocumentList(Photos photos) {
+        this.documentLists.add(photos);
+        photos.setSupplierDocument(this);
+        return this;
+    }
+
+    public Suppliers removeDocumentList(Photos photos) {
+        this.documentLists.remove(photos);
+        photos.setSupplierDocument(null);
+        return this;
+    }
+
+    public void setDocumentLists(Set<Photos> photos) {
+        this.documentLists = photos;
     }
 
     public SupplierCategories getSupplierCategory() {
@@ -420,6 +619,32 @@ public class Suppliers implements Serializable {
         this.headOfficeAddress = addresses;
     }
 
+    public Addresses getReturnAddress() {
+        return returnAddress;
+    }
+
+    public Suppliers returnAddress(Addresses addresses) {
+        this.returnAddress = addresses;
+        return this;
+    }
+
+    public void setReturnAddress(Addresses addresses) {
+        this.returnAddress = addresses;
+    }
+
+    public People getContactPerson() {
+        return contactPerson;
+    }
+
+    public Suppliers contactPerson(People people) {
+        this.contactPerson = people;
+        return this;
+    }
+
+    public void setContactPerson(People people) {
+        this.contactPerson = people;
+    }
+
     public Set<DeliveryMethods> getDeliveryMethods() {
         return deliveryMethods;
     }
@@ -443,6 +668,31 @@ public class Suppliers implements Serializable {
 
     public void setDeliveryMethods(Set<DeliveryMethods> deliveryMethods) {
         this.deliveryMethods = deliveryMethods;
+    }
+
+    public Set<People> getPeople() {
+        return people;
+    }
+
+    public Suppliers people(Set<People> people) {
+        this.people = people;
+        return this;
+    }
+
+    public Suppliers addPeople(People people) {
+        this.people.add(people);
+        people.getSuppliers().add(this);
+        return this;
+    }
+
+    public Suppliers removePeople(People people) {
+        this.people.remove(people);
+        people.getSuppliers().remove(this);
+        return this;
+    }
+
+    public void setPeople(Set<People> people) {
+        this.people = people;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -477,13 +727,22 @@ public class Suppliers implements Serializable {
             ", paymentDays=" + getPaymentDays() +
             ", internalComments='" + getInternalComments() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", emailAddress='" + getEmailAddress() + "'" +
+            ", nric='" + getNric() + "'" +
+            ", companyRegistrationNo='" + getCompanyRegistrationNo() + "'" +
             ", faxNumber='" + getFaxNumber() + "'" +
-            ", websiteURL='" + getWebsiteURL() + "'" +
+            ", websiteUrl='" + getWebsiteUrl() + "'" +
             ", webServiceUrl='" + getWebServiceUrl() + "'" +
             ", creditRating=" + getCreditRating() +
+            ", officialStoreInd='" + isOfficialStoreInd() + "'" +
+            ", storeName='" + getStoreName() + "'" +
+            ", logo='" + getLogo() + "'" +
+            ", nricFrontPhoto='" + getNricFrontPhoto() + "'" +
+            ", nricBackPhoto='" + getNricBackPhoto() + "'" +
+            ", bankBookPhoto='" + getBankBookPhoto() + "'" +
+            ", companyRegistrationPhoto='" + getCompanyRegistrationPhoto() + "'" +
+            ", distributorCertificatePhoto='" + getDistributorCertificatePhoto() + "'" +
             ", activeFlag='" + isActiveFlag() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
-            ", pickupSameAsHeadOffice='" + isPickupSameAsHeadOffice() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

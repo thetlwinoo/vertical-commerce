@@ -40,9 +40,6 @@ public class DeliveryMethods implements Serializable {
     @Column(name = "expected_max_arrival_days")
     private Integer expectedMaxArrivalDays;
 
-    @Column(name = "active_ind")
-    private Boolean activeInd;
-
     @Column(name = "default_ind")
     private Boolean defaultInd;
 
@@ -53,8 +50,7 @@ public class DeliveryMethods implements Serializable {
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
 
-    @NotNull
-    @Column(name = "valid_to", nullable = false)
+    @Column(name = "valid_to")
     private Instant validTo;
 
     @ManyToMany(mappedBy = "deliveryMethods")
@@ -121,19 +117,6 @@ public class DeliveryMethods implements Serializable {
 
     public void setExpectedMaxArrivalDays(Integer expectedMaxArrivalDays) {
         this.expectedMaxArrivalDays = expectedMaxArrivalDays;
-    }
-
-    public Boolean isActiveInd() {
-        return activeInd;
-    }
-
-    public DeliveryMethods activeInd(Boolean activeInd) {
-        this.activeInd = activeInd;
-        return this;
-    }
-
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
     }
 
     public Boolean isDefaultInd() {
@@ -239,7 +222,6 @@ public class DeliveryMethods implements Serializable {
             ", thirdPartyName='" + getThirdPartyName() + "'" +
             ", expectedMinArrivalDays=" + getExpectedMinArrivalDays() +
             ", expectedMaxArrivalDays=" + getExpectedMaxArrivalDays() +
-            ", activeInd='" + isActiveInd() + "'" +
             ", defaultInd='" + isDefaultInd() + "'" +
             ", deliveryNote='" + getDeliveryNote() + "'" +
             ", validFrom='" + getValidFrom() + "'" +

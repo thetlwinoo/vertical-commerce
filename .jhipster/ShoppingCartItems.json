@@ -43,7 +43,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617165604",
+  "changelogDate": "20200718085212",
   "entityTableName": "shopping_cart_items",
   "dto": "mapstruct",
   "pagination": "no",

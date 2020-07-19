@@ -32,6 +32,11 @@ public class Products implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "culture_details")
+    private String cultureDetails;
+
     @Column(name = "handle")
     private String handle;
 
@@ -52,23 +57,32 @@ public class Products implements Serializable {
     @Column(name = "total_wishlist")
     private Integer totalWishlist;
 
-    @Column(name = "total_stars")
-    private Integer totalStars;
-
-    @Column(name = "discounted_percentage")
-    private Integer discountedPercentage;
+    @Column(name = "overall_rating")
+    private Integer overallRating;
 
     @Column(name = "preferred_ind")
     private Boolean preferredInd;
 
-    @Column(name = "available_delivery_ind")
-    private Boolean availableDeliveryInd;
+    @Column(name = "free_shipping_ind")
+    private Boolean freeShippingInd;
 
-    @Column(name = "active_ind")
-    private Boolean activeInd;
+    @Column(name = "made_in_myanmar_ind")
+    private Boolean madeInMyanmarInd;
 
     @Column(name = "questions_about_product_ind")
     private Boolean questionsAboutProductInd;
+
+    @NotNull
+    @Column(name = "release_date", nullable = false)
+    private Instant releaseDate;
+
+    @NotNull
+    @Column(name = "available_date", nullable = false)
+    private Instant availableDate;
+
+    @NotNull
+    @Column(name = "active_flag", nullable = false)
+    private Boolean activeFlag;
 
     @NotNull
     @Column(name = "last_edited_by", nullable = false)
@@ -79,16 +93,15 @@ public class Products implements Serializable {
     private Instant lastEditedWhen;
 
     @NotNull
-    @Column(name = "release_date", nullable = false)
-    private Instant releaseDate;
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
 
-    @NotNull
-    @Column(name = "available_date", nullable = false)
-    private Instant availableDate;
+    @Column(name = "valid_to")
+    private Instant validTo;
 
     @OneToOne
     @JoinColumn(unique = true)
-    private ProductDocument productDocument;
+    private ProductDocuments productDocument;
 
     @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -126,6 +139,19 @@ public class Products implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public Products cultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
+        return this;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getHandle() {
@@ -206,30 +232,17 @@ public class Products implements Serializable {
         this.totalWishlist = totalWishlist;
     }
 
-    public Integer getTotalStars() {
-        return totalStars;
+    public Integer getOverallRating() {
+        return overallRating;
     }
 
-    public Products totalStars(Integer totalStars) {
-        this.totalStars = totalStars;
+    public Products overallRating(Integer overallRating) {
+        this.overallRating = overallRating;
         return this;
     }
 
-    public void setTotalStars(Integer totalStars) {
-        this.totalStars = totalStars;
-    }
-
-    public Integer getDiscountedPercentage() {
-        return discountedPercentage;
-    }
-
-    public Products discountedPercentage(Integer discountedPercentage) {
-        this.discountedPercentage = discountedPercentage;
-        return this;
-    }
-
-    public void setDiscountedPercentage(Integer discountedPercentage) {
-        this.discountedPercentage = discountedPercentage;
+    public void setOverallRating(Integer overallRating) {
+        this.overallRating = overallRating;
     }
 
     public Boolean isPreferredInd() {
@@ -245,30 +258,30 @@ public class Products implements Serializable {
         this.preferredInd = preferredInd;
     }
 
-    public Boolean isAvailableDeliveryInd() {
-        return availableDeliveryInd;
+    public Boolean isFreeShippingInd() {
+        return freeShippingInd;
     }
 
-    public Products availableDeliveryInd(Boolean availableDeliveryInd) {
-        this.availableDeliveryInd = availableDeliveryInd;
+    public Products freeShippingInd(Boolean freeShippingInd) {
+        this.freeShippingInd = freeShippingInd;
         return this;
     }
 
-    public void setAvailableDeliveryInd(Boolean availableDeliveryInd) {
-        this.availableDeliveryInd = availableDeliveryInd;
+    public void setFreeShippingInd(Boolean freeShippingInd) {
+        this.freeShippingInd = freeShippingInd;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Boolean isMadeInMyanmarInd() {
+        return madeInMyanmarInd;
     }
 
-    public Products activeInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public Products madeInMyanmarInd(Boolean madeInMyanmarInd) {
+        this.madeInMyanmarInd = madeInMyanmarInd;
         return this;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setMadeInMyanmarInd(Boolean madeInMyanmarInd) {
+        this.madeInMyanmarInd = madeInMyanmarInd;
     }
 
     public Boolean isQuestionsAboutProductInd() {
@@ -282,32 +295,6 @@ public class Products implements Serializable {
 
     public void setQuestionsAboutProductInd(Boolean questionsAboutProductInd) {
         this.questionsAboutProductInd = questionsAboutProductInd;
-    }
-
-    public String getLastEditedBy() {
-        return lastEditedBy;
-    }
-
-    public Products lastEditedBy(String lastEditedBy) {
-        this.lastEditedBy = lastEditedBy;
-        return this;
-    }
-
-    public void setLastEditedBy(String lastEditedBy) {
-        this.lastEditedBy = lastEditedBy;
-    }
-
-    public Instant getLastEditedWhen() {
-        return lastEditedWhen;
-    }
-
-    public Products lastEditedWhen(Instant lastEditedWhen) {
-        this.lastEditedWhen = lastEditedWhen;
-        return this;
-    }
-
-    public void setLastEditedWhen(Instant lastEditedWhen) {
-        this.lastEditedWhen = lastEditedWhen;
     }
 
     public Instant getReleaseDate() {
@@ -336,17 +323,82 @@ public class Products implements Serializable {
         this.availableDate = availableDate;
     }
 
-    public ProductDocument getProductDocument() {
-        return productDocument;
+    public Boolean isActiveFlag() {
+        return activeFlag;
     }
 
-    public Products productDocument(ProductDocument productDocument) {
-        this.productDocument = productDocument;
+    public Products activeFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
         return this;
     }
 
-    public void setProductDocument(ProductDocument productDocument) {
-        this.productDocument = productDocument;
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public String getLastEditedBy() {
+        return lastEditedBy;
+    }
+
+    public Products lastEditedBy(String lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
+        return this;
+    }
+
+    public void setLastEditedBy(String lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
+    }
+
+    public Instant getLastEditedWhen() {
+        return lastEditedWhen;
+    }
+
+    public Products lastEditedWhen(Instant lastEditedWhen) {
+        this.lastEditedWhen = lastEditedWhen;
+        return this;
+    }
+
+    public void setLastEditedWhen(Instant lastEditedWhen) {
+        this.lastEditedWhen = lastEditedWhen;
+    }
+
+    public Instant getValidFrom() {
+        return validFrom;
+    }
+
+    public Products validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+        return this;
+    }
+
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public Products validTo(Instant validTo) {
+        this.validTo = validTo;
+        return this;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
+    }
+
+    public ProductDocuments getProductDocument() {
+        return productDocument;
+    }
+
+    public Products productDocument(ProductDocuments productDocuments) {
+        this.productDocument = productDocuments;
+        return this;
+    }
+
+    public void setProductDocument(ProductDocuments productDocuments) {
+        this.productDocument = productDocuments;
     }
 
     public Set<StockItems> getStockItemLists() {
@@ -436,22 +488,25 @@ public class Products implements Serializable {
         return "Products{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", handle='" + getHandle() + "'" +
             ", searchDetails='" + getSearchDetails() + "'" +
             ", productNumber='" + getProductNumber() + "'" +
             ", sellCount=" + getSellCount() +
             ", productDetails='" + getProductDetails() + "'" +
             ", totalWishlist=" + getTotalWishlist() +
-            ", totalStars=" + getTotalStars() +
-            ", discountedPercentage=" + getDiscountedPercentage() +
+            ", overallRating=" + getOverallRating() +
             ", preferredInd='" + isPreferredInd() + "'" +
-            ", availableDeliveryInd='" + isAvailableDeliveryInd() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", freeShippingInd='" + isFreeShippingInd() + "'" +
+            ", madeInMyanmarInd='" + isMadeInMyanmarInd() + "'" +
             ", questionsAboutProductInd='" + isQuestionsAboutProductInd() + "'" +
-            ", lastEditedBy='" + getLastEditedBy() + "'" +
-            ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", releaseDate='" + getReleaseDate() + "'" +
             ", availableDate='" + getAvailableDate() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
+            ", lastEditedBy='" + getLastEditedBy() + "'" +
+            ", lastEditedWhen='" + getLastEditedWhen() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

@@ -60,11 +60,11 @@ public class ShippingFeeChart implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "shippingFeeCharts", allowSetters = true)
-    private Zone sourceZone;
+    private Towns sourceTown;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "shippingFeeCharts", allowSetters = true)
-    private Zone destinationZone;
+    private Towns destinationTown;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "shippingFeeCharts", allowSetters = true)
@@ -183,30 +183,30 @@ public class ShippingFeeChart implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public Zone getSourceZone() {
-        return sourceZone;
+    public Towns getSourceTown() {
+        return sourceTown;
     }
 
-    public ShippingFeeChart sourceZone(Zone zone) {
-        this.sourceZone = zone;
+    public ShippingFeeChart sourceTown(Towns towns) {
+        this.sourceTown = towns;
         return this;
     }
 
-    public void setSourceZone(Zone zone) {
-        this.sourceZone = zone;
+    public void setSourceTown(Towns towns) {
+        this.sourceTown = towns;
     }
 
-    public Zone getDestinationZone() {
-        return destinationZone;
+    public Towns getDestinationTown() {
+        return destinationTown;
     }
 
-    public ShippingFeeChart destinationZone(Zone zone) {
-        this.destinationZone = zone;
+    public ShippingFeeChart destinationTown(Towns towns) {
+        this.destinationTown = towns;
         return this;
     }
 
-    public void setDestinationZone(Zone zone) {
-        this.destinationZone = zone;
+    public void setDestinationTown(Towns towns) {
+        this.destinationTown = towns;
     }
 
     public DeliveryMethods getDeliveryMethod() {

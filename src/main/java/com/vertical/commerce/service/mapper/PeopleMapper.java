@@ -9,14 +9,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link People} and its DTO {@link PeopleDTO}.
  */
-@Mapper(componentModel = "spring", uses = {PhotosMapper.class})
+@Mapper(componentModel = "spring", uses = {SuppliersMapper.class})
 public interface PeopleMapper extends EntityMapper<PeopleDTO, People> {
 
-    @Mapping(source = "profile.id", target = "profileId")
-    @Mapping(source = "profile.thumbnailUrl", target = "profileThumbnailUrl")
-    PeopleDTO toDto(People people);
 
-    @Mapping(source = "profileId", target = "profile")
+    @Mapping(target = "removeSupplier", ignore = true)
     @Mapping(target = "cart", ignore = true)
     @Mapping(target = "wishlist", ignore = true)
     @Mapping(target = "compare", ignore = true)

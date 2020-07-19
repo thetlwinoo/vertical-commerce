@@ -103,6 +103,7 @@ class StateProvincesGatlingTest extends Simulation {
                 "id":null
                 , "code":"SAMPLE_TEXT"
                 , "name":"SAMPLE_TEXT"
+                , "cultureDetails":null
                 , "salesTerritory":"SAMPLE_TEXT"
                 , "border":"SAMPLE_TEXT"
                 , "latestRecordedPopulation":null

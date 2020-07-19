@@ -11,7 +11,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200617153604",
+  "changelogDate": "20200718071812",
   "entityTableName": "tax_class",
   "dto": "mapstruct",
   "pagination": "no",

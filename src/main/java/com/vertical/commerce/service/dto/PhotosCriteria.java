@@ -10,6 +10,7 @@ import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+import io.github.jhipster.service.filter.InstantFilter;
 
 /**
  * Criteria class for the {@link com.vertical.commerce.domain.Photos} entity. This class is used
@@ -28,27 +29,39 @@ public class PhotosCriteria implements Serializable, Criteria {
 
     private StringFilter blobId;
 
-    private StringFilter thumbnailUrl;
-
-    private StringFilter originalUrl;
-
-    private StringFilter bannerTallUrl;
-
-    private StringFilter bannerWideUrl;
-
-    private StringFilter circleUrl;
-
-    private StringFilter sharpenedUrl;
-
-    private StringFilter squareUrl;
-
-    private StringFilter watermarkUrl;
-
     private IntegerFilter priority;
+
+    private StringFilter uid;
+
+    private IntegerFilter size;
+
+    private StringFilter name;
+
+    private StringFilter fileName;
+
+    private StringFilter url;
+
+    private StringFilter status;
+
+    private StringFilter thumbUrl;
+
+    private IntegerFilter percent;
+
+    private StringFilter type;
 
     private BooleanFilter defaultInd;
 
+    private BooleanFilter activeFlag;
+
+    private StringFilter lastModified;
+
+    private InstantFilter lastModifiedDate;
+
     private LongFilter stockItemId;
+
+    private LongFilter supplierBannerId;
+
+    private LongFilter supplierDocumentId;
 
     public PhotosCriteria() {
     }
@@ -56,17 +69,23 @@ public class PhotosCriteria implements Serializable, Criteria {
     public PhotosCriteria(PhotosCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.blobId = other.blobId == null ? null : other.blobId.copy();
-        this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
-        this.originalUrl = other.originalUrl == null ? null : other.originalUrl.copy();
-        this.bannerTallUrl = other.bannerTallUrl == null ? null : other.bannerTallUrl.copy();
-        this.bannerWideUrl = other.bannerWideUrl == null ? null : other.bannerWideUrl.copy();
-        this.circleUrl = other.circleUrl == null ? null : other.circleUrl.copy();
-        this.sharpenedUrl = other.sharpenedUrl == null ? null : other.sharpenedUrl.copy();
-        this.squareUrl = other.squareUrl == null ? null : other.squareUrl.copy();
-        this.watermarkUrl = other.watermarkUrl == null ? null : other.watermarkUrl.copy();
         this.priority = other.priority == null ? null : other.priority.copy();
+        this.uid = other.uid == null ? null : other.uid.copy();
+        this.size = other.size == null ? null : other.size.copy();
+        this.name = other.name == null ? null : other.name.copy();
+        this.fileName = other.fileName == null ? null : other.fileName.copy();
+        this.url = other.url == null ? null : other.url.copy();
+        this.status = other.status == null ? null : other.status.copy();
+        this.thumbUrl = other.thumbUrl == null ? null : other.thumbUrl.copy();
+        this.percent = other.percent == null ? null : other.percent.copy();
+        this.type = other.type == null ? null : other.type.copy();
         this.defaultInd = other.defaultInd == null ? null : other.defaultInd.copy();
+        this.activeFlag = other.activeFlag == null ? null : other.activeFlag.copy();
+        this.lastModified = other.lastModified == null ? null : other.lastModified.copy();
+        this.lastModifiedDate = other.lastModifiedDate == null ? null : other.lastModifiedDate.copy();
         this.stockItemId = other.stockItemId == null ? null : other.stockItemId.copy();
+        this.supplierBannerId = other.supplierBannerId == null ? null : other.supplierBannerId.copy();
+        this.supplierDocumentId = other.supplierDocumentId == null ? null : other.supplierDocumentId.copy();
     }
 
     @Override
@@ -90,76 +109,84 @@ public class PhotosCriteria implements Serializable, Criteria {
         this.blobId = blobId;
     }
 
-    public StringFilter getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(StringFilter thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public StringFilter getOriginalUrl() {
-        return originalUrl;
-    }
-
-    public void setOriginalUrl(StringFilter originalUrl) {
-        this.originalUrl = originalUrl;
-    }
-
-    public StringFilter getBannerTallUrl() {
-        return bannerTallUrl;
-    }
-
-    public void setBannerTallUrl(StringFilter bannerTallUrl) {
-        this.bannerTallUrl = bannerTallUrl;
-    }
-
-    public StringFilter getBannerWideUrl() {
-        return bannerWideUrl;
-    }
-
-    public void setBannerWideUrl(StringFilter bannerWideUrl) {
-        this.bannerWideUrl = bannerWideUrl;
-    }
-
-    public StringFilter getCircleUrl() {
-        return circleUrl;
-    }
-
-    public void setCircleUrl(StringFilter circleUrl) {
-        this.circleUrl = circleUrl;
-    }
-
-    public StringFilter getSharpenedUrl() {
-        return sharpenedUrl;
-    }
-
-    public void setSharpenedUrl(StringFilter sharpenedUrl) {
-        this.sharpenedUrl = sharpenedUrl;
-    }
-
-    public StringFilter getSquareUrl() {
-        return squareUrl;
-    }
-
-    public void setSquareUrl(StringFilter squareUrl) {
-        this.squareUrl = squareUrl;
-    }
-
-    public StringFilter getWatermarkUrl() {
-        return watermarkUrl;
-    }
-
-    public void setWatermarkUrl(StringFilter watermarkUrl) {
-        this.watermarkUrl = watermarkUrl;
-    }
-
     public IntegerFilter getPriority() {
         return priority;
     }
 
     public void setPriority(IntegerFilter priority) {
         this.priority = priority;
+    }
+
+    public StringFilter getUid() {
+        return uid;
+    }
+
+    public void setUid(StringFilter uid) {
+        this.uid = uid;
+    }
+
+    public IntegerFilter getSize() {
+        return size;
+    }
+
+    public void setSize(IntegerFilter size) {
+        this.size = size;
+    }
+
+    public StringFilter getName() {
+        return name;
+    }
+
+    public void setName(StringFilter name) {
+        this.name = name;
+    }
+
+    public StringFilter getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(StringFilter fileName) {
+        this.fileName = fileName;
+    }
+
+    public StringFilter getUrl() {
+        return url;
+    }
+
+    public void setUrl(StringFilter url) {
+        this.url = url;
+    }
+
+    public StringFilter getStatus() {
+        return status;
+    }
+
+    public void setStatus(StringFilter status) {
+        this.status = status;
+    }
+
+    public StringFilter getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public void setThumbUrl(StringFilter thumbUrl) {
+        this.thumbUrl = thumbUrl;
+    }
+
+    public IntegerFilter getPercent() {
+        return percent;
+    }
+
+    public void setPercent(IntegerFilter percent) {
+        this.percent = percent;
+    }
+
+    public StringFilter getType() {
+        return type;
+    }
+
+    public void setType(StringFilter type) {
+        this.type = type;
     }
 
     public BooleanFilter getDefaultInd() {
@@ -170,12 +197,52 @@ public class PhotosCriteria implements Serializable, Criteria {
         this.defaultInd = defaultInd;
     }
 
+    public BooleanFilter getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(BooleanFilter activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public StringFilter getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(StringFilter lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public InstantFilter getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(InstantFilter lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     public LongFilter getStockItemId() {
         return stockItemId;
     }
 
     public void setStockItemId(LongFilter stockItemId) {
         this.stockItemId = stockItemId;
+    }
+
+    public LongFilter getSupplierBannerId() {
+        return supplierBannerId;
+    }
+
+    public void setSupplierBannerId(LongFilter supplierBannerId) {
+        this.supplierBannerId = supplierBannerId;
+    }
+
+    public LongFilter getSupplierDocumentId() {
+        return supplierDocumentId;
+    }
+
+    public void setSupplierDocumentId(LongFilter supplierDocumentId) {
+        this.supplierDocumentId = supplierDocumentId;
     }
 
 
@@ -191,17 +258,23 @@ public class PhotosCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(blobId, that.blobId) &&
-            Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
-            Objects.equals(originalUrl, that.originalUrl) &&
-            Objects.equals(bannerTallUrl, that.bannerTallUrl) &&
-            Objects.equals(bannerWideUrl, that.bannerWideUrl) &&
-            Objects.equals(circleUrl, that.circleUrl) &&
-            Objects.equals(sharpenedUrl, that.sharpenedUrl) &&
-            Objects.equals(squareUrl, that.squareUrl) &&
-            Objects.equals(watermarkUrl, that.watermarkUrl) &&
             Objects.equals(priority, that.priority) &&
+            Objects.equals(uid, that.uid) &&
+            Objects.equals(size, that.size) &&
+            Objects.equals(name, that.name) &&
+            Objects.equals(fileName, that.fileName) &&
+            Objects.equals(url, that.url) &&
+            Objects.equals(status, that.status) &&
+            Objects.equals(thumbUrl, that.thumbUrl) &&
+            Objects.equals(percent, that.percent) &&
+            Objects.equals(type, that.type) &&
             Objects.equals(defaultInd, that.defaultInd) &&
-            Objects.equals(stockItemId, that.stockItemId);
+            Objects.equals(activeFlag, that.activeFlag) &&
+            Objects.equals(lastModified, that.lastModified) &&
+            Objects.equals(lastModifiedDate, that.lastModifiedDate) &&
+            Objects.equals(stockItemId, that.stockItemId) &&
+            Objects.equals(supplierBannerId, that.supplierBannerId) &&
+            Objects.equals(supplierDocumentId, that.supplierDocumentId);
     }
 
     @Override
@@ -209,17 +282,23 @@ public class PhotosCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         blobId,
-        thumbnailUrl,
-        originalUrl,
-        bannerTallUrl,
-        bannerWideUrl,
-        circleUrl,
-        sharpenedUrl,
-        squareUrl,
-        watermarkUrl,
         priority,
+        uid,
+        size,
+        name,
+        fileName,
+        url,
+        status,
+        thumbUrl,
+        percent,
+        type,
         defaultInd,
-        stockItemId
+        activeFlag,
+        lastModified,
+        lastModifiedDate,
+        stockItemId,
+        supplierBannerId,
+        supplierDocumentId
         );
     }
 
@@ -229,17 +308,23 @@ public class PhotosCriteria implements Serializable, Criteria {
         return "PhotosCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (blobId != null ? "blobId=" + blobId + ", " : "") +
-                (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
-                (originalUrl != null ? "originalUrl=" + originalUrl + ", " : "") +
-                (bannerTallUrl != null ? "bannerTallUrl=" + bannerTallUrl + ", " : "") +
-                (bannerWideUrl != null ? "bannerWideUrl=" + bannerWideUrl + ", " : "") +
-                (circleUrl != null ? "circleUrl=" + circleUrl + ", " : "") +
-                (sharpenedUrl != null ? "sharpenedUrl=" + sharpenedUrl + ", " : "") +
-                (squareUrl != null ? "squareUrl=" + squareUrl + ", " : "") +
-                (watermarkUrl != null ? "watermarkUrl=" + watermarkUrl + ", " : "") +
                 (priority != null ? "priority=" + priority + ", " : "") +
+                (uid != null ? "uid=" + uid + ", " : "") +
+                (size != null ? "size=" + size + ", " : "") +
+                (name != null ? "name=" + name + ", " : "") +
+                (fileName != null ? "fileName=" + fileName + ", " : "") +
+                (url != null ? "url=" + url + ", " : "") +
+                (status != null ? "status=" + status + ", " : "") +
+                (thumbUrl != null ? "thumbUrl=" + thumbUrl + ", " : "") +
+                (percent != null ? "percent=" + percent + ", " : "") +
+                (type != null ? "type=" + type + ", " : "") +
                 (defaultInd != null ? "defaultInd=" + defaultInd + ", " : "") +
+                (activeFlag != null ? "activeFlag=" + activeFlag + ", " : "") +
+                (lastModified != null ? "lastModified=" + lastModified + ", " : "") +
+                (lastModifiedDate != null ? "lastModifiedDate=" + lastModifiedDate + ", " : "") +
                 (stockItemId != null ? "stockItemId=" + stockItemId + ", " : "") +
+                (supplierBannerId != null ? "supplierBannerId=" + supplierBannerId + ", " : "") +
+                (supplierDocumentId != null ? "supplierDocumentId=" + supplierDocumentId + ", " : "") +
             "}";
     }
 

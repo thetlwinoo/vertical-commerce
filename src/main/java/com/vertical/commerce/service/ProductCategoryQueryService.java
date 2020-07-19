@@ -103,22 +103,24 @@ public class ProductCategoryQueryService extends QueryService<ProductCategory> {
             if (criteria.getIconFont() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getIconFont(), ProductCategory_.iconFont));
             }
+            if (criteria.getIconPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getIconPhoto(), ProductCategory_.iconPhoto));
+            }
             if (criteria.getJustForYouInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getJustForYouInd(), ProductCategory_.justForYouInd));
             }
             if (criteria.getShowInNavInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getShowInNavInd(), ProductCategory_.showInNavInd));
             }
-            if (criteria.getActiveInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getActiveInd(), ProductCategory_.activeInd));
+            if (criteria.getValidFrom() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), ProductCategory_.validFrom));
+            }
+            if (criteria.getValidTo() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidTo(), ProductCategory_.validTo));
             }
             if (criteria.getParentId() != null) {
                 specification = specification.and(buildSpecification(criteria.getParentId(),
                     root -> root.join(ProductCategory_.parent, JoinType.LEFT).get(ProductCategory_.id)));
-            }
-            if (criteria.getIconId() != null) {
-                specification = specification.and(buildSpecification(criteria.getIconId(),
-                    root -> root.join(ProductCategory_.icon, JoinType.LEFT).get(Photos_.id)));
             }
         }
         return specification;

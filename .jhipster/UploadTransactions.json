@@ -50,7 +50,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617163304",
+  "changelogDate": "20200718082512",
   "entityTableName": "upload_transactions",
   "dto": "mapstruct",
   "pagination": "no",

@@ -27,7 +27,7 @@ public class WishlistLines implements Serializable {
     @JsonIgnoreProperties(value = "wishlistLines", allowSetters = true)
     private StockItems stockItem;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne
     @JsonIgnoreProperties(value = "wishlistLineLists", allowSetters = true)
     private Wishlists wishlist;
 

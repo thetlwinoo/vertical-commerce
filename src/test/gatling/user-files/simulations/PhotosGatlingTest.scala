@@ -102,16 +102,20 @@ class PhotosGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "blobId":"SAMPLE_TEXT"
-                , "thumbnailUrl":"SAMPLE_TEXT"
-                , "originalUrl":"SAMPLE_TEXT"
-                , "bannerTallUrl":"SAMPLE_TEXT"
-                , "bannerWideUrl":"SAMPLE_TEXT"
-                , "circleUrl":"SAMPLE_TEXT"
-                , "sharpenedUrl":"SAMPLE_TEXT"
-                , "squareUrl":"SAMPLE_TEXT"
-                , "watermarkUrl":"SAMPLE_TEXT"
                 , "priority":"0"
+                , "uid":"SAMPLE_TEXT"
+                , "size":"0"
+                , "name":"SAMPLE_TEXT"
+                , "fileName":"SAMPLE_TEXT"
+                , "url":"SAMPLE_TEXT"
+                , "status":"SAMPLE_TEXT"
+                , "thumbUrl":"SAMPLE_TEXT"
+                , "percent":"0"
+                , "type":"SAMPLE_TEXT"
                 , "defaultInd":null
+                , "activeFlag":null
+                , "lastModified":"SAMPLE_TEXT"
+                , "lastModifiedDate":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_photos_url"))).exitHereIfFailed

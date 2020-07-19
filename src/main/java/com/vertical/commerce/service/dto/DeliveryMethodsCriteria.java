@@ -35,8 +35,6 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
 
     private IntegerFilter expectedMaxArrivalDays;
 
-    private BooleanFilter activeInd;
-
     private BooleanFilter defaultInd;
 
     private StringFilter deliveryNote;
@@ -56,7 +54,6 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
         this.thirdPartyName = other.thirdPartyName == null ? null : other.thirdPartyName.copy();
         this.expectedMinArrivalDays = other.expectedMinArrivalDays == null ? null : other.expectedMinArrivalDays.copy();
         this.expectedMaxArrivalDays = other.expectedMaxArrivalDays == null ? null : other.expectedMaxArrivalDays.copy();
-        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
         this.defaultInd = other.defaultInd == null ? null : other.defaultInd.copy();
         this.deliveryNote = other.deliveryNote == null ? null : other.deliveryNote.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
@@ -107,14 +104,6 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
 
     public void setExpectedMaxArrivalDays(IntegerFilter expectedMaxArrivalDays) {
         this.expectedMaxArrivalDays = expectedMaxArrivalDays;
-    }
-
-    public BooleanFilter getActiveInd() {
-        return activeInd;
-    }
-
-    public void setActiveInd(BooleanFilter activeInd) {
-        this.activeInd = activeInd;
     }
 
     public BooleanFilter getDefaultInd() {
@@ -173,7 +162,6 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
             Objects.equals(thirdPartyName, that.thirdPartyName) &&
             Objects.equals(expectedMinArrivalDays, that.expectedMinArrivalDays) &&
             Objects.equals(expectedMaxArrivalDays, that.expectedMaxArrivalDays) &&
-            Objects.equals(activeInd, that.activeInd) &&
             Objects.equals(defaultInd, that.defaultInd) &&
             Objects.equals(deliveryNote, that.deliveryNote) &&
             Objects.equals(validFrom, that.validFrom) &&
@@ -189,7 +177,6 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
         thirdPartyName,
         expectedMinArrivalDays,
         expectedMaxArrivalDays,
-        activeInd,
         defaultInd,
         deliveryNote,
         validFrom,
@@ -207,7 +194,6 @@ public class DeliveryMethodsCriteria implements Serializable, Criteria {
                 (thirdPartyName != null ? "thirdPartyName=" + thirdPartyName + ", " : "") +
                 (expectedMinArrivalDays != null ? "expectedMinArrivalDays=" + expectedMinArrivalDays + ", " : "") +
                 (expectedMaxArrivalDays != null ? "expectedMaxArrivalDays=" + expectedMaxArrivalDays + ", " : "") +
-                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
                 (defaultInd != null ? "defaultInd=" + defaultInd + ", " : "") +
                 (deliveryNote != null ? "deliveryNote=" + deliveryNote + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +

@@ -10,6 +10,7 @@ import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+import io.github.jhipster.service.filter.InstantFilter;
 
 /**
  * Criteria class for the {@link com.vertical.commerce.domain.ProductBrand} entity. This class is used
@@ -34,11 +35,13 @@ public class ProductBrandCriteria implements Serializable, Criteria {
 
     private StringFilter iconFont;
 
-    private StringFilter thumbnailUrl;
+    private StringFilter iconPhoto;
 
-    private LongFilter supplierId;
+    private BooleanFilter activeFlag;
 
-    private LongFilter iconId;
+    private InstantFilter validFrom;
+
+    private InstantFilter validTo;
 
     public ProductBrandCriteria() {
     }
@@ -49,9 +52,10 @@ public class ProductBrandCriteria implements Serializable, Criteria {
         this.shortLabel = other.shortLabel == null ? null : other.shortLabel.copy();
         this.sortOrder = other.sortOrder == null ? null : other.sortOrder.copy();
         this.iconFont = other.iconFont == null ? null : other.iconFont.copy();
-        this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
-        this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
-        this.iconId = other.iconId == null ? null : other.iconId.copy();
+        this.iconPhoto = other.iconPhoto == null ? null : other.iconPhoto.copy();
+        this.activeFlag = other.activeFlag == null ? null : other.activeFlag.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
     }
 
     @Override
@@ -99,28 +103,36 @@ public class ProductBrandCriteria implements Serializable, Criteria {
         this.iconFont = iconFont;
     }
 
-    public StringFilter getThumbnailUrl() {
-        return thumbnailUrl;
+    public StringFilter getIconPhoto() {
+        return iconPhoto;
     }
 
-    public void setThumbnailUrl(StringFilter thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setIconPhoto(StringFilter iconPhoto) {
+        this.iconPhoto = iconPhoto;
     }
 
-    public LongFilter getSupplierId() {
-        return supplierId;
+    public BooleanFilter getActiveFlag() {
+        return activeFlag;
     }
 
-    public void setSupplierId(LongFilter supplierId) {
-        this.supplierId = supplierId;
+    public void setActiveFlag(BooleanFilter activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
-    public LongFilter getIconId() {
-        return iconId;
+    public InstantFilter getValidFrom() {
+        return validFrom;
     }
 
-    public void setIconId(LongFilter iconId) {
-        this.iconId = iconId;
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public InstantFilter getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
     }
 
 
@@ -139,9 +151,10 @@ public class ProductBrandCriteria implements Serializable, Criteria {
             Objects.equals(shortLabel, that.shortLabel) &&
             Objects.equals(sortOrder, that.sortOrder) &&
             Objects.equals(iconFont, that.iconFont) &&
-            Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
-            Objects.equals(supplierId, that.supplierId) &&
-            Objects.equals(iconId, that.iconId);
+            Objects.equals(iconPhoto, that.iconPhoto) &&
+            Objects.equals(activeFlag, that.activeFlag) &&
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo);
     }
 
     @Override
@@ -152,9 +165,10 @@ public class ProductBrandCriteria implements Serializable, Criteria {
         shortLabel,
         sortOrder,
         iconFont,
-        thumbnailUrl,
-        supplierId,
-        iconId
+        iconPhoto,
+        activeFlag,
+        validFrom,
+        validTo
         );
     }
 
@@ -167,9 +181,10 @@ public class ProductBrandCriteria implements Serializable, Criteria {
                 (shortLabel != null ? "shortLabel=" + shortLabel + ", " : "") +
                 (sortOrder != null ? "sortOrder=" + sortOrder + ", " : "") +
                 (iconFont != null ? "iconFont=" + iconFont + ", " : "") +
-                (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
-                (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
-                (iconId != null ? "iconId=" + iconId + ", " : "") +
+                (iconPhoto != null ? "iconPhoto=" + iconPhoto + ", " : "") +
+                (activeFlag != null ? "activeFlag=" + activeFlag + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
             "}";
     }
 

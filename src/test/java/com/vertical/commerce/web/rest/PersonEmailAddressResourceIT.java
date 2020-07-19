@@ -21,6 +21,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,14 +39,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class PersonEmailAddressResourceIT {
 
-    private static final String DEFAULT_EMAIL_ADDRESS = "qyO.aW@??Z.f;k;";
+    private static final String DEFAULT_EMAIL_ADDRESS = "a@J??Z.f;k;";
     private static final String UPDATED_EMAIL_ADDRESS = "R5\"@|*.s(;B";
 
     private static final Boolean DEFAULT_DEFAULT_IND = false;
     private static final Boolean UPDATED_DEFAULT_IND = true;
 
-    private static final Boolean DEFAULT_ACTIVE_IND = false;
-    private static final Boolean UPDATED_ACTIVE_IND = true;
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private PersonEmailAddressRepository personEmailAddressRepository;
@@ -76,7 +81,8 @@ public class PersonEmailAddressResourceIT {
         PersonEmailAddress personEmailAddress = new PersonEmailAddress()
             .emailAddress(DEFAULT_EMAIL_ADDRESS)
             .defaultInd(DEFAULT_DEFAULT_IND)
-            .activeInd(DEFAULT_ACTIVE_IND);
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return personEmailAddress;
     }
     /**
@@ -89,7 +95,8 @@ public class PersonEmailAddressResourceIT {
         PersonEmailAddress personEmailAddress = new PersonEmailAddress()
             .emailAddress(UPDATED_EMAIL_ADDRESS)
             .defaultInd(UPDATED_DEFAULT_IND)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return personEmailAddress;
     }
 
@@ -115,7 +122,8 @@ public class PersonEmailAddressResourceIT {
         PersonEmailAddress testPersonEmailAddress = personEmailAddressList.get(personEmailAddressList.size() - 1);
         assertThat(testPersonEmailAddress.getEmailAddress()).isEqualTo(DEFAULT_EMAIL_ADDRESS);
         assertThat(testPersonEmailAddress.isDefaultInd()).isEqualTo(DEFAULT_DEFAULT_IND);
-        assertThat(testPersonEmailAddress.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
+        assertThat(testPersonEmailAddress.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testPersonEmailAddress.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -161,6 +169,26 @@ public class PersonEmailAddressResourceIT {
 
     @Test
     @Transactional
+    public void checkValidFromIsRequired() throws Exception {
+        int databaseSizeBeforeTest = personEmailAddressRepository.findAll().size();
+        // set the field null
+        personEmailAddress.setValidFrom(null);
+
+        // Create the PersonEmailAddress, which fails.
+        PersonEmailAddressDTO personEmailAddressDTO = personEmailAddressMapper.toDto(personEmailAddress);
+
+
+        restPersonEmailAddressMockMvc.perform(post("/api/person-email-addresses").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(personEmailAddressDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<PersonEmailAddress> personEmailAddressList = personEmailAddressRepository.findAll();
+        assertThat(personEmailAddressList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPersonEmailAddresses() throws Exception {
         // Initialize the database
         personEmailAddressRepository.saveAndFlush(personEmailAddress);
@@ -172,7 +200,8 @@ public class PersonEmailAddressResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(personEmailAddress.getId().intValue())))
             .andExpect(jsonPath("$.[*].emailAddress").value(hasItem(DEFAULT_EMAIL_ADDRESS)))
             .andExpect(jsonPath("$.[*].defaultInd").value(hasItem(DEFAULT_DEFAULT_IND.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -188,7 +217,8 @@ public class PersonEmailAddressResourceIT {
             .andExpect(jsonPath("$.id").value(personEmailAddress.getId().intValue()))
             .andExpect(jsonPath("$.emailAddress").value(DEFAULT_EMAIL_ADDRESS))
             .andExpect(jsonPath("$.defaultInd").value(DEFAULT_DEFAULT_IND.booleanValue()))
-            .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()));
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -343,54 +373,106 @@ public class PersonEmailAddressResourceIT {
 
     @Test
     @Transactional
-    public void getAllPersonEmailAddressesByActiveIndIsEqualToSomething() throws Exception {
+    public void getAllPersonEmailAddressesByValidFromIsEqualToSomething() throws Exception {
         // Initialize the database
         personEmailAddressRepository.saveAndFlush(personEmailAddress);
 
-        // Get all the personEmailAddressList where activeInd equals to DEFAULT_ACTIVE_IND
-        defaultPersonEmailAddressShouldBeFound("activeInd.equals=" + DEFAULT_ACTIVE_IND);
+        // Get all the personEmailAddressList where validFrom equals to DEFAULT_VALID_FROM
+        defaultPersonEmailAddressShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
 
-        // Get all the personEmailAddressList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultPersonEmailAddressShouldNotBeFound("activeInd.equals=" + UPDATED_ACTIVE_IND);
+        // Get all the personEmailAddressList where validFrom equals to UPDATED_VALID_FROM
+        defaultPersonEmailAddressShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllPersonEmailAddressesByActiveIndIsNotEqualToSomething() throws Exception {
+    public void getAllPersonEmailAddressesByValidFromIsNotEqualToSomething() throws Exception {
         // Initialize the database
         personEmailAddressRepository.saveAndFlush(personEmailAddress);
 
-        // Get all the personEmailAddressList where activeInd not equals to DEFAULT_ACTIVE_IND
-        defaultPersonEmailAddressShouldNotBeFound("activeInd.notEquals=" + DEFAULT_ACTIVE_IND);
+        // Get all the personEmailAddressList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultPersonEmailAddressShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
 
-        // Get all the personEmailAddressList where activeInd not equals to UPDATED_ACTIVE_IND
-        defaultPersonEmailAddressShouldBeFound("activeInd.notEquals=" + UPDATED_ACTIVE_IND);
+        // Get all the personEmailAddressList where validFrom not equals to UPDATED_VALID_FROM
+        defaultPersonEmailAddressShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllPersonEmailAddressesByActiveIndIsInShouldWork() throws Exception {
+    public void getAllPersonEmailAddressesByValidFromIsInShouldWork() throws Exception {
         // Initialize the database
         personEmailAddressRepository.saveAndFlush(personEmailAddress);
 
-        // Get all the personEmailAddressList where activeInd in DEFAULT_ACTIVE_IND or UPDATED_ACTIVE_IND
-        defaultPersonEmailAddressShouldBeFound("activeInd.in=" + DEFAULT_ACTIVE_IND + "," + UPDATED_ACTIVE_IND);
+        // Get all the personEmailAddressList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultPersonEmailAddressShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
 
-        // Get all the personEmailAddressList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultPersonEmailAddressShouldNotBeFound("activeInd.in=" + UPDATED_ACTIVE_IND);
+        // Get all the personEmailAddressList where validFrom equals to UPDATED_VALID_FROM
+        defaultPersonEmailAddressShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllPersonEmailAddressesByActiveIndIsNullOrNotNull() throws Exception {
+    public void getAllPersonEmailAddressesByValidFromIsNullOrNotNull() throws Exception {
         // Initialize the database
         personEmailAddressRepository.saveAndFlush(personEmailAddress);
 
-        // Get all the personEmailAddressList where activeInd is not null
-        defaultPersonEmailAddressShouldBeFound("activeInd.specified=true");
+        // Get all the personEmailAddressList where validFrom is not null
+        defaultPersonEmailAddressShouldBeFound("validFrom.specified=true");
 
-        // Get all the personEmailAddressList where activeInd is null
-        defaultPersonEmailAddressShouldNotBeFound("activeInd.specified=false");
+        // Get all the personEmailAddressList where validFrom is null
+        defaultPersonEmailAddressShouldNotBeFound("validFrom.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonEmailAddressesByValidToIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personEmailAddressRepository.saveAndFlush(personEmailAddress);
+
+        // Get all the personEmailAddressList where validTo equals to DEFAULT_VALID_TO
+        defaultPersonEmailAddressShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the personEmailAddressList where validTo equals to UPDATED_VALID_TO
+        defaultPersonEmailAddressShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonEmailAddressesByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        personEmailAddressRepository.saveAndFlush(personEmailAddress);
+
+        // Get all the personEmailAddressList where validTo not equals to DEFAULT_VALID_TO
+        defaultPersonEmailAddressShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the personEmailAddressList where validTo not equals to UPDATED_VALID_TO
+        defaultPersonEmailAddressShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonEmailAddressesByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        personEmailAddressRepository.saveAndFlush(personEmailAddress);
+
+        // Get all the personEmailAddressList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultPersonEmailAddressShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the personEmailAddressList where validTo equals to UPDATED_VALID_TO
+        defaultPersonEmailAddressShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonEmailAddressesByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personEmailAddressRepository.saveAndFlush(personEmailAddress);
+
+        // Get all the personEmailAddressList where validTo is not null
+        defaultPersonEmailAddressShouldBeFound("validTo.specified=true");
+
+        // Get all the personEmailAddressList where validTo is null
+        defaultPersonEmailAddressShouldNotBeFound("validTo.specified=false");
     }
 
     @Test
@@ -422,7 +504,8 @@ public class PersonEmailAddressResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(personEmailAddress.getId().intValue())))
             .andExpect(jsonPath("$.[*].emailAddress").value(hasItem(DEFAULT_EMAIL_ADDRESS)))
             .andExpect(jsonPath("$.[*].defaultInd").value(hasItem(DEFAULT_DEFAULT_IND.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restPersonEmailAddressMockMvc.perform(get("/api/person-email-addresses/count?sort=id,desc&" + filter))
@@ -471,7 +554,8 @@ public class PersonEmailAddressResourceIT {
         updatedPersonEmailAddress
             .emailAddress(UPDATED_EMAIL_ADDRESS)
             .defaultInd(UPDATED_DEFAULT_IND)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         PersonEmailAddressDTO personEmailAddressDTO = personEmailAddressMapper.toDto(updatedPersonEmailAddress);
 
         restPersonEmailAddressMockMvc.perform(put("/api/person-email-addresses").with(csrf())
@@ -485,7 +569,8 @@ public class PersonEmailAddressResourceIT {
         PersonEmailAddress testPersonEmailAddress = personEmailAddressList.get(personEmailAddressList.size() - 1);
         assertThat(testPersonEmailAddress.getEmailAddress()).isEqualTo(UPDATED_EMAIL_ADDRESS);
         assertThat(testPersonEmailAddress.isDefaultInd()).isEqualTo(UPDATED_DEFAULT_IND);
-        assertThat(testPersonEmailAddress.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
+        assertThat(testPersonEmailAddress.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testPersonEmailAddress.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

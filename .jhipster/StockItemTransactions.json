@@ -65,7 +65,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617163504",
+  "changelogDate": "20200718082712",
   "entityTableName": "stock_item_transactions",
   "dto": "mapstruct",
   "pagination": "no",

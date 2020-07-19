@@ -23,7 +23,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200617164204",
+  "changelogDate": "20200718083412",
   "entityTableName": "product_set",
   "dto": "mapstruct",
   "pagination": "no",

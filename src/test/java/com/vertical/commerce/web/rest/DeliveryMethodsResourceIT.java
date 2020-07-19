@@ -53,9 +53,6 @@ public class DeliveryMethodsResourceIT {
     private static final Integer UPDATED_EXPECTED_MAX_ARRIVAL_DAYS = 2;
     private static final Integer SMALLER_EXPECTED_MAX_ARRIVAL_DAYS = 1 - 1;
 
-    private static final Boolean DEFAULT_ACTIVE_IND = false;
-    private static final Boolean UPDATED_ACTIVE_IND = true;
-
     private static final Boolean DEFAULT_DEFAULT_IND = false;
     private static final Boolean UPDATED_DEFAULT_IND = true;
 
@@ -100,7 +97,6 @@ public class DeliveryMethodsResourceIT {
             .thirdPartyName(DEFAULT_THIRD_PARTY_NAME)
             .expectedMinArrivalDays(DEFAULT_EXPECTED_MIN_ARRIVAL_DAYS)
             .expectedMaxArrivalDays(DEFAULT_EXPECTED_MAX_ARRIVAL_DAYS)
-            .activeInd(DEFAULT_ACTIVE_IND)
             .defaultInd(DEFAULT_DEFAULT_IND)
             .deliveryNote(DEFAULT_DELIVERY_NOTE)
             .validFrom(DEFAULT_VALID_FROM)
@@ -119,7 +115,6 @@ public class DeliveryMethodsResourceIT {
             .thirdPartyName(UPDATED_THIRD_PARTY_NAME)
             .expectedMinArrivalDays(UPDATED_EXPECTED_MIN_ARRIVAL_DAYS)
             .expectedMaxArrivalDays(UPDATED_EXPECTED_MAX_ARRIVAL_DAYS)
-            .activeInd(UPDATED_ACTIVE_IND)
             .defaultInd(UPDATED_DEFAULT_IND)
             .deliveryNote(UPDATED_DELIVERY_NOTE)
             .validFrom(UPDATED_VALID_FROM)
@@ -151,7 +146,6 @@ public class DeliveryMethodsResourceIT {
         assertThat(testDeliveryMethods.getThirdPartyName()).isEqualTo(DEFAULT_THIRD_PARTY_NAME);
         assertThat(testDeliveryMethods.getExpectedMinArrivalDays()).isEqualTo(DEFAULT_EXPECTED_MIN_ARRIVAL_DAYS);
         assertThat(testDeliveryMethods.getExpectedMaxArrivalDays()).isEqualTo(DEFAULT_EXPECTED_MAX_ARRIVAL_DAYS);
-        assertThat(testDeliveryMethods.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
         assertThat(testDeliveryMethods.isDefaultInd()).isEqualTo(DEFAULT_DEFAULT_IND);
         assertThat(testDeliveryMethods.getDeliveryNote()).isEqualTo(DEFAULT_DELIVERY_NOTE);
         assertThat(testDeliveryMethods.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
@@ -221,26 +215,6 @@ public class DeliveryMethodsResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = deliveryMethodsRepository.findAll().size();
-        // set the field null
-        deliveryMethods.setValidTo(null);
-
-        // Create the DeliveryMethods, which fails.
-        DeliveryMethodsDTO deliveryMethodsDTO = deliveryMethodsMapper.toDto(deliveryMethods);
-
-
-        restDeliveryMethodsMockMvc.perform(post("/api/delivery-methods").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(deliveryMethodsDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<DeliveryMethods> deliveryMethodsList = deliveryMethodsRepository.findAll();
-        assertThat(deliveryMethodsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllDeliveryMethods() throws Exception {
         // Initialize the database
         deliveryMethodsRepository.saveAndFlush(deliveryMethods);
@@ -254,7 +228,6 @@ public class DeliveryMethodsResourceIT {
             .andExpect(jsonPath("$.[*].thirdPartyName").value(hasItem(DEFAULT_THIRD_PARTY_NAME)))
             .andExpect(jsonPath("$.[*].expectedMinArrivalDays").value(hasItem(DEFAULT_EXPECTED_MIN_ARRIVAL_DAYS)))
             .andExpect(jsonPath("$.[*].expectedMaxArrivalDays").value(hasItem(DEFAULT_EXPECTED_MAX_ARRIVAL_DAYS)))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].defaultInd").value(hasItem(DEFAULT_DEFAULT_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].deliveryNote").value(hasItem(DEFAULT_DELIVERY_NOTE)))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
@@ -276,7 +249,6 @@ public class DeliveryMethodsResourceIT {
             .andExpect(jsonPath("$.thirdPartyName").value(DEFAULT_THIRD_PARTY_NAME))
             .andExpect(jsonPath("$.expectedMinArrivalDays").value(DEFAULT_EXPECTED_MIN_ARRIVAL_DAYS))
             .andExpect(jsonPath("$.expectedMaxArrivalDays").value(DEFAULT_EXPECTED_MAX_ARRIVAL_DAYS))
-            .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()))
             .andExpect(jsonPath("$.defaultInd").value(DEFAULT_DEFAULT_IND.booleanValue()))
             .andExpect(jsonPath("$.deliveryNote").value(DEFAULT_DELIVERY_NOTE))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
@@ -671,58 +643,6 @@ public class DeliveryMethodsResourceIT {
 
     @Test
     @Transactional
-    public void getAllDeliveryMethodsByActiveIndIsEqualToSomething() throws Exception {
-        // Initialize the database
-        deliveryMethodsRepository.saveAndFlush(deliveryMethods);
-
-        // Get all the deliveryMethodsList where activeInd equals to DEFAULT_ACTIVE_IND
-        defaultDeliveryMethodsShouldBeFound("activeInd.equals=" + DEFAULT_ACTIVE_IND);
-
-        // Get all the deliveryMethodsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultDeliveryMethodsShouldNotBeFound("activeInd.equals=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllDeliveryMethodsByActiveIndIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        deliveryMethodsRepository.saveAndFlush(deliveryMethods);
-
-        // Get all the deliveryMethodsList where activeInd not equals to DEFAULT_ACTIVE_IND
-        defaultDeliveryMethodsShouldNotBeFound("activeInd.notEquals=" + DEFAULT_ACTIVE_IND);
-
-        // Get all the deliveryMethodsList where activeInd not equals to UPDATED_ACTIVE_IND
-        defaultDeliveryMethodsShouldBeFound("activeInd.notEquals=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllDeliveryMethodsByActiveIndIsInShouldWork() throws Exception {
-        // Initialize the database
-        deliveryMethodsRepository.saveAndFlush(deliveryMethods);
-
-        // Get all the deliveryMethodsList where activeInd in DEFAULT_ACTIVE_IND or UPDATED_ACTIVE_IND
-        defaultDeliveryMethodsShouldBeFound("activeInd.in=" + DEFAULT_ACTIVE_IND + "," + UPDATED_ACTIVE_IND);
-
-        // Get all the deliveryMethodsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultDeliveryMethodsShouldNotBeFound("activeInd.in=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllDeliveryMethodsByActiveIndIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        deliveryMethodsRepository.saveAndFlush(deliveryMethods);
-
-        // Get all the deliveryMethodsList where activeInd is not null
-        defaultDeliveryMethodsShouldBeFound("activeInd.specified=true");
-
-        // Get all the deliveryMethodsList where activeInd is null
-        defaultDeliveryMethodsShouldNotBeFound("activeInd.specified=false");
-    }
-
-    @Test
-    @Transactional
     public void getAllDeliveryMethodsByDefaultIndIsEqualToSomething() throws Exception {
         // Initialize the database
         deliveryMethodsRepository.saveAndFlush(deliveryMethods);
@@ -986,7 +906,6 @@ public class DeliveryMethodsResourceIT {
             .andExpect(jsonPath("$.[*].thirdPartyName").value(hasItem(DEFAULT_THIRD_PARTY_NAME)))
             .andExpect(jsonPath("$.[*].expectedMinArrivalDays").value(hasItem(DEFAULT_EXPECTED_MIN_ARRIVAL_DAYS)))
             .andExpect(jsonPath("$.[*].expectedMaxArrivalDays").value(hasItem(DEFAULT_EXPECTED_MAX_ARRIVAL_DAYS)))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].defaultInd").value(hasItem(DEFAULT_DEFAULT_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].deliveryNote").value(hasItem(DEFAULT_DELIVERY_NOTE)))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
@@ -1041,7 +960,6 @@ public class DeliveryMethodsResourceIT {
             .thirdPartyName(UPDATED_THIRD_PARTY_NAME)
             .expectedMinArrivalDays(UPDATED_EXPECTED_MIN_ARRIVAL_DAYS)
             .expectedMaxArrivalDays(UPDATED_EXPECTED_MAX_ARRIVAL_DAYS)
-            .activeInd(UPDATED_ACTIVE_IND)
             .defaultInd(UPDATED_DEFAULT_IND)
             .deliveryNote(UPDATED_DELIVERY_NOTE)
             .validFrom(UPDATED_VALID_FROM)
@@ -1061,7 +979,6 @@ public class DeliveryMethodsResourceIT {
         assertThat(testDeliveryMethods.getThirdPartyName()).isEqualTo(UPDATED_THIRD_PARTY_NAME);
         assertThat(testDeliveryMethods.getExpectedMinArrivalDays()).isEqualTo(UPDATED_EXPECTED_MIN_ARRIVAL_DAYS);
         assertThat(testDeliveryMethods.getExpectedMaxArrivalDays()).isEqualTo(UPDATED_EXPECTED_MAX_ARRIVAL_DAYS);
-        assertThat(testDeliveryMethods.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
         assertThat(testDeliveryMethods.isDefaultInd()).isEqualTo(UPDATED_DEFAULT_IND);
         assertThat(testDeliveryMethods.getDeliveryNote()).isEqualTo(UPDATED_DELIVERY_NOTE);
         assertThat(testDeliveryMethods.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);

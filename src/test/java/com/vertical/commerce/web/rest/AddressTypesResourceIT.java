@@ -28,6 +28,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.vertical.commerce.domain.enumeration.AddressTypeRefer;
 /**
  * Integration tests for the {@link AddressTypesResource} REST controller.
  */
@@ -39,8 +40,8 @@ public class AddressTypesResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_REFER = "AAAAAAAAAA";
-    private static final String UPDATED_REFER = "BBBBBBBBBB";
+    private static final AddressTypeRefer DEFAULT_REFER = AddressTypeRefer.CUSTOMERS;
+    private static final AddressTypeRefer UPDATED_REFER = AddressTypeRefer.SUPPLIERS;
 
     @Autowired
     private AddressTypesRepository addressTypesRepository;
@@ -164,7 +165,7 @@ public class AddressTypesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(addressTypes.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].refer").value(hasItem(DEFAULT_REFER)));
+            .andExpect(jsonPath("$.[*].refer").value(hasItem(DEFAULT_REFER.toString())));
     }
     
     @Test
@@ -179,7 +180,7 @@ public class AddressTypesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(addressTypes.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.refer").value(DEFAULT_REFER));
+            .andExpect(jsonPath("$.refer").value(DEFAULT_REFER.toString()));
     }
 
 
@@ -331,32 +332,6 @@ public class AddressTypesResourceIT {
         // Get all the addressTypesList where refer is null
         defaultAddressTypesShouldNotBeFound("refer.specified=false");
     }
-                @Test
-    @Transactional
-    public void getAllAddressTypesByReferContainsSomething() throws Exception {
-        // Initialize the database
-        addressTypesRepository.saveAndFlush(addressTypes);
-
-        // Get all the addressTypesList where refer contains DEFAULT_REFER
-        defaultAddressTypesShouldBeFound("refer.contains=" + DEFAULT_REFER);
-
-        // Get all the addressTypesList where refer contains UPDATED_REFER
-        defaultAddressTypesShouldNotBeFound("refer.contains=" + UPDATED_REFER);
-    }
-
-    @Test
-    @Transactional
-    public void getAllAddressTypesByReferNotContainsSomething() throws Exception {
-        // Initialize the database
-        addressTypesRepository.saveAndFlush(addressTypes);
-
-        // Get all the addressTypesList where refer does not contain DEFAULT_REFER
-        defaultAddressTypesShouldNotBeFound("refer.doesNotContain=" + DEFAULT_REFER);
-
-        // Get all the addressTypesList where refer does not contain UPDATED_REFER
-        defaultAddressTypesShouldBeFound("refer.doesNotContain=" + UPDATED_REFER);
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -366,7 +341,7 @@ public class AddressTypesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(addressTypes.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].refer").value(hasItem(DEFAULT_REFER)));
+            .andExpect(jsonPath("$.[*].refer").value(hasItem(DEFAULT_REFER.toString())));
 
         // Check, that the count call also returns 1
         restAddressTypesMockMvc.perform(get("/api/address-types/count?sort=id,desc&" + filter))

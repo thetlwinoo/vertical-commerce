@@ -13,7 +13,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200617162404",
+  "changelogDate": "20200718081412",
   "entityTableName": "discount_types",
   "dto": "mapstruct",
   "pagination": "no",

@@ -20,8 +20,6 @@ public class DeliveryMethodsDTO implements Serializable {
 
     private Integer expectedMaxArrivalDays;
 
-    private Boolean activeInd;
-
     private Boolean defaultInd;
 
     private String deliveryNote;
@@ -29,7 +27,6 @@ public class DeliveryMethodsDTO implements Serializable {
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
     
@@ -71,14 +68,6 @@ public class DeliveryMethodsDTO implements Serializable {
 
     public void setExpectedMaxArrivalDays(Integer expectedMaxArrivalDays) {
         this.expectedMaxArrivalDays = expectedMaxArrivalDays;
-    }
-
-    public Boolean isActiveInd() {
-        return activeInd;
-    }
-
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
     }
 
     public Boolean isDefaultInd() {
@@ -139,7 +128,6 @@ public class DeliveryMethodsDTO implements Serializable {
             ", thirdPartyName='" + getThirdPartyName() + "'" +
             ", expectedMinArrivalDays=" + getExpectedMinArrivalDays() +
             ", expectedMaxArrivalDays=" + getExpectedMaxArrivalDays() +
-            ", activeInd='" + isActiveInd() + "'" +
             ", defaultInd='" + isDefaultInd() + "'" +
             ", deliveryNote='" + getDeliveryNote() + "'" +
             ", validFrom='" + getValidFrom() + "'" +

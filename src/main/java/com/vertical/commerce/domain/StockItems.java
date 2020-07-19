@@ -33,6 +33,11 @@ public class StockItems implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "culture_details")
+    private String cultureDetails;
+
     @Column(name = "vendor_code")
     private String vendorCode;
 
@@ -150,12 +155,8 @@ public class StockItems implements Serializable {
     @Column(name = "custom_fields")
     private String customFields;
 
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
-
-    @NotNull
-    @Column(name = "active_ind", nullable = false)
-    private Boolean activeInd;
+    @Column(name = "thumbnail_photo")
+    private String thumbnailPhoto;
 
     @NotNull
     @Column(name = "live_ind", nullable = false)
@@ -172,6 +173,17 @@ public class StockItems implements Serializable {
     @NotNull
     @Column(name = "last_edited_when", nullable = false)
     private Instant lastEditedWhen;
+
+    @NotNull
+    @Column(name = "active_flag", nullable = false)
+    private Boolean activeFlag;
+
+    @NotNull
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
+
+    @Column(name = "valid_to")
+    private Instant validTo;
 
     @OneToMany(mappedBy = "stockItem")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -253,6 +265,19 @@ public class StockItems implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public StockItems cultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
+        return this;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getVendorCode() {
@@ -736,30 +761,17 @@ public class StockItems implements Serializable {
         this.customFields = customFields;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getThumbnailPhoto() {
+        return thumbnailPhoto;
     }
 
-    public StockItems thumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public StockItems thumbnailPhoto(String thumbnailPhoto) {
+        this.thumbnailPhoto = thumbnailPhoto;
         return this;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public Boolean isActiveInd() {
-        return activeInd;
-    }
-
-    public StockItems activeInd(Boolean activeInd) {
-        this.activeInd = activeInd;
-        return this;
-    }
-
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setThumbnailPhoto(String thumbnailPhoto) {
+        this.thumbnailPhoto = thumbnailPhoto;
     }
 
     public Boolean isLiveInd() {
@@ -812,6 +824,45 @@ public class StockItems implements Serializable {
 
     public void setLastEditedWhen(Instant lastEditedWhen) {
         this.lastEditedWhen = lastEditedWhen;
+    }
+
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public StockItems activeFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+        return this;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public Instant getValidFrom() {
+        return validFrom;
+    }
+
+    public StockItems validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+        return this;
+    }
+
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public StockItems validTo(Instant validTo) {
+        this.validTo = validTo;
+        return this;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     public Set<SpecialDeals> getSpecialDealLists() {
@@ -1056,6 +1107,7 @@ public class StockItems implements Serializable {
         return "StockItems{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", vendorCode='" + getVendorCode() + "'" +
             ", vendorSKU='" + getVendorSKU() + "'" +
             ", generatedSKU='" + getGeneratedSKU() + "'" +
@@ -1093,12 +1145,14 @@ public class StockItems implements Serializable {
             ", tags='" + getTags() + "'" +
             ", searchDetails='" + getSearchDetails() + "'" +
             ", customFields='" + getCustomFields() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", thumbnailPhoto='" + getThumbnailPhoto() + "'" +
             ", liveInd='" + isLiveInd() + "'" +
             ", cashOnDeliveryInd='" + isCashOnDeliveryInd() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

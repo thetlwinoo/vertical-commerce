@@ -3,6 +3,7 @@ package com.vertical.commerce.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.vertical.commerce.domain.Countries} entity.
@@ -13,6 +14,9 @@ public class CountriesDTO implements Serializable {
 
     @NotNull
     private String name;
+
+    @Lob
+    private String cultureDetails;
 
     @NotNull
     private String formalName;
@@ -32,14 +36,13 @@ public class CountriesDTO implements Serializable {
     private String region;
 
     @NotNull
-    private String subregion;
+    private String subRegion;
 
     private String border;
 
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
     
@@ -57,6 +60,14 @@ public class CountriesDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getFormalName() {
@@ -115,12 +126,12 @@ public class CountriesDTO implements Serializable {
         this.region = region;
     }
 
-    public String getSubregion() {
-        return subregion;
+    public String getSubRegion() {
+        return subRegion;
     }
 
-    public void setSubregion(String subregion) {
-        this.subregion = subregion;
+    public void setSubRegion(String subRegion) {
+        this.subRegion = subRegion;
     }
 
     public String getBorder() {
@@ -170,6 +181,7 @@ public class CountriesDTO implements Serializable {
         return "CountriesDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", formalName='" + getFormalName() + "'" +
             ", isoAplha3Code='" + getIsoAplha3Code() + "'" +
             ", isoNumericCode=" + getIsoNumericCode() +
@@ -177,7 +189,7 @@ public class CountriesDTO implements Serializable {
             ", latestRecordedPopulation=" + getLatestRecordedPopulation() +
             ", continent='" + getContinent() + "'" +
             ", region='" + getRegion() + "'" +
-            ", subregion='" + getSubregion() + "'" +
+            ", subRegion='" + getSubRegion() + "'" +
             ", border='" + getBorder() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +

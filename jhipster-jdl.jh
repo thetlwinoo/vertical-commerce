@@ -1,6 +1,6 @@
 entity AddressTypes{
 	name String required
-    refer String
+    refer AddressTypeRefer
 }
 
 entity Culture{
@@ -21,14 +21,13 @@ entity TaxClass{
 }
 
 entity Addresses{
-	contactPerson String required
-    contactNumber String required
+	contactPerson String
+    contactNumber String
     contactEmailAddress String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
 	addressLine1 String required
     addressLine2 String
-    city String
     postalCode String
-    defaultInd Boolean
+    description String
     validFrom Instant required
     validTo Instant
 }
@@ -69,7 +68,7 @@ entity Countries {
     latestRecordedPopulation Long
     continent String required
     region String required
-    subregion String required
+    subRegion String required
     border String
     validFrom Instant required
     validTo Instant
@@ -83,7 +82,7 @@ entity StateProvinces {
     code String required
     name String required
     cultureDetails TextBlob
-    salesTerritory String required
+    salesTerritory String
     border String
     latestRecordedPopulation Long
     validFrom Instant required
@@ -107,23 +106,35 @@ entity CitiesCulture {
     name String required
 }
 
-
-entity Districts{
-    code String
+entity Townships{
     name String required
     cultureDetails TextBlob
+    description String
     validFrom Instant required
     validTo Instant
 }
 
-entity DistrictsCulture {
+entity TownshipsCulture {
+    name String required
+}
+
+entity Towns{
+    name String required
+    postalCode String
+    cultureDetails TextBlob
+    description String
+    validFrom Instant required
+    validTo Instant
+}
+
+entity TownsCulture {
     name String required
 }
 
 entity Regions{
-    code String required
     name String required
     cultureDetails TextBlob
+    description String
     validFrom Instant required
     validTo Instant
 }
@@ -162,6 +173,7 @@ entity People {
     customFields String
     otherLanguages String
     userId String required
+    profilePhoto String
     validFrom Instant required
     validTo Instant
 }
@@ -195,18 +207,25 @@ entity Suppliers{
     bankAccountCode String
     bankAccountNumber String
     bankInternationalCode String
-    paymentDays Integer required
+    paymentDays Integer
     internalComments String
     phoneNumber String required
+    emailAddress String
+    nric String
+    companyRegistrationNo String
     faxNumber String
-    websiteURL String
+    websiteUrl String
     webServiceUrl String
     creditRating Integer
-    activeFlag Boolean
-    imageBlob String
-    pickupSameAsHeadOffice Boolean
     officialStoreInd Boolean
     storeName String
+    logo String
+    nricFrontPhoto String
+    nricBackPhoto String
+    bankBookPhoto String required
+    companyRegistrationPhoto String
+    distributorCertificatePhoto String
+    activeFlag Boolean required
     validFrom Instant required
     validTo Instant
 }
@@ -286,9 +305,10 @@ entity Customers {
     paymentDays Integer required
     deliveryRun String
     runPosition String
-    imageBlob String
+    profilePhoto String
     billToAddressSameAsDeliveryAddress Boolean
     lastEditedBy String required
+    activeFlag Boolean required
     validFrom Instant required
     validTo Instant
 }
@@ -330,7 +350,7 @@ entity CustomerPaymentVoucher{
 }
 
 entity CustomerPaymentBankTransfer{
-    receiptImageUrl String required
+    receiptPhoto String required
     nameInBankAccount String required
     dateOfTransfer Instant required
     amountTransferred BigDecimal required
@@ -411,6 +431,7 @@ entity PaymentMethods{
     disabled Boolean
     sortOrder Integer
     iconFont String
+    iconPhoto String
     validFrom Instant required
     validTo Instant
 }
@@ -424,6 +445,7 @@ entity BankAccounts{
     bank String
     internationalCode String
     lastEditedBy String required
+    logoPhoto String
     validForm Instant required
     validTo Instant
 }
@@ -460,9 +482,10 @@ entity OrderLines {
     pickedQuantity Integer
     pickingCompletedWhen Instant
     status OrderLineStatus required
-    imageBlob String
     lineRating Integer
     lineReview TextBlob
+    stockItemPhoto String
+    reviewPhoto String
     customerReviewedOn Instant
     supplierResponse TextBlob
     supplierResponseOn Instant
@@ -531,6 +554,10 @@ entity OrderTracking{
 entity TrackingEvent{
     name String required
     description String
+}
+
+enum AddressTypeRefer{
+    CUSTOMERS, SUPPLIERS, OTHERS
 }
 
 enum OrderStatus {
@@ -610,11 +637,11 @@ entity Products {
     freeShippingInd Boolean
     madeInMyanmarInd Boolean
     questionsAboutProductInd Boolean
-    lastEditedBy String required
-    lastEditedWhen Instant required
     releaseDate Instant required
     availableDate Instant required
-    activeInd Boolean
+    activeFlag Boolean required
+    lastEditedBy String required
+    lastEditedWhen Instant required
     validFrom Instant required
     validTo Instant
 }
@@ -674,12 +701,12 @@ entity StockItems{
     tags String
     searchDetails String
     customFields TextBlob
-    imageBlob String
+    thumbnailPhoto String
     liveInd Boolean required
     cashOnDeliveryInd Boolean required
     lastEditedBy String required
     lastEditedWhen Instant required
-    activeInd Boolean
+    activeFlag Boolean required
     validFrom Instant required
     validTo Instant
 }
@@ -759,7 +786,7 @@ entity ProductSetDetailPrice{
 	modifiedDate Instant required
 }
 
-entity ProductDocument{
+entity ProductDocuments{
     videoUrl String
     cultureDetails TextBlob
     highlights TextBlob
@@ -784,7 +811,7 @@ entity ProductDocument{
     lastEditedWhen Instant required
 }
 
-entity ProductDocumentCulture {
+entity ProductDocumentsCulture {
     name String required
 }
 
@@ -803,6 +830,8 @@ entity ProductBrand{
     shortLabel String
     sortOrder Integer
     iconFont String
+    iconPhoto String
+    activeFlag Boolean required
     validFrom Instant required
     validTo Instant
 }
@@ -817,6 +846,7 @@ entity ProductCategory{
     shortLabel String
     sortOrder Integer
     iconFont String
+    iconPhoto String
     justForYouInd Boolean
     showInNavInd Boolean
     validFrom Instant required
@@ -832,6 +862,7 @@ entity Campaign{
     shortLabel String
     sortOrder Integer
     iconFont String
+    iconPhoto String
 }
 
 entity ProductCatalog
@@ -842,17 +873,21 @@ entity Currency{
 }
 
 entity Photos{
-    blobId String
-    thumbnailUrl String required
-    originalUrl String required
-    bannerTallUrl String
-    bannerWideUrl String
-    circleUrl String
-    sharpenedUrl String
-    squareUrl String
-    watermarkUrl String
+    blobId String required
     priority Integer
+    uid String
+    size Integer
+    name String
+    fileName String
+    url String
+    status String
+    thumbUrl String
+    percent Integer
+    type String
     defaultInd Boolean required
+    activeFlag Boolean
+    lastModified String
+    lastModifiedDate Instant
 }
 
 entity UnitMeasure{
@@ -954,17 +989,19 @@ relationship ManyToOne {
     PurchaseOrders{deliveryMethod(name)} to DeliveryMethods
     PurchaseOrders{supplier(name)} to Suppliers
     StateProvinces{country(name)} to Countries
-    Cities{stateProvince(name)} to StateProvinces
-    Regions{city(name)} to Cities
-    Regions{district(name)} to Districts
-    ShippingFeeChart{sourceRegion(code)} to Regions
-    ShippingFeeChart{destinationRegion(code)} to Regions
+    Regions{stateProvince(name)} to StateProvinces
+    Cities{region(name)} to Regions
+    Townships{city(name)} to Cities
+    Towns{township(name)} to Townships
+    ShippingFeeChart{sourceTown(name)} to Towns
+    ShippingFeeChart{destinationTown(name)} to Towns
     ShippingFeeChart{deliveryMethod(name)} to DeliveryMethods
     SystemParameters{deliveryCity(name)} to Cities
     SystemParameters{postalCity(name)} to Cities
     Suppliers{supplierCategory(name)} to SupplierCategories
     Suppliers{pickupAddress} to Addresses
     Suppliers{headOfficeAddress} to Addresses
+    Suppliers{returnAddress} to Addresses
     SpecialDeals{buyingGroup(name)} to BuyingGroups
     SpecialDeals{customerCategory(name)} to CustomerCategories
     SpecialDeals{customer(name)} to Customers
@@ -1003,7 +1040,7 @@ relationship ManyToOne {
     Products{productBrand(name)} to ProductBrand
     WishlistLines{stockItem(name)} to StockItems
     CompareLines{stockItem(name)} to StockItems
-    ProductDocument{warrantyType(name)} to WarrantyTypes,
+    ProductDocuments{warrantyType(name)} to WarrantyTypes,
     StockItems{itemLengthUnit(code)} to UnitMeasure
     StockItems{itemWidthUnit(code)} to UnitMeasure
     StockItems{itemHeightUnit(code)} to UnitMeasure
@@ -1026,7 +1063,6 @@ relationship ManyToOne {
     StockItemTransactions{invoice} to Invoices
     StockItemTransactions{supplier(name)} to Suppliers
     StockItemTransactions{transactionType(name)} to TransactionTypes
-    StockItemTransactions{supplier(name)} to Suppliers
     StockItemTransactions{purchaseOrder} to PurchaseOrders
     SupplierTransactions{supplier(name)} to Suppliers
     SupplierTransactions{transactionType(name)} to TransactionTypes
@@ -1034,16 +1070,21 @@ relationship ManyToOne {
     SupplierTransactions{order} to Orders
     CustomerTransactions{order} to Orders
     SupplierTransactions{invoice} to Invoices
-    Addresses{region(code)} to Regions
+    Addresses{region(name)} to Regions
+    Addresses{city(name)} to Cities
+    Addresses{township(name)} to Townships
+    Addresses{town(name)} to Towns
     Addresses{addressType(name)} to AddressTypes
-    Addresses{person} to People
+    Addresses{customerAddress(name)} to Customers
+    Addresses{supplierAddress(name)} to Suppliers
     BusinessEntityAddress{address} to Addresses
     BusinessEntityAddress{person} to People
     BusinessEntityAddress{addressType(name)} to AddressTypes
     BusinessEntityContact{person} to People
     BusinessEntityContact{contactType(name)} to ContactType
     ProductCategory{parent(name)} to ProductCategory
-    ProductBrand{supplier(name)} to Suppliers
+    Suppliers{contactPerson(fullName)} to People
+    BusinessEntityContact{person} to People
     CustomerPayment{paymentMethod(name)} to PaymentMethods
     CustomerPayment{currency(name)} to Currency
     CustomerPayment{currencyRate} to CurrencyRate
@@ -1064,14 +1105,6 @@ relationship ManyToOne {
     DiscountDetails{productCategory(name)} to ProductCategory
     Discounts{supplier(name)} to Suppliers
     Discounts{discountType(name)} to DiscountTypes
-    People{profile(blobId)} to Photos
-    PaymentMethods{icon(blobId)} to Photos
-    ProductCategory{icon(blobId)} to Photos
-    Campaign{icon(blobId)} to Photos
-    ProductBrand{icon(blobId)} to Photos
-    Suppliers{icon(blobId)} to Photos
-    OrderLines{reviewImage(blobId)} to Photos
-    BankAccounts{logo(blobId)} to Photos
     Questions{supplier(name)} to Suppliers
     Questions{person(fullName)} to People
     Questions{product(name)} to Products
@@ -1080,6 +1113,33 @@ relationship ManyToOne {
     OrderLines{supplier(name)} to Suppliers
     OrderPackages{supplier(name)} to Suppliers
     OrderPackages{deliveryMethod(name)} to DeliveryMethods
+}
+
+relationship ManyToOne{
+    CountriesCulture{culture(code)} to Culture
+    CountriesCulture{country(name)} to Countries
+    StateProvincesCulture{culture(code)} to Culture
+    StateProvincesCulture{stateProvince(name)} to StateProvinces
+    CitiesCulture{culture(code)} to Culture
+    CitiesCulture{city(name)} to Cities
+    TownshipsCulture{culture(code)} to Culture
+    TownshipsCulture{township(name)} to Townships
+    RegionsCulture{culture(code)} to Culture
+    RegionsCulture{region(name)} to Regions
+    ProductsCulture{culture(code)} to Culture
+    ProductsCulture{product(name)} to Products
+    StockItemsCulture{culture(code)} to Culture
+    StockItemsCulture{stockItem(name)} to StockItems
+    ProductDocumentsCulture{culture(code)} to Culture
+    ProductDocumentsCulture{productDocument} to ProductDocuments
+    MaterialsCulture{culture(code)} to Culture
+    MaterialsCulture{material(name)} to Materials
+    ProductBrandCulture{culture(code)} to Culture
+    ProductBrandCulture{productBrand(name)} to ProductBrand
+    ProductCategoryCulture{culture(code)} to Culture
+    ProductCategoryCulture{productCategory(name)} to ProductCategory
+    MaterialsCulture{culture(code)} to Culture
+    MaterialsCulture{material(name)} to Materials
 }
 
 relationship OneToMany{
@@ -1096,7 +1156,8 @@ relationship OneToMany{
     Products{stockItemList} to StockItems{product}
     PurchaseOrders{purchaseOrderLineList} to PurchaseOrderLines{purchaseOrder}
     StockItems{photoList} to Photos{stockItem}
-    Suppliers{userList} to People{supplier(name)}
+    Suppliers{bannerList} to Photos{supplierBanner}
+    Suppliers{documentList} to Photos{supplierDocument}
 }
 
 relationship OneToOne{
@@ -1109,23 +1170,13 @@ relationship OneToOne{
     CustomerPaymentVoucher{customerPayment} to CustomerPayment{customerPaymentVoucher}
     CustomerPaymentBankTransfer{customerPayment} to CustomerPayment{customerPaymentBankTransfer}
     CustomerPaymentPaypal{customerPayment} to CustomerPayment{customerPaymentPaypal}
-    Products{productDocument} to ProductDocument{product}
+    Products{productDocument} to ProductDocuments{product}
     OrderTracking{order} to Orders{orderTracking}
 }
 
 relationship ManyToMany{
     Suppliers{deliveryMethod(name)} to DeliveryMethods{supplier(name)}
-    Countries{culture(code)} to Culture{country(name)}
-    StateProvinces{culture(code)} to Culture{stateProvince(name)}
-    Cities{culture(code)} to Culture{city(name)}
-    Districts{culture(code)} to Culture{district(name)}
-    Regions{culture(code)} to Culture{region(name)}
-    Products{culture(code)} to Culture{product(name)}
-    StockItems{culture(code)} to Culture{stockItem(name)}
-    ProductDocument{culture(code)} to Culture
-    Materials{culture(code)} to Culture{material(name)}
-    ProductBrand{culture(code)} to Culture{productBrand(name)}
-    ProductCategory{culture(code)} to Culture{productCategory(name)}
+    People{supplier(name)} to Suppliers{people(fullName)}
 }
 
 //paginate JobHistory Employee with infinite-scroll

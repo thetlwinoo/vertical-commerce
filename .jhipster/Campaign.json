@@ -19,20 +19,12 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "thumbnailUrl",
+      "fieldName": "iconPhoto",
       "fieldType": "String"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "photos",
-      "otherEntityRelationshipName": "campaign",
-      "relationshipName": "icon",
-      "otherEntityField": "thumbnailUrl"
-    }
-  ],
-  "changelogDate": "20200617164904",
+  "relationships": [],
+  "changelogDate": "20200718084512",
   "entityTableName": "campaign",
   "dto": "mapstruct",
   "pagination": "no",

@@ -105,7 +105,8 @@ class QuestionsGatlingTest extends Simulation {
                 , "customerQuestionOn":"2020-01-01T00:00:00.000Z"
                 , "supplierAnswer":null
                 , "supplierAnswerOn":"2020-01-01T00:00:00.000Z"
-                , "activeInd":null
+                , "validFrom":"2020-01-01T00:00:00.000Z"
+                , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_questions_url"))).exitHereIfFailed

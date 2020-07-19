@@ -162,26 +162,6 @@ public class BuyingGroupsResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = buyingGroupsRepository.findAll().size();
-        // set the field null
-        buyingGroups.setValidTo(null);
-
-        // Create the BuyingGroups, which fails.
-        BuyingGroupsDTO buyingGroupsDTO = buyingGroupsMapper.toDto(buyingGroups);
-
-
-        restBuyingGroupsMockMvc.perform(post("/api/buying-groups").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(buyingGroupsDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<BuyingGroups> buyingGroupsList = buyingGroupsRepository.findAll();
-        assertThat(buyingGroupsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllBuyingGroups() throws Exception {
         // Initialize the database
         buyingGroupsRepository.saveAndFlush(buyingGroups);

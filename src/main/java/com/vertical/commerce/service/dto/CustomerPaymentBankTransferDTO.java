@@ -13,7 +13,7 @@ public class CustomerPaymentBankTransferDTO implements Serializable {
     private Long id;
 
     @NotNull
-    private String receiptImageUrl;
+    private String receiptPhoto;
 
     @NotNull
     private String nameInBankAccount;
@@ -24,8 +24,10 @@ public class CustomerPaymentBankTransferDTO implements Serializable {
     @NotNull
     private BigDecimal amountTransferred;
 
+    private String bankName;
+
     @NotNull
-    private String lastEdityBy;
+    private String lastEditedBy;
 
     @NotNull
     private Instant lastEditedWhen;
@@ -45,12 +47,12 @@ public class CustomerPaymentBankTransferDTO implements Serializable {
         this.id = id;
     }
 
-    public String getReceiptImageUrl() {
-        return receiptImageUrl;
+    public String getReceiptPhoto() {
+        return receiptPhoto;
     }
 
-    public void setReceiptImageUrl(String receiptImageUrl) {
-        this.receiptImageUrl = receiptImageUrl;
+    public void setReceiptPhoto(String receiptPhoto) {
+        this.receiptPhoto = receiptPhoto;
     }
 
     public String getNameInBankAccount() {
@@ -77,12 +79,20 @@ public class CustomerPaymentBankTransferDTO implements Serializable {
         this.amountTransferred = amountTransferred;
     }
 
-    public String getLastEdityBy() {
-        return lastEdityBy;
+    public String getBankName() {
+        return bankName;
     }
 
-    public void setLastEdityBy(String lastEdityBy) {
-        this.lastEdityBy = lastEdityBy;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getLastEditedBy() {
+        return lastEditedBy;
+    }
+
+    public void setLastEditedBy(String lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
     }
 
     public Instant getLastEditedWhen() {
@@ -139,11 +149,12 @@ public class CustomerPaymentBankTransferDTO implements Serializable {
     public String toString() {
         return "CustomerPaymentBankTransferDTO{" +
             "id=" + getId() +
-            ", receiptImageUrl='" + getReceiptImageUrl() + "'" +
+            ", receiptPhoto='" + getReceiptPhoto() + "'" +
             ", nameInBankAccount='" + getNameInBankAccount() + "'" +
             ", dateOfTransfer='" + getDateOfTransfer() + "'" +
             ", amountTransferred=" + getAmountTransferred() +
-            ", lastEdityBy='" + getLastEdityBy() + "'" +
+            ", bankName='" + getBankName() + "'" +
+            ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", customerPaymentId=" + getCustomerPaymentId() +
             ", currencyId=" + getCurrencyId() +

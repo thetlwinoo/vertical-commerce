@@ -16,7 +16,6 @@ public class BuyingGroupsDTO implements Serializable {
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
     

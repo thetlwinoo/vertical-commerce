@@ -6,6 +6,14 @@
       "fieldType": "Instant"
     },
     {
+      "fieldName": "orderPlacedOn",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "orderDeliveredOn",
+      "fieldType": "Instant"
+    },
+    {
       "fieldName": "comments",
       "fieldType": "String"
     },
@@ -131,7 +139,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617162004",
+  "changelogDate": "20200718081012",
   "entityTableName": "order_packages",
   "dto": "mapstruct",
   "pagination": "no",

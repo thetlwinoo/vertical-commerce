@@ -44,7 +44,7 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "thumbnailUrl",
+      "fieldName": "profilePhoto",
       "fieldType": "String"
     },
     {
@@ -57,14 +57,18 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "activeFlag",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "validFrom",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "validTo",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
@@ -98,7 +102,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617160104",
+  "changelogDate": "20200718075112",
   "entityTableName": "customers",
   "dto": "mapstruct",
   "pagination": "no",

@@ -94,39 +94,59 @@ public class PhotosQueryService extends QueryService<Photos> {
             if (criteria.getBlobId() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getBlobId(), Photos_.blobId));
             }
-            if (criteria.getThumbnailUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), Photos_.thumbnailUrl));
-            }
-            if (criteria.getOriginalUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getOriginalUrl(), Photos_.originalUrl));
-            }
-            if (criteria.getBannerTallUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getBannerTallUrl(), Photos_.bannerTallUrl));
-            }
-            if (criteria.getBannerWideUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getBannerWideUrl(), Photos_.bannerWideUrl));
-            }
-            if (criteria.getCircleUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getCircleUrl(), Photos_.circleUrl));
-            }
-            if (criteria.getSharpenedUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getSharpenedUrl(), Photos_.sharpenedUrl));
-            }
-            if (criteria.getSquareUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getSquareUrl(), Photos_.squareUrl));
-            }
-            if (criteria.getWatermarkUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getWatermarkUrl(), Photos_.watermarkUrl));
-            }
             if (criteria.getPriority() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPriority(), Photos_.priority));
+            }
+            if (criteria.getUid() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getUid(), Photos_.uid));
+            }
+            if (criteria.getSize() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getSize(), Photos_.size));
+            }
+            if (criteria.getName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getName(), Photos_.name));
+            }
+            if (criteria.getFileName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFileName(), Photos_.fileName));
+            }
+            if (criteria.getUrl() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getUrl(), Photos_.url));
+            }
+            if (criteria.getStatus() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getStatus(), Photos_.status));
+            }
+            if (criteria.getThumbUrl() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getThumbUrl(), Photos_.thumbUrl));
+            }
+            if (criteria.getPercent() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPercent(), Photos_.percent));
+            }
+            if (criteria.getType() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getType(), Photos_.type));
             }
             if (criteria.getDefaultInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getDefaultInd(), Photos_.defaultInd));
             }
+            if (criteria.getActiveFlag() != null) {
+                specification = specification.and(buildSpecification(criteria.getActiveFlag(), Photos_.activeFlag));
+            }
+            if (criteria.getLastModified() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLastModified(), Photos_.lastModified));
+            }
+            if (criteria.getLastModifiedDate() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getLastModifiedDate(), Photos_.lastModifiedDate));
+            }
             if (criteria.getStockItemId() != null) {
                 specification = specification.and(buildSpecification(criteria.getStockItemId(),
                     root -> root.join(Photos_.stockItem, JoinType.LEFT).get(StockItems_.id)));
+            }
+            if (criteria.getSupplierBannerId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierBannerId(),
+                    root -> root.join(Photos_.supplierBanner, JoinType.LEFT).get(Suppliers_.id)));
+            }
+            if (criteria.getSupplierDocumentId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierDocumentId(),
+                    root -> root.join(Photos_.supplierDocument, JoinType.LEFT).get(Suppliers_.id)));
             }
         }
         return specification;

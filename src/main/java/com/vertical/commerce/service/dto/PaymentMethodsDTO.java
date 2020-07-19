@@ -1,5 +1,7 @@
 package com.vertical.commerce.service.dto;
 
+import java.time.Instant;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -15,16 +17,17 @@ public class PaymentMethodsDTO implements Serializable {
 
     private Boolean disabled;
 
-    private Boolean activeInd;
-
     private Integer sortOrder;
 
     private String iconFont;
 
+    private String iconPhoto;
 
-    private Long iconId;
+    @NotNull
+    private Instant validFrom;
 
-    private String iconThumbnailUrl;
+    private Instant validTo;
+
     
     public Long getId() {
         return id;
@@ -58,14 +61,6 @@ public class PaymentMethodsDTO implements Serializable {
         this.disabled = disabled;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
-    }
-
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
-    }
-
     public Integer getSortOrder() {
         return sortOrder;
     }
@@ -82,20 +77,28 @@ public class PaymentMethodsDTO implements Serializable {
         this.iconFont = iconFont;
     }
 
-    public Long getIconId() {
-        return iconId;
+    public String getIconPhoto() {
+        return iconPhoto;
     }
 
-    public void setIconId(Long photosId) {
-        this.iconId = photosId;
+    public void setIconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
     }
 
-    public String getIconThumbnailUrl() {
-        return iconThumbnailUrl;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public void setIconThumbnailUrl(String photosThumbnailUrl) {
-        this.iconThumbnailUrl = photosThumbnailUrl;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     @Override
@@ -123,11 +126,11 @@ public class PaymentMethodsDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", code='" + getCode() + "'" +
             ", disabled='" + isDisabled() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
-            ", iconId=" + getIconId() +
-            ", iconThumbnailUrl='" + getIconThumbnailUrl() + "'" +
+            ", iconPhoto='" + getIconPhoto() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

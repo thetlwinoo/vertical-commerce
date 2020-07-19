@@ -37,13 +37,13 @@ public class ShippingFeeChartDTO implements Serializable {
     private Instant lastEditedWhen;
 
 
-    private Long sourceZoneId;
+    private Long sourceTownId;
 
-    private String sourceZoneCode;
+    private String sourceTownName;
 
-    private Long destinationZoneId;
+    private Long destinationTownId;
 
-    private String destinationZoneCode;
+    private String destinationTownName;
 
     private Long deliveryMethodId;
 
@@ -121,36 +121,36 @@ public class ShippingFeeChartDTO implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public Long getSourceZoneId() {
-        return sourceZoneId;
+    public Long getSourceTownId() {
+        return sourceTownId;
     }
 
-    public void setSourceZoneId(Long zoneId) {
-        this.sourceZoneId = zoneId;
+    public void setSourceTownId(Long townsId) {
+        this.sourceTownId = townsId;
     }
 
-    public String getSourceZoneCode() {
-        return sourceZoneCode;
+    public String getSourceTownName() {
+        return sourceTownName;
     }
 
-    public void setSourceZoneCode(String zoneCode) {
-        this.sourceZoneCode = zoneCode;
+    public void setSourceTownName(String townsName) {
+        this.sourceTownName = townsName;
     }
 
-    public Long getDestinationZoneId() {
-        return destinationZoneId;
+    public Long getDestinationTownId() {
+        return destinationTownId;
     }
 
-    public void setDestinationZoneId(Long zoneId) {
-        this.destinationZoneId = zoneId;
+    public void setDestinationTownId(Long townsId) {
+        this.destinationTownId = townsId;
     }
 
-    public String getDestinationZoneCode() {
-        return destinationZoneCode;
+    public String getDestinationTownName() {
+        return destinationTownName;
     }
 
-    public void setDestinationZoneCode(String zoneCode) {
-        this.destinationZoneCode = zoneCode;
+    public void setDestinationTownName(String townsName) {
+        this.destinationTownName = townsName;
     }
 
     public Long getDeliveryMethodId() {
@@ -199,10 +199,10 @@ public class ShippingFeeChartDTO implements Serializable {
             ", price=" + getPrice() +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
-            ", sourceZoneId=" + getSourceZoneId() +
-            ", sourceZoneCode='" + getSourceZoneCode() + "'" +
-            ", destinationZoneId=" + getDestinationZoneId() +
-            ", destinationZoneCode='" + getDestinationZoneCode() + "'" +
+            ", sourceTownId=" + getSourceTownId() +
+            ", sourceTownName='" + getSourceTownName() + "'" +
+            ", destinationTownId=" + getDestinationTownId() +
+            ", destinationTownName='" + getDestinationTownName() + "'" +
             ", deliveryMethodId=" + getDeliveryMethodId() +
             ", deliveryMethodName='" + getDeliveryMethodName() + "'" +
             "}";

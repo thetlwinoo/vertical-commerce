@@ -28,12 +28,15 @@ public class TrackingEventCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
+    private StringFilter description;
+
     public TrackingEventCriteria() {
     }
 
     public TrackingEventCriteria(TrackingEventCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
+        this.description = other.description == null ? null : other.description.copy();
     }
 
     @Override
@@ -57,6 +60,14 @@ public class TrackingEventCriteria implements Serializable, Criteria {
         this.name = name;
     }
 
+    public StringFilter getDescription() {
+        return description;
+    }
+
+    public void setDescription(StringFilter description) {
+        this.description = description;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -69,14 +80,16 @@ public class TrackingEventCriteria implements Serializable, Criteria {
         final TrackingEventCriteria that = (TrackingEventCriteria) o;
         return
             Objects.equals(id, that.id) &&
-            Objects.equals(name, that.name);
+            Objects.equals(name, that.name) &&
+            Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
         id,
-        name
+        name,
+        description
         );
     }
 
@@ -86,6 +99,7 @@ public class TrackingEventCriteria implements Serializable, Criteria {
         return "TrackingEventCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
+                (description != null ? "description=" + description + ", " : "") +
             "}";
     }
 

@@ -71,14 +71,17 @@ public class CustomersResourceIT {
     private static final String DEFAULT_RUN_POSITION = "AAAAAAAAAA";
     private static final String UPDATED_RUN_POSITION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_THUMBNAIL_URL = "AAAAAAAAAA";
-    private static final String UPDATED_THUMBNAIL_URL = "BBBBBBBBBB";
+    private static final String DEFAULT_PROFILE_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_PROFILE_PHOTO = "BBBBBBBBBB";
 
     private static final Boolean DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS = false;
     private static final Boolean UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS = true;
 
     private static final String DEFAULT_LAST_EDITED_BY = "AAAAAAAAAA";
     private static final String UPDATED_LAST_EDITED_BY = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_ACTIVE_FLAG = false;
+    private static final Boolean UPDATED_ACTIVE_FLAG = true;
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -123,9 +126,10 @@ public class CustomersResourceIT {
             .paymentDays(DEFAULT_PAYMENT_DAYS)
             .deliveryRun(DEFAULT_DELIVERY_RUN)
             .runPosition(DEFAULT_RUN_POSITION)
-            .thumbnailUrl(DEFAULT_THUMBNAIL_URL)
+            .profilePhoto(DEFAULT_PROFILE_PHOTO)
             .billToAddressSameAsDeliveryAddress(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
+            .activeFlag(DEFAULT_ACTIVE_FLAG)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return customers;
@@ -147,9 +151,10 @@ public class CustomersResourceIT {
             .paymentDays(UPDATED_PAYMENT_DAYS)
             .deliveryRun(UPDATED_DELIVERY_RUN)
             .runPosition(UPDATED_RUN_POSITION)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
+            .profilePhoto(UPDATED_PROFILE_PHOTO)
             .billToAddressSameAsDeliveryAddress(UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
+            .activeFlag(UPDATED_ACTIVE_FLAG)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return customers;
@@ -184,9 +189,10 @@ public class CustomersResourceIT {
         assertThat(testCustomers.getPaymentDays()).isEqualTo(DEFAULT_PAYMENT_DAYS);
         assertThat(testCustomers.getDeliveryRun()).isEqualTo(DEFAULT_DELIVERY_RUN);
         assertThat(testCustomers.getRunPosition()).isEqualTo(DEFAULT_RUN_POSITION);
-        assertThat(testCustomers.getThumbnailUrl()).isEqualTo(DEFAULT_THUMBNAIL_URL);
+        assertThat(testCustomers.getProfilePhoto()).isEqualTo(DEFAULT_PROFILE_PHOTO);
         assertThat(testCustomers.isBillToAddressSameAsDeliveryAddress()).isEqualTo(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
         assertThat(testCustomers.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
+        assertThat(testCustomers.isActiveFlag()).isEqualTo(DEFAULT_ACTIVE_FLAG);
         assertThat(testCustomers.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testCustomers.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -354,10 +360,10 @@ public class CustomersResourceIT {
 
     @Test
     @Transactional
-    public void checkValidFromIsRequired() throws Exception {
+    public void checkActiveFlagIsRequired() throws Exception {
         int databaseSizeBeforeTest = customersRepository.findAll().size();
         // set the field null
-        customers.setValidFrom(null);
+        customers.setActiveFlag(null);
 
         // Create the Customers, which fails.
         CustomersDTO customersDTO = customersMapper.toDto(customers);
@@ -374,10 +380,10 @@ public class CustomersResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
+    public void checkValidFromIsRequired() throws Exception {
         int databaseSizeBeforeTest = customersRepository.findAll().size();
         // set the field null
-        customers.setValidTo(null);
+        customers.setValidFrom(null);
 
         // Create the Customers, which fails.
         CustomersDTO customersDTO = customersMapper.toDto(customers);
@@ -412,9 +418,10 @@ public class CustomersResourceIT {
             .andExpect(jsonPath("$.[*].paymentDays").value(hasItem(DEFAULT_PAYMENT_DAYS)))
             .andExpect(jsonPath("$.[*].deliveryRun").value(hasItem(DEFAULT_DELIVERY_RUN)))
             .andExpect(jsonPath("$.[*].runPosition").value(hasItem(DEFAULT_RUN_POSITION)))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
+            .andExpect(jsonPath("$.[*].profilePhoto").value(hasItem(DEFAULT_PROFILE_PHOTO)))
             .andExpect(jsonPath("$.[*].billToAddressSameAsDeliveryAddress").value(hasItem(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
+            .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -439,9 +446,10 @@ public class CustomersResourceIT {
             .andExpect(jsonPath("$.paymentDays").value(DEFAULT_PAYMENT_DAYS))
             .andExpect(jsonPath("$.deliveryRun").value(DEFAULT_DELIVERY_RUN))
             .andExpect(jsonPath("$.runPosition").value(DEFAULT_RUN_POSITION))
-            .andExpect(jsonPath("$.thumbnailUrl").value(DEFAULT_THUMBNAIL_URL))
+            .andExpect(jsonPath("$.profilePhoto").value(DEFAULT_PROFILE_PHOTO))
             .andExpect(jsonPath("$.billToAddressSameAsDeliveryAddress").value(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS.booleanValue()))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
+            .andExpect(jsonPath("$.activeFlag").value(DEFAULT_ACTIVE_FLAG.booleanValue()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -1146,79 +1154,79 @@ public class CustomersResourceIT {
 
     @Test
     @Transactional
-    public void getAllCustomersByThumbnailUrlIsEqualToSomething() throws Exception {
+    public void getAllCustomersByProfilePhotoIsEqualToSomething() throws Exception {
         // Initialize the database
         customersRepository.saveAndFlush(customers);
 
-        // Get all the customersList where thumbnailUrl equals to DEFAULT_THUMBNAIL_URL
-        defaultCustomersShouldBeFound("thumbnailUrl.equals=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto equals to DEFAULT_PROFILE_PHOTO
+        defaultCustomersShouldBeFound("profilePhoto.equals=" + DEFAULT_PROFILE_PHOTO);
 
-        // Get all the customersList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultCustomersShouldNotBeFound("thumbnailUrl.equals=" + UPDATED_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto equals to UPDATED_PROFILE_PHOTO
+        defaultCustomersShouldNotBeFound("profilePhoto.equals=" + UPDATED_PROFILE_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCustomersByThumbnailUrlIsNotEqualToSomething() throws Exception {
+    public void getAllCustomersByProfilePhotoIsNotEqualToSomething() throws Exception {
         // Initialize the database
         customersRepository.saveAndFlush(customers);
 
-        // Get all the customersList where thumbnailUrl not equals to DEFAULT_THUMBNAIL_URL
-        defaultCustomersShouldNotBeFound("thumbnailUrl.notEquals=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto not equals to DEFAULT_PROFILE_PHOTO
+        defaultCustomersShouldNotBeFound("profilePhoto.notEquals=" + DEFAULT_PROFILE_PHOTO);
 
-        // Get all the customersList where thumbnailUrl not equals to UPDATED_THUMBNAIL_URL
-        defaultCustomersShouldBeFound("thumbnailUrl.notEquals=" + UPDATED_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto not equals to UPDATED_PROFILE_PHOTO
+        defaultCustomersShouldBeFound("profilePhoto.notEquals=" + UPDATED_PROFILE_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCustomersByThumbnailUrlIsInShouldWork() throws Exception {
+    public void getAllCustomersByProfilePhotoIsInShouldWork() throws Exception {
         // Initialize the database
         customersRepository.saveAndFlush(customers);
 
-        // Get all the customersList where thumbnailUrl in DEFAULT_THUMBNAIL_URL or UPDATED_THUMBNAIL_URL
-        defaultCustomersShouldBeFound("thumbnailUrl.in=" + DEFAULT_THUMBNAIL_URL + "," + UPDATED_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto in DEFAULT_PROFILE_PHOTO or UPDATED_PROFILE_PHOTO
+        defaultCustomersShouldBeFound("profilePhoto.in=" + DEFAULT_PROFILE_PHOTO + "," + UPDATED_PROFILE_PHOTO);
 
-        // Get all the customersList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultCustomersShouldNotBeFound("thumbnailUrl.in=" + UPDATED_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto equals to UPDATED_PROFILE_PHOTO
+        defaultCustomersShouldNotBeFound("profilePhoto.in=" + UPDATED_PROFILE_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCustomersByThumbnailUrlIsNullOrNotNull() throws Exception {
+    public void getAllCustomersByProfilePhotoIsNullOrNotNull() throws Exception {
         // Initialize the database
         customersRepository.saveAndFlush(customers);
 
-        // Get all the customersList where thumbnailUrl is not null
-        defaultCustomersShouldBeFound("thumbnailUrl.specified=true");
+        // Get all the customersList where profilePhoto is not null
+        defaultCustomersShouldBeFound("profilePhoto.specified=true");
 
-        // Get all the customersList where thumbnailUrl is null
-        defaultCustomersShouldNotBeFound("thumbnailUrl.specified=false");
+        // Get all the customersList where profilePhoto is null
+        defaultCustomersShouldNotBeFound("profilePhoto.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllCustomersByThumbnailUrlContainsSomething() throws Exception {
+    public void getAllCustomersByProfilePhotoContainsSomething() throws Exception {
         // Initialize the database
         customersRepository.saveAndFlush(customers);
 
-        // Get all the customersList where thumbnailUrl contains DEFAULT_THUMBNAIL_URL
-        defaultCustomersShouldBeFound("thumbnailUrl.contains=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto contains DEFAULT_PROFILE_PHOTO
+        defaultCustomersShouldBeFound("profilePhoto.contains=" + DEFAULT_PROFILE_PHOTO);
 
-        // Get all the customersList where thumbnailUrl contains UPDATED_THUMBNAIL_URL
-        defaultCustomersShouldNotBeFound("thumbnailUrl.contains=" + UPDATED_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto contains UPDATED_PROFILE_PHOTO
+        defaultCustomersShouldNotBeFound("profilePhoto.contains=" + UPDATED_PROFILE_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCustomersByThumbnailUrlNotContainsSomething() throws Exception {
+    public void getAllCustomersByProfilePhotoNotContainsSomething() throws Exception {
         // Initialize the database
         customersRepository.saveAndFlush(customers);
 
-        // Get all the customersList where thumbnailUrl does not contain DEFAULT_THUMBNAIL_URL
-        defaultCustomersShouldNotBeFound("thumbnailUrl.doesNotContain=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto does not contain DEFAULT_PROFILE_PHOTO
+        defaultCustomersShouldNotBeFound("profilePhoto.doesNotContain=" + DEFAULT_PROFILE_PHOTO);
 
-        // Get all the customersList where thumbnailUrl does not contain UPDATED_THUMBNAIL_URL
-        defaultCustomersShouldBeFound("thumbnailUrl.doesNotContain=" + UPDATED_THUMBNAIL_URL);
+        // Get all the customersList where profilePhoto does not contain UPDATED_PROFILE_PHOTO
+        defaultCustomersShouldBeFound("profilePhoto.doesNotContain=" + UPDATED_PROFILE_PHOTO);
     }
 
 
@@ -1351,6 +1359,58 @@ public class CustomersResourceIT {
         defaultCustomersShouldBeFound("lastEditedBy.doesNotContain=" + UPDATED_LAST_EDITED_BY);
     }
 
+
+    @Test
+    @Transactional
+    public void getAllCustomersByActiveFlagIsEqualToSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where activeFlag equals to DEFAULT_ACTIVE_FLAG
+        defaultCustomersShouldBeFound("activeFlag.equals=" + DEFAULT_ACTIVE_FLAG);
+
+        // Get all the customersList where activeFlag equals to UPDATED_ACTIVE_FLAG
+        defaultCustomersShouldNotBeFound("activeFlag.equals=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByActiveFlagIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where activeFlag not equals to DEFAULT_ACTIVE_FLAG
+        defaultCustomersShouldNotBeFound("activeFlag.notEquals=" + DEFAULT_ACTIVE_FLAG);
+
+        // Get all the customersList where activeFlag not equals to UPDATED_ACTIVE_FLAG
+        defaultCustomersShouldBeFound("activeFlag.notEquals=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByActiveFlagIsInShouldWork() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where activeFlag in DEFAULT_ACTIVE_FLAG or UPDATED_ACTIVE_FLAG
+        defaultCustomersShouldBeFound("activeFlag.in=" + DEFAULT_ACTIVE_FLAG + "," + UPDATED_ACTIVE_FLAG);
+
+        // Get all the customersList where activeFlag equals to UPDATED_ACTIVE_FLAG
+        defaultCustomersShouldNotBeFound("activeFlag.in=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCustomersByActiveFlagIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        customersRepository.saveAndFlush(customers);
+
+        // Get all the customersList where activeFlag is not null
+        defaultCustomersShouldBeFound("activeFlag.specified=true");
+
+        // Get all the customersList where activeFlag is null
+        defaultCustomersShouldNotBeFound("activeFlag.specified=false");
+    }
 
     @Test
     @Transactional
@@ -1552,9 +1612,10 @@ public class CustomersResourceIT {
             .andExpect(jsonPath("$.[*].paymentDays").value(hasItem(DEFAULT_PAYMENT_DAYS)))
             .andExpect(jsonPath("$.[*].deliveryRun").value(hasItem(DEFAULT_DELIVERY_RUN)))
             .andExpect(jsonPath("$.[*].runPosition").value(hasItem(DEFAULT_RUN_POSITION)))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
+            .andExpect(jsonPath("$.[*].profilePhoto").value(hasItem(DEFAULT_PROFILE_PHOTO)))
             .andExpect(jsonPath("$.[*].billToAddressSameAsDeliveryAddress").value(hasItem(DEFAULT_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
+            .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -1612,9 +1673,10 @@ public class CustomersResourceIT {
             .paymentDays(UPDATED_PAYMENT_DAYS)
             .deliveryRun(UPDATED_DELIVERY_RUN)
             .runPosition(UPDATED_RUN_POSITION)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
+            .profilePhoto(UPDATED_PROFILE_PHOTO)
             .billToAddressSameAsDeliveryAddress(UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
+            .activeFlag(UPDATED_ACTIVE_FLAG)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         CustomersDTO customersDTO = customersMapper.toDto(updatedCustomers);
@@ -1637,9 +1699,10 @@ public class CustomersResourceIT {
         assertThat(testCustomers.getPaymentDays()).isEqualTo(UPDATED_PAYMENT_DAYS);
         assertThat(testCustomers.getDeliveryRun()).isEqualTo(UPDATED_DELIVERY_RUN);
         assertThat(testCustomers.getRunPosition()).isEqualTo(UPDATED_RUN_POSITION);
-        assertThat(testCustomers.getThumbnailUrl()).isEqualTo(UPDATED_THUMBNAIL_URL);
+        assertThat(testCustomers.getProfilePhoto()).isEqualTo(UPDATED_PROFILE_PHOTO);
         assertThat(testCustomers.isBillToAddressSameAsDeliveryAddress()).isEqualTo(UPDATED_BILL_TO_ADDRESS_SAME_AS_DELIVERY_ADDRESS);
         assertThat(testCustomers.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
+        assertThat(testCustomers.isActiveFlag()).isEqualTo(UPDATED_ACTIVE_FLAG);
         assertThat(testCustomers.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testCustomers.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

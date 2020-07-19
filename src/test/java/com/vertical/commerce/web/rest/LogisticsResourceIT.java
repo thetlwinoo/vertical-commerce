@@ -41,14 +41,17 @@ public class LogisticsResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_ACTIVE_IND = false;
-    private static final Boolean UPDATED_ACTIVE_IND = true;
-
     private static final String DEFAULT_LAST_EDITED_BY = "AAAAAAAAAA";
     private static final String UPDATED_LAST_EDITED_BY = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_LAST_EDITED_WHEN = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_LAST_EDITED_WHEN = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private LogisticsRepository logisticsRepository;
@@ -79,9 +82,10 @@ public class LogisticsResourceIT {
     public static Logistics createEntity(EntityManager em) {
         Logistics logistics = new Logistics()
             .name(DEFAULT_NAME)
-            .activeInd(DEFAULT_ACTIVE_IND)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
-            .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN);
+            .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN)
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return logistics;
     }
     /**
@@ -93,9 +97,10 @@ public class LogisticsResourceIT {
     public static Logistics createUpdatedEntity(EntityManager em) {
         Logistics logistics = new Logistics()
             .name(UPDATED_NAME)
-            .activeInd(UPDATED_ACTIVE_IND)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
-            .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
+            .lastEditedWhen(UPDATED_LAST_EDITED_WHEN)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return logistics;
     }
 
@@ -120,9 +125,10 @@ public class LogisticsResourceIT {
         assertThat(logisticsList).hasSize(databaseSizeBeforeCreate + 1);
         Logistics testLogistics = logisticsList.get(logisticsList.size() - 1);
         assertThat(testLogistics.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testLogistics.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
         assertThat(testLogistics.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
         assertThat(testLogistics.getLastEditedWhen()).isEqualTo(DEFAULT_LAST_EDITED_WHEN);
+        assertThat(testLogistics.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testLogistics.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -152,26 +158,6 @@ public class LogisticsResourceIT {
         int databaseSizeBeforeTest = logisticsRepository.findAll().size();
         // set the field null
         logistics.setName(null);
-
-        // Create the Logistics, which fails.
-        LogisticsDTO logisticsDTO = logisticsMapper.toDto(logistics);
-
-
-        restLogisticsMockMvc.perform(post("/api/logistics").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(logisticsDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Logistics> logisticsList = logisticsRepository.findAll();
-        assertThat(logisticsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkActiveIndIsRequired() throws Exception {
-        int databaseSizeBeforeTest = logisticsRepository.findAll().size();
-        // set the field null
-        logistics.setActiveInd(null);
 
         // Create the Logistics, which fails.
         LogisticsDTO logisticsDTO = logisticsMapper.toDto(logistics);
@@ -228,6 +214,26 @@ public class LogisticsResourceIT {
 
     @Test
     @Transactional
+    public void checkValidFromIsRequired() throws Exception {
+        int databaseSizeBeforeTest = logisticsRepository.findAll().size();
+        // set the field null
+        logistics.setValidFrom(null);
+
+        // Create the Logistics, which fails.
+        LogisticsDTO logisticsDTO = logisticsMapper.toDto(logistics);
+
+
+        restLogisticsMockMvc.perform(post("/api/logistics").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(logisticsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Logistics> logisticsList = logisticsRepository.findAll();
+        assertThat(logisticsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllLogistics() throws Exception {
         // Initialize the database
         logisticsRepository.saveAndFlush(logistics);
@@ -238,9 +244,10 @@ public class LogisticsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(logistics.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
-            .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
+            .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -255,9 +262,10 @@ public class LogisticsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(logistics.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
-            .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()));
+            .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()))
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -357,58 +365,6 @@ public class LogisticsResourceIT {
         defaultLogisticsShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
     }
 
-
-    @Test
-    @Transactional
-    public void getAllLogisticsByActiveIndIsEqualToSomething() throws Exception {
-        // Initialize the database
-        logisticsRepository.saveAndFlush(logistics);
-
-        // Get all the logisticsList where activeInd equals to DEFAULT_ACTIVE_IND
-        defaultLogisticsShouldBeFound("activeInd.equals=" + DEFAULT_ACTIVE_IND);
-
-        // Get all the logisticsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultLogisticsShouldNotBeFound("activeInd.equals=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllLogisticsByActiveIndIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        logisticsRepository.saveAndFlush(logistics);
-
-        // Get all the logisticsList where activeInd not equals to DEFAULT_ACTIVE_IND
-        defaultLogisticsShouldNotBeFound("activeInd.notEquals=" + DEFAULT_ACTIVE_IND);
-
-        // Get all the logisticsList where activeInd not equals to UPDATED_ACTIVE_IND
-        defaultLogisticsShouldBeFound("activeInd.notEquals=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllLogisticsByActiveIndIsInShouldWork() throws Exception {
-        // Initialize the database
-        logisticsRepository.saveAndFlush(logistics);
-
-        // Get all the logisticsList where activeInd in DEFAULT_ACTIVE_IND or UPDATED_ACTIVE_IND
-        defaultLogisticsShouldBeFound("activeInd.in=" + DEFAULT_ACTIVE_IND + "," + UPDATED_ACTIVE_IND);
-
-        // Get all the logisticsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultLogisticsShouldNotBeFound("activeInd.in=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllLogisticsByActiveIndIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        logisticsRepository.saveAndFlush(logistics);
-
-        // Get all the logisticsList where activeInd is not null
-        defaultLogisticsShouldBeFound("activeInd.specified=true");
-
-        // Get all the logisticsList where activeInd is null
-        defaultLogisticsShouldNotBeFound("activeInd.specified=false");
-    }
 
     @Test
     @Transactional
@@ -539,6 +495,110 @@ public class LogisticsResourceIT {
         // Get all the logisticsList where lastEditedWhen is null
         defaultLogisticsShouldNotBeFound("lastEditedWhen.specified=false");
     }
+
+    @Test
+    @Transactional
+    public void getAllLogisticsByValidFromIsEqualToSomething() throws Exception {
+        // Initialize the database
+        logisticsRepository.saveAndFlush(logistics);
+
+        // Get all the logisticsList where validFrom equals to DEFAULT_VALID_FROM
+        defaultLogisticsShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
+
+        // Get all the logisticsList where validFrom equals to UPDATED_VALID_FROM
+        defaultLogisticsShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllLogisticsByValidFromIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        logisticsRepository.saveAndFlush(logistics);
+
+        // Get all the logisticsList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultLogisticsShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
+
+        // Get all the logisticsList where validFrom not equals to UPDATED_VALID_FROM
+        defaultLogisticsShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllLogisticsByValidFromIsInShouldWork() throws Exception {
+        // Initialize the database
+        logisticsRepository.saveAndFlush(logistics);
+
+        // Get all the logisticsList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultLogisticsShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
+
+        // Get all the logisticsList where validFrom equals to UPDATED_VALID_FROM
+        defaultLogisticsShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllLogisticsByValidFromIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        logisticsRepository.saveAndFlush(logistics);
+
+        // Get all the logisticsList where validFrom is not null
+        defaultLogisticsShouldBeFound("validFrom.specified=true");
+
+        // Get all the logisticsList where validFrom is null
+        defaultLogisticsShouldNotBeFound("validFrom.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllLogisticsByValidToIsEqualToSomething() throws Exception {
+        // Initialize the database
+        logisticsRepository.saveAndFlush(logistics);
+
+        // Get all the logisticsList where validTo equals to DEFAULT_VALID_TO
+        defaultLogisticsShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the logisticsList where validTo equals to UPDATED_VALID_TO
+        defaultLogisticsShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllLogisticsByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        logisticsRepository.saveAndFlush(logistics);
+
+        // Get all the logisticsList where validTo not equals to DEFAULT_VALID_TO
+        defaultLogisticsShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the logisticsList where validTo not equals to UPDATED_VALID_TO
+        defaultLogisticsShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllLogisticsByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        logisticsRepository.saveAndFlush(logistics);
+
+        // Get all the logisticsList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultLogisticsShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the logisticsList where validTo equals to UPDATED_VALID_TO
+        defaultLogisticsShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllLogisticsByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        logisticsRepository.saveAndFlush(logistics);
+
+        // Get all the logisticsList where validTo is not null
+        defaultLogisticsShouldBeFound("validTo.specified=true");
+
+        // Get all the logisticsList where validTo is null
+        defaultLogisticsShouldNotBeFound("validTo.specified=false");
+    }
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -548,9 +608,10 @@ public class LogisticsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(logistics.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
-            .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
+            .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restLogisticsMockMvc.perform(get("/api/logistics/count?sort=id,desc&" + filter))
@@ -598,9 +659,10 @@ public class LogisticsResourceIT {
         em.detach(updatedLogistics);
         updatedLogistics
             .name(UPDATED_NAME)
-            .activeInd(UPDATED_ACTIVE_IND)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
-            .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
+            .lastEditedWhen(UPDATED_LAST_EDITED_WHEN)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         LogisticsDTO logisticsDTO = logisticsMapper.toDto(updatedLogistics);
 
         restLogisticsMockMvc.perform(put("/api/logistics").with(csrf())
@@ -613,9 +675,10 @@ public class LogisticsResourceIT {
         assertThat(logisticsList).hasSize(databaseSizeBeforeUpdate);
         Logistics testLogistics = logisticsList.get(logisticsList.size() - 1);
         assertThat(testLogistics.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testLogistics.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
         assertThat(testLogistics.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
         assertThat(testLogistics.getLastEditedWhen()).isEqualTo(UPDATED_LAST_EDITED_WHEN);
+        assertThat(testLogistics.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testLogistics.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

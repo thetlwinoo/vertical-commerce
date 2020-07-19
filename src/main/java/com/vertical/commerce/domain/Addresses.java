@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * A Addresses.
@@ -24,12 +25,10 @@ public class Addresses implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Column(name = "contact_person", nullable = false)
+    @Column(name = "contact_person")
     private String contactPerson;
 
-    @NotNull
-    @Column(name = "contact_number", nullable = false)
+    @Column(name = "contact_number")
     private String contactNumber;
 
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
@@ -43,21 +42,34 @@ public class Addresses implements Serializable {
     @Column(name = "address_line_2")
     private String addressLine2;
 
-    @Column(name = "city")
-    private String city;
-
     @Column(name = "postal_code")
     private String postalCode;
 
-    @Column(name = "default_ind")
-    private Boolean defaultInd;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "active_ind")
-    private Boolean activeInd;
+    @NotNull
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
+
+    @Column(name = "valid_to")
+    private Instant validTo;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "addresses", allowSetters = true)
-    private Zone zone;
+    private Regions region;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "addresses", allowSetters = true)
+    private Cities city;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "addresses", allowSetters = true)
+    private Townships township;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "addresses", allowSetters = true)
+    private Towns town;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "addresses", allowSetters = true)
@@ -65,7 +77,11 @@ public class Addresses implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "addresses", allowSetters = true)
-    private People person;
+    private Customers customerAddress;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "addresses", allowSetters = true)
+    private Suppliers supplierAddress;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -141,19 +157,6 @@ public class Addresses implements Serializable {
         this.addressLine2 = addressLine2;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public Addresses city(String city) {
-        this.city = city;
-        return this;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getPostalCode() {
         return postalCode;
     }
@@ -167,43 +170,95 @@ public class Addresses implements Serializable {
         this.postalCode = postalCode;
     }
 
-    public Boolean isDefaultInd() {
-        return defaultInd;
+    public String getDescription() {
+        return description;
     }
 
-    public Addresses defaultInd(Boolean defaultInd) {
-        this.defaultInd = defaultInd;
+    public Addresses description(String description) {
+        this.description = description;
         return this;
     }
 
-    public void setDefaultInd(Boolean defaultInd) {
-        this.defaultInd = defaultInd;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public Addresses activeInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public Addresses validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
         return this;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
     }
 
-    public Zone getZone() {
-        return zone;
+    public Instant getValidTo() {
+        return validTo;
     }
 
-    public Addresses zone(Zone zone) {
-        this.zone = zone;
+    public Addresses validTo(Instant validTo) {
+        this.validTo = validTo;
         return this;
     }
 
-    public void setZone(Zone zone) {
-        this.zone = zone;
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
+    }
+
+    public Regions getRegion() {
+        return region;
+    }
+
+    public Addresses region(Regions regions) {
+        this.region = regions;
+        return this;
+    }
+
+    public void setRegion(Regions regions) {
+        this.region = regions;
+    }
+
+    public Cities getCity() {
+        return city;
+    }
+
+    public Addresses city(Cities cities) {
+        this.city = cities;
+        return this;
+    }
+
+    public void setCity(Cities cities) {
+        this.city = cities;
+    }
+
+    public Townships getTownship() {
+        return township;
+    }
+
+    public Addresses township(Townships townships) {
+        this.township = townships;
+        return this;
+    }
+
+    public void setTownship(Townships townships) {
+        this.township = townships;
+    }
+
+    public Towns getTown() {
+        return town;
+    }
+
+    public Addresses town(Towns towns) {
+        this.town = towns;
+        return this;
+    }
+
+    public void setTown(Towns towns) {
+        this.town = towns;
     }
 
     public AddressTypes getAddressType() {
@@ -219,17 +274,30 @@ public class Addresses implements Serializable {
         this.addressType = addressTypes;
     }
 
-    public People getPerson() {
-        return person;
+    public Customers getCustomerAddress() {
+        return customerAddress;
     }
 
-    public Addresses person(People people) {
-        this.person = people;
+    public Addresses customerAddress(Customers customers) {
+        this.customerAddress = customers;
         return this;
     }
 
-    public void setPerson(People people) {
-        this.person = people;
+    public void setCustomerAddress(Customers customers) {
+        this.customerAddress = customers;
+    }
+
+    public Suppliers getSupplierAddress() {
+        return supplierAddress;
+    }
+
+    public Addresses supplierAddress(Suppliers suppliers) {
+        this.supplierAddress = suppliers;
+        return this;
+    }
+
+    public void setSupplierAddress(Suppliers suppliers) {
+        this.supplierAddress = suppliers;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -259,10 +327,10 @@ public class Addresses implements Serializable {
             ", contactEmailAddress='" + getContactEmailAddress() + "'" +
             ", addressLine1='" + getAddressLine1() + "'" +
             ", addressLine2='" + getAddressLine2() + "'" +
-            ", city='" + getCity() + "'" +
             ", postalCode='" + getPostalCode() + "'" +
-            ", defaultInd='" + isDefaultInd() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

@@ -182,26 +182,6 @@ public class TransactionTypesResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = transactionTypesRepository.findAll().size();
-        // set the field null
-        transactionTypes.setValidTo(null);
-
-        // Create the TransactionTypes, which fails.
-        TransactionTypesDTO transactionTypesDTO = transactionTypesMapper.toDto(transactionTypes);
-
-
-        restTransactionTypesMockMvc.perform(post("/api/transaction-types").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(transactionTypesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<TransactionTypes> transactionTypesList = transactionTypesRepository.findAll();
-        assertThat(transactionTypesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllTransactionTypes() throws Exception {
         // Initialize the database
         transactionTypesRepository.saveAndFlush(transactionTypes);

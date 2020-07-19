@@ -14,28 +14,29 @@
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "activeInd",
-      "fieldType": "Boolean"
-    },
-    {
       "fieldName": "sortOrder",
       "fieldType": "Integer"
     },
     {
       "fieldName": "iconFont",
       "fieldType": "String"
-    }
-  ],
-  "relationships": [
+    },
     {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "photos",
-      "otherEntityRelationshipName": "paymentMethods",
-      "relationshipName": "icon",
-      "otherEntityField": "thumbnailUrl"
+      "fieldName": "iconPhoto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "validFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validTo",
+      "fieldType": "Instant"
     }
   ],
-  "changelogDate": "20200617161204",
+  "relationships": [],
+  "changelogDate": "20200718080212",
   "entityTableName": "payment_methods",
   "dto": "mapstruct",
   "pagination": "no",

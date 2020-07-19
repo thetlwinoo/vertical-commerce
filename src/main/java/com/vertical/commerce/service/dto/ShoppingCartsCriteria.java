@@ -30,6 +30,8 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
 
     private BigDecimalFilter totalPrice;
 
+    private BigDecimalFilter totalTaxAmount;
+
     private BigDecimalFilter subTotalPrice;
 
     private BigDecimalFilter totalShippingFee;
@@ -58,6 +60,7 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
     public ShoppingCartsCriteria(ShoppingCartsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.totalPrice = other.totalPrice == null ? null : other.totalPrice.copy();
+        this.totalTaxAmount = other.totalTaxAmount == null ? null : other.totalTaxAmount.copy();
         this.subTotalPrice = other.subTotalPrice == null ? null : other.subTotalPrice.copy();
         this.totalShippingFee = other.totalShippingFee == null ? null : other.totalShippingFee.copy();
         this.totalShippingFeeDiscount = other.totalShippingFeeDiscount == null ? null : other.totalShippingFeeDiscount.copy();
@@ -90,6 +93,14 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
 
     public void setTotalPrice(BigDecimalFilter totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public BigDecimalFilter getTotalTaxAmount() {
+        return totalTaxAmount;
+    }
+
+    public void setTotalTaxAmount(BigDecimalFilter totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
     }
 
     public BigDecimalFilter getSubTotalPrice() {
@@ -193,6 +204,7 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(totalPrice, that.totalPrice) &&
+            Objects.equals(totalTaxAmount, that.totalTaxAmount) &&
             Objects.equals(subTotalPrice, that.subTotalPrice) &&
             Objects.equals(totalShippingFee, that.totalShippingFee) &&
             Objects.equals(totalShippingFeeDiscount, that.totalShippingFeeDiscount) &&
@@ -211,6 +223,7 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         totalPrice,
+        totalTaxAmount,
         subTotalPrice,
         totalShippingFee,
         totalShippingFeeDiscount,
@@ -231,6 +244,7 @@ public class ShoppingCartsCriteria implements Serializable, Criteria {
         return "ShoppingCartsCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (totalPrice != null ? "totalPrice=" + totalPrice + ", " : "") +
+                (totalTaxAmount != null ? "totalTaxAmount=" + totalTaxAmount + ", " : "") +
                 (subTotalPrice != null ? "subTotalPrice=" + subTotalPrice + ", " : "") +
                 (totalShippingFee != null ? "totalShippingFee=" + totalShippingFee + ", " : "") +
                 (totalShippingFeeDiscount != null ? "totalShippingFeeDiscount=" + totalShippingFeeDiscount + ", " : "") +

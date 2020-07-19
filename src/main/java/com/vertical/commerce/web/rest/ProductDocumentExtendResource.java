@@ -1,7 +1,7 @@
 package com.vertical.commerce.web.rest;
 
 import com.vertical.commerce.service.ProductDocumentExtendService;
-import com.vertical.commerce.service.dto.ProductDocumentDTO;
+import com.vertical.commerce.service.dto.ProductDocumentsDTO;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +33,9 @@ public class ProductDocumentExtendResource {
     }
 
     @PostMapping("/product-documents-extend/import")
-    public ResponseEntity<ProductDocumentDTO> createProductDocument(@RequestBody ProductDocumentDTO productDocumentDTO, Principal principal) throws URISyntaxException {
+    public ResponseEntity<ProductDocumentsDTO> createProductDocument(@RequestBody ProductDocumentsDTO productDocumentDTO, Principal principal) throws URISyntaxException {
         log.debug("REST request to save ProductDocument : {}", productDocumentDTO);
-        ProductDocumentDTO result = productDocumentExtendService.importProductDocument(productDocumentDTO, principal);
+        ProductDocumentsDTO result = productDocumentExtendService.importProductDocument(productDocumentDTO, principal);
         return ResponseEntity.created(new URI("/api/product-documents-extend/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);

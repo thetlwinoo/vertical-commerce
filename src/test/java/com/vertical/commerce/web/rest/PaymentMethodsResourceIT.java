@@ -3,7 +3,6 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.PaymentMethods;
-import com.vertical.commerce.domain.Photos;
 import com.vertical.commerce.repository.PaymentMethodsRepository;
 import com.vertical.commerce.service.PaymentMethodsService;
 import com.vertical.commerce.service.dto.PaymentMethodsDTO;
@@ -21,6 +20,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,15 +47,21 @@ public class PaymentMethodsResourceIT {
     private static final Boolean DEFAULT_DISABLED = false;
     private static final Boolean UPDATED_DISABLED = true;
 
-    private static final Boolean DEFAULT_ACTIVE_IND = false;
-    private static final Boolean UPDATED_ACTIVE_IND = true;
-
     private static final Integer DEFAULT_SORT_ORDER = 1;
     private static final Integer UPDATED_SORT_ORDER = 2;
     private static final Integer SMALLER_SORT_ORDER = 1 - 1;
 
     private static final String DEFAULT_ICON_FONT = "AAAAAAAAAA";
     private static final String UPDATED_ICON_FONT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_ICON_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_ICON_PHOTO = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private PaymentMethodsRepository paymentMethodsRepository;
@@ -87,9 +94,11 @@ public class PaymentMethodsResourceIT {
             .name(DEFAULT_NAME)
             .code(DEFAULT_CODE)
             .disabled(DEFAULT_DISABLED)
-            .activeInd(DEFAULT_ACTIVE_IND)
             .sortOrder(DEFAULT_SORT_ORDER)
-            .iconFont(DEFAULT_ICON_FONT);
+            .iconFont(DEFAULT_ICON_FONT)
+            .iconPhoto(DEFAULT_ICON_PHOTO)
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return paymentMethods;
     }
     /**
@@ -103,9 +112,11 @@ public class PaymentMethodsResourceIT {
             .name(UPDATED_NAME)
             .code(UPDATED_CODE)
             .disabled(UPDATED_DISABLED)
-            .activeInd(UPDATED_ACTIVE_IND)
             .sortOrder(UPDATED_SORT_ORDER)
-            .iconFont(UPDATED_ICON_FONT);
+            .iconFont(UPDATED_ICON_FONT)
+            .iconPhoto(UPDATED_ICON_PHOTO)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return paymentMethods;
     }
 
@@ -132,9 +143,11 @@ public class PaymentMethodsResourceIT {
         assertThat(testPaymentMethods.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testPaymentMethods.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testPaymentMethods.isDisabled()).isEqualTo(DEFAULT_DISABLED);
-        assertThat(testPaymentMethods.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
         assertThat(testPaymentMethods.getSortOrder()).isEqualTo(DEFAULT_SORT_ORDER);
         assertThat(testPaymentMethods.getIconFont()).isEqualTo(DEFAULT_ICON_FONT);
+        assertThat(testPaymentMethods.getIconPhoto()).isEqualTo(DEFAULT_ICON_PHOTO);
+        assertThat(testPaymentMethods.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testPaymentMethods.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -160,6 +173,26 @@ public class PaymentMethodsResourceIT {
 
     @Test
     @Transactional
+    public void checkValidFromIsRequired() throws Exception {
+        int databaseSizeBeforeTest = paymentMethodsRepository.findAll().size();
+        // set the field null
+        paymentMethods.setValidFrom(null);
+
+        // Create the PaymentMethods, which fails.
+        PaymentMethodsDTO paymentMethodsDTO = paymentMethodsMapper.toDto(paymentMethods);
+
+
+        restPaymentMethodsMockMvc.perform(post("/api/payment-methods").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(paymentMethodsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<PaymentMethods> paymentMethodsList = paymentMethodsRepository.findAll();
+        assertThat(paymentMethodsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPaymentMethods() throws Exception {
         // Initialize the database
         paymentMethodsRepository.saveAndFlush(paymentMethods);
@@ -172,9 +205,11 @@ public class PaymentMethodsResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].disabled").value(hasItem(DEFAULT_DISABLED.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
-            .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)));
+            .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
+            .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -191,9 +226,11 @@ public class PaymentMethodsResourceIT {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.disabled").value(DEFAULT_DISABLED.booleanValue()))
-            .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()))
             .andExpect(jsonPath("$.sortOrder").value(DEFAULT_SORT_ORDER))
-            .andExpect(jsonPath("$.iconFont").value(DEFAULT_ICON_FONT));
+            .andExpect(jsonPath("$.iconFont").value(DEFAULT_ICON_FONT))
+            .andExpect(jsonPath("$.iconPhoto").value(DEFAULT_ICON_PHOTO))
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -426,58 +463,6 @@ public class PaymentMethodsResourceIT {
 
     @Test
     @Transactional
-    public void getAllPaymentMethodsByActiveIndIsEqualToSomething() throws Exception {
-        // Initialize the database
-        paymentMethodsRepository.saveAndFlush(paymentMethods);
-
-        // Get all the paymentMethodsList where activeInd equals to DEFAULT_ACTIVE_IND
-        defaultPaymentMethodsShouldBeFound("activeInd.equals=" + DEFAULT_ACTIVE_IND);
-
-        // Get all the paymentMethodsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultPaymentMethodsShouldNotBeFound("activeInd.equals=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPaymentMethodsByActiveIndIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        paymentMethodsRepository.saveAndFlush(paymentMethods);
-
-        // Get all the paymentMethodsList where activeInd not equals to DEFAULT_ACTIVE_IND
-        defaultPaymentMethodsShouldNotBeFound("activeInd.notEquals=" + DEFAULT_ACTIVE_IND);
-
-        // Get all the paymentMethodsList where activeInd not equals to UPDATED_ACTIVE_IND
-        defaultPaymentMethodsShouldBeFound("activeInd.notEquals=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPaymentMethodsByActiveIndIsInShouldWork() throws Exception {
-        // Initialize the database
-        paymentMethodsRepository.saveAndFlush(paymentMethods);
-
-        // Get all the paymentMethodsList where activeInd in DEFAULT_ACTIVE_IND or UPDATED_ACTIVE_IND
-        defaultPaymentMethodsShouldBeFound("activeInd.in=" + DEFAULT_ACTIVE_IND + "," + UPDATED_ACTIVE_IND);
-
-        // Get all the paymentMethodsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultPaymentMethodsShouldNotBeFound("activeInd.in=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllPaymentMethodsByActiveIndIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        paymentMethodsRepository.saveAndFlush(paymentMethods);
-
-        // Get all the paymentMethodsList where activeInd is not null
-        defaultPaymentMethodsShouldBeFound("activeInd.specified=true");
-
-        // Get all the paymentMethodsList where activeInd is null
-        defaultPaymentMethodsShouldNotBeFound("activeInd.specified=false");
-    }
-
-    @Test
-    @Transactional
     public void getAllPaymentMethodsBySortOrderIsEqualToSomething() throws Exception {
         // Initialize the database
         paymentMethodsRepository.saveAndFlush(paymentMethods);
@@ -661,23 +646,185 @@ public class PaymentMethodsResourceIT {
 
     @Test
     @Transactional
-    public void getAllPaymentMethodsByIconIsEqualToSomething() throws Exception {
+    public void getAllPaymentMethodsByIconPhotoIsEqualToSomething() throws Exception {
         // Initialize the database
         paymentMethodsRepository.saveAndFlush(paymentMethods);
-        Photos icon = PhotosResourceIT.createEntity(em);
-        em.persist(icon);
-        em.flush();
-        paymentMethods.setIcon(icon);
-        paymentMethodsRepository.saveAndFlush(paymentMethods);
-        Long iconId = icon.getId();
 
-        // Get all the paymentMethodsList where icon equals to iconId
-        defaultPaymentMethodsShouldBeFound("iconId.equals=" + iconId);
+        // Get all the paymentMethodsList where iconPhoto equals to DEFAULT_ICON_PHOTO
+        defaultPaymentMethodsShouldBeFound("iconPhoto.equals=" + DEFAULT_ICON_PHOTO);
 
-        // Get all the paymentMethodsList where icon equals to iconId + 1
-        defaultPaymentMethodsShouldNotBeFound("iconId.equals=" + (iconId + 1));
+        // Get all the paymentMethodsList where iconPhoto equals to UPDATED_ICON_PHOTO
+        defaultPaymentMethodsShouldNotBeFound("iconPhoto.equals=" + UPDATED_ICON_PHOTO);
     }
 
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByIconPhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where iconPhoto not equals to DEFAULT_ICON_PHOTO
+        defaultPaymentMethodsShouldNotBeFound("iconPhoto.notEquals=" + DEFAULT_ICON_PHOTO);
+
+        // Get all the paymentMethodsList where iconPhoto not equals to UPDATED_ICON_PHOTO
+        defaultPaymentMethodsShouldBeFound("iconPhoto.notEquals=" + UPDATED_ICON_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByIconPhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where iconPhoto in DEFAULT_ICON_PHOTO or UPDATED_ICON_PHOTO
+        defaultPaymentMethodsShouldBeFound("iconPhoto.in=" + DEFAULT_ICON_PHOTO + "," + UPDATED_ICON_PHOTO);
+
+        // Get all the paymentMethodsList where iconPhoto equals to UPDATED_ICON_PHOTO
+        defaultPaymentMethodsShouldNotBeFound("iconPhoto.in=" + UPDATED_ICON_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByIconPhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where iconPhoto is not null
+        defaultPaymentMethodsShouldBeFound("iconPhoto.specified=true");
+
+        // Get all the paymentMethodsList where iconPhoto is null
+        defaultPaymentMethodsShouldNotBeFound("iconPhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllPaymentMethodsByIconPhotoContainsSomething() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where iconPhoto contains DEFAULT_ICON_PHOTO
+        defaultPaymentMethodsShouldBeFound("iconPhoto.contains=" + DEFAULT_ICON_PHOTO);
+
+        // Get all the paymentMethodsList where iconPhoto contains UPDATED_ICON_PHOTO
+        defaultPaymentMethodsShouldNotBeFound("iconPhoto.contains=" + UPDATED_ICON_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByIconPhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where iconPhoto does not contain DEFAULT_ICON_PHOTO
+        defaultPaymentMethodsShouldNotBeFound("iconPhoto.doesNotContain=" + DEFAULT_ICON_PHOTO);
+
+        // Get all the paymentMethodsList where iconPhoto does not contain UPDATED_ICON_PHOTO
+        defaultPaymentMethodsShouldBeFound("iconPhoto.doesNotContain=" + UPDATED_ICON_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByValidFromIsEqualToSomething() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where validFrom equals to DEFAULT_VALID_FROM
+        defaultPaymentMethodsShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
+
+        // Get all the paymentMethodsList where validFrom equals to UPDATED_VALID_FROM
+        defaultPaymentMethodsShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByValidFromIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultPaymentMethodsShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
+
+        // Get all the paymentMethodsList where validFrom not equals to UPDATED_VALID_FROM
+        defaultPaymentMethodsShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByValidFromIsInShouldWork() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultPaymentMethodsShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
+
+        // Get all the paymentMethodsList where validFrom equals to UPDATED_VALID_FROM
+        defaultPaymentMethodsShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByValidFromIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where validFrom is not null
+        defaultPaymentMethodsShouldBeFound("validFrom.specified=true");
+
+        // Get all the paymentMethodsList where validFrom is null
+        defaultPaymentMethodsShouldNotBeFound("validFrom.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByValidToIsEqualToSomething() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where validTo equals to DEFAULT_VALID_TO
+        defaultPaymentMethodsShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the paymentMethodsList where validTo equals to UPDATED_VALID_TO
+        defaultPaymentMethodsShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where validTo not equals to DEFAULT_VALID_TO
+        defaultPaymentMethodsShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the paymentMethodsList where validTo not equals to UPDATED_VALID_TO
+        defaultPaymentMethodsShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultPaymentMethodsShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the paymentMethodsList where validTo equals to UPDATED_VALID_TO
+        defaultPaymentMethodsShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPaymentMethodsByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        paymentMethodsRepository.saveAndFlush(paymentMethods);
+
+        // Get all the paymentMethodsList where validTo is not null
+        defaultPaymentMethodsShouldBeFound("validTo.specified=true");
+
+        // Get all the paymentMethodsList where validTo is null
+        defaultPaymentMethodsShouldNotBeFound("validTo.specified=false");
+    }
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -689,9 +836,11 @@ public class PaymentMethodsResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].disabled").value(hasItem(DEFAULT_DISABLED.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
-            .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)));
+            .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
+            .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restPaymentMethodsMockMvc.perform(get("/api/payment-methods/count?sort=id,desc&" + filter))
@@ -741,9 +890,11 @@ public class PaymentMethodsResourceIT {
             .name(UPDATED_NAME)
             .code(UPDATED_CODE)
             .disabled(UPDATED_DISABLED)
-            .activeInd(UPDATED_ACTIVE_IND)
             .sortOrder(UPDATED_SORT_ORDER)
-            .iconFont(UPDATED_ICON_FONT);
+            .iconFont(UPDATED_ICON_FONT)
+            .iconPhoto(UPDATED_ICON_PHOTO)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         PaymentMethodsDTO paymentMethodsDTO = paymentMethodsMapper.toDto(updatedPaymentMethods);
 
         restPaymentMethodsMockMvc.perform(put("/api/payment-methods").with(csrf())
@@ -758,9 +909,11 @@ public class PaymentMethodsResourceIT {
         assertThat(testPaymentMethods.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testPaymentMethods.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testPaymentMethods.isDisabled()).isEqualTo(UPDATED_DISABLED);
-        assertThat(testPaymentMethods.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
         assertThat(testPaymentMethods.getSortOrder()).isEqualTo(UPDATED_SORT_ORDER);
         assertThat(testPaymentMethods.getIconFont()).isEqualTo(UPDATED_ICON_FONT);
+        assertThat(testPaymentMethods.getIconPhoto()).isEqualTo(UPDATED_ICON_PHOTO);
+        assertThat(testPaymentMethods.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testPaymentMethods.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

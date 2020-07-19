@@ -28,7 +28,7 @@ public class CustomerPaymentBankTransferCriteria implements Serializable, Criter
 
     private LongFilter id;
 
-    private StringFilter receiptImageUrl;
+    private StringFilter receiptPhoto;
 
     private StringFilter nameInBankAccount;
 
@@ -36,7 +36,9 @@ public class CustomerPaymentBankTransferCriteria implements Serializable, Criter
 
     private BigDecimalFilter amountTransferred;
 
-    private StringFilter lastEdityBy;
+    private StringFilter bankName;
+
+    private StringFilter lastEditedBy;
 
     private InstantFilter lastEditedWhen;
 
@@ -49,11 +51,12 @@ public class CustomerPaymentBankTransferCriteria implements Serializable, Criter
 
     public CustomerPaymentBankTransferCriteria(CustomerPaymentBankTransferCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
-        this.receiptImageUrl = other.receiptImageUrl == null ? null : other.receiptImageUrl.copy();
+        this.receiptPhoto = other.receiptPhoto == null ? null : other.receiptPhoto.copy();
         this.nameInBankAccount = other.nameInBankAccount == null ? null : other.nameInBankAccount.copy();
         this.dateOfTransfer = other.dateOfTransfer == null ? null : other.dateOfTransfer.copy();
         this.amountTransferred = other.amountTransferred == null ? null : other.amountTransferred.copy();
-        this.lastEdityBy = other.lastEdityBy == null ? null : other.lastEdityBy.copy();
+        this.bankName = other.bankName == null ? null : other.bankName.copy();
+        this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
         this.customerPaymentId = other.customerPaymentId == null ? null : other.customerPaymentId.copy();
         this.currencyId = other.currencyId == null ? null : other.currencyId.copy();
@@ -72,12 +75,12 @@ public class CustomerPaymentBankTransferCriteria implements Serializable, Criter
         this.id = id;
     }
 
-    public StringFilter getReceiptImageUrl() {
-        return receiptImageUrl;
+    public StringFilter getReceiptPhoto() {
+        return receiptPhoto;
     }
 
-    public void setReceiptImageUrl(StringFilter receiptImageUrl) {
-        this.receiptImageUrl = receiptImageUrl;
+    public void setReceiptPhoto(StringFilter receiptPhoto) {
+        this.receiptPhoto = receiptPhoto;
     }
 
     public StringFilter getNameInBankAccount() {
@@ -104,12 +107,20 @@ public class CustomerPaymentBankTransferCriteria implements Serializable, Criter
         this.amountTransferred = amountTransferred;
     }
 
-    public StringFilter getLastEdityBy() {
-        return lastEdityBy;
+    public StringFilter getBankName() {
+        return bankName;
     }
 
-    public void setLastEdityBy(StringFilter lastEdityBy) {
-        this.lastEdityBy = lastEdityBy;
+    public void setBankName(StringFilter bankName) {
+        this.bankName = bankName;
+    }
+
+    public StringFilter getLastEditedBy() {
+        return lastEditedBy;
+    }
+
+    public void setLastEditedBy(StringFilter lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
     }
 
     public InstantFilter getLastEditedWhen() {
@@ -148,11 +159,12 @@ public class CustomerPaymentBankTransferCriteria implements Serializable, Criter
         final CustomerPaymentBankTransferCriteria that = (CustomerPaymentBankTransferCriteria) o;
         return
             Objects.equals(id, that.id) &&
-            Objects.equals(receiptImageUrl, that.receiptImageUrl) &&
+            Objects.equals(receiptPhoto, that.receiptPhoto) &&
             Objects.equals(nameInBankAccount, that.nameInBankAccount) &&
             Objects.equals(dateOfTransfer, that.dateOfTransfer) &&
             Objects.equals(amountTransferred, that.amountTransferred) &&
-            Objects.equals(lastEdityBy, that.lastEdityBy) &&
+            Objects.equals(bankName, that.bankName) &&
+            Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
             Objects.equals(customerPaymentId, that.customerPaymentId) &&
             Objects.equals(currencyId, that.currencyId);
@@ -162,11 +174,12 @@ public class CustomerPaymentBankTransferCriteria implements Serializable, Criter
     public int hashCode() {
         return Objects.hash(
         id,
-        receiptImageUrl,
+        receiptPhoto,
         nameInBankAccount,
         dateOfTransfer,
         amountTransferred,
-        lastEdityBy,
+        bankName,
+        lastEditedBy,
         lastEditedWhen,
         customerPaymentId,
         currencyId
@@ -178,11 +191,12 @@ public class CustomerPaymentBankTransferCriteria implements Serializable, Criter
     public String toString() {
         return "CustomerPaymentBankTransferCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
-                (receiptImageUrl != null ? "receiptImageUrl=" + receiptImageUrl + ", " : "") +
+                (receiptPhoto != null ? "receiptPhoto=" + receiptPhoto + ", " : "") +
                 (nameInBankAccount != null ? "nameInBankAccount=" + nameInBankAccount + ", " : "") +
                 (dateOfTransfer != null ? "dateOfTransfer=" + dateOfTransfer + ", " : "") +
                 (amountTransferred != null ? "amountTransferred=" + amountTransferred + ", " : "") +
-                (lastEdityBy != null ? "lastEdityBy=" + lastEdityBy + ", " : "") +
+                (bankName != null ? "bankName=" + bankName + ", " : "") +
+                (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
                 (customerPaymentId != null ? "customerPaymentId=" + customerPaymentId + ", " : "") +
                 (currencyId != null ? "currencyId=" + currencyId + ", " : "") +

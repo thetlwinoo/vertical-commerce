@@ -97,8 +97,11 @@ public class PersonPhoneQueryService extends QueryService<PersonPhone> {
             if (criteria.getDefaultInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getDefaultInd(), PersonPhone_.defaultInd));
             }
-            if (criteria.getActiveInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getActiveInd(), PersonPhone_.activeInd));
+            if (criteria.getValidFrom() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), PersonPhone_.validFrom));
+            }
+            if (criteria.getValidTo() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidTo(), PersonPhone_.validTo));
             }
             if (criteria.getPersonId() != null) {
                 specification = specification.and(buildSpecification(criteria.getPersonId(),

@@ -29,16 +29,19 @@ public class Logistics implements Serializable {
     private String name;
 
     @NotNull
-    @Column(name = "active_ind", nullable = false)
-    private Boolean activeInd;
-
-    @NotNull
     @Column(name = "last_edited_by", nullable = false)
     private String lastEditedBy;
 
     @NotNull
     @Column(name = "last_edited_when", nullable = false)
     private Instant lastEditedWhen;
+
+    @NotNull
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
+
+    @Column(name = "valid_to")
+    private Instant validTo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -60,19 +63,6 @@ public class Logistics implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Boolean isActiveInd() {
-        return activeInd;
-    }
-
-    public Logistics activeInd(Boolean activeInd) {
-        this.activeInd = activeInd;
-        return this;
-    }
-
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
     }
 
     public String getLastEditedBy() {
@@ -100,6 +90,32 @@ public class Logistics implements Serializable {
     public void setLastEditedWhen(Instant lastEditedWhen) {
         this.lastEditedWhen = lastEditedWhen;
     }
+
+    public Instant getValidFrom() {
+        return validFrom;
+    }
+
+    public Logistics validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+        return this;
+    }
+
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public Logistics validTo(Instant validTo) {
+        this.validTo = validTo;
+        return this;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -124,9 +140,10 @@ public class Logistics implements Serializable {
         return "Logistics{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

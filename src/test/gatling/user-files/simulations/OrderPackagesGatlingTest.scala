@@ -102,6 +102,8 @@ class OrderPackagesGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "expectedDeliveryDate":"2020-01-01T00:00:00.000Z"
+                , "orderPlacedOn":"2020-01-01T00:00:00.000Z"
+                , "orderDeliveredOn":"2020-01-01T00:00:00.000Z"
                 , "comments":"SAMPLE_TEXT"
                 , "deliveryInstructions":"SAMPLE_TEXT"
                 , "internalComments":"SAMPLE_TEXT"

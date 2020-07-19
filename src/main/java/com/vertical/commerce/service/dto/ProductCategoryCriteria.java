@@ -10,6 +10,7 @@ import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+import io.github.jhipster.service.filter.InstantFilter;
 
 /**
  * Criteria class for the {@link com.vertical.commerce.domain.ProductCategory} entity. This class is used
@@ -34,15 +35,17 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
 
     private StringFilter iconFont;
 
+    private StringFilter iconPhoto;
+
     private BooleanFilter justForYouInd;
 
     private BooleanFilter showInNavInd;
 
-    private BooleanFilter activeInd;
+    private InstantFilter validFrom;
+
+    private InstantFilter validTo;
 
     private LongFilter parentId;
-
-    private LongFilter iconId;
 
     public ProductCategoryCriteria() {
     }
@@ -53,11 +56,12 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
         this.shortLabel = other.shortLabel == null ? null : other.shortLabel.copy();
         this.sortOrder = other.sortOrder == null ? null : other.sortOrder.copy();
         this.iconFont = other.iconFont == null ? null : other.iconFont.copy();
+        this.iconPhoto = other.iconPhoto == null ? null : other.iconPhoto.copy();
         this.justForYouInd = other.justForYouInd == null ? null : other.justForYouInd.copy();
         this.showInNavInd = other.showInNavInd == null ? null : other.showInNavInd.copy();
-        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.parentId = other.parentId == null ? null : other.parentId.copy();
-        this.iconId = other.iconId == null ? null : other.iconId.copy();
     }
 
     @Override
@@ -105,6 +109,14 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
         this.iconFont = iconFont;
     }
 
+    public StringFilter getIconPhoto() {
+        return iconPhoto;
+    }
+
+    public void setIconPhoto(StringFilter iconPhoto) {
+        this.iconPhoto = iconPhoto;
+    }
+
     public BooleanFilter getJustForYouInd() {
         return justForYouInd;
     }
@@ -121,12 +133,20 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
         this.showInNavInd = showInNavInd;
     }
 
-    public BooleanFilter getActiveInd() {
-        return activeInd;
+    public InstantFilter getValidFrom() {
+        return validFrom;
     }
 
-    public void setActiveInd(BooleanFilter activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public InstantFilter getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
     }
 
     public LongFilter getParentId() {
@@ -135,14 +155,6 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
 
     public void setParentId(LongFilter parentId) {
         this.parentId = parentId;
-    }
-
-    public LongFilter getIconId() {
-        return iconId;
-    }
-
-    public void setIconId(LongFilter iconId) {
-        this.iconId = iconId;
     }
 
 
@@ -161,11 +173,12 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
             Objects.equals(shortLabel, that.shortLabel) &&
             Objects.equals(sortOrder, that.sortOrder) &&
             Objects.equals(iconFont, that.iconFont) &&
+            Objects.equals(iconPhoto, that.iconPhoto) &&
             Objects.equals(justForYouInd, that.justForYouInd) &&
             Objects.equals(showInNavInd, that.showInNavInd) &&
-            Objects.equals(activeInd, that.activeInd) &&
-            Objects.equals(parentId, that.parentId) &&
-            Objects.equals(iconId, that.iconId);
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo) &&
+            Objects.equals(parentId, that.parentId);
     }
 
     @Override
@@ -176,11 +189,12 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
         shortLabel,
         sortOrder,
         iconFont,
+        iconPhoto,
         justForYouInd,
         showInNavInd,
-        activeInd,
-        parentId,
-        iconId
+        validFrom,
+        validTo,
+        parentId
         );
     }
 
@@ -193,11 +207,12 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
                 (shortLabel != null ? "shortLabel=" + shortLabel + ", " : "") +
                 (sortOrder != null ? "sortOrder=" + sortOrder + ", " : "") +
                 (iconFont != null ? "iconFont=" + iconFont + ", " : "") +
+                (iconPhoto != null ? "iconPhoto=" + iconPhoto + ", " : "") +
                 (justForYouInd != null ? "justForYouInd=" + justForYouInd + ", " : "") +
                 (showInNavInd != null ? "showInNavInd=" + showInNavInd + ", " : "") +
-                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (parentId != null ? "parentId=" + parentId + ", " : "") +
-                (iconId != null ? "iconId=" + iconId + ", " : "") +
             "}";
     }
 

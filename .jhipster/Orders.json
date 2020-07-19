@@ -37,7 +37,7 @@
     {
       "fieldName": "paymentStatus",
       "fieldType": "PaymentStatus",
-      "fieldValues": "CASH_ON_DELIVERY,PENDING,PAID,CANCELLED,UNSUCCESSFUL"
+      "fieldValues": "PENDING,TO_CHECK,PAID,CANCELLED,UNSUCCESSFUL"
     },
     {
       "fieldName": "customerPurchaseOrderNumber",
@@ -133,7 +133,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617161904",
+  "changelogDate": "20200718080912",
   "entityTableName": "orders",
   "dto": "mapstruct",
   "pagination": "pagination",

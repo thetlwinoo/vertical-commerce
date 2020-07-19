@@ -1,7 +1,9 @@
 package com.vertical.commerce.service.dto;
 
+import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.vertical.commerce.domain.ProductCategory} entity.
@@ -13,26 +15,30 @@ public class ProductCategoryDTO implements Serializable {
     @NotNull
     private String name;
 
+    @Lob
+    private String cultureDetails;
+
     private String shortLabel;
 
     private Integer sortOrder;
 
     private String iconFont;
 
+    private String iconPhoto;
+
     private Boolean justForYouInd;
 
     private Boolean showInNavInd;
 
-    private Boolean activeInd;
+    @NotNull
+    private Instant validFrom;
+
+    private Instant validTo;
 
 
     private Long parentId;
 
     private String parentName;
-
-    private Long iconId;
-
-    private String iconThumbnailUrl;
     
     public Long getId() {
         return id;
@@ -48,6 +54,14 @@ public class ProductCategoryDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getShortLabel() {
@@ -74,6 +88,14 @@ public class ProductCategoryDTO implements Serializable {
         this.iconFont = iconFont;
     }
 
+    public String getIconPhoto() {
+        return iconPhoto;
+    }
+
+    public void setIconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
+    }
+
     public Boolean isJustForYouInd() {
         return justForYouInd;
     }
@@ -90,12 +112,20 @@ public class ProductCategoryDTO implements Serializable {
         this.showInNavInd = showInNavInd;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     public Long getParentId() {
@@ -112,22 +142,6 @@ public class ProductCategoryDTO implements Serializable {
 
     public void setParentName(String productCategoryName) {
         this.parentName = productCategoryName;
-    }
-
-    public Long getIconId() {
-        return iconId;
-    }
-
-    public void setIconId(Long photosId) {
-        this.iconId = photosId;
-    }
-
-    public String getIconThumbnailUrl() {
-        return iconThumbnailUrl;
-    }
-
-    public void setIconThumbnailUrl(String photosThumbnailUrl) {
-        this.iconThumbnailUrl = photosThumbnailUrl;
     }
 
     @Override
@@ -153,16 +167,17 @@ public class ProductCategoryDTO implements Serializable {
         return "ProductCategoryDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", shortLabel='" + getShortLabel() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
+            ", iconPhoto='" + getIconPhoto() + "'" +
             ", justForYouInd='" + isJustForYouInd() + "'" +
             ", showInNavInd='" + isShowInNavInd() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             ", parentId=" + getParentId() +
             ", parentName='" + getParentName() + "'" +
-            ", iconId=" + getIconId() +
-            ", iconThumbnailUrl='" + getIconThumbnailUrl() + "'" +
             "}";
     }
 }

@@ -54,8 +54,11 @@ public class QuestionsResourceIT {
     private static final Instant DEFAULT_SUPPLIER_ANSWER_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_SUPPLIER_ANSWER_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final Boolean DEFAULT_ACTIVE_IND = false;
-    private static final Boolean UPDATED_ACTIVE_IND = true;
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private QuestionsRepository questionsRepository;
@@ -89,7 +92,8 @@ public class QuestionsResourceIT {
             .customerQuestionOn(DEFAULT_CUSTOMER_QUESTION_ON)
             .supplierAnswer(DEFAULT_SUPPLIER_ANSWER)
             .supplierAnswerOn(DEFAULT_SUPPLIER_ANSWER_ON)
-            .activeInd(DEFAULT_ACTIVE_IND);
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return questions;
     }
     /**
@@ -104,7 +108,8 @@ public class QuestionsResourceIT {
             .customerQuestionOn(UPDATED_CUSTOMER_QUESTION_ON)
             .supplierAnswer(UPDATED_SUPPLIER_ANSWER)
             .supplierAnswerOn(UPDATED_SUPPLIER_ANSWER_ON)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return questions;
     }
 
@@ -132,7 +137,8 @@ public class QuestionsResourceIT {
         assertThat(testQuestions.getCustomerQuestionOn()).isEqualTo(DEFAULT_CUSTOMER_QUESTION_ON);
         assertThat(testQuestions.getSupplierAnswer()).isEqualTo(DEFAULT_SUPPLIER_ANSWER);
         assertThat(testQuestions.getSupplierAnswerOn()).isEqualTo(DEFAULT_SUPPLIER_ANSWER_ON);
-        assertThat(testQuestions.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
+        assertThat(testQuestions.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testQuestions.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -178,6 +184,26 @@ public class QuestionsResourceIT {
 
     @Test
     @Transactional
+    public void checkValidFromIsRequired() throws Exception {
+        int databaseSizeBeforeTest = questionsRepository.findAll().size();
+        // set the field null
+        questions.setValidFrom(null);
+
+        // Create the Questions, which fails.
+        QuestionsDTO questionsDTO = questionsMapper.toDto(questions);
+
+
+        restQuestionsMockMvc.perform(post("/api/questions").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(questionsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Questions> questionsList = questionsRepository.findAll();
+        assertThat(questionsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllQuestions() throws Exception {
         // Initialize the database
         questionsRepository.saveAndFlush(questions);
@@ -191,7 +217,8 @@ public class QuestionsResourceIT {
             .andExpect(jsonPath("$.[*].customerQuestionOn").value(hasItem(DEFAULT_CUSTOMER_QUESTION_ON.toString())))
             .andExpect(jsonPath("$.[*].supplierAnswer").value(hasItem(DEFAULT_SUPPLIER_ANSWER.toString())))
             .andExpect(jsonPath("$.[*].supplierAnswerOn").value(hasItem(DEFAULT_SUPPLIER_ANSWER_ON.toString())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -209,7 +236,8 @@ public class QuestionsResourceIT {
             .andExpect(jsonPath("$.customerQuestionOn").value(DEFAULT_CUSTOMER_QUESTION_ON.toString()))
             .andExpect(jsonPath("$.supplierAnswer").value(DEFAULT_SUPPLIER_ANSWER.toString()))
             .andExpect(jsonPath("$.supplierAnswerOn").value(DEFAULT_SUPPLIER_ANSWER_ON.toString()))
-            .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()));
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -338,54 +366,106 @@ public class QuestionsResourceIT {
 
     @Test
     @Transactional
-    public void getAllQuestionsByActiveIndIsEqualToSomething() throws Exception {
+    public void getAllQuestionsByValidFromIsEqualToSomething() throws Exception {
         // Initialize the database
         questionsRepository.saveAndFlush(questions);
 
-        // Get all the questionsList where activeInd equals to DEFAULT_ACTIVE_IND
-        defaultQuestionsShouldBeFound("activeInd.equals=" + DEFAULT_ACTIVE_IND);
+        // Get all the questionsList where validFrom equals to DEFAULT_VALID_FROM
+        defaultQuestionsShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
 
-        // Get all the questionsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultQuestionsShouldNotBeFound("activeInd.equals=" + UPDATED_ACTIVE_IND);
+        // Get all the questionsList where validFrom equals to UPDATED_VALID_FROM
+        defaultQuestionsShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllQuestionsByActiveIndIsNotEqualToSomething() throws Exception {
+    public void getAllQuestionsByValidFromIsNotEqualToSomething() throws Exception {
         // Initialize the database
         questionsRepository.saveAndFlush(questions);
 
-        // Get all the questionsList where activeInd not equals to DEFAULT_ACTIVE_IND
-        defaultQuestionsShouldNotBeFound("activeInd.notEquals=" + DEFAULT_ACTIVE_IND);
+        // Get all the questionsList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultQuestionsShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
 
-        // Get all the questionsList where activeInd not equals to UPDATED_ACTIVE_IND
-        defaultQuestionsShouldBeFound("activeInd.notEquals=" + UPDATED_ACTIVE_IND);
+        // Get all the questionsList where validFrom not equals to UPDATED_VALID_FROM
+        defaultQuestionsShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllQuestionsByActiveIndIsInShouldWork() throws Exception {
+    public void getAllQuestionsByValidFromIsInShouldWork() throws Exception {
         // Initialize the database
         questionsRepository.saveAndFlush(questions);
 
-        // Get all the questionsList where activeInd in DEFAULT_ACTIVE_IND or UPDATED_ACTIVE_IND
-        defaultQuestionsShouldBeFound("activeInd.in=" + DEFAULT_ACTIVE_IND + "," + UPDATED_ACTIVE_IND);
+        // Get all the questionsList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultQuestionsShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
 
-        // Get all the questionsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultQuestionsShouldNotBeFound("activeInd.in=" + UPDATED_ACTIVE_IND);
+        // Get all the questionsList where validFrom equals to UPDATED_VALID_FROM
+        defaultQuestionsShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllQuestionsByActiveIndIsNullOrNotNull() throws Exception {
+    public void getAllQuestionsByValidFromIsNullOrNotNull() throws Exception {
         // Initialize the database
         questionsRepository.saveAndFlush(questions);
 
-        // Get all the questionsList where activeInd is not null
-        defaultQuestionsShouldBeFound("activeInd.specified=true");
+        // Get all the questionsList where validFrom is not null
+        defaultQuestionsShouldBeFound("validFrom.specified=true");
 
-        // Get all the questionsList where activeInd is null
-        defaultQuestionsShouldNotBeFound("activeInd.specified=false");
+        // Get all the questionsList where validFrom is null
+        defaultQuestionsShouldNotBeFound("validFrom.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllQuestionsByValidToIsEqualToSomething() throws Exception {
+        // Initialize the database
+        questionsRepository.saveAndFlush(questions);
+
+        // Get all the questionsList where validTo equals to DEFAULT_VALID_TO
+        defaultQuestionsShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the questionsList where validTo equals to UPDATED_VALID_TO
+        defaultQuestionsShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllQuestionsByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        questionsRepository.saveAndFlush(questions);
+
+        // Get all the questionsList where validTo not equals to DEFAULT_VALID_TO
+        defaultQuestionsShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the questionsList where validTo not equals to UPDATED_VALID_TO
+        defaultQuestionsShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllQuestionsByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        questionsRepository.saveAndFlush(questions);
+
+        // Get all the questionsList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultQuestionsShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the questionsList where validTo equals to UPDATED_VALID_TO
+        defaultQuestionsShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllQuestionsByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        questionsRepository.saveAndFlush(questions);
+
+        // Get all the questionsList where validTo is not null
+        defaultQuestionsShouldBeFound("validTo.specified=true");
+
+        // Get all the questionsList where validTo is null
+        defaultQuestionsShouldNotBeFound("validTo.specified=false");
     }
 
     @Test
@@ -459,7 +539,8 @@ public class QuestionsResourceIT {
             .andExpect(jsonPath("$.[*].customerQuestionOn").value(hasItem(DEFAULT_CUSTOMER_QUESTION_ON.toString())))
             .andExpect(jsonPath("$.[*].supplierAnswer").value(hasItem(DEFAULT_SUPPLIER_ANSWER.toString())))
             .andExpect(jsonPath("$.[*].supplierAnswerOn").value(hasItem(DEFAULT_SUPPLIER_ANSWER_ON.toString())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restQuestionsMockMvc.perform(get("/api/questions/count?sort=id,desc&" + filter))
@@ -510,7 +591,8 @@ public class QuestionsResourceIT {
             .customerQuestionOn(UPDATED_CUSTOMER_QUESTION_ON)
             .supplierAnswer(UPDATED_SUPPLIER_ANSWER)
             .supplierAnswerOn(UPDATED_SUPPLIER_ANSWER_ON)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         QuestionsDTO questionsDTO = questionsMapper.toDto(updatedQuestions);
 
         restQuestionsMockMvc.perform(put("/api/questions").with(csrf())
@@ -526,7 +608,8 @@ public class QuestionsResourceIT {
         assertThat(testQuestions.getCustomerQuestionOn()).isEqualTo(UPDATED_CUSTOMER_QUESTION_ON);
         assertThat(testQuestions.getSupplierAnswer()).isEqualTo(UPDATED_SUPPLIER_ANSWER);
         assertThat(testQuestions.getSupplierAnswerOn()).isEqualTo(UPDATED_SUPPLIER_ANSWER_ON);
-        assertThat(testQuestions.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
+        assertThat(testQuestions.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testQuestions.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

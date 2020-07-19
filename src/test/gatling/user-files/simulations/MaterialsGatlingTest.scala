@@ -102,6 +102,7 @@ class MaterialsGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
+                , "cultureDetails":null
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_materials_url"))).exitHereIfFailed

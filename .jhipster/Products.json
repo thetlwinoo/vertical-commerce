@@ -7,6 +7,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "cultureDetails",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
       "fieldName": "handle",
       "fieldType": "String"
     },
@@ -32,11 +37,7 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "totalStars",
-      "fieldType": "Integer"
-    },
-    {
-      "fieldName": "discountedPercentage",
+      "fieldName": "overallRating",
       "fieldType": "Integer"
     },
     {
@@ -44,16 +45,31 @@
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "availableDeliveryInd",
+      "fieldName": "freeShippingInd",
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "activeInd",
+      "fieldName": "madeInMyanmarInd",
       "fieldType": "Boolean"
     },
     {
       "fieldName": "questionsAboutProductInd",
       "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "releaseDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "availableDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "activeFlag",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "lastEditedBy",
@@ -66,20 +82,19 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "releaseDate",
+      "fieldName": "validFrom",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "availableDate",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldName": "validTo",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
     {
       "relationshipType": "one-to-one",
-      "otherEntityName": "productDocument",
+      "otherEntityName": "productDocuments",
       "otherEntityRelationshipName": "product",
       "relationshipName": "productDocument",
       "otherEntityField": "id",
@@ -113,7 +128,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617162904",
+  "changelogDate": "20200718081912",
   "entityTableName": "products",
   "dto": "mapstruct",
   "pagination": "pagination",

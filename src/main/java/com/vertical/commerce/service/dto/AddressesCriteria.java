@@ -10,6 +10,7 @@ import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+import io.github.jhipster.service.filter.InstantFilter;
 
 /**
  * Criteria class for the {@link com.vertical.commerce.domain.Addresses} entity. This class is used
@@ -36,19 +37,27 @@ public class AddressesCriteria implements Serializable, Criteria {
 
     private StringFilter addressLine2;
 
-    private StringFilter city;
-
     private StringFilter postalCode;
 
-    private BooleanFilter defaultInd;
+    private StringFilter description;
 
-    private BooleanFilter activeInd;
+    private InstantFilter validFrom;
 
-    private LongFilter zoneId;
+    private InstantFilter validTo;
+
+    private LongFilter regionId;
+
+    private LongFilter cityId;
+
+    private LongFilter townshipId;
+
+    private LongFilter townId;
 
     private LongFilter addressTypeId;
 
-    private LongFilter personId;
+    private LongFilter customerAddressId;
+
+    private LongFilter supplierAddressId;
 
     public AddressesCriteria() {
     }
@@ -60,13 +69,17 @@ public class AddressesCriteria implements Serializable, Criteria {
         this.contactEmailAddress = other.contactEmailAddress == null ? null : other.contactEmailAddress.copy();
         this.addressLine1 = other.addressLine1 == null ? null : other.addressLine1.copy();
         this.addressLine2 = other.addressLine2 == null ? null : other.addressLine2.copy();
-        this.city = other.city == null ? null : other.city.copy();
         this.postalCode = other.postalCode == null ? null : other.postalCode.copy();
-        this.defaultInd = other.defaultInd == null ? null : other.defaultInd.copy();
-        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
-        this.zoneId = other.zoneId == null ? null : other.zoneId.copy();
+        this.description = other.description == null ? null : other.description.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
+        this.regionId = other.regionId == null ? null : other.regionId.copy();
+        this.cityId = other.cityId == null ? null : other.cityId.copy();
+        this.townshipId = other.townshipId == null ? null : other.townshipId.copy();
+        this.townId = other.townId == null ? null : other.townId.copy();
         this.addressTypeId = other.addressTypeId == null ? null : other.addressTypeId.copy();
-        this.personId = other.personId == null ? null : other.personId.copy();
+        this.customerAddressId = other.customerAddressId == null ? null : other.customerAddressId.copy();
+        this.supplierAddressId = other.supplierAddressId == null ? null : other.supplierAddressId.copy();
     }
 
     @Override
@@ -122,14 +135,6 @@ public class AddressesCriteria implements Serializable, Criteria {
         this.addressLine2 = addressLine2;
     }
 
-    public StringFilter getCity() {
-        return city;
-    }
-
-    public void setCity(StringFilter city) {
-        this.city = city;
-    }
-
     public StringFilter getPostalCode() {
         return postalCode;
     }
@@ -138,28 +143,60 @@ public class AddressesCriteria implements Serializable, Criteria {
         this.postalCode = postalCode;
     }
 
-    public BooleanFilter getDefaultInd() {
-        return defaultInd;
+    public StringFilter getDescription() {
+        return description;
     }
 
-    public void setDefaultInd(BooleanFilter defaultInd) {
-        this.defaultInd = defaultInd;
+    public void setDescription(StringFilter description) {
+        this.description = description;
     }
 
-    public BooleanFilter getActiveInd() {
-        return activeInd;
+    public InstantFilter getValidFrom() {
+        return validFrom;
     }
 
-    public void setActiveInd(BooleanFilter activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
     }
 
-    public LongFilter getZoneId() {
-        return zoneId;
+    public InstantFilter getValidTo() {
+        return validTo;
     }
 
-    public void setZoneId(LongFilter zoneId) {
-        this.zoneId = zoneId;
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
+    }
+
+    public LongFilter getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(LongFilter regionId) {
+        this.regionId = regionId;
+    }
+
+    public LongFilter getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(LongFilter cityId) {
+        this.cityId = cityId;
+    }
+
+    public LongFilter getTownshipId() {
+        return townshipId;
+    }
+
+    public void setTownshipId(LongFilter townshipId) {
+        this.townshipId = townshipId;
+    }
+
+    public LongFilter getTownId() {
+        return townId;
+    }
+
+    public void setTownId(LongFilter townId) {
+        this.townId = townId;
     }
 
     public LongFilter getAddressTypeId() {
@@ -170,12 +207,20 @@ public class AddressesCriteria implements Serializable, Criteria {
         this.addressTypeId = addressTypeId;
     }
 
-    public LongFilter getPersonId() {
-        return personId;
+    public LongFilter getCustomerAddressId() {
+        return customerAddressId;
     }
 
-    public void setPersonId(LongFilter personId) {
-        this.personId = personId;
+    public void setCustomerAddressId(LongFilter customerAddressId) {
+        this.customerAddressId = customerAddressId;
+    }
+
+    public LongFilter getSupplierAddressId() {
+        return supplierAddressId;
+    }
+
+    public void setSupplierAddressId(LongFilter supplierAddressId) {
+        this.supplierAddressId = supplierAddressId;
     }
 
 
@@ -195,13 +240,17 @@ public class AddressesCriteria implements Serializable, Criteria {
             Objects.equals(contactEmailAddress, that.contactEmailAddress) &&
             Objects.equals(addressLine1, that.addressLine1) &&
             Objects.equals(addressLine2, that.addressLine2) &&
-            Objects.equals(city, that.city) &&
             Objects.equals(postalCode, that.postalCode) &&
-            Objects.equals(defaultInd, that.defaultInd) &&
-            Objects.equals(activeInd, that.activeInd) &&
-            Objects.equals(zoneId, that.zoneId) &&
+            Objects.equals(description, that.description) &&
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo) &&
+            Objects.equals(regionId, that.regionId) &&
+            Objects.equals(cityId, that.cityId) &&
+            Objects.equals(townshipId, that.townshipId) &&
+            Objects.equals(townId, that.townId) &&
             Objects.equals(addressTypeId, that.addressTypeId) &&
-            Objects.equals(personId, that.personId);
+            Objects.equals(customerAddressId, that.customerAddressId) &&
+            Objects.equals(supplierAddressId, that.supplierAddressId);
     }
 
     @Override
@@ -213,13 +262,17 @@ public class AddressesCriteria implements Serializable, Criteria {
         contactEmailAddress,
         addressLine1,
         addressLine2,
-        city,
         postalCode,
-        defaultInd,
-        activeInd,
-        zoneId,
+        description,
+        validFrom,
+        validTo,
+        regionId,
+        cityId,
+        townshipId,
+        townId,
         addressTypeId,
-        personId
+        customerAddressId,
+        supplierAddressId
         );
     }
 
@@ -233,13 +286,17 @@ public class AddressesCriteria implements Serializable, Criteria {
                 (contactEmailAddress != null ? "contactEmailAddress=" + contactEmailAddress + ", " : "") +
                 (addressLine1 != null ? "addressLine1=" + addressLine1 + ", " : "") +
                 (addressLine2 != null ? "addressLine2=" + addressLine2 + ", " : "") +
-                (city != null ? "city=" + city + ", " : "") +
                 (postalCode != null ? "postalCode=" + postalCode + ", " : "") +
-                (defaultInd != null ? "defaultInd=" + defaultInd + ", " : "") +
-                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
-                (zoneId != null ? "zoneId=" + zoneId + ", " : "") +
+                (description != null ? "description=" + description + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
+                (regionId != null ? "regionId=" + regionId + ", " : "") +
+                (cityId != null ? "cityId=" + cityId + ", " : "") +
+                (townshipId != null ? "townshipId=" + townshipId + ", " : "") +
+                (townId != null ? "townId=" + townId + ", " : "") +
                 (addressTypeId != null ? "addressTypeId=" + addressTypeId + ", " : "") +
-                (personId != null ? "personId=" + personId + ", " : "") +
+                (customerAddressId != null ? "customerAddressId=" + customerAddressId + ", " : "") +
+                (supplierAddressId != null ? "supplierAddressId=" + supplierAddressId + ", " : "") +
             "}";
     }
 

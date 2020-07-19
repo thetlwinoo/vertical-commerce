@@ -3,7 +3,6 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.BankAccounts;
-import com.vertical.commerce.domain.Photos;
 import com.vertical.commerce.repository.BankAccountsRepository;
 import com.vertical.commerce.service.BankAccountsService;
 import com.vertical.commerce.service.dto.BankAccountsDTO;
@@ -63,6 +62,9 @@ public class BankAccountsResourceIT {
     private static final String DEFAULT_LAST_EDITED_BY = "AAAAAAAAAA";
     private static final String UPDATED_LAST_EDITED_BY = "BBBBBBBBBB";
 
+    private static final String DEFAULT_LOGO_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_LOGO_PHOTO = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_VALID_FORM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FORM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -105,6 +107,7 @@ public class BankAccountsResourceIT {
             .bank(DEFAULT_BANK)
             .internationalCode(DEFAULT_INTERNATIONAL_CODE)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
+            .logoPhoto(DEFAULT_LOGO_PHOTO)
             .validForm(DEFAULT_VALID_FORM)
             .validTo(DEFAULT_VALID_TO);
         return bankAccounts;
@@ -125,6 +128,7 @@ public class BankAccountsResourceIT {
             .bank(UPDATED_BANK)
             .internationalCode(UPDATED_INTERNATIONAL_CODE)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
+            .logoPhoto(UPDATED_LOGO_PHOTO)
             .validForm(UPDATED_VALID_FORM)
             .validTo(UPDATED_VALID_TO);
         return bankAccounts;
@@ -158,6 +162,7 @@ public class BankAccountsResourceIT {
         assertThat(testBankAccounts.getBank()).isEqualTo(DEFAULT_BANK);
         assertThat(testBankAccounts.getInternationalCode()).isEqualTo(DEFAULT_INTERNATIONAL_CODE);
         assertThat(testBankAccounts.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
+        assertThat(testBankAccounts.getLogoPhoto()).isEqualTo(DEFAULT_LOGO_PHOTO);
         assertThat(testBankAccounts.getValidForm()).isEqualTo(DEFAULT_VALID_FORM);
         assertThat(testBankAccounts.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -225,26 +230,6 @@ public class BankAccountsResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = bankAccountsRepository.findAll().size();
-        // set the field null
-        bankAccounts.setValidTo(null);
-
-        // Create the BankAccounts, which fails.
-        BankAccountsDTO bankAccountsDTO = bankAccountsMapper.toDto(bankAccounts);
-
-
-        restBankAccountsMockMvc.perform(post("/api/bank-accounts").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(bankAccountsDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<BankAccounts> bankAccountsList = bankAccountsRepository.findAll();
-        assertThat(bankAccountsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllBankAccounts() throws Exception {
         // Initialize the database
         bankAccountsRepository.saveAndFlush(bankAccounts);
@@ -262,6 +247,7 @@ public class BankAccountsResourceIT {
             .andExpect(jsonPath("$.[*].bank").value(hasItem(DEFAULT_BANK)))
             .andExpect(jsonPath("$.[*].internationalCode").value(hasItem(DEFAULT_INTERNATIONAL_CODE)))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
+            .andExpect(jsonPath("$.[*].logoPhoto").value(hasItem(DEFAULT_LOGO_PHOTO)))
             .andExpect(jsonPath("$.[*].validForm").value(hasItem(DEFAULT_VALID_FORM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -285,6 +271,7 @@ public class BankAccountsResourceIT {
             .andExpect(jsonPath("$.bank").value(DEFAULT_BANK))
             .andExpect(jsonPath("$.internationalCode").value(DEFAULT_INTERNATIONAL_CODE))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
+            .andExpect(jsonPath("$.logoPhoto").value(DEFAULT_LOGO_PHOTO))
             .andExpect(jsonPath("$.validForm").value(DEFAULT_VALID_FORM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -935,6 +922,84 @@ public class BankAccountsResourceIT {
 
     @Test
     @Transactional
+    public void getAllBankAccountsByLogoPhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        bankAccountsRepository.saveAndFlush(bankAccounts);
+
+        // Get all the bankAccountsList where logoPhoto equals to DEFAULT_LOGO_PHOTO
+        defaultBankAccountsShouldBeFound("logoPhoto.equals=" + DEFAULT_LOGO_PHOTO);
+
+        // Get all the bankAccountsList where logoPhoto equals to UPDATED_LOGO_PHOTO
+        defaultBankAccountsShouldNotBeFound("logoPhoto.equals=" + UPDATED_LOGO_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByLogoPhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        bankAccountsRepository.saveAndFlush(bankAccounts);
+
+        // Get all the bankAccountsList where logoPhoto not equals to DEFAULT_LOGO_PHOTO
+        defaultBankAccountsShouldNotBeFound("logoPhoto.notEquals=" + DEFAULT_LOGO_PHOTO);
+
+        // Get all the bankAccountsList where logoPhoto not equals to UPDATED_LOGO_PHOTO
+        defaultBankAccountsShouldBeFound("logoPhoto.notEquals=" + UPDATED_LOGO_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByLogoPhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        bankAccountsRepository.saveAndFlush(bankAccounts);
+
+        // Get all the bankAccountsList where logoPhoto in DEFAULT_LOGO_PHOTO or UPDATED_LOGO_PHOTO
+        defaultBankAccountsShouldBeFound("logoPhoto.in=" + DEFAULT_LOGO_PHOTO + "," + UPDATED_LOGO_PHOTO);
+
+        // Get all the bankAccountsList where logoPhoto equals to UPDATED_LOGO_PHOTO
+        defaultBankAccountsShouldNotBeFound("logoPhoto.in=" + UPDATED_LOGO_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByLogoPhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        bankAccountsRepository.saveAndFlush(bankAccounts);
+
+        // Get all the bankAccountsList where logoPhoto is not null
+        defaultBankAccountsShouldBeFound("logoPhoto.specified=true");
+
+        // Get all the bankAccountsList where logoPhoto is null
+        defaultBankAccountsShouldNotBeFound("logoPhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllBankAccountsByLogoPhotoContainsSomething() throws Exception {
+        // Initialize the database
+        bankAccountsRepository.saveAndFlush(bankAccounts);
+
+        // Get all the bankAccountsList where logoPhoto contains DEFAULT_LOGO_PHOTO
+        defaultBankAccountsShouldBeFound("logoPhoto.contains=" + DEFAULT_LOGO_PHOTO);
+
+        // Get all the bankAccountsList where logoPhoto contains UPDATED_LOGO_PHOTO
+        defaultBankAccountsShouldNotBeFound("logoPhoto.contains=" + UPDATED_LOGO_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllBankAccountsByLogoPhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        bankAccountsRepository.saveAndFlush(bankAccounts);
+
+        // Get all the bankAccountsList where logoPhoto does not contain DEFAULT_LOGO_PHOTO
+        defaultBankAccountsShouldNotBeFound("logoPhoto.doesNotContain=" + DEFAULT_LOGO_PHOTO);
+
+        // Get all the bankAccountsList where logoPhoto does not contain UPDATED_LOGO_PHOTO
+        defaultBankAccountsShouldBeFound("logoPhoto.doesNotContain=" + UPDATED_LOGO_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllBankAccountsByValidFormIsEqualToSomething() throws Exception {
         // Initialize the database
         bankAccountsRepository.saveAndFlush(bankAccounts);
@@ -1036,26 +1101,6 @@ public class BankAccountsResourceIT {
         // Get all the bankAccountsList where validTo is null
         defaultBankAccountsShouldNotBeFound("validTo.specified=false");
     }
-
-    @Test
-    @Transactional
-    public void getAllBankAccountsByLogoIsEqualToSomething() throws Exception {
-        // Initialize the database
-        bankAccountsRepository.saveAndFlush(bankAccounts);
-        Photos logo = PhotosResourceIT.createEntity(em);
-        em.persist(logo);
-        em.flush();
-        bankAccounts.setLogo(logo);
-        bankAccountsRepository.saveAndFlush(bankAccounts);
-        Long logoId = logo.getId();
-
-        // Get all the bankAccountsList where logo equals to logoId
-        defaultBankAccountsShouldBeFound("logoId.equals=" + logoId);
-
-        // Get all the bankAccountsList where logo equals to logoId + 1
-        defaultBankAccountsShouldNotBeFound("logoId.equals=" + (logoId + 1));
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -1072,6 +1117,7 @@ public class BankAccountsResourceIT {
             .andExpect(jsonPath("$.[*].bank").value(hasItem(DEFAULT_BANK)))
             .andExpect(jsonPath("$.[*].internationalCode").value(hasItem(DEFAULT_INTERNATIONAL_CODE)))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
+            .andExpect(jsonPath("$.[*].logoPhoto").value(hasItem(DEFAULT_LOGO_PHOTO)))
             .andExpect(jsonPath("$.[*].validForm").value(hasItem(DEFAULT_VALID_FORM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -1128,6 +1174,7 @@ public class BankAccountsResourceIT {
             .bank(UPDATED_BANK)
             .internationalCode(UPDATED_INTERNATIONAL_CODE)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
+            .logoPhoto(UPDATED_LOGO_PHOTO)
             .validForm(UPDATED_VALID_FORM)
             .validTo(UPDATED_VALID_TO);
         BankAccountsDTO bankAccountsDTO = bankAccountsMapper.toDto(updatedBankAccounts);
@@ -1149,6 +1196,7 @@ public class BankAccountsResourceIT {
         assertThat(testBankAccounts.getBank()).isEqualTo(UPDATED_BANK);
         assertThat(testBankAccounts.getInternationalCode()).isEqualTo(UPDATED_INTERNATIONAL_CODE);
         assertThat(testBankAccounts.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
+        assertThat(testBankAccounts.getLogoPhoto()).isEqualTo(UPDATED_LOGO_PHOTO);
         assertThat(testBankAccounts.getValidForm()).isEqualTo(UPDATED_VALID_FORM);
         assertThat(testBankAccounts.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

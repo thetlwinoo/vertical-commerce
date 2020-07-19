@@ -32,8 +32,7 @@
     },
     {
       "fieldName": "paymentDays",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Integer"
     },
     {
       "fieldName": "internalComments",
@@ -45,11 +44,23 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "emailAddress",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nric",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "companyRegistrationNo",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "faxNumber",
       "fieldType": "String"
     },
     {
-      "fieldName": "websiteURL",
+      "fieldName": "websiteUrl",
       "fieldType": "String"
     },
     {
@@ -61,16 +72,42 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "activeFlag",
+      "fieldName": "officialStoreInd",
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "thumbnailUrl",
+      "fieldName": "storeName",
       "fieldType": "String"
     },
     {
-      "fieldName": "pickupSameAsHeadOffice",
-      "fieldType": "Boolean"
+      "fieldName": "logo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nricFrontPhoto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nricBackPhoto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "bankBookPhoto",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "companyRegistrationPhoto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "distributorCertificatePhoto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "activeFlag",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "validFrom",
@@ -79,18 +116,21 @@
     },
     {
       "fieldName": "validTo",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-one",
-      "otherEntityName": "people",
-      "otherEntityRelationshipName": "suppliers",
-      "relationshipName": "people",
-      "otherEntityField": "fullName",
-      "ownerSide": true
+      "relationshipType": "one-to-many",
+      "otherEntityName": "photos",
+      "otherEntityRelationshipName": "supplierBanner",
+      "relationshipName": "bannerList"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "photos",
+      "otherEntityRelationshipName": "supplierDocument",
+      "relationshipName": "documentList"
     },
     {
       "relationshipType": "many-to-one",
@@ -114,15 +154,37 @@
       "otherEntityField": "id"
     },
     {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "addresses",
+      "otherEntityRelationshipName": "suppliers",
+      "relationshipName": "returnAddress",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "people",
+      "otherEntityRelationshipName": "suppliers",
+      "relationshipName": "contactPerson",
+      "otherEntityField": "fullName"
+    },
+    {
       "relationshipType": "many-to-many",
       "otherEntityName": "deliveryMethods",
       "otherEntityRelationshipName": "supplier",
       "relationshipName": "deliveryMethod",
       "otherEntityField": "name",
       "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "people",
+      "otherEntityRelationshipName": "supplier",
+      "relationshipName": "people",
+      "otherEntityField": "fullName",
+      "ownerSide": false
     }
   ],
-  "changelogDate": "20200617155304",
+  "changelogDate": "20200718074312",
   "entityTableName": "suppliers",
   "dto": "mapstruct",
   "pagination": "no",

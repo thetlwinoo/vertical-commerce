@@ -12,8 +12,13 @@
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "activeInd",
-      "fieldType": "Boolean"
+      "fieldName": "validFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validTo",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
@@ -25,7 +30,7 @@
       "otherEntityField": "fullName"
     }
   ],
-  "changelogDate": "20200617154004",
+  "changelogDate": "20200718072212",
   "entityTableName": "person_email_address",
   "dto": "mapstruct",
   "pagination": "no",

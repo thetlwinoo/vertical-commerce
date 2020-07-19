@@ -95,7 +95,7 @@ public class AddressTypesQueryService extends QueryService<AddressTypes> {
                 specification = specification.and(buildStringSpecification(criteria.getName(), AddressTypes_.name));
             }
             if (criteria.getRefer() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getRefer(), AddressTypes_.refer));
+                specification = specification.and(buildSpecification(criteria.getRefer(), AddressTypes_.refer));
             }
         }
         return specification;

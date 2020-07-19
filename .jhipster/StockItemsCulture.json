@@ -1,0 +1,38 @@
+{
+  "name": "StockItemsCulture",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "culture",
+      "otherEntityRelationshipName": "stockItemsCulture",
+      "relationshipName": "culture",
+      "otherEntityField": "code"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "stockItems",
+      "otherEntityRelationshipName": "stockItemsCulture",
+      "relationshipName": "stockItem",
+      "otherEntityField": "name"
+    }
+  ],
+  "changelogDate": "20200718082412",
+  "entityTableName": "stock_items_culture",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "vscommerce",
+  "applications": "*",
+  "microserviceName": "vscommerce"
+}

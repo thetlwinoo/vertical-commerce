@@ -3,6 +3,8 @@ package com.vertical.commerce.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import com.vertical.commerce.domain.enumeration.Gender;
 
 /**
@@ -21,7 +23,6 @@ public class PeopleDTO implements Serializable {
     @NotNull
     private String searchName;
 
-    @NotNull
     private Gender gender;
 
     private Instant dateOfBirth;
@@ -53,6 +54,7 @@ public class PeopleDTO implements Serializable {
 
     private String phoneNumber;
 
+    @NotNull
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
     private String emailAddress;
 
@@ -63,16 +65,14 @@ public class PeopleDTO implements Serializable {
     @NotNull
     private String userId;
 
+    private String profilePhoto;
+
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
-
-    private Long profileId;
-
-    private String profileThumbnailUrl;
+    private Set<SuppliersDTO> suppliers = new HashSet<>();
     
     public Long getId() {
         return id;
@@ -234,6 +234,14 @@ public class PeopleDTO implements Serializable {
         this.userId = userId;
     }
 
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
     public Instant getValidFrom() {
         return validFrom;
     }
@@ -250,20 +258,12 @@ public class PeopleDTO implements Serializable {
         this.validTo = validTo;
     }
 
-    public Long getProfileId() {
-        return profileId;
+    public Set<SuppliersDTO> getSuppliers() {
+        return suppliers;
     }
 
-    public void setProfileId(Long photosId) {
-        this.profileId = photosId;
-    }
-
-    public String getProfileThumbnailUrl() {
-        return profileThumbnailUrl;
-    }
-
-    public void setProfileThumbnailUrl(String photosThumbnailUrl) {
-        this.profileThumbnailUrl = photosThumbnailUrl;
+    public void setSuppliers(Set<SuppliersDTO> suppliers) {
+        this.suppliers = suppliers;
     }
 
     @Override
@@ -307,10 +307,10 @@ public class PeopleDTO implements Serializable {
             ", customFields='" + getCustomFields() + "'" +
             ", otherLanguages='" + getOtherLanguages() + "'" +
             ", userId='" + getUserId() + "'" +
+            ", profilePhoto='" + getProfilePhoto() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
-            ", profileId=" + getProfileId() +
-            ", profileThumbnailUrl='" + getProfileThumbnailUrl() + "'" +
+            ", suppliers='" + getSuppliers() + "'" +
             "}";
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface StockItemsExtendService {
     StockItemsDTO importStockItems(StockItemsDTO stockItemsDTO, Principal principal);
 
-    Page<StockItemsDTO> getAllStockItems(StockItemsCriteria criteria, Pageable pageable, Principal principal);
+    Page<StockItemsDTO> getAllStockItems(Long supplierId,StockItemsCriteria criteria, Pageable pageable, Principal principal);
 
-    JSONObject getStatistics(Principal principal);
+    JSONObject getStatistics(Long supplierId);
 }

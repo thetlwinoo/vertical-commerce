@@ -110,9 +110,10 @@ class CustomersGatlingTest extends Simulation {
                 , "paymentDays":"0"
                 , "deliveryRun":"SAMPLE_TEXT"
                 , "runPosition":"SAMPLE_TEXT"
-                , "thumbnailUrl":"SAMPLE_TEXT"
+                , "profilePhoto":"SAMPLE_TEXT"
                 , "billToAddressSameAsDeliveryAddress":null
                 , "lastEditedBy":"SAMPLE_TEXT"
+                , "activeFlag":null
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

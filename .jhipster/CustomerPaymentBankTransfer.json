@@ -2,7 +2,7 @@
   "name": "CustomerPaymentBankTransfer",
   "fields": [
     {
-      "fieldName": "receiptImageUrl",
+      "fieldName": "receiptPhoto",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },
@@ -22,7 +22,11 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "lastEdityBy",
+      "fieldName": "bankName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastEditedBy",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },
@@ -49,7 +53,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617160604",
+  "changelogDate": "20200718075612",
   "entityTableName": "customer_payment_bank_transfer",
   "dto": "mapstruct",
   "pagination": "no",

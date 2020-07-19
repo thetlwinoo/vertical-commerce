@@ -52,6 +52,9 @@ public class StockItemsResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
+
     private static final String DEFAULT_VENDOR_CODE = "AAAAAAAAAA";
     private static final String UPDATED_VENDOR_CODE = "BBBBBBBBBB";
 
@@ -185,11 +188,8 @@ public class StockItemsResourceIT {
     private static final String DEFAULT_CUSTOM_FIELDS = "AAAAAAAAAA";
     private static final String UPDATED_CUSTOM_FIELDS = "BBBBBBBBBB";
 
-    private static final String DEFAULT_THUMBNAIL_URL = "AAAAAAAAAA";
-    private static final String UPDATED_THUMBNAIL_URL = "BBBBBBBBBB";
-
-    private static final Boolean DEFAULT_ACTIVE_IND = false;
-    private static final Boolean UPDATED_ACTIVE_IND = true;
+    private static final String DEFAULT_THUMBNAIL_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_THUMBNAIL_PHOTO = "BBBBBBBBBB";
 
     private static final Boolean DEFAULT_LIVE_IND = false;
     private static final Boolean UPDATED_LIVE_IND = true;
@@ -202,6 +202,15 @@ public class StockItemsResourceIT {
 
     private static final Instant DEFAULT_LAST_EDITED_WHEN = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_LAST_EDITED_WHEN = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Boolean DEFAULT_ACTIVE_FLAG = false;
+    private static final Boolean UPDATED_ACTIVE_FLAG = true;
+
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private StockItemsRepository stockItemsRepository;
@@ -232,6 +241,7 @@ public class StockItemsResourceIT {
     public static StockItems createEntity(EntityManager em) {
         StockItems stockItems = new StockItems()
             .name(DEFAULT_NAME)
+            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .vendorCode(DEFAULT_VENDOR_CODE)
             .vendorSKU(DEFAULT_VENDOR_SKU)
             .generatedSKU(DEFAULT_GENERATED_SKU)
@@ -269,12 +279,14 @@ public class StockItemsResourceIT {
             .tags(DEFAULT_TAGS)
             .searchDetails(DEFAULT_SEARCH_DETAILS)
             .customFields(DEFAULT_CUSTOM_FIELDS)
-            .thumbnailUrl(DEFAULT_THUMBNAIL_URL)
-            .activeInd(DEFAULT_ACTIVE_IND)
+            .thumbnailPhoto(DEFAULT_THUMBNAIL_PHOTO)
             .liveInd(DEFAULT_LIVE_IND)
             .cashOnDeliveryInd(DEFAULT_CASH_ON_DELIVERY_IND)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
-            .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN);
+            .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN)
+            .activeFlag(DEFAULT_ACTIVE_FLAG)
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return stockItems;
     }
     /**
@@ -286,6 +298,7 @@ public class StockItemsResourceIT {
     public static StockItems createUpdatedEntity(EntityManager em) {
         StockItems stockItems = new StockItems()
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .vendorCode(UPDATED_VENDOR_CODE)
             .vendorSKU(UPDATED_VENDOR_SKU)
             .generatedSKU(UPDATED_GENERATED_SKU)
@@ -323,12 +336,14 @@ public class StockItemsResourceIT {
             .tags(UPDATED_TAGS)
             .searchDetails(UPDATED_SEARCH_DETAILS)
             .customFields(UPDATED_CUSTOM_FIELDS)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
-            .activeInd(UPDATED_ACTIVE_IND)
+            .thumbnailPhoto(UPDATED_THUMBNAIL_PHOTO)
             .liveInd(UPDATED_LIVE_IND)
             .cashOnDeliveryInd(UPDATED_CASH_ON_DELIVERY_IND)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
-            .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
+            .lastEditedWhen(UPDATED_LAST_EDITED_WHEN)
+            .activeFlag(UPDATED_ACTIVE_FLAG)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return stockItems;
     }
 
@@ -353,6 +368,7 @@ public class StockItemsResourceIT {
         assertThat(stockItemsList).hasSize(databaseSizeBeforeCreate + 1);
         StockItems testStockItems = stockItemsList.get(stockItemsList.size() - 1);
         assertThat(testStockItems.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testStockItems.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testStockItems.getVendorCode()).isEqualTo(DEFAULT_VENDOR_CODE);
         assertThat(testStockItems.getVendorSKU()).isEqualTo(DEFAULT_VENDOR_SKU);
         assertThat(testStockItems.getGeneratedSKU()).isEqualTo(DEFAULT_GENERATED_SKU);
@@ -390,12 +406,14 @@ public class StockItemsResourceIT {
         assertThat(testStockItems.getTags()).isEqualTo(DEFAULT_TAGS);
         assertThat(testStockItems.getSearchDetails()).isEqualTo(DEFAULT_SEARCH_DETAILS);
         assertThat(testStockItems.getCustomFields()).isEqualTo(DEFAULT_CUSTOM_FIELDS);
-        assertThat(testStockItems.getThumbnailUrl()).isEqualTo(DEFAULT_THUMBNAIL_URL);
-        assertThat(testStockItems.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
+        assertThat(testStockItems.getThumbnailPhoto()).isEqualTo(DEFAULT_THUMBNAIL_PHOTO);
         assertThat(testStockItems.isLiveInd()).isEqualTo(DEFAULT_LIVE_IND);
         assertThat(testStockItems.isCashOnDeliveryInd()).isEqualTo(DEFAULT_CASH_ON_DELIVERY_IND);
         assertThat(testStockItems.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
         assertThat(testStockItems.getLastEditedWhen()).isEqualTo(DEFAULT_LAST_EDITED_WHEN);
+        assertThat(testStockItems.isActiveFlag()).isEqualTo(DEFAULT_ACTIVE_FLAG);
+        assertThat(testStockItems.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testStockItems.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -521,26 +539,6 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
-    public void checkActiveIndIsRequired() throws Exception {
-        int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
-        // set the field null
-        stockItems.setActiveInd(null);
-
-        // Create the StockItems, which fails.
-        StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(stockItems);
-
-
-        restStockItemsMockMvc.perform(post("/api/stock-items").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(stockItemsDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<StockItems> stockItemsList = stockItemsRepository.findAll();
-        assertThat(stockItemsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkLiveIndIsRequired() throws Exception {
         int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
         // set the field null
@@ -621,6 +619,46 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
+    public void checkActiveFlagIsRequired() throws Exception {
+        int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
+        // set the field null
+        stockItems.setActiveFlag(null);
+
+        // Create the StockItems, which fails.
+        StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(stockItems);
+
+
+        restStockItemsMockMvc.perform(post("/api/stock-items").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stockItemsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StockItems> stockItemsList = stockItemsRepository.findAll();
+        assertThat(stockItemsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkValidFromIsRequired() throws Exception {
+        int databaseSizeBeforeTest = stockItemsRepository.findAll().size();
+        // set the field null
+        stockItems.setValidFrom(null);
+
+        // Create the StockItems, which fails.
+        StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(stockItems);
+
+
+        restStockItemsMockMvc.perform(post("/api/stock-items").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(stockItemsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<StockItems> stockItemsList = stockItemsRepository.findAll();
+        assertThat(stockItemsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllStockItems() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
@@ -631,6 +669,7 @@ public class StockItemsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(stockItems.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].vendorCode").value(hasItem(DEFAULT_VENDOR_CODE)))
             .andExpect(jsonPath("$.[*].vendorSKU").value(hasItem(DEFAULT_VENDOR_SKU)))
             .andExpect(jsonPath("$.[*].generatedSKU").value(hasItem(DEFAULT_GENERATED_SKU)))
@@ -668,12 +707,14 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.[*].tags").value(hasItem(DEFAULT_TAGS)))
             .andExpect(jsonPath("$.[*].searchDetails").value(hasItem(DEFAULT_SEARCH_DETAILS)))
             .andExpect(jsonPath("$.[*].customFields").value(hasItem(DEFAULT_CUSTOM_FIELDS.toString())))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
+            .andExpect(jsonPath("$.[*].thumbnailPhoto").value(hasItem(DEFAULT_THUMBNAIL_PHOTO)))
             .andExpect(jsonPath("$.[*].liveInd").value(hasItem(DEFAULT_LIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].cashOnDeliveryInd").value(hasItem(DEFAULT_CASH_ON_DELIVERY_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
-            .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
+            .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())))
+            .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -688,6 +729,7 @@ public class StockItemsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(stockItems.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.vendorCode").value(DEFAULT_VENDOR_CODE))
             .andExpect(jsonPath("$.vendorSKU").value(DEFAULT_VENDOR_SKU))
             .andExpect(jsonPath("$.generatedSKU").value(DEFAULT_GENERATED_SKU))
@@ -725,12 +767,14 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.tags").value(DEFAULT_TAGS))
             .andExpect(jsonPath("$.searchDetails").value(DEFAULT_SEARCH_DETAILS))
             .andExpect(jsonPath("$.customFields").value(DEFAULT_CUSTOM_FIELDS.toString()))
-            .andExpect(jsonPath("$.thumbnailUrl").value(DEFAULT_THUMBNAIL_URL))
-            .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()))
+            .andExpect(jsonPath("$.thumbnailPhoto").value(DEFAULT_THUMBNAIL_PHOTO))
             .andExpect(jsonPath("$.liveInd").value(DEFAULT_LIVE_IND.booleanValue()))
             .andExpect(jsonPath("$.cashOnDeliveryInd").value(DEFAULT_CASH_ON_DELIVERY_IND.booleanValue()))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
-            .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()));
+            .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()))
+            .andExpect(jsonPath("$.activeFlag").value(DEFAULT_ACTIVE_FLAG.booleanValue()))
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -4157,133 +4201,81 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
-    public void getAllStockItemsByThumbnailUrlIsEqualToSomething() throws Exception {
+    public void getAllStockItemsByThumbnailPhotoIsEqualToSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where thumbnailUrl equals to DEFAULT_THUMBNAIL_URL
-        defaultStockItemsShouldBeFound("thumbnailUrl.equals=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto equals to DEFAULT_THUMBNAIL_PHOTO
+        defaultStockItemsShouldBeFound("thumbnailPhoto.equals=" + DEFAULT_THUMBNAIL_PHOTO);
 
-        // Get all the stockItemsList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultStockItemsShouldNotBeFound("thumbnailUrl.equals=" + UPDATED_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto equals to UPDATED_THUMBNAIL_PHOTO
+        defaultStockItemsShouldNotBeFound("thumbnailPhoto.equals=" + UPDATED_THUMBNAIL_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllStockItemsByThumbnailUrlIsNotEqualToSomething() throws Exception {
+    public void getAllStockItemsByThumbnailPhotoIsNotEqualToSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where thumbnailUrl not equals to DEFAULT_THUMBNAIL_URL
-        defaultStockItemsShouldNotBeFound("thumbnailUrl.notEquals=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto not equals to DEFAULT_THUMBNAIL_PHOTO
+        defaultStockItemsShouldNotBeFound("thumbnailPhoto.notEquals=" + DEFAULT_THUMBNAIL_PHOTO);
 
-        // Get all the stockItemsList where thumbnailUrl not equals to UPDATED_THUMBNAIL_URL
-        defaultStockItemsShouldBeFound("thumbnailUrl.notEquals=" + UPDATED_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto not equals to UPDATED_THUMBNAIL_PHOTO
+        defaultStockItemsShouldBeFound("thumbnailPhoto.notEquals=" + UPDATED_THUMBNAIL_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllStockItemsByThumbnailUrlIsInShouldWork() throws Exception {
+    public void getAllStockItemsByThumbnailPhotoIsInShouldWork() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where thumbnailUrl in DEFAULT_THUMBNAIL_URL or UPDATED_THUMBNAIL_URL
-        defaultStockItemsShouldBeFound("thumbnailUrl.in=" + DEFAULT_THUMBNAIL_URL + "," + UPDATED_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto in DEFAULT_THUMBNAIL_PHOTO or UPDATED_THUMBNAIL_PHOTO
+        defaultStockItemsShouldBeFound("thumbnailPhoto.in=" + DEFAULT_THUMBNAIL_PHOTO + "," + UPDATED_THUMBNAIL_PHOTO);
 
-        // Get all the stockItemsList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultStockItemsShouldNotBeFound("thumbnailUrl.in=" + UPDATED_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto equals to UPDATED_THUMBNAIL_PHOTO
+        defaultStockItemsShouldNotBeFound("thumbnailPhoto.in=" + UPDATED_THUMBNAIL_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllStockItemsByThumbnailUrlIsNullOrNotNull() throws Exception {
+    public void getAllStockItemsByThumbnailPhotoIsNullOrNotNull() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where thumbnailUrl is not null
-        defaultStockItemsShouldBeFound("thumbnailUrl.specified=true");
+        // Get all the stockItemsList where thumbnailPhoto is not null
+        defaultStockItemsShouldBeFound("thumbnailPhoto.specified=true");
 
-        // Get all the stockItemsList where thumbnailUrl is null
-        defaultStockItemsShouldNotBeFound("thumbnailUrl.specified=false");
+        // Get all the stockItemsList where thumbnailPhoto is null
+        defaultStockItemsShouldNotBeFound("thumbnailPhoto.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllStockItemsByThumbnailUrlContainsSomething() throws Exception {
+    public void getAllStockItemsByThumbnailPhotoContainsSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where thumbnailUrl contains DEFAULT_THUMBNAIL_URL
-        defaultStockItemsShouldBeFound("thumbnailUrl.contains=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto contains DEFAULT_THUMBNAIL_PHOTO
+        defaultStockItemsShouldBeFound("thumbnailPhoto.contains=" + DEFAULT_THUMBNAIL_PHOTO);
 
-        // Get all the stockItemsList where thumbnailUrl contains UPDATED_THUMBNAIL_URL
-        defaultStockItemsShouldNotBeFound("thumbnailUrl.contains=" + UPDATED_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto contains UPDATED_THUMBNAIL_PHOTO
+        defaultStockItemsShouldNotBeFound("thumbnailPhoto.contains=" + UPDATED_THUMBNAIL_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllStockItemsByThumbnailUrlNotContainsSomething() throws Exception {
+    public void getAllStockItemsByThumbnailPhotoNotContainsSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
 
-        // Get all the stockItemsList where thumbnailUrl does not contain DEFAULT_THUMBNAIL_URL
-        defaultStockItemsShouldNotBeFound("thumbnailUrl.doesNotContain=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto does not contain DEFAULT_THUMBNAIL_PHOTO
+        defaultStockItemsShouldNotBeFound("thumbnailPhoto.doesNotContain=" + DEFAULT_THUMBNAIL_PHOTO);
 
-        // Get all the stockItemsList where thumbnailUrl does not contain UPDATED_THUMBNAIL_URL
-        defaultStockItemsShouldBeFound("thumbnailUrl.doesNotContain=" + UPDATED_THUMBNAIL_URL);
+        // Get all the stockItemsList where thumbnailPhoto does not contain UPDATED_THUMBNAIL_PHOTO
+        defaultStockItemsShouldBeFound("thumbnailPhoto.doesNotContain=" + UPDATED_THUMBNAIL_PHOTO);
     }
 
-
-    @Test
-    @Transactional
-    public void getAllStockItemsByActiveIndIsEqualToSomething() throws Exception {
-        // Initialize the database
-        stockItemsRepository.saveAndFlush(stockItems);
-
-        // Get all the stockItemsList where activeInd equals to DEFAULT_ACTIVE_IND
-        defaultStockItemsShouldBeFound("activeInd.equals=" + DEFAULT_ACTIVE_IND);
-
-        // Get all the stockItemsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultStockItemsShouldNotBeFound("activeInd.equals=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllStockItemsByActiveIndIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        stockItemsRepository.saveAndFlush(stockItems);
-
-        // Get all the stockItemsList where activeInd not equals to DEFAULT_ACTIVE_IND
-        defaultStockItemsShouldNotBeFound("activeInd.notEquals=" + DEFAULT_ACTIVE_IND);
-
-        // Get all the stockItemsList where activeInd not equals to UPDATED_ACTIVE_IND
-        defaultStockItemsShouldBeFound("activeInd.notEquals=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllStockItemsByActiveIndIsInShouldWork() throws Exception {
-        // Initialize the database
-        stockItemsRepository.saveAndFlush(stockItems);
-
-        // Get all the stockItemsList where activeInd in DEFAULT_ACTIVE_IND or UPDATED_ACTIVE_IND
-        defaultStockItemsShouldBeFound("activeInd.in=" + DEFAULT_ACTIVE_IND + "," + UPDATED_ACTIVE_IND);
-
-        // Get all the stockItemsList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultStockItemsShouldNotBeFound("activeInd.in=" + UPDATED_ACTIVE_IND);
-    }
-
-    @Test
-    @Transactional
-    public void getAllStockItemsByActiveIndIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        stockItemsRepository.saveAndFlush(stockItems);
-
-        // Get all the stockItemsList where activeInd is not null
-        defaultStockItemsShouldBeFound("activeInd.specified=true");
-
-        // Get all the stockItemsList where activeInd is null
-        defaultStockItemsShouldNotBeFound("activeInd.specified=false");
-    }
 
     @Test
     @Transactional
@@ -4517,6 +4509,162 @@ public class StockItemsResourceIT {
 
         // Get all the stockItemsList where lastEditedWhen is null
         defaultStockItemsShouldNotBeFound("lastEditedWhen.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByActiveFlagIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where activeFlag equals to DEFAULT_ACTIVE_FLAG
+        defaultStockItemsShouldBeFound("activeFlag.equals=" + DEFAULT_ACTIVE_FLAG);
+
+        // Get all the stockItemsList where activeFlag equals to UPDATED_ACTIVE_FLAG
+        defaultStockItemsShouldNotBeFound("activeFlag.equals=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByActiveFlagIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where activeFlag not equals to DEFAULT_ACTIVE_FLAG
+        defaultStockItemsShouldNotBeFound("activeFlag.notEquals=" + DEFAULT_ACTIVE_FLAG);
+
+        // Get all the stockItemsList where activeFlag not equals to UPDATED_ACTIVE_FLAG
+        defaultStockItemsShouldBeFound("activeFlag.notEquals=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByActiveFlagIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where activeFlag in DEFAULT_ACTIVE_FLAG or UPDATED_ACTIVE_FLAG
+        defaultStockItemsShouldBeFound("activeFlag.in=" + DEFAULT_ACTIVE_FLAG + "," + UPDATED_ACTIVE_FLAG);
+
+        // Get all the stockItemsList where activeFlag equals to UPDATED_ACTIVE_FLAG
+        defaultStockItemsShouldNotBeFound("activeFlag.in=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByActiveFlagIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where activeFlag is not null
+        defaultStockItemsShouldBeFound("activeFlag.specified=true");
+
+        // Get all the stockItemsList where activeFlag is null
+        defaultStockItemsShouldNotBeFound("activeFlag.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByValidFromIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where validFrom equals to DEFAULT_VALID_FROM
+        defaultStockItemsShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
+
+        // Get all the stockItemsList where validFrom equals to UPDATED_VALID_FROM
+        defaultStockItemsShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByValidFromIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultStockItemsShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
+
+        // Get all the stockItemsList where validFrom not equals to UPDATED_VALID_FROM
+        defaultStockItemsShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByValidFromIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultStockItemsShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
+
+        // Get all the stockItemsList where validFrom equals to UPDATED_VALID_FROM
+        defaultStockItemsShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByValidFromIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where validFrom is not null
+        defaultStockItemsShouldBeFound("validFrom.specified=true");
+
+        // Get all the stockItemsList where validFrom is null
+        defaultStockItemsShouldNotBeFound("validFrom.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByValidToIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where validTo equals to DEFAULT_VALID_TO
+        defaultStockItemsShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the stockItemsList where validTo equals to UPDATED_VALID_TO
+        defaultStockItemsShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where validTo not equals to DEFAULT_VALID_TO
+        defaultStockItemsShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the stockItemsList where validTo not equals to UPDATED_VALID_TO
+        defaultStockItemsShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultStockItemsShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the stockItemsList where validTo equals to UPDATED_VALID_TO
+        defaultStockItemsShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where validTo is not null
+        defaultStockItemsShouldBeFound("validTo.specified=true");
+
+        // Get all the stockItemsList where validTo is null
+        defaultStockItemsShouldNotBeFound("validTo.specified=false");
     }
 
     @Test
@@ -4827,6 +4975,7 @@ public class StockItemsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(stockItems.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].vendorCode").value(hasItem(DEFAULT_VENDOR_CODE)))
             .andExpect(jsonPath("$.[*].vendorSKU").value(hasItem(DEFAULT_VENDOR_SKU)))
             .andExpect(jsonPath("$.[*].generatedSKU").value(hasItem(DEFAULT_GENERATED_SKU)))
@@ -4864,12 +5013,14 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.[*].tags").value(hasItem(DEFAULT_TAGS)))
             .andExpect(jsonPath("$.[*].searchDetails").value(hasItem(DEFAULT_SEARCH_DETAILS)))
             .andExpect(jsonPath("$.[*].customFields").value(hasItem(DEFAULT_CUSTOM_FIELDS.toString())))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())))
+            .andExpect(jsonPath("$.[*].thumbnailPhoto").value(hasItem(DEFAULT_THUMBNAIL_PHOTO)))
             .andExpect(jsonPath("$.[*].liveInd").value(hasItem(DEFAULT_LIVE_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].cashOnDeliveryInd").value(hasItem(DEFAULT_CASH_ON_DELIVERY_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
-            .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
+            .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())))
+            .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restStockItemsMockMvc.perform(get("/api/stock-items/count?sort=id,desc&" + filter))
@@ -4917,6 +5068,7 @@ public class StockItemsResourceIT {
         em.detach(updatedStockItems);
         updatedStockItems
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .vendorCode(UPDATED_VENDOR_CODE)
             .vendorSKU(UPDATED_VENDOR_SKU)
             .generatedSKU(UPDATED_GENERATED_SKU)
@@ -4954,12 +5106,14 @@ public class StockItemsResourceIT {
             .tags(UPDATED_TAGS)
             .searchDetails(UPDATED_SEARCH_DETAILS)
             .customFields(UPDATED_CUSTOM_FIELDS)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
-            .activeInd(UPDATED_ACTIVE_IND)
+            .thumbnailPhoto(UPDATED_THUMBNAIL_PHOTO)
             .liveInd(UPDATED_LIVE_IND)
             .cashOnDeliveryInd(UPDATED_CASH_ON_DELIVERY_IND)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
-            .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
+            .lastEditedWhen(UPDATED_LAST_EDITED_WHEN)
+            .activeFlag(UPDATED_ACTIVE_FLAG)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(updatedStockItems);
 
         restStockItemsMockMvc.perform(put("/api/stock-items").with(csrf())
@@ -4972,6 +5126,7 @@ public class StockItemsResourceIT {
         assertThat(stockItemsList).hasSize(databaseSizeBeforeUpdate);
         StockItems testStockItems = stockItemsList.get(stockItemsList.size() - 1);
         assertThat(testStockItems.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testStockItems.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testStockItems.getVendorCode()).isEqualTo(UPDATED_VENDOR_CODE);
         assertThat(testStockItems.getVendorSKU()).isEqualTo(UPDATED_VENDOR_SKU);
         assertThat(testStockItems.getGeneratedSKU()).isEqualTo(UPDATED_GENERATED_SKU);
@@ -5009,12 +5164,14 @@ public class StockItemsResourceIT {
         assertThat(testStockItems.getTags()).isEqualTo(UPDATED_TAGS);
         assertThat(testStockItems.getSearchDetails()).isEqualTo(UPDATED_SEARCH_DETAILS);
         assertThat(testStockItems.getCustomFields()).isEqualTo(UPDATED_CUSTOM_FIELDS);
-        assertThat(testStockItems.getThumbnailUrl()).isEqualTo(UPDATED_THUMBNAIL_URL);
-        assertThat(testStockItems.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
+        assertThat(testStockItems.getThumbnailPhoto()).isEqualTo(UPDATED_THUMBNAIL_PHOTO);
         assertThat(testStockItems.isLiveInd()).isEqualTo(UPDATED_LIVE_IND);
         assertThat(testStockItems.isCashOnDeliveryInd()).isEqualTo(UPDATED_CASH_ON_DELIVERY_IND);
         assertThat(testStockItems.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
         assertThat(testStockItems.getLastEditedWhen()).isEqualTo(UPDATED_LAST_EDITED_WHEN);
+        assertThat(testStockItems.isActiveFlag()).isEqualTo(UPDATED_ACTIVE_FLAG);
+        assertThat(testStockItems.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testStockItems.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

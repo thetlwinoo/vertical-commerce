@@ -6,6 +6,10 @@
       "fieldType": "BigDecimal"
     },
     {
+      "fieldName": "totalTaxAmount",
+      "fieldType": "BigDecimal"
+    },
+    {
       "fieldName": "subTotalPrice",
       "fieldType": "BigDecimal"
     },
@@ -31,12 +35,12 @@
       "fieldTypeBlobContent": "text"
     },
     {
-      "fieldName": "cartString",
+      "fieldName": "cartDetails",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "text"
     },
     {
-      "fieldName": "dealString",
+      "fieldName": "dealDetails",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "text"
     },
@@ -81,7 +85,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617165504",
+  "changelogDate": "20200718085112",
   "entityTableName": "shopping_carts",
   "dto": "mapstruct",
   "pagination": "no",

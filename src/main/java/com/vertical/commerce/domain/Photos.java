@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * A Photos.
@@ -24,45 +25,64 @@ public class Photos implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "blob_id")
+    @NotNull
+    @Column(name = "blob_id", nullable = false)
     private String blobId;
-
-    @NotNull
-    @Column(name = "thumbnail_url", nullable = false)
-    private String thumbnailUrl;
-
-    @NotNull
-    @Column(name = "original_url", nullable = false)
-    private String originalUrl;
-
-    @Column(name = "banner_tall_url")
-    private String bannerTallUrl;
-
-    @Column(name = "banner_wide_url")
-    private String bannerWideUrl;
-
-    @Column(name = "circle_url")
-    private String circleUrl;
-
-    @Column(name = "sharpened_url")
-    private String sharpenedUrl;
-
-    @Column(name = "square_url")
-    private String squareUrl;
-
-    @Column(name = "watermark_url")
-    private String watermarkUrl;
 
     @Column(name = "priority")
     private Integer priority;
+
+    @Column(name = "uid")
+    private String uid;
+
+    @Column(name = "size")
+    private Integer size;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "url")
+    private String url;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "thumb_url")
+    private String thumbUrl;
+
+    @Column(name = "percent")
+    private Integer percent;
+
+    @Column(name = "type")
+    private String type;
 
     @NotNull
     @Column(name = "default_ind", nullable = false)
     private Boolean defaultInd;
 
+    @Column(name = "active_flag")
+    private Boolean activeFlag;
+
+    @Column(name = "last_modified")
+    private String lastModified;
+
+    @Column(name = "last_modified_date")
+    private Instant lastModifiedDate;
+
     @ManyToOne
     @JsonIgnoreProperties(value = "photoLists", allowSetters = true)
     private StockItems stockItem;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "bannerLists", allowSetters = true)
+    private Suppliers supplierBanner;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "documentLists", allowSetters = true)
+    private Suppliers supplierDocument;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -86,110 +106,6 @@ public class Photos implements Serializable {
         this.blobId = blobId;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public Photos thumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-        return this;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public String getOriginalUrl() {
-        return originalUrl;
-    }
-
-    public Photos originalUrl(String originalUrl) {
-        this.originalUrl = originalUrl;
-        return this;
-    }
-
-    public void setOriginalUrl(String originalUrl) {
-        this.originalUrl = originalUrl;
-    }
-
-    public String getBannerTallUrl() {
-        return bannerTallUrl;
-    }
-
-    public Photos bannerTallUrl(String bannerTallUrl) {
-        this.bannerTallUrl = bannerTallUrl;
-        return this;
-    }
-
-    public void setBannerTallUrl(String bannerTallUrl) {
-        this.bannerTallUrl = bannerTallUrl;
-    }
-
-    public String getBannerWideUrl() {
-        return bannerWideUrl;
-    }
-
-    public Photos bannerWideUrl(String bannerWideUrl) {
-        this.bannerWideUrl = bannerWideUrl;
-        return this;
-    }
-
-    public void setBannerWideUrl(String bannerWideUrl) {
-        this.bannerWideUrl = bannerWideUrl;
-    }
-
-    public String getCircleUrl() {
-        return circleUrl;
-    }
-
-    public Photos circleUrl(String circleUrl) {
-        this.circleUrl = circleUrl;
-        return this;
-    }
-
-    public void setCircleUrl(String circleUrl) {
-        this.circleUrl = circleUrl;
-    }
-
-    public String getSharpenedUrl() {
-        return sharpenedUrl;
-    }
-
-    public Photos sharpenedUrl(String sharpenedUrl) {
-        this.sharpenedUrl = sharpenedUrl;
-        return this;
-    }
-
-    public void setSharpenedUrl(String sharpenedUrl) {
-        this.sharpenedUrl = sharpenedUrl;
-    }
-
-    public String getSquareUrl() {
-        return squareUrl;
-    }
-
-    public Photos squareUrl(String squareUrl) {
-        this.squareUrl = squareUrl;
-        return this;
-    }
-
-    public void setSquareUrl(String squareUrl) {
-        this.squareUrl = squareUrl;
-    }
-
-    public String getWatermarkUrl() {
-        return watermarkUrl;
-    }
-
-    public Photos watermarkUrl(String watermarkUrl) {
-        this.watermarkUrl = watermarkUrl;
-        return this;
-    }
-
-    public void setWatermarkUrl(String watermarkUrl) {
-        this.watermarkUrl = watermarkUrl;
-    }
-
     public Integer getPriority() {
         return priority;
     }
@@ -201,6 +117,123 @@ public class Photos implements Serializable {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public Photos uid(String uid) {
+        this.uid = uid;
+        return this;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public Photos size(Integer size) {
+        this.size = size;
+        return this;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Photos name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public Photos fileName(String fileName) {
+        this.fileName = fileName;
+        return this;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Photos url(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Photos status(String status) {
+        this.status = status;
+        return this;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public Photos thumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
+        return this;
+    }
+
+    public void setThumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
+    }
+
+    public Integer getPercent() {
+        return percent;
+    }
+
+    public Photos percent(Integer percent) {
+        this.percent = percent;
+        return this;
+    }
+
+    public void setPercent(Integer percent) {
+        this.percent = percent;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Photos type(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Boolean isDefaultInd() {
@@ -216,6 +249,45 @@ public class Photos implements Serializable {
         this.defaultInd = defaultInd;
     }
 
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public Photos activeFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+        return this;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public Photos lastModified(String lastModified) {
+        this.lastModified = lastModified;
+        return this;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public Photos lastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+        return this;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     public StockItems getStockItem() {
         return stockItem;
     }
@@ -227,6 +299,32 @@ public class Photos implements Serializable {
 
     public void setStockItem(StockItems stockItems) {
         this.stockItem = stockItems;
+    }
+
+    public Suppliers getSupplierBanner() {
+        return supplierBanner;
+    }
+
+    public Photos supplierBanner(Suppliers suppliers) {
+        this.supplierBanner = suppliers;
+        return this;
+    }
+
+    public void setSupplierBanner(Suppliers suppliers) {
+        this.supplierBanner = suppliers;
+    }
+
+    public Suppliers getSupplierDocument() {
+        return supplierDocument;
+    }
+
+    public Photos supplierDocument(Suppliers suppliers) {
+        this.supplierDocument = suppliers;
+        return this;
+    }
+
+    public void setSupplierDocument(Suppliers suppliers) {
+        this.supplierDocument = suppliers;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -252,16 +350,20 @@ public class Photos implements Serializable {
         return "Photos{" +
             "id=" + getId() +
             ", blobId='" + getBlobId() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
-            ", originalUrl='" + getOriginalUrl() + "'" +
-            ", bannerTallUrl='" + getBannerTallUrl() + "'" +
-            ", bannerWideUrl='" + getBannerWideUrl() + "'" +
-            ", circleUrl='" + getCircleUrl() + "'" +
-            ", sharpenedUrl='" + getSharpenedUrl() + "'" +
-            ", squareUrl='" + getSquareUrl() + "'" +
-            ", watermarkUrl='" + getWatermarkUrl() + "'" +
             ", priority=" + getPriority() +
+            ", uid='" + getUid() + "'" +
+            ", size=" + getSize() +
+            ", name='" + getName() + "'" +
+            ", fileName='" + getFileName() + "'" +
+            ", url='" + getUrl() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", thumbUrl='" + getThumbUrl() + "'" +
+            ", percent=" + getPercent() +
+            ", type='" + getType() + "'" +
             ", defaultInd='" + isDefaultInd() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
+            ", lastModified='" + getLastModified() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             "}";
     }
 }

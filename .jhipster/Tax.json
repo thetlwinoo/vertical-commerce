@@ -30,7 +30,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617153504",
+  "changelogDate": "20200718071712",
   "entityTableName": "tax",
   "dto": "mapstruct",
   "pagination": "no",

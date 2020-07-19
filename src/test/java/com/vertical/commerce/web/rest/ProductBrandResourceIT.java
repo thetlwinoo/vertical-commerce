@@ -3,8 +3,6 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.ProductBrand;
-import com.vertical.commerce.domain.Suppliers;
-import com.vertical.commerce.domain.Photos;
 import com.vertical.commerce.repository.ProductBrandRepository;
 import com.vertical.commerce.service.ProductBrandService;
 import com.vertical.commerce.service.dto.ProductBrandDTO;
@@ -21,7 +19,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,6 +42,9 @@ public class ProductBrandResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
+
     private static final String DEFAULT_SHORT_LABEL = "AAAAAAAAAA";
     private static final String UPDATED_SHORT_LABEL = "BBBBBBBBBB";
 
@@ -51,8 +55,17 @@ public class ProductBrandResourceIT {
     private static final String DEFAULT_ICON_FONT = "AAAAAAAAAA";
     private static final String UPDATED_ICON_FONT = "BBBBBBBBBB";
 
-    private static final String DEFAULT_THUMBNAIL_URL = "AAAAAAAAAA";
-    private static final String UPDATED_THUMBNAIL_URL = "BBBBBBBBBB";
+    private static final String DEFAULT_ICON_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_ICON_PHOTO = "BBBBBBBBBB";
+
+    private static final Boolean DEFAULT_ACTIVE_FLAG = false;
+    private static final Boolean UPDATED_ACTIVE_FLAG = true;
+
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private ProductBrandRepository productBrandRepository;
@@ -83,10 +96,14 @@ public class ProductBrandResourceIT {
     public static ProductBrand createEntity(EntityManager em) {
         ProductBrand productBrand = new ProductBrand()
             .name(DEFAULT_NAME)
+            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .shortLabel(DEFAULT_SHORT_LABEL)
             .sortOrder(DEFAULT_SORT_ORDER)
             .iconFont(DEFAULT_ICON_FONT)
-            .thumbnailUrl(DEFAULT_THUMBNAIL_URL);
+            .iconPhoto(DEFAULT_ICON_PHOTO)
+            .activeFlag(DEFAULT_ACTIVE_FLAG)
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return productBrand;
     }
     /**
@@ -98,10 +115,14 @@ public class ProductBrandResourceIT {
     public static ProductBrand createUpdatedEntity(EntityManager em) {
         ProductBrand productBrand = new ProductBrand()
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .shortLabel(UPDATED_SHORT_LABEL)
             .sortOrder(UPDATED_SORT_ORDER)
             .iconFont(UPDATED_ICON_FONT)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL);
+            .iconPhoto(UPDATED_ICON_PHOTO)
+            .activeFlag(UPDATED_ACTIVE_FLAG)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return productBrand;
     }
 
@@ -126,10 +147,14 @@ public class ProductBrandResourceIT {
         assertThat(productBrandList).hasSize(databaseSizeBeforeCreate + 1);
         ProductBrand testProductBrand = productBrandList.get(productBrandList.size() - 1);
         assertThat(testProductBrand.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProductBrand.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testProductBrand.getShortLabel()).isEqualTo(DEFAULT_SHORT_LABEL);
         assertThat(testProductBrand.getSortOrder()).isEqualTo(DEFAULT_SORT_ORDER);
         assertThat(testProductBrand.getIconFont()).isEqualTo(DEFAULT_ICON_FONT);
-        assertThat(testProductBrand.getThumbnailUrl()).isEqualTo(DEFAULT_THUMBNAIL_URL);
+        assertThat(testProductBrand.getIconPhoto()).isEqualTo(DEFAULT_ICON_PHOTO);
+        assertThat(testProductBrand.isActiveFlag()).isEqualTo(DEFAULT_ACTIVE_FLAG);
+        assertThat(testProductBrand.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testProductBrand.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -175,6 +200,46 @@ public class ProductBrandResourceIT {
 
     @Test
     @Transactional
+    public void checkActiveFlagIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productBrandRepository.findAll().size();
+        // set the field null
+        productBrand.setActiveFlag(null);
+
+        // Create the ProductBrand, which fails.
+        ProductBrandDTO productBrandDTO = productBrandMapper.toDto(productBrand);
+
+
+        restProductBrandMockMvc.perform(post("/api/product-brands").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(productBrandDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<ProductBrand> productBrandList = productBrandRepository.findAll();
+        assertThat(productBrandList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkValidFromIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productBrandRepository.findAll().size();
+        // set the field null
+        productBrand.setValidFrom(null);
+
+        // Create the ProductBrand, which fails.
+        ProductBrandDTO productBrandDTO = productBrandMapper.toDto(productBrand);
+
+
+        restProductBrandMockMvc.perform(post("/api/product-brands").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(productBrandDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<ProductBrand> productBrandList = productBrandRepository.findAll();
+        assertThat(productBrandList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllProductBrands() throws Exception {
         // Initialize the database
         productBrandRepository.saveAndFlush(productBrand);
@@ -185,10 +250,14 @@ public class ProductBrandResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productBrand.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].shortLabel").value(hasItem(DEFAULT_SHORT_LABEL)))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
             .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)));
+            .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)))
+            .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -203,10 +272,14 @@ public class ProductBrandResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productBrand.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.shortLabel").value(DEFAULT_SHORT_LABEL))
             .andExpect(jsonPath("$.sortOrder").value(DEFAULT_SORT_ORDER))
             .andExpect(jsonPath("$.iconFont").value(DEFAULT_ICON_FONT))
-            .andExpect(jsonPath("$.thumbnailUrl").value(DEFAULT_THUMBNAIL_URL));
+            .andExpect(jsonPath("$.iconPhoto").value(DEFAULT_ICON_PHOTO))
+            .andExpect(jsonPath("$.activeFlag").value(DEFAULT_ACTIVE_FLAG.booleanValue()))
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -570,121 +643,237 @@ public class ProductBrandResourceIT {
 
     @Test
     @Transactional
-    public void getAllProductBrandsByThumbnailUrlIsEqualToSomething() throws Exception {
+    public void getAllProductBrandsByIconPhotoIsEqualToSomething() throws Exception {
         // Initialize the database
         productBrandRepository.saveAndFlush(productBrand);
 
-        // Get all the productBrandList where thumbnailUrl equals to DEFAULT_THUMBNAIL_URL
-        defaultProductBrandShouldBeFound("thumbnailUrl.equals=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the productBrandList where iconPhoto equals to DEFAULT_ICON_PHOTO
+        defaultProductBrandShouldBeFound("iconPhoto.equals=" + DEFAULT_ICON_PHOTO);
 
-        // Get all the productBrandList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultProductBrandShouldNotBeFound("thumbnailUrl.equals=" + UPDATED_THUMBNAIL_URL);
+        // Get all the productBrandList where iconPhoto equals to UPDATED_ICON_PHOTO
+        defaultProductBrandShouldNotBeFound("iconPhoto.equals=" + UPDATED_ICON_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllProductBrandsByThumbnailUrlIsNotEqualToSomething() throws Exception {
+    public void getAllProductBrandsByIconPhotoIsNotEqualToSomething() throws Exception {
         // Initialize the database
         productBrandRepository.saveAndFlush(productBrand);
 
-        // Get all the productBrandList where thumbnailUrl not equals to DEFAULT_THUMBNAIL_URL
-        defaultProductBrandShouldNotBeFound("thumbnailUrl.notEquals=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the productBrandList where iconPhoto not equals to DEFAULT_ICON_PHOTO
+        defaultProductBrandShouldNotBeFound("iconPhoto.notEquals=" + DEFAULT_ICON_PHOTO);
 
-        // Get all the productBrandList where thumbnailUrl not equals to UPDATED_THUMBNAIL_URL
-        defaultProductBrandShouldBeFound("thumbnailUrl.notEquals=" + UPDATED_THUMBNAIL_URL);
+        // Get all the productBrandList where iconPhoto not equals to UPDATED_ICON_PHOTO
+        defaultProductBrandShouldBeFound("iconPhoto.notEquals=" + UPDATED_ICON_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllProductBrandsByThumbnailUrlIsInShouldWork() throws Exception {
+    public void getAllProductBrandsByIconPhotoIsInShouldWork() throws Exception {
         // Initialize the database
         productBrandRepository.saveAndFlush(productBrand);
 
-        // Get all the productBrandList where thumbnailUrl in DEFAULT_THUMBNAIL_URL or UPDATED_THUMBNAIL_URL
-        defaultProductBrandShouldBeFound("thumbnailUrl.in=" + DEFAULT_THUMBNAIL_URL + "," + UPDATED_THUMBNAIL_URL);
+        // Get all the productBrandList where iconPhoto in DEFAULT_ICON_PHOTO or UPDATED_ICON_PHOTO
+        defaultProductBrandShouldBeFound("iconPhoto.in=" + DEFAULT_ICON_PHOTO + "," + UPDATED_ICON_PHOTO);
 
-        // Get all the productBrandList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultProductBrandShouldNotBeFound("thumbnailUrl.in=" + UPDATED_THUMBNAIL_URL);
+        // Get all the productBrandList where iconPhoto equals to UPDATED_ICON_PHOTO
+        defaultProductBrandShouldNotBeFound("iconPhoto.in=" + UPDATED_ICON_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllProductBrandsByThumbnailUrlIsNullOrNotNull() throws Exception {
+    public void getAllProductBrandsByIconPhotoIsNullOrNotNull() throws Exception {
         // Initialize the database
         productBrandRepository.saveAndFlush(productBrand);
 
-        // Get all the productBrandList where thumbnailUrl is not null
-        defaultProductBrandShouldBeFound("thumbnailUrl.specified=true");
+        // Get all the productBrandList where iconPhoto is not null
+        defaultProductBrandShouldBeFound("iconPhoto.specified=true");
 
-        // Get all the productBrandList where thumbnailUrl is null
-        defaultProductBrandShouldNotBeFound("thumbnailUrl.specified=false");
+        // Get all the productBrandList where iconPhoto is null
+        defaultProductBrandShouldNotBeFound("iconPhoto.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllProductBrandsByThumbnailUrlContainsSomething() throws Exception {
+    public void getAllProductBrandsByIconPhotoContainsSomething() throws Exception {
         // Initialize the database
         productBrandRepository.saveAndFlush(productBrand);
 
-        // Get all the productBrandList where thumbnailUrl contains DEFAULT_THUMBNAIL_URL
-        defaultProductBrandShouldBeFound("thumbnailUrl.contains=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the productBrandList where iconPhoto contains DEFAULT_ICON_PHOTO
+        defaultProductBrandShouldBeFound("iconPhoto.contains=" + DEFAULT_ICON_PHOTO);
 
-        // Get all the productBrandList where thumbnailUrl contains UPDATED_THUMBNAIL_URL
-        defaultProductBrandShouldNotBeFound("thumbnailUrl.contains=" + UPDATED_THUMBNAIL_URL);
+        // Get all the productBrandList where iconPhoto contains UPDATED_ICON_PHOTO
+        defaultProductBrandShouldNotBeFound("iconPhoto.contains=" + UPDATED_ICON_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllProductBrandsByThumbnailUrlNotContainsSomething() throws Exception {
+    public void getAllProductBrandsByIconPhotoNotContainsSomething() throws Exception {
         // Initialize the database
         productBrandRepository.saveAndFlush(productBrand);
 
-        // Get all the productBrandList where thumbnailUrl does not contain DEFAULT_THUMBNAIL_URL
-        defaultProductBrandShouldNotBeFound("thumbnailUrl.doesNotContain=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the productBrandList where iconPhoto does not contain DEFAULT_ICON_PHOTO
+        defaultProductBrandShouldNotBeFound("iconPhoto.doesNotContain=" + DEFAULT_ICON_PHOTO);
 
-        // Get all the productBrandList where thumbnailUrl does not contain UPDATED_THUMBNAIL_URL
-        defaultProductBrandShouldBeFound("thumbnailUrl.doesNotContain=" + UPDATED_THUMBNAIL_URL);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllProductBrandsBySupplierIsEqualToSomething() throws Exception {
-        // Initialize the database
-        productBrandRepository.saveAndFlush(productBrand);
-        Suppliers supplier = SuppliersResourceIT.createEntity(em);
-        em.persist(supplier);
-        em.flush();
-        productBrand.setSupplier(supplier);
-        productBrandRepository.saveAndFlush(productBrand);
-        Long supplierId = supplier.getId();
-
-        // Get all the productBrandList where supplier equals to supplierId
-        defaultProductBrandShouldBeFound("supplierId.equals=" + supplierId);
-
-        // Get all the productBrandList where supplier equals to supplierId + 1
-        defaultProductBrandShouldNotBeFound("supplierId.equals=" + (supplierId + 1));
+        // Get all the productBrandList where iconPhoto does not contain UPDATED_ICON_PHOTO
+        defaultProductBrandShouldBeFound("iconPhoto.doesNotContain=" + UPDATED_ICON_PHOTO);
     }
 
 
     @Test
     @Transactional
-    public void getAllProductBrandsByIconIsEqualToSomething() throws Exception {
+    public void getAllProductBrandsByActiveFlagIsEqualToSomething() throws Exception {
         // Initialize the database
         productBrandRepository.saveAndFlush(productBrand);
-        Photos icon = PhotosResourceIT.createEntity(em);
-        em.persist(icon);
-        em.flush();
-        productBrand.setIcon(icon);
-        productBrandRepository.saveAndFlush(productBrand);
-        Long iconId = icon.getId();
 
-        // Get all the productBrandList where icon equals to iconId
-        defaultProductBrandShouldBeFound("iconId.equals=" + iconId);
+        // Get all the productBrandList where activeFlag equals to DEFAULT_ACTIVE_FLAG
+        defaultProductBrandShouldBeFound("activeFlag.equals=" + DEFAULT_ACTIVE_FLAG);
 
-        // Get all the productBrandList where icon equals to iconId + 1
-        defaultProductBrandShouldNotBeFound("iconId.equals=" + (iconId + 1));
+        // Get all the productBrandList where activeFlag equals to UPDATED_ACTIVE_FLAG
+        defaultProductBrandShouldNotBeFound("activeFlag.equals=" + UPDATED_ACTIVE_FLAG);
     }
 
+    @Test
+    @Transactional
+    public void getAllProductBrandsByActiveFlagIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where activeFlag not equals to DEFAULT_ACTIVE_FLAG
+        defaultProductBrandShouldNotBeFound("activeFlag.notEquals=" + DEFAULT_ACTIVE_FLAG);
+
+        // Get all the productBrandList where activeFlag not equals to UPDATED_ACTIVE_FLAG
+        defaultProductBrandShouldBeFound("activeFlag.notEquals=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByActiveFlagIsInShouldWork() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where activeFlag in DEFAULT_ACTIVE_FLAG or UPDATED_ACTIVE_FLAG
+        defaultProductBrandShouldBeFound("activeFlag.in=" + DEFAULT_ACTIVE_FLAG + "," + UPDATED_ACTIVE_FLAG);
+
+        // Get all the productBrandList where activeFlag equals to UPDATED_ACTIVE_FLAG
+        defaultProductBrandShouldNotBeFound("activeFlag.in=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByActiveFlagIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where activeFlag is not null
+        defaultProductBrandShouldBeFound("activeFlag.specified=true");
+
+        // Get all the productBrandList where activeFlag is null
+        defaultProductBrandShouldNotBeFound("activeFlag.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByValidFromIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where validFrom equals to DEFAULT_VALID_FROM
+        defaultProductBrandShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
+
+        // Get all the productBrandList where validFrom equals to UPDATED_VALID_FROM
+        defaultProductBrandShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByValidFromIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultProductBrandShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
+
+        // Get all the productBrandList where validFrom not equals to UPDATED_VALID_FROM
+        defaultProductBrandShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByValidFromIsInShouldWork() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultProductBrandShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
+
+        // Get all the productBrandList where validFrom equals to UPDATED_VALID_FROM
+        defaultProductBrandShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByValidFromIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where validFrom is not null
+        defaultProductBrandShouldBeFound("validFrom.specified=true");
+
+        // Get all the productBrandList where validFrom is null
+        defaultProductBrandShouldNotBeFound("validFrom.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByValidToIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where validTo equals to DEFAULT_VALID_TO
+        defaultProductBrandShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the productBrandList where validTo equals to UPDATED_VALID_TO
+        defaultProductBrandShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where validTo not equals to DEFAULT_VALID_TO
+        defaultProductBrandShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the productBrandList where validTo not equals to UPDATED_VALID_TO
+        defaultProductBrandShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultProductBrandShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the productBrandList where validTo equals to UPDATED_VALID_TO
+        defaultProductBrandShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where validTo is not null
+        defaultProductBrandShouldBeFound("validTo.specified=true");
+
+        // Get all the productBrandList where validTo is null
+        defaultProductBrandShouldNotBeFound("validTo.specified=false");
+    }
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -694,10 +883,14 @@ public class ProductBrandResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productBrand.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].shortLabel").value(hasItem(DEFAULT_SHORT_LABEL)))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
             .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)));
+            .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)))
+            .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restProductBrandMockMvc.perform(get("/api/product-brands/count?sort=id,desc&" + filter))
@@ -745,10 +938,14 @@ public class ProductBrandResourceIT {
         em.detach(updatedProductBrand);
         updatedProductBrand
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .shortLabel(UPDATED_SHORT_LABEL)
             .sortOrder(UPDATED_SORT_ORDER)
             .iconFont(UPDATED_ICON_FONT)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL);
+            .iconPhoto(UPDATED_ICON_PHOTO)
+            .activeFlag(UPDATED_ACTIVE_FLAG)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         ProductBrandDTO productBrandDTO = productBrandMapper.toDto(updatedProductBrand);
 
         restProductBrandMockMvc.perform(put("/api/product-brands").with(csrf())
@@ -761,10 +958,14 @@ public class ProductBrandResourceIT {
         assertThat(productBrandList).hasSize(databaseSizeBeforeUpdate);
         ProductBrand testProductBrand = productBrandList.get(productBrandList.size() - 1);
         assertThat(testProductBrand.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProductBrand.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testProductBrand.getShortLabel()).isEqualTo(UPDATED_SHORT_LABEL);
         assertThat(testProductBrand.getSortOrder()).isEqualTo(UPDATED_SORT_ORDER);
         assertThat(testProductBrand.getIconFont()).isEqualTo(UPDATED_ICON_FONT);
-        assertThat(testProductBrand.getThumbnailUrl()).isEqualTo(UPDATED_THUMBNAIL_URL);
+        assertThat(testProductBrand.getIconPhoto()).isEqualTo(UPDATED_ICON_PHOTO);
+        assertThat(testProductBrand.isActiveFlag()).isEqualTo(UPDATED_ACTIVE_FLAG);
+        assertThat(testProductBrand.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testProductBrand.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

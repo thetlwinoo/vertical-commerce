@@ -3,13 +3,11 @@
   "fields": [
     {
       "fieldName": "contactPerson",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldType": "String"
     },
     {
       "fieldName": "contactNumber",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldType": "String"
     },
     {
       "fieldName": "contactEmailAddress",
@@ -27,29 +25,51 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "city",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "postalCode",
       "fieldType": "String"
     },
     {
-      "fieldName": "defaultInd",
-      "fieldType": "Boolean"
+      "fieldName": "description",
+      "fieldType": "String"
     },
     {
-      "fieldName": "activeInd",
-      "fieldType": "Boolean"
+      "fieldName": "validFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validTo",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "zone",
+      "otherEntityName": "regions",
       "otherEntityRelationshipName": "addresses",
-      "relationshipName": "zone",
-      "otherEntityField": "code"
+      "relationshipName": "region",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "cities",
+      "otherEntityRelationshipName": "addresses",
+      "relationshipName": "city",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "townships",
+      "otherEntityRelationshipName": "addresses",
+      "relationshipName": "township",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "towns",
+      "otherEntityRelationshipName": "addresses",
+      "relationshipName": "town",
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
@@ -60,13 +80,20 @@
     },
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "people",
+      "otherEntityName": "customers",
       "otherEntityRelationshipName": "addresses",
-      "relationshipName": "person",
-      "otherEntityField": "id"
+      "relationshipName": "customerAddress",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "suppliers",
+      "otherEntityRelationshipName": "addresses",
+      "relationshipName": "supplierAddress",
+      "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617153704",
+  "changelogDate": "20200718071912",
   "entityTableName": "addresses",
   "dto": "mapstruct",
   "pagination": "no",

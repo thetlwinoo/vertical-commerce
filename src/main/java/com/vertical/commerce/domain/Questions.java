@@ -44,8 +44,12 @@ public class Questions implements Serializable {
     @Column(name = "supplier_answer_on")
     private Instant supplierAnswerOn;
 
-    @Column(name = "active_ind")
-    private Boolean activeInd;
+    @NotNull
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
+
+    @Column(name = "valid_to")
+    private Instant validTo;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "questions", allowSetters = true)
@@ -120,17 +124,30 @@ public class Questions implements Serializable {
         this.supplierAnswerOn = supplierAnswerOn;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public Questions activeInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public Questions validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
         return this;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public Questions validTo(Instant validTo) {
+        this.validTo = validTo;
+        return this;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     public Suppliers getSupplier() {
@@ -198,7 +215,8 @@ public class Questions implements Serializable {
             ", customerQuestionOn='" + getCustomerQuestionOn() + "'" +
             ", supplierAnswer='" + getSupplierAnswer() + "'" +
             ", supplierAnswerOn='" + getSupplierAnswerOn() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

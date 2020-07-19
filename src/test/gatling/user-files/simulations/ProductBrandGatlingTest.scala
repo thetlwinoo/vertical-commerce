@@ -102,10 +102,14 @@ class ProductBrandGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
+                , "cultureDetails":null
                 , "shortLabel":"SAMPLE_TEXT"
                 , "sortOrder":"0"
                 , "iconFont":"SAMPLE_TEXT"
-                , "thumbnailUrl":"SAMPLE_TEXT"
+                , "iconPhoto":"SAMPLE_TEXT"
+                , "activeFlag":null
+                , "validFrom":"2020-01-01T00:00:00.000Z"
+                , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_productBrand_url"))).exitHereIfFailed

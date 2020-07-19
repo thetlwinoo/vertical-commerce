@@ -102,7 +102,7 @@ class AddressTypesGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
-                , "refer":"SAMPLE_TEXT"
+                , "refer":"CUSTOMERS"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_addressTypes_url"))).exitHereIfFailed

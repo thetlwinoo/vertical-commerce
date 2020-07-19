@@ -5,7 +5,6 @@ import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.OrderLines;
 import com.vertical.commerce.domain.StockItems;
 import com.vertical.commerce.domain.PackageTypes;
-import com.vertical.commerce.domain.Photos;
 import com.vertical.commerce.domain.Suppliers;
 import com.vertical.commerce.domain.OrderPackages;
 import com.vertical.commerce.repository.OrderLinesRepository;
@@ -75,15 +74,18 @@ public class OrderLinesResourceIT {
     private static final OrderLineStatus DEFAULT_STATUS = OrderLineStatus.AVAILABLE;
     private static final OrderLineStatus UPDATED_STATUS = OrderLineStatus.OUT_OF_STOCK;
 
-    private static final String DEFAULT_THUMBNAIL_URL = "AAAAAAAAAA";
-    private static final String UPDATED_THUMBNAIL_URL = "BBBBBBBBBB";
-
     private static final Integer DEFAULT_LINE_RATING = 1;
     private static final Integer UPDATED_LINE_RATING = 2;
     private static final Integer SMALLER_LINE_RATING = 1 - 1;
 
     private static final String DEFAULT_LINE_REVIEW = "AAAAAAAAAA";
     private static final String UPDATED_LINE_REVIEW = "BBBBBBBBBB";
+
+    private static final String DEFAULT_STOCK_ITEM_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_STOCK_ITEM_PHOTO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_REVIEW_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_REVIEW_PHOTO = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_CUSTOMER_REVIEWED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CUSTOMER_REVIEWED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -140,9 +142,10 @@ public class OrderLinesResourceIT {
             .pickedQuantity(DEFAULT_PICKED_QUANTITY)
             .pickingCompletedWhen(DEFAULT_PICKING_COMPLETED_WHEN)
             .status(DEFAULT_STATUS)
-            .thumbnailUrl(DEFAULT_THUMBNAIL_URL)
             .lineRating(DEFAULT_LINE_RATING)
             .lineReview(DEFAULT_LINE_REVIEW)
+            .stockItemPhoto(DEFAULT_STOCK_ITEM_PHOTO)
+            .reviewPhoto(DEFAULT_REVIEW_PHOTO)
             .customerReviewedOn(DEFAULT_CUSTOMER_REVIEWED_ON)
             .supplierResponse(DEFAULT_SUPPLIER_RESPONSE)
             .supplierResponseOn(DEFAULT_SUPPLIER_RESPONSE_ON)
@@ -167,9 +170,10 @@ public class OrderLinesResourceIT {
             .pickedQuantity(UPDATED_PICKED_QUANTITY)
             .pickingCompletedWhen(UPDATED_PICKING_COMPLETED_WHEN)
             .status(UPDATED_STATUS)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
             .lineRating(UPDATED_LINE_RATING)
             .lineReview(UPDATED_LINE_REVIEW)
+            .stockItemPhoto(UPDATED_STOCK_ITEM_PHOTO)
+            .reviewPhoto(UPDATED_REVIEW_PHOTO)
             .customerReviewedOn(UPDATED_CUSTOMER_REVIEWED_ON)
             .supplierResponse(UPDATED_SUPPLIER_RESPONSE)
             .supplierResponseOn(UPDATED_SUPPLIER_RESPONSE_ON)
@@ -207,9 +211,10 @@ public class OrderLinesResourceIT {
         assertThat(testOrderLines.getPickedQuantity()).isEqualTo(DEFAULT_PICKED_QUANTITY);
         assertThat(testOrderLines.getPickingCompletedWhen()).isEqualTo(DEFAULT_PICKING_COMPLETED_WHEN);
         assertThat(testOrderLines.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testOrderLines.getThumbnailUrl()).isEqualTo(DEFAULT_THUMBNAIL_URL);
         assertThat(testOrderLines.getLineRating()).isEqualTo(DEFAULT_LINE_RATING);
         assertThat(testOrderLines.getLineReview()).isEqualTo(DEFAULT_LINE_REVIEW);
+        assertThat(testOrderLines.getStockItemPhoto()).isEqualTo(DEFAULT_STOCK_ITEM_PHOTO);
+        assertThat(testOrderLines.getReviewPhoto()).isEqualTo(DEFAULT_REVIEW_PHOTO);
         assertThat(testOrderLines.getCustomerReviewedOn()).isEqualTo(DEFAULT_CUSTOMER_REVIEWED_ON);
         assertThat(testOrderLines.getSupplierResponse()).isEqualTo(DEFAULT_SUPPLIER_RESPONSE);
         assertThat(testOrderLines.getSupplierResponseOn()).isEqualTo(DEFAULT_SUPPLIER_RESPONSE_ON);
@@ -338,9 +343,10 @@ public class OrderLinesResourceIT {
             .andExpect(jsonPath("$.[*].pickedQuantity").value(hasItem(DEFAULT_PICKED_QUANTITY)))
             .andExpect(jsonPath("$.[*].pickingCompletedWhen").value(hasItem(DEFAULT_PICKING_COMPLETED_WHEN.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
             .andExpect(jsonPath("$.[*].lineRating").value(hasItem(DEFAULT_LINE_RATING)))
             .andExpect(jsonPath("$.[*].lineReview").value(hasItem(DEFAULT_LINE_REVIEW.toString())))
+            .andExpect(jsonPath("$.[*].stockItemPhoto").value(hasItem(DEFAULT_STOCK_ITEM_PHOTO)))
+            .andExpect(jsonPath("$.[*].reviewPhoto").value(hasItem(DEFAULT_REVIEW_PHOTO)))
             .andExpect(jsonPath("$.[*].customerReviewedOn").value(hasItem(DEFAULT_CUSTOMER_REVIEWED_ON.toString())))
             .andExpect(jsonPath("$.[*].supplierResponse").value(hasItem(DEFAULT_SUPPLIER_RESPONSE.toString())))
             .andExpect(jsonPath("$.[*].supplierResponseOn").value(hasItem(DEFAULT_SUPPLIER_RESPONSE_ON.toString())))
@@ -368,9 +374,10 @@ public class OrderLinesResourceIT {
             .andExpect(jsonPath("$.pickedQuantity").value(DEFAULT_PICKED_QUANTITY))
             .andExpect(jsonPath("$.pickingCompletedWhen").value(DEFAULT_PICKING_COMPLETED_WHEN.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
-            .andExpect(jsonPath("$.thumbnailUrl").value(DEFAULT_THUMBNAIL_URL))
             .andExpect(jsonPath("$.lineRating").value(DEFAULT_LINE_RATING))
             .andExpect(jsonPath("$.lineReview").value(DEFAULT_LINE_REVIEW.toString()))
+            .andExpect(jsonPath("$.stockItemPhoto").value(DEFAULT_STOCK_ITEM_PHOTO))
+            .andExpect(jsonPath("$.reviewPhoto").value(DEFAULT_REVIEW_PHOTO))
             .andExpect(jsonPath("$.customerReviewedOn").value(DEFAULT_CUSTOMER_REVIEWED_ON.toString()))
             .andExpect(jsonPath("$.supplierResponse").value(DEFAULT_SUPPLIER_RESPONSE.toString()))
             .andExpect(jsonPath("$.supplierResponseOn").value(DEFAULT_SUPPLIER_RESPONSE_ON.toString()))
@@ -1108,84 +1115,6 @@ public class OrderLinesResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrderLinesByThumbnailUrlIsEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where thumbnailUrl equals to DEFAULT_THUMBNAIL_URL
-        defaultOrderLinesShouldBeFound("thumbnailUrl.equals=" + DEFAULT_THUMBNAIL_URL);
-
-        // Get all the orderLinesList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultOrderLinesShouldNotBeFound("thumbnailUrl.equals=" + UPDATED_THUMBNAIL_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByThumbnailUrlIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where thumbnailUrl not equals to DEFAULT_THUMBNAIL_URL
-        defaultOrderLinesShouldNotBeFound("thumbnailUrl.notEquals=" + DEFAULT_THUMBNAIL_URL);
-
-        // Get all the orderLinesList where thumbnailUrl not equals to UPDATED_THUMBNAIL_URL
-        defaultOrderLinesShouldBeFound("thumbnailUrl.notEquals=" + UPDATED_THUMBNAIL_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByThumbnailUrlIsInShouldWork() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where thumbnailUrl in DEFAULT_THUMBNAIL_URL or UPDATED_THUMBNAIL_URL
-        defaultOrderLinesShouldBeFound("thumbnailUrl.in=" + DEFAULT_THUMBNAIL_URL + "," + UPDATED_THUMBNAIL_URL);
-
-        // Get all the orderLinesList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultOrderLinesShouldNotBeFound("thumbnailUrl.in=" + UPDATED_THUMBNAIL_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByThumbnailUrlIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where thumbnailUrl is not null
-        defaultOrderLinesShouldBeFound("thumbnailUrl.specified=true");
-
-        // Get all the orderLinesList where thumbnailUrl is null
-        defaultOrderLinesShouldNotBeFound("thumbnailUrl.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllOrderLinesByThumbnailUrlContainsSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where thumbnailUrl contains DEFAULT_THUMBNAIL_URL
-        defaultOrderLinesShouldBeFound("thumbnailUrl.contains=" + DEFAULT_THUMBNAIL_URL);
-
-        // Get all the orderLinesList where thumbnailUrl contains UPDATED_THUMBNAIL_URL
-        defaultOrderLinesShouldNotBeFound("thumbnailUrl.contains=" + UPDATED_THUMBNAIL_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllOrderLinesByThumbnailUrlNotContainsSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-
-        // Get all the orderLinesList where thumbnailUrl does not contain DEFAULT_THUMBNAIL_URL
-        defaultOrderLinesShouldNotBeFound("thumbnailUrl.doesNotContain=" + DEFAULT_THUMBNAIL_URL);
-
-        // Get all the orderLinesList where thumbnailUrl does not contain UPDATED_THUMBNAIL_URL
-        defaultOrderLinesShouldBeFound("thumbnailUrl.doesNotContain=" + UPDATED_THUMBNAIL_URL);
-    }
-
-
-    @Test
-    @Transactional
     public void getAllOrderLinesByLineRatingIsEqualToSomething() throws Exception {
         // Initialize the database
         orderLinesRepository.saveAndFlush(orderLines);
@@ -1286,6 +1215,162 @@ public class OrderLinesResourceIT {
 
         // Get all the orderLinesList where lineRating is greater than SMALLER_LINE_RATING
         defaultOrderLinesShouldBeFound("lineRating.greaterThan=" + SMALLER_LINE_RATING);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByStockItemPhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where stockItemPhoto equals to DEFAULT_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldBeFound("stockItemPhoto.equals=" + DEFAULT_STOCK_ITEM_PHOTO);
+
+        // Get all the orderLinesList where stockItemPhoto equals to UPDATED_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldNotBeFound("stockItemPhoto.equals=" + UPDATED_STOCK_ITEM_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByStockItemPhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where stockItemPhoto not equals to DEFAULT_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldNotBeFound("stockItemPhoto.notEquals=" + DEFAULT_STOCK_ITEM_PHOTO);
+
+        // Get all the orderLinesList where stockItemPhoto not equals to UPDATED_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldBeFound("stockItemPhoto.notEquals=" + UPDATED_STOCK_ITEM_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByStockItemPhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where stockItemPhoto in DEFAULT_STOCK_ITEM_PHOTO or UPDATED_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldBeFound("stockItemPhoto.in=" + DEFAULT_STOCK_ITEM_PHOTO + "," + UPDATED_STOCK_ITEM_PHOTO);
+
+        // Get all the orderLinesList where stockItemPhoto equals to UPDATED_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldNotBeFound("stockItemPhoto.in=" + UPDATED_STOCK_ITEM_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByStockItemPhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where stockItemPhoto is not null
+        defaultOrderLinesShouldBeFound("stockItemPhoto.specified=true");
+
+        // Get all the orderLinesList where stockItemPhoto is null
+        defaultOrderLinesShouldNotBeFound("stockItemPhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllOrderLinesByStockItemPhotoContainsSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where stockItemPhoto contains DEFAULT_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldBeFound("stockItemPhoto.contains=" + DEFAULT_STOCK_ITEM_PHOTO);
+
+        // Get all the orderLinesList where stockItemPhoto contains UPDATED_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldNotBeFound("stockItemPhoto.contains=" + UPDATED_STOCK_ITEM_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByStockItemPhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where stockItemPhoto does not contain DEFAULT_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldNotBeFound("stockItemPhoto.doesNotContain=" + DEFAULT_STOCK_ITEM_PHOTO);
+
+        // Get all the orderLinesList where stockItemPhoto does not contain UPDATED_STOCK_ITEM_PHOTO
+        defaultOrderLinesShouldBeFound("stockItemPhoto.doesNotContain=" + UPDATED_STOCK_ITEM_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByReviewPhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where reviewPhoto equals to DEFAULT_REVIEW_PHOTO
+        defaultOrderLinesShouldBeFound("reviewPhoto.equals=" + DEFAULT_REVIEW_PHOTO);
+
+        // Get all the orderLinesList where reviewPhoto equals to UPDATED_REVIEW_PHOTO
+        defaultOrderLinesShouldNotBeFound("reviewPhoto.equals=" + UPDATED_REVIEW_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByReviewPhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where reviewPhoto not equals to DEFAULT_REVIEW_PHOTO
+        defaultOrderLinesShouldNotBeFound("reviewPhoto.notEquals=" + DEFAULT_REVIEW_PHOTO);
+
+        // Get all the orderLinesList where reviewPhoto not equals to UPDATED_REVIEW_PHOTO
+        defaultOrderLinesShouldBeFound("reviewPhoto.notEquals=" + UPDATED_REVIEW_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByReviewPhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where reviewPhoto in DEFAULT_REVIEW_PHOTO or UPDATED_REVIEW_PHOTO
+        defaultOrderLinesShouldBeFound("reviewPhoto.in=" + DEFAULT_REVIEW_PHOTO + "," + UPDATED_REVIEW_PHOTO);
+
+        // Get all the orderLinesList where reviewPhoto equals to UPDATED_REVIEW_PHOTO
+        defaultOrderLinesShouldNotBeFound("reviewPhoto.in=" + UPDATED_REVIEW_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByReviewPhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where reviewPhoto is not null
+        defaultOrderLinesShouldBeFound("reviewPhoto.specified=true");
+
+        // Get all the orderLinesList where reviewPhoto is null
+        defaultOrderLinesShouldNotBeFound("reviewPhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllOrderLinesByReviewPhotoContainsSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where reviewPhoto contains DEFAULT_REVIEW_PHOTO
+        defaultOrderLinesShouldBeFound("reviewPhoto.contains=" + DEFAULT_REVIEW_PHOTO);
+
+        // Get all the orderLinesList where reviewPhoto contains UPDATED_REVIEW_PHOTO
+        defaultOrderLinesShouldNotBeFound("reviewPhoto.contains=" + UPDATED_REVIEW_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderLinesByReviewPhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        orderLinesRepository.saveAndFlush(orderLines);
+
+        // Get all the orderLinesList where reviewPhoto does not contain DEFAULT_REVIEW_PHOTO
+        defaultOrderLinesShouldNotBeFound("reviewPhoto.doesNotContain=" + DEFAULT_REVIEW_PHOTO);
+
+        // Get all the orderLinesList where reviewPhoto does not contain UPDATED_REVIEW_PHOTO
+        defaultOrderLinesShouldBeFound("reviewPhoto.doesNotContain=" + UPDATED_REVIEW_PHOTO);
     }
 
 
@@ -1670,26 +1755,6 @@ public class OrderLinesResourceIT {
 
     @Test
     @Transactional
-    public void getAllOrderLinesByReviewImageIsEqualToSomething() throws Exception {
-        // Initialize the database
-        orderLinesRepository.saveAndFlush(orderLines);
-        Photos reviewImage = PhotosResourceIT.createEntity(em);
-        em.persist(reviewImage);
-        em.flush();
-        orderLines.setReviewImage(reviewImage);
-        orderLinesRepository.saveAndFlush(orderLines);
-        Long reviewImageId = reviewImage.getId();
-
-        // Get all the orderLinesList where reviewImage equals to reviewImageId
-        defaultOrderLinesShouldBeFound("reviewImageId.equals=" + reviewImageId);
-
-        // Get all the orderLinesList where reviewImage equals to reviewImageId + 1
-        defaultOrderLinesShouldNotBeFound("reviewImageId.equals=" + (reviewImageId + 1));
-    }
-
-
-    @Test
-    @Transactional
     public void getAllOrderLinesBySupplierIsEqualToSomething() throws Exception {
         // Initialize the database
         orderLinesRepository.saveAndFlush(orderLines);
@@ -1743,9 +1808,10 @@ public class OrderLinesResourceIT {
             .andExpect(jsonPath("$.[*].pickedQuantity").value(hasItem(DEFAULT_PICKED_QUANTITY)))
             .andExpect(jsonPath("$.[*].pickingCompletedWhen").value(hasItem(DEFAULT_PICKING_COMPLETED_WHEN.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
             .andExpect(jsonPath("$.[*].lineRating").value(hasItem(DEFAULT_LINE_RATING)))
             .andExpect(jsonPath("$.[*].lineReview").value(hasItem(DEFAULT_LINE_REVIEW.toString())))
+            .andExpect(jsonPath("$.[*].stockItemPhoto").value(hasItem(DEFAULT_STOCK_ITEM_PHOTO)))
+            .andExpect(jsonPath("$.[*].reviewPhoto").value(hasItem(DEFAULT_REVIEW_PHOTO)))
             .andExpect(jsonPath("$.[*].customerReviewedOn").value(hasItem(DEFAULT_CUSTOMER_REVIEWED_ON.toString())))
             .andExpect(jsonPath("$.[*].supplierResponse").value(hasItem(DEFAULT_SUPPLIER_RESPONSE.toString())))
             .andExpect(jsonPath("$.[*].supplierResponseOn").value(hasItem(DEFAULT_SUPPLIER_RESPONSE_ON.toString())))
@@ -1806,9 +1872,10 @@ public class OrderLinesResourceIT {
             .pickedQuantity(UPDATED_PICKED_QUANTITY)
             .pickingCompletedWhen(UPDATED_PICKING_COMPLETED_WHEN)
             .status(UPDATED_STATUS)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
             .lineRating(UPDATED_LINE_RATING)
             .lineReview(UPDATED_LINE_REVIEW)
+            .stockItemPhoto(UPDATED_STOCK_ITEM_PHOTO)
+            .reviewPhoto(UPDATED_REVIEW_PHOTO)
             .customerReviewedOn(UPDATED_CUSTOMER_REVIEWED_ON)
             .supplierResponse(UPDATED_SUPPLIER_RESPONSE)
             .supplierResponseOn(UPDATED_SUPPLIER_RESPONSE_ON)
@@ -1834,9 +1901,10 @@ public class OrderLinesResourceIT {
         assertThat(testOrderLines.getPickedQuantity()).isEqualTo(UPDATED_PICKED_QUANTITY);
         assertThat(testOrderLines.getPickingCompletedWhen()).isEqualTo(UPDATED_PICKING_COMPLETED_WHEN);
         assertThat(testOrderLines.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testOrderLines.getThumbnailUrl()).isEqualTo(UPDATED_THUMBNAIL_URL);
         assertThat(testOrderLines.getLineRating()).isEqualTo(UPDATED_LINE_RATING);
         assertThat(testOrderLines.getLineReview()).isEqualTo(UPDATED_LINE_REVIEW);
+        assertThat(testOrderLines.getStockItemPhoto()).isEqualTo(UPDATED_STOCK_ITEM_PHOTO);
+        assertThat(testOrderLines.getReviewPhoto()).isEqualTo(UPDATED_REVIEW_PHOTO);
         assertThat(testOrderLines.getCustomerReviewedOn()).isEqualTo(UPDATED_CUSTOMER_REVIEWED_ON);
         assertThat(testOrderLines.getSupplierResponse()).isEqualTo(UPDATED_SUPPLIER_RESPONSE);
         assertThat(testOrderLines.getSupplierResponseOn()).isEqualTo(UPDATED_SUPPLIER_RESPONSE_ON);

@@ -106,29 +106,45 @@ public class AddressesQueryService extends QueryService<Addresses> {
             if (criteria.getAddressLine2() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAddressLine2(), Addresses_.addressLine2));
             }
-            if (criteria.getCity() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getCity(), Addresses_.city));
-            }
             if (criteria.getPostalCode() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getPostalCode(), Addresses_.postalCode));
             }
-            if (criteria.getDefaultInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getDefaultInd(), Addresses_.defaultInd));
+            if (criteria.getDescription() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDescription(), Addresses_.description));
             }
-            if (criteria.getActiveInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getActiveInd(), Addresses_.activeInd));
+            if (criteria.getValidFrom() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), Addresses_.validFrom));
             }
-            if (criteria.getZoneId() != null) {
-                specification = specification.and(buildSpecification(criteria.getZoneId(),
-                    root -> root.join(Addresses_.zone, JoinType.LEFT).get(Zone_.id)));
+            if (criteria.getValidTo() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidTo(), Addresses_.validTo));
+            }
+            if (criteria.getRegionId() != null) {
+                specification = specification.and(buildSpecification(criteria.getRegionId(),
+                    root -> root.join(Addresses_.region, JoinType.LEFT).get(Regions_.id)));
+            }
+            if (criteria.getCityId() != null) {
+                specification = specification.and(buildSpecification(criteria.getCityId(),
+                    root -> root.join(Addresses_.city, JoinType.LEFT).get(Cities_.id)));
+            }
+            if (criteria.getTownshipId() != null) {
+                specification = specification.and(buildSpecification(criteria.getTownshipId(),
+                    root -> root.join(Addresses_.township, JoinType.LEFT).get(Townships_.id)));
+            }
+            if (criteria.getTownId() != null) {
+                specification = specification.and(buildSpecification(criteria.getTownId(),
+                    root -> root.join(Addresses_.town, JoinType.LEFT).get(Towns_.id)));
             }
             if (criteria.getAddressTypeId() != null) {
                 specification = specification.and(buildSpecification(criteria.getAddressTypeId(),
                     root -> root.join(Addresses_.addressType, JoinType.LEFT).get(AddressTypes_.id)));
             }
-            if (criteria.getPersonId() != null) {
-                specification = specification.and(buildSpecification(criteria.getPersonId(),
-                    root -> root.join(Addresses_.person, JoinType.LEFT).get(People_.id)));
+            if (criteria.getCustomerAddressId() != null) {
+                specification = specification.and(buildSpecification(criteria.getCustomerAddressId(),
+                    root -> root.join(Addresses_.customerAddress, JoinType.LEFT).get(Customers_.id)));
+            }
+            if (criteria.getSupplierAddressId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierAddressId(),
+                    root -> root.join(Addresses_.supplierAddress, JoinType.LEFT).get(Suppliers_.id)));
             }
         }
         return specification;

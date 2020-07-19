@@ -121,11 +121,20 @@ public class SuppliersQueryService extends QueryService<Suppliers> {
             if (criteria.getPhoneNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getPhoneNumber(), Suppliers_.phoneNumber));
             }
+            if (criteria.getEmailAddress() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getEmailAddress(), Suppliers_.emailAddress));
+            }
+            if (criteria.getNric() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getNric(), Suppliers_.nric));
+            }
+            if (criteria.getCompanyRegistrationNo() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getCompanyRegistrationNo(), Suppliers_.companyRegistrationNo));
+            }
             if (criteria.getFaxNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getFaxNumber(), Suppliers_.faxNumber));
             }
-            if (criteria.getWebsiteURL() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getWebsiteURL(), Suppliers_.websiteURL));
+            if (criteria.getWebsiteUrl() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getWebsiteUrl(), Suppliers_.websiteUrl));
             }
             if (criteria.getWebServiceUrl() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getWebServiceUrl(), Suppliers_.webServiceUrl));
@@ -133,14 +142,32 @@ public class SuppliersQueryService extends QueryService<Suppliers> {
             if (criteria.getCreditRating() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreditRating(), Suppliers_.creditRating));
             }
+            if (criteria.getOfficialStoreInd() != null) {
+                specification = specification.and(buildSpecification(criteria.getOfficialStoreInd(), Suppliers_.officialStoreInd));
+            }
+            if (criteria.getStoreName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getStoreName(), Suppliers_.storeName));
+            }
+            if (criteria.getLogo() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLogo(), Suppliers_.logo));
+            }
+            if (criteria.getNricFrontPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getNricFrontPhoto(), Suppliers_.nricFrontPhoto));
+            }
+            if (criteria.getNricBackPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getNricBackPhoto(), Suppliers_.nricBackPhoto));
+            }
+            if (criteria.getBankBookPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getBankBookPhoto(), Suppliers_.bankBookPhoto));
+            }
+            if (criteria.getCompanyRegistrationPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getCompanyRegistrationPhoto(), Suppliers_.companyRegistrationPhoto));
+            }
+            if (criteria.getDistributorCertificatePhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDistributorCertificatePhoto(), Suppliers_.distributorCertificatePhoto));
+            }
             if (criteria.getActiveFlag() != null) {
                 specification = specification.and(buildSpecification(criteria.getActiveFlag(), Suppliers_.activeFlag));
-            }
-            if (criteria.getThumbnailUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), Suppliers_.thumbnailUrl));
-            }
-            if (criteria.getPickupSameAsHeadOffice() != null) {
-                specification = specification.and(buildSpecification(criteria.getPickupSameAsHeadOffice(), Suppliers_.pickupSameAsHeadOffice));
             }
             if (criteria.getValidFrom() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), Suppliers_.validFrom));
@@ -148,9 +175,13 @@ public class SuppliersQueryService extends QueryService<Suppliers> {
             if (criteria.getValidTo() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidTo(), Suppliers_.validTo));
             }
-            if (criteria.getPeopleId() != null) {
-                specification = specification.and(buildSpecification(criteria.getPeopleId(),
-                    root -> root.join(Suppliers_.people, JoinType.LEFT).get(People_.id)));
+            if (criteria.getBannerListId() != null) {
+                specification = specification.and(buildSpecification(criteria.getBannerListId(),
+                    root -> root.join(Suppliers_.bannerLists, JoinType.LEFT).get(Photos_.id)));
+            }
+            if (criteria.getDocumentListId() != null) {
+                specification = specification.and(buildSpecification(criteria.getDocumentListId(),
+                    root -> root.join(Suppliers_.documentLists, JoinType.LEFT).get(Photos_.id)));
             }
             if (criteria.getSupplierCategoryId() != null) {
                 specification = specification.and(buildSpecification(criteria.getSupplierCategoryId(),
@@ -164,9 +195,21 @@ public class SuppliersQueryService extends QueryService<Suppliers> {
                 specification = specification.and(buildSpecification(criteria.getHeadOfficeAddressId(),
                     root -> root.join(Suppliers_.headOfficeAddress, JoinType.LEFT).get(Addresses_.id)));
             }
+            if (criteria.getReturnAddressId() != null) {
+                specification = specification.and(buildSpecification(criteria.getReturnAddressId(),
+                    root -> root.join(Suppliers_.returnAddress, JoinType.LEFT).get(Addresses_.id)));
+            }
+            if (criteria.getContactPersonId() != null) {
+                specification = specification.and(buildSpecification(criteria.getContactPersonId(),
+                    root -> root.join(Suppliers_.contactPerson, JoinType.LEFT).get(People_.id)));
+            }
             if (criteria.getDeliveryMethodId() != null) {
                 specification = specification.and(buildSpecification(criteria.getDeliveryMethodId(),
                     root -> root.join(Suppliers_.deliveryMethods, JoinType.LEFT).get(DeliveryMethods_.id)));
+            }
+            if (criteria.getPeopleId() != null) {
+                specification = specification.and(buildSpecification(criteria.getPeopleId(),
+                    root -> root.join(Suppliers_.people, JoinType.LEFT).get(People_.id)));
             }
         }
         return specification;

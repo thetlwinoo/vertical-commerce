@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -50,7 +51,7 @@ public class PaymentMethodsResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/payment-methods")
-    public ResponseEntity<PaymentMethodsDTO> createPaymentMethods(@RequestBody PaymentMethodsDTO paymentMethodsDTO) throws URISyntaxException {
+    public ResponseEntity<PaymentMethodsDTO> createPaymentMethods(@Valid @RequestBody PaymentMethodsDTO paymentMethodsDTO) throws URISyntaxException {
         log.debug("REST request to save PaymentMethods : {}", paymentMethodsDTO);
         if (paymentMethodsDTO.getId() != null) {
             throw new BadRequestAlertException("A new paymentMethods cannot already have an ID", ENTITY_NAME, "idexists");
@@ -71,7 +72,7 @@ public class PaymentMethodsResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/payment-methods")
-    public ResponseEntity<PaymentMethodsDTO> updatePaymentMethods(@RequestBody PaymentMethodsDTO paymentMethodsDTO) throws URISyntaxException {
+    public ResponseEntity<PaymentMethodsDTO> updatePaymentMethods(@Valid @RequestBody PaymentMethodsDTO paymentMethodsDTO) throws URISyntaxException {
         log.debug("REST request to update PaymentMethods : {}", paymentMethodsDTO);
         if (paymentMethodsDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

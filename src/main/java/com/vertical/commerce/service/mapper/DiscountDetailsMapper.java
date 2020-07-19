@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link DiscountDetails} and its DTO {@link DiscountDetailsDTO}.
  */
-@Mapper(componentModel = "spring", uses = {DiscountMapper.class, StockItemsMapper.class, ProductCategoryMapper.class})
+@Mapper(componentModel = "spring", uses = {DiscountsMapper.class, StockItemsMapper.class, ProductCategoryMapper.class})
 public interface DiscountDetailsMapper extends EntityMapper<DiscountDetailsDTO, DiscountDetails> {
 
     @Mapping(source = "discount.id", target = "discountId")

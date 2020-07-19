@@ -97,8 +97,11 @@ public class QuestionsQueryService extends QueryService<Questions> {
             if (criteria.getSupplierAnswerOn() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getSupplierAnswerOn(), Questions_.supplierAnswerOn));
             }
-            if (criteria.getActiveInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getActiveInd(), Questions_.activeInd));
+            if (criteria.getValidFrom() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), Questions_.validFrom));
+            }
+            if (criteria.getValidTo() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidTo(), Questions_.validTo));
             }
             if (criteria.getSupplierId() != null) {
                 specification = specification.and(buildSpecification(criteria.getSupplierId(),

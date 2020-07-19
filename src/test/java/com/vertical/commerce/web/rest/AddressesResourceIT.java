@@ -3,9 +3,13 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.Addresses;
-import com.vertical.commerce.domain.Zone;
+import com.vertical.commerce.domain.Regions;
+import com.vertical.commerce.domain.Cities;
+import com.vertical.commerce.domain.Townships;
+import com.vertical.commerce.domain.Towns;
 import com.vertical.commerce.domain.AddressTypes;
-import com.vertical.commerce.domain.People;
+import com.vertical.commerce.domain.Customers;
+import com.vertical.commerce.domain.Suppliers;
 import com.vertical.commerce.repository.AddressesRepository;
 import com.vertical.commerce.service.AddressesService;
 import com.vertical.commerce.service.dto.AddressesDTO;
@@ -23,6 +27,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,8 +51,8 @@ public class AddressesResourceIT {
     private static final String DEFAULT_CONTACT_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_CONTACT_NUMBER = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CONTACT_EMAIL_ADDRESS = ",x@S.y}e7";
-    private static final String UPDATED_CONTACT_EMAIL_ADDRESS = ",d@\"_~.z`";
+    private static final String DEFAULT_CONTACT_EMAIL_ADDRESS = "}e74,d@\"_~.z`";
+    private static final String UPDATED_CONTACT_EMAIL_ADDRESS = "T[@a.I]fy";
 
     private static final String DEFAULT_ADDRESS_LINE_1 = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS_LINE_1 = "BBBBBBBBBB";
@@ -54,17 +60,17 @@ public class AddressesResourceIT {
     private static final String DEFAULT_ADDRESS_LINE_2 = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS_LINE_2 = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CITY = "AAAAAAAAAA";
-    private static final String UPDATED_CITY = "BBBBBBBBBB";
-
     private static final String DEFAULT_POSTAL_CODE = "AAAAAAAAAA";
     private static final String UPDATED_POSTAL_CODE = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_DEFAULT_IND = false;
-    private static final Boolean UPDATED_DEFAULT_IND = true;
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_ACTIVE_IND = false;
-    private static final Boolean UPDATED_ACTIVE_IND = true;
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private AddressesRepository addressesRepository;
@@ -99,10 +105,10 @@ public class AddressesResourceIT {
             .contactEmailAddress(DEFAULT_CONTACT_EMAIL_ADDRESS)
             .addressLine1(DEFAULT_ADDRESS_LINE_1)
             .addressLine2(DEFAULT_ADDRESS_LINE_2)
-            .city(DEFAULT_CITY)
             .postalCode(DEFAULT_POSTAL_CODE)
-            .defaultInd(DEFAULT_DEFAULT_IND)
-            .activeInd(DEFAULT_ACTIVE_IND);
+            .description(DEFAULT_DESCRIPTION)
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return addresses;
     }
     /**
@@ -118,10 +124,10 @@ public class AddressesResourceIT {
             .contactEmailAddress(UPDATED_CONTACT_EMAIL_ADDRESS)
             .addressLine1(UPDATED_ADDRESS_LINE_1)
             .addressLine2(UPDATED_ADDRESS_LINE_2)
-            .city(UPDATED_CITY)
             .postalCode(UPDATED_POSTAL_CODE)
-            .defaultInd(UPDATED_DEFAULT_IND)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .description(UPDATED_DESCRIPTION)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return addresses;
     }
 
@@ -150,10 +156,10 @@ public class AddressesResourceIT {
         assertThat(testAddresses.getContactEmailAddress()).isEqualTo(DEFAULT_CONTACT_EMAIL_ADDRESS);
         assertThat(testAddresses.getAddressLine1()).isEqualTo(DEFAULT_ADDRESS_LINE_1);
         assertThat(testAddresses.getAddressLine2()).isEqualTo(DEFAULT_ADDRESS_LINE_2);
-        assertThat(testAddresses.getCity()).isEqualTo(DEFAULT_CITY);
         assertThat(testAddresses.getPostalCode()).isEqualTo(DEFAULT_POSTAL_CODE);
-        assertThat(testAddresses.isDefaultInd()).isEqualTo(DEFAULT_DEFAULT_IND);
-        assertThat(testAddresses.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
+        assertThat(testAddresses.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testAddresses.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testAddresses.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -179,50 +185,30 @@ public class AddressesResourceIT {
 
     @Test
     @Transactional
-    public void checkContactPersonIsRequired() throws Exception {
-        int databaseSizeBeforeTest = addressesRepository.findAll().size();
-        // set the field null
-        addresses.setContactPerson(null);
-
-        // Create the Addresses, which fails.
-        AddressesDTO addressesDTO = addressesMapper.toDto(addresses);
-
-
-        restAddressesMockMvc.perform(post("/api/addresses").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(addressesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Addresses> addressesList = addressesRepository.findAll();
-        assertThat(addressesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkContactNumberIsRequired() throws Exception {
-        int databaseSizeBeforeTest = addressesRepository.findAll().size();
-        // set the field null
-        addresses.setContactNumber(null);
-
-        // Create the Addresses, which fails.
-        AddressesDTO addressesDTO = addressesMapper.toDto(addresses);
-
-
-        restAddressesMockMvc.perform(post("/api/addresses").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(addressesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Addresses> addressesList = addressesRepository.findAll();
-        assertThat(addressesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkAddressLine1IsRequired() throws Exception {
         int databaseSizeBeforeTest = addressesRepository.findAll().size();
         // set the field null
         addresses.setAddressLine1(null);
+
+        // Create the Addresses, which fails.
+        AddressesDTO addressesDTO = addressesMapper.toDto(addresses);
+
+
+        restAddressesMockMvc.perform(post("/api/addresses").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(addressesDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Addresses> addressesList = addressesRepository.findAll();
+        assertThat(addressesList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkValidFromIsRequired() throws Exception {
+        int databaseSizeBeforeTest = addressesRepository.findAll().size();
+        // set the field null
+        addresses.setValidFrom(null);
 
         // Create the Addresses, which fails.
         AddressesDTO addressesDTO = addressesMapper.toDto(addresses);
@@ -253,10 +239,10 @@ public class AddressesResourceIT {
             .andExpect(jsonPath("$.[*].contactEmailAddress").value(hasItem(DEFAULT_CONTACT_EMAIL_ADDRESS)))
             .andExpect(jsonPath("$.[*].addressLine1").value(hasItem(DEFAULT_ADDRESS_LINE_1)))
             .andExpect(jsonPath("$.[*].addressLine2").value(hasItem(DEFAULT_ADDRESS_LINE_2)))
-            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY)))
             .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
-            .andExpect(jsonPath("$.[*].defaultInd").value(hasItem(DEFAULT_DEFAULT_IND.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -275,10 +261,10 @@ public class AddressesResourceIT {
             .andExpect(jsonPath("$.contactEmailAddress").value(DEFAULT_CONTACT_EMAIL_ADDRESS))
             .andExpect(jsonPath("$.addressLine1").value(DEFAULT_ADDRESS_LINE_1))
             .andExpect(jsonPath("$.addressLine2").value(DEFAULT_ADDRESS_LINE_2))
-            .andExpect(jsonPath("$.city").value(DEFAULT_CITY))
             .andExpect(jsonPath("$.postalCode").value(DEFAULT_POSTAL_CODE))
-            .andExpect(jsonPath("$.defaultInd").value(DEFAULT_DEFAULT_IND.booleanValue()))
-            .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -693,84 +679,6 @@ public class AddressesResourceIT {
 
     @Test
     @Transactional
-    public void getAllAddressesByCityIsEqualToSomething() throws Exception {
-        // Initialize the database
-        addressesRepository.saveAndFlush(addresses);
-
-        // Get all the addressesList where city equals to DEFAULT_CITY
-        defaultAddressesShouldBeFound("city.equals=" + DEFAULT_CITY);
-
-        // Get all the addressesList where city equals to UPDATED_CITY
-        defaultAddressesShouldNotBeFound("city.equals=" + UPDATED_CITY);
-    }
-
-    @Test
-    @Transactional
-    public void getAllAddressesByCityIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        addressesRepository.saveAndFlush(addresses);
-
-        // Get all the addressesList where city not equals to DEFAULT_CITY
-        defaultAddressesShouldNotBeFound("city.notEquals=" + DEFAULT_CITY);
-
-        // Get all the addressesList where city not equals to UPDATED_CITY
-        defaultAddressesShouldBeFound("city.notEquals=" + UPDATED_CITY);
-    }
-
-    @Test
-    @Transactional
-    public void getAllAddressesByCityIsInShouldWork() throws Exception {
-        // Initialize the database
-        addressesRepository.saveAndFlush(addresses);
-
-        // Get all the addressesList where city in DEFAULT_CITY or UPDATED_CITY
-        defaultAddressesShouldBeFound("city.in=" + DEFAULT_CITY + "," + UPDATED_CITY);
-
-        // Get all the addressesList where city equals to UPDATED_CITY
-        defaultAddressesShouldNotBeFound("city.in=" + UPDATED_CITY);
-    }
-
-    @Test
-    @Transactional
-    public void getAllAddressesByCityIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        addressesRepository.saveAndFlush(addresses);
-
-        // Get all the addressesList where city is not null
-        defaultAddressesShouldBeFound("city.specified=true");
-
-        // Get all the addressesList where city is null
-        defaultAddressesShouldNotBeFound("city.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllAddressesByCityContainsSomething() throws Exception {
-        // Initialize the database
-        addressesRepository.saveAndFlush(addresses);
-
-        // Get all the addressesList where city contains DEFAULT_CITY
-        defaultAddressesShouldBeFound("city.contains=" + DEFAULT_CITY);
-
-        // Get all the addressesList where city contains UPDATED_CITY
-        defaultAddressesShouldNotBeFound("city.contains=" + UPDATED_CITY);
-    }
-
-    @Test
-    @Transactional
-    public void getAllAddressesByCityNotContainsSomething() throws Exception {
-        // Initialize the database
-        addressesRepository.saveAndFlush(addresses);
-
-        // Get all the addressesList where city does not contain DEFAULT_CITY
-        defaultAddressesShouldNotBeFound("city.doesNotContain=" + DEFAULT_CITY);
-
-        // Get all the addressesList where city does not contain UPDATED_CITY
-        defaultAddressesShouldBeFound("city.doesNotContain=" + UPDATED_CITY);
-    }
-
-
-    @Test
-    @Transactional
     public void getAllAddressesByPostalCodeIsEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
@@ -849,125 +757,263 @@ public class AddressesResourceIT {
 
     @Test
     @Transactional
-    public void getAllAddressesByDefaultIndIsEqualToSomething() throws Exception {
+    public void getAllAddressesByDescriptionIsEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
 
-        // Get all the addressesList where defaultInd equals to DEFAULT_DEFAULT_IND
-        defaultAddressesShouldBeFound("defaultInd.equals=" + DEFAULT_DEFAULT_IND);
+        // Get all the addressesList where description equals to DEFAULT_DESCRIPTION
+        defaultAddressesShouldBeFound("description.equals=" + DEFAULT_DESCRIPTION);
 
-        // Get all the addressesList where defaultInd equals to UPDATED_DEFAULT_IND
-        defaultAddressesShouldNotBeFound("defaultInd.equals=" + UPDATED_DEFAULT_IND);
+        // Get all the addressesList where description equals to UPDATED_DESCRIPTION
+        defaultAddressesShouldNotBeFound("description.equals=" + UPDATED_DESCRIPTION);
     }
 
     @Test
     @Transactional
-    public void getAllAddressesByDefaultIndIsNotEqualToSomething() throws Exception {
+    public void getAllAddressesByDescriptionIsNotEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
 
-        // Get all the addressesList where defaultInd not equals to DEFAULT_DEFAULT_IND
-        defaultAddressesShouldNotBeFound("defaultInd.notEquals=" + DEFAULT_DEFAULT_IND);
+        // Get all the addressesList where description not equals to DEFAULT_DESCRIPTION
+        defaultAddressesShouldNotBeFound("description.notEquals=" + DEFAULT_DESCRIPTION);
 
-        // Get all the addressesList where defaultInd not equals to UPDATED_DEFAULT_IND
-        defaultAddressesShouldBeFound("defaultInd.notEquals=" + UPDATED_DEFAULT_IND);
+        // Get all the addressesList where description not equals to UPDATED_DESCRIPTION
+        defaultAddressesShouldBeFound("description.notEquals=" + UPDATED_DESCRIPTION);
     }
 
     @Test
     @Transactional
-    public void getAllAddressesByDefaultIndIsInShouldWork() throws Exception {
+    public void getAllAddressesByDescriptionIsInShouldWork() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
 
-        // Get all the addressesList where defaultInd in DEFAULT_DEFAULT_IND or UPDATED_DEFAULT_IND
-        defaultAddressesShouldBeFound("defaultInd.in=" + DEFAULT_DEFAULT_IND + "," + UPDATED_DEFAULT_IND);
+        // Get all the addressesList where description in DEFAULT_DESCRIPTION or UPDATED_DESCRIPTION
+        defaultAddressesShouldBeFound("description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION);
 
-        // Get all the addressesList where defaultInd equals to UPDATED_DEFAULT_IND
-        defaultAddressesShouldNotBeFound("defaultInd.in=" + UPDATED_DEFAULT_IND);
+        // Get all the addressesList where description equals to UPDATED_DESCRIPTION
+        defaultAddressesShouldNotBeFound("description.in=" + UPDATED_DESCRIPTION);
     }
 
     @Test
     @Transactional
-    public void getAllAddressesByDefaultIndIsNullOrNotNull() throws Exception {
+    public void getAllAddressesByDescriptionIsNullOrNotNull() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
 
-        // Get all the addressesList where defaultInd is not null
-        defaultAddressesShouldBeFound("defaultInd.specified=true");
+        // Get all the addressesList where description is not null
+        defaultAddressesShouldBeFound("description.specified=true");
 
-        // Get all the addressesList where defaultInd is null
-        defaultAddressesShouldNotBeFound("defaultInd.specified=false");
+        // Get all the addressesList where description is null
+        defaultAddressesShouldNotBeFound("description.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllAddressesByDescriptionContainsSomething() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+
+        // Get all the addressesList where description contains DEFAULT_DESCRIPTION
+        defaultAddressesShouldBeFound("description.contains=" + DEFAULT_DESCRIPTION);
+
+        // Get all the addressesList where description contains UPDATED_DESCRIPTION
+        defaultAddressesShouldNotBeFound("description.contains=" + UPDATED_DESCRIPTION);
     }
 
     @Test
     @Transactional
-    public void getAllAddressesByActiveIndIsEqualToSomething() throws Exception {
+    public void getAllAddressesByDescriptionNotContainsSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
 
-        // Get all the addressesList where activeInd equals to DEFAULT_ACTIVE_IND
-        defaultAddressesShouldBeFound("activeInd.equals=" + DEFAULT_ACTIVE_IND);
+        // Get all the addressesList where description does not contain DEFAULT_DESCRIPTION
+        defaultAddressesShouldNotBeFound("description.doesNotContain=" + DEFAULT_DESCRIPTION);
 
-        // Get all the addressesList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultAddressesShouldNotBeFound("activeInd.equals=" + UPDATED_ACTIVE_IND);
+        // Get all the addressesList where description does not contain UPDATED_DESCRIPTION
+        defaultAddressesShouldBeFound("description.doesNotContain=" + UPDATED_DESCRIPTION);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllAddressesByValidFromIsEqualToSomething() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+
+        // Get all the addressesList where validFrom equals to DEFAULT_VALID_FROM
+        defaultAddressesShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
+
+        // Get all the addressesList where validFrom equals to UPDATED_VALID_FROM
+        defaultAddressesShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllAddressesByActiveIndIsNotEqualToSomething() throws Exception {
+    public void getAllAddressesByValidFromIsNotEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
 
-        // Get all the addressesList where activeInd not equals to DEFAULT_ACTIVE_IND
-        defaultAddressesShouldNotBeFound("activeInd.notEquals=" + DEFAULT_ACTIVE_IND);
+        // Get all the addressesList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultAddressesShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
 
-        // Get all the addressesList where activeInd not equals to UPDATED_ACTIVE_IND
-        defaultAddressesShouldBeFound("activeInd.notEquals=" + UPDATED_ACTIVE_IND);
+        // Get all the addressesList where validFrom not equals to UPDATED_VALID_FROM
+        defaultAddressesShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllAddressesByActiveIndIsInShouldWork() throws Exception {
+    public void getAllAddressesByValidFromIsInShouldWork() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
 
-        // Get all the addressesList where activeInd in DEFAULT_ACTIVE_IND or UPDATED_ACTIVE_IND
-        defaultAddressesShouldBeFound("activeInd.in=" + DEFAULT_ACTIVE_IND + "," + UPDATED_ACTIVE_IND);
+        // Get all the addressesList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultAddressesShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
 
-        // Get all the addressesList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultAddressesShouldNotBeFound("activeInd.in=" + UPDATED_ACTIVE_IND);
+        // Get all the addressesList where validFrom equals to UPDATED_VALID_FROM
+        defaultAddressesShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllAddressesByActiveIndIsNullOrNotNull() throws Exception {
+    public void getAllAddressesByValidFromIsNullOrNotNull() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
 
-        // Get all the addressesList where activeInd is not null
-        defaultAddressesShouldBeFound("activeInd.specified=true");
+        // Get all the addressesList where validFrom is not null
+        defaultAddressesShouldBeFound("validFrom.specified=true");
 
-        // Get all the addressesList where activeInd is null
-        defaultAddressesShouldNotBeFound("activeInd.specified=false");
+        // Get all the addressesList where validFrom is null
+        defaultAddressesShouldNotBeFound("validFrom.specified=false");
     }
 
     @Test
     @Transactional
-    public void getAllAddressesByZoneIsEqualToSomething() throws Exception {
+    public void getAllAddressesByValidToIsEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
-        Zone zone = ZoneResourceIT.createEntity(em);
-        em.persist(zone);
+
+        // Get all the addressesList where validTo equals to DEFAULT_VALID_TO
+        defaultAddressesShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the addressesList where validTo equals to UPDATED_VALID_TO
+        defaultAddressesShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllAddressesByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+
+        // Get all the addressesList where validTo not equals to DEFAULT_VALID_TO
+        defaultAddressesShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the addressesList where validTo not equals to UPDATED_VALID_TO
+        defaultAddressesShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllAddressesByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+
+        // Get all the addressesList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultAddressesShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the addressesList where validTo equals to UPDATED_VALID_TO
+        defaultAddressesShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllAddressesByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+
+        // Get all the addressesList where validTo is not null
+        defaultAddressesShouldBeFound("validTo.specified=true");
+
+        // Get all the addressesList where validTo is null
+        defaultAddressesShouldNotBeFound("validTo.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllAddressesByRegionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+        Regions region = RegionsResourceIT.createEntity(em);
+        em.persist(region);
         em.flush();
-        addresses.setZone(zone);
+        addresses.setRegion(region);
         addressesRepository.saveAndFlush(addresses);
-        Long zoneId = zone.getId();
+        Long regionId = region.getId();
 
-        // Get all the addressesList where zone equals to zoneId
-        defaultAddressesShouldBeFound("zoneId.equals=" + zoneId);
+        // Get all the addressesList where region equals to regionId
+        defaultAddressesShouldBeFound("regionId.equals=" + regionId);
 
-        // Get all the addressesList where zone equals to zoneId + 1
-        defaultAddressesShouldNotBeFound("zoneId.equals=" + (zoneId + 1));
+        // Get all the addressesList where region equals to regionId + 1
+        defaultAddressesShouldNotBeFound("regionId.equals=" + (regionId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllAddressesByCityIsEqualToSomething() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+        Cities city = CitiesResourceIT.createEntity(em);
+        em.persist(city);
+        em.flush();
+        addresses.setCity(city);
+        addressesRepository.saveAndFlush(addresses);
+        Long cityId = city.getId();
+
+        // Get all the addressesList where city equals to cityId
+        defaultAddressesShouldBeFound("cityId.equals=" + cityId);
+
+        // Get all the addressesList where city equals to cityId + 1
+        defaultAddressesShouldNotBeFound("cityId.equals=" + (cityId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllAddressesByTownshipIsEqualToSomething() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+        Townships township = TownshipsResourceIT.createEntity(em);
+        em.persist(township);
+        em.flush();
+        addresses.setTownship(township);
+        addressesRepository.saveAndFlush(addresses);
+        Long townshipId = township.getId();
+
+        // Get all the addressesList where township equals to townshipId
+        defaultAddressesShouldBeFound("townshipId.equals=" + townshipId);
+
+        // Get all the addressesList where township equals to townshipId + 1
+        defaultAddressesShouldNotBeFound("townshipId.equals=" + (townshipId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllAddressesByTownIsEqualToSomething() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+        Towns town = TownsResourceIT.createEntity(em);
+        em.persist(town);
+        em.flush();
+        addresses.setTown(town);
+        addressesRepository.saveAndFlush(addresses);
+        Long townId = town.getId();
+
+        // Get all the addressesList where town equals to townId
+        defaultAddressesShouldBeFound("townId.equals=" + townId);
+
+        // Get all the addressesList where town equals to townId + 1
+        defaultAddressesShouldNotBeFound("townId.equals=" + (townId + 1));
     }
 
 
@@ -993,21 +1039,41 @@ public class AddressesResourceIT {
 
     @Test
     @Transactional
-    public void getAllAddressesByPersonIsEqualToSomething() throws Exception {
+    public void getAllAddressesByCustomerAddressIsEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
-        People person = PeopleResourceIT.createEntity(em);
-        em.persist(person);
+        Customers customerAddress = CustomersResourceIT.createEntity(em);
+        em.persist(customerAddress);
         em.flush();
-        addresses.setPerson(person);
+        addresses.setCustomerAddress(customerAddress);
         addressesRepository.saveAndFlush(addresses);
-        Long personId = person.getId();
+        Long customerAddressId = customerAddress.getId();
 
-        // Get all the addressesList where person equals to personId
-        defaultAddressesShouldBeFound("personId.equals=" + personId);
+        // Get all the addressesList where customerAddress equals to customerAddressId
+        defaultAddressesShouldBeFound("customerAddressId.equals=" + customerAddressId);
 
-        // Get all the addressesList where person equals to personId + 1
-        defaultAddressesShouldNotBeFound("personId.equals=" + (personId + 1));
+        // Get all the addressesList where customerAddress equals to customerAddressId + 1
+        defaultAddressesShouldNotBeFound("customerAddressId.equals=" + (customerAddressId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllAddressesBySupplierAddressIsEqualToSomething() throws Exception {
+        // Initialize the database
+        addressesRepository.saveAndFlush(addresses);
+        Suppliers supplierAddress = SuppliersResourceIT.createEntity(em);
+        em.persist(supplierAddress);
+        em.flush();
+        addresses.setSupplierAddress(supplierAddress);
+        addressesRepository.saveAndFlush(addresses);
+        Long supplierAddressId = supplierAddress.getId();
+
+        // Get all the addressesList where supplierAddress equals to supplierAddressId
+        defaultAddressesShouldBeFound("supplierAddressId.equals=" + supplierAddressId);
+
+        // Get all the addressesList where supplierAddress equals to supplierAddressId + 1
+        defaultAddressesShouldNotBeFound("supplierAddressId.equals=" + (supplierAddressId + 1));
     }
 
     /**
@@ -1023,10 +1089,10 @@ public class AddressesResourceIT {
             .andExpect(jsonPath("$.[*].contactEmailAddress").value(hasItem(DEFAULT_CONTACT_EMAIL_ADDRESS)))
             .andExpect(jsonPath("$.[*].addressLine1").value(hasItem(DEFAULT_ADDRESS_LINE_1)))
             .andExpect(jsonPath("$.[*].addressLine2").value(hasItem(DEFAULT_ADDRESS_LINE_2)))
-            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY)))
             .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
-            .andExpect(jsonPath("$.[*].defaultInd").value(hasItem(DEFAULT_DEFAULT_IND.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restAddressesMockMvc.perform(get("/api/addresses/count?sort=id,desc&" + filter))
@@ -1078,10 +1144,10 @@ public class AddressesResourceIT {
             .contactEmailAddress(UPDATED_CONTACT_EMAIL_ADDRESS)
             .addressLine1(UPDATED_ADDRESS_LINE_1)
             .addressLine2(UPDATED_ADDRESS_LINE_2)
-            .city(UPDATED_CITY)
             .postalCode(UPDATED_POSTAL_CODE)
-            .defaultInd(UPDATED_DEFAULT_IND)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .description(UPDATED_DESCRIPTION)
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         AddressesDTO addressesDTO = addressesMapper.toDto(updatedAddresses);
 
         restAddressesMockMvc.perform(put("/api/addresses").with(csrf())
@@ -1098,10 +1164,10 @@ public class AddressesResourceIT {
         assertThat(testAddresses.getContactEmailAddress()).isEqualTo(UPDATED_CONTACT_EMAIL_ADDRESS);
         assertThat(testAddresses.getAddressLine1()).isEqualTo(UPDATED_ADDRESS_LINE_1);
         assertThat(testAddresses.getAddressLine2()).isEqualTo(UPDATED_ADDRESS_LINE_2);
-        assertThat(testAddresses.getCity()).isEqualTo(UPDATED_CITY);
         assertThat(testAddresses.getPostalCode()).isEqualTo(UPDATED_POSTAL_CODE);
-        assertThat(testAddresses.isDefaultInd()).isEqualTo(UPDATED_DEFAULT_IND);
-        assertThat(testAddresses.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
+        assertThat(testAddresses.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testAddresses.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testAddresses.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

@@ -111,13 +111,22 @@ class SuppliersGatlingTest extends Simulation {
                 , "paymentDays":"0"
                 , "internalComments":"SAMPLE_TEXT"
                 , "phoneNumber":"SAMPLE_TEXT"
+                , "emailAddress":"SAMPLE_TEXT"
+                , "nric":"SAMPLE_TEXT"
+                , "companyRegistrationNo":"SAMPLE_TEXT"
                 , "faxNumber":"SAMPLE_TEXT"
-                , "websiteURL":"SAMPLE_TEXT"
+                , "websiteUrl":"SAMPLE_TEXT"
                 , "webServiceUrl":"SAMPLE_TEXT"
                 , "creditRating":"0"
+                , "officialStoreInd":null
+                , "storeName":"SAMPLE_TEXT"
+                , "logo":"SAMPLE_TEXT"
+                , "nricFrontPhoto":"SAMPLE_TEXT"
+                , "nricBackPhoto":"SAMPLE_TEXT"
+                , "bankBookPhoto":"SAMPLE_TEXT"
+                , "companyRegistrationPhoto":"SAMPLE_TEXT"
+                , "distributorCertificatePhoto":"SAMPLE_TEXT"
                 , "activeFlag":null
-                , "thumbnailUrl":"SAMPLE_TEXT"
-                , "pickupSameAsHeadOffice":null
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

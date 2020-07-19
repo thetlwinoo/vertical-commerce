@@ -102,9 +102,7 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     private StringFilter searchDetails;
 
-    private StringFilter thumbnailUrl;
-
-    private BooleanFilter activeInd;
+    private StringFilter thumbnailPhoto;
 
     private BooleanFilter liveInd;
 
@@ -113,6 +111,12 @@ public class StockItemsCriteria implements Serializable, Criteria {
     private StringFilter lastEditedBy;
 
     private InstantFilter lastEditedWhen;
+
+    private BooleanFilter activeFlag;
+
+    private InstantFilter validFrom;
+
+    private InstantFilter validTo;
 
     private LongFilter specialDealListId;
 
@@ -186,12 +190,14 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.sellCount = other.sellCount == null ? null : other.sellCount.copy();
         this.tags = other.tags == null ? null : other.tags.copy();
         this.searchDetails = other.searchDetails == null ? null : other.searchDetails.copy();
-        this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
-        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
+        this.thumbnailPhoto = other.thumbnailPhoto == null ? null : other.thumbnailPhoto.copy();
         this.liveInd = other.liveInd == null ? null : other.liveInd.copy();
         this.cashOnDeliveryInd = other.cashOnDeliveryInd == null ? null : other.cashOnDeliveryInd.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
+        this.activeFlag = other.activeFlag == null ? null : other.activeFlag.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.specialDealListId = other.specialDealListId == null ? null : other.specialDealListId.copy();
         this.photoListId = other.photoListId == null ? null : other.photoListId.copy();
         this.itemLengthUnitId = other.itemLengthUnitId == null ? null : other.itemLengthUnitId.copy();
@@ -518,20 +524,12 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.searchDetails = searchDetails;
     }
 
-    public StringFilter getThumbnailUrl() {
-        return thumbnailUrl;
+    public StringFilter getThumbnailPhoto() {
+        return thumbnailPhoto;
     }
 
-    public void setThumbnailUrl(StringFilter thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public BooleanFilter getActiveInd() {
-        return activeInd;
-    }
-
-    public void setActiveInd(BooleanFilter activeInd) {
-        this.activeInd = activeInd;
+    public void setThumbnailPhoto(StringFilter thumbnailPhoto) {
+        this.thumbnailPhoto = thumbnailPhoto;
     }
 
     public BooleanFilter getLiveInd() {
@@ -564,6 +562,30 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     public void setLastEditedWhen(InstantFilter lastEditedWhen) {
         this.lastEditedWhen = lastEditedWhen;
+    }
+
+    public BooleanFilter getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(BooleanFilter activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public InstantFilter getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public InstantFilter getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
     }
 
     public LongFilter getSpecialDealListId() {
@@ -735,12 +757,14 @@ public class StockItemsCriteria implements Serializable, Criteria {
             Objects.equals(sellCount, that.sellCount) &&
             Objects.equals(tags, that.tags) &&
             Objects.equals(searchDetails, that.searchDetails) &&
-            Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
-            Objects.equals(activeInd, that.activeInd) &&
+            Objects.equals(thumbnailPhoto, that.thumbnailPhoto) &&
             Objects.equals(liveInd, that.liveInd) &&
             Objects.equals(cashOnDeliveryInd, that.cashOnDeliveryInd) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
+            Objects.equals(activeFlag, that.activeFlag) &&
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo) &&
             Objects.equals(specialDealListId, that.specialDealListId) &&
             Objects.equals(photoListId, that.photoListId) &&
             Objects.equals(itemLengthUnitId, that.itemLengthUnitId) &&
@@ -799,12 +823,14 @@ public class StockItemsCriteria implements Serializable, Criteria {
         sellCount,
         tags,
         searchDetails,
-        thumbnailUrl,
-        activeInd,
+        thumbnailPhoto,
         liveInd,
         cashOnDeliveryInd,
         lastEditedBy,
         lastEditedWhen,
+        activeFlag,
+        validFrom,
+        validTo,
         specialDealListId,
         photoListId,
         itemLengthUnitId,
@@ -865,12 +891,14 @@ public class StockItemsCriteria implements Serializable, Criteria {
                 (sellCount != null ? "sellCount=" + sellCount + ", " : "") +
                 (tags != null ? "tags=" + tags + ", " : "") +
                 (searchDetails != null ? "searchDetails=" + searchDetails + ", " : "") +
-                (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
-                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
+                (thumbnailPhoto != null ? "thumbnailPhoto=" + thumbnailPhoto + ", " : "") +
                 (liveInd != null ? "liveInd=" + liveInd + ", " : "") +
                 (cashOnDeliveryInd != null ? "cashOnDeliveryInd=" + cashOnDeliveryInd + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
+                (activeFlag != null ? "activeFlag=" + activeFlag + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (specialDealListId != null ? "specialDealListId=" + specialDealListId + ", " : "") +
                 (photoListId != null ? "photoListId=" + photoListId + ", " : "") +
                 (itemLengthUnitId != null ? "itemLengthUnitId=" + itemLengthUnitId + ", " : "") +

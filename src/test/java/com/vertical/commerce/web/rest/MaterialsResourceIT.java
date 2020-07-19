@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -38,6 +39,9 @@ public class MaterialsResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
 
     @Autowired
     private MaterialsRepository materialsRepository;
@@ -67,7 +71,8 @@ public class MaterialsResourceIT {
      */
     public static Materials createEntity(EntityManager em) {
         Materials materials = new Materials()
-            .name(DEFAULT_NAME);
+            .name(DEFAULT_NAME)
+            .cultureDetails(DEFAULT_CULTURE_DETAILS);
         return materials;
     }
     /**
@@ -78,7 +83,8 @@ public class MaterialsResourceIT {
      */
     public static Materials createUpdatedEntity(EntityManager em) {
         Materials materials = new Materials()
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS);
         return materials;
     }
 
@@ -103,6 +109,7 @@ public class MaterialsResourceIT {
         assertThat(materialsList).hasSize(databaseSizeBeforeCreate + 1);
         Materials testMaterials = materialsList.get(materialsList.size() - 1);
         assertThat(testMaterials.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testMaterials.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
     }
 
     @Test
@@ -157,7 +164,8 @@ public class MaterialsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(materials.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())));
     }
     
     @Test
@@ -171,7 +179,8 @@ public class MaterialsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(materials.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()));
     }
 
 
@@ -279,7 +288,8 @@ public class MaterialsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(materials.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())));
 
         // Check, that the count call also returns 1
         restMaterialsMockMvc.perform(get("/api/materials/count?sort=id,desc&" + filter))
@@ -326,7 +336,8 @@ public class MaterialsResourceIT {
         // Disconnect from session so that the updates on updatedMaterials are not directly saved in db
         em.detach(updatedMaterials);
         updatedMaterials
-            .name(UPDATED_NAME);
+            .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS);
         MaterialsDTO materialsDTO = materialsMapper.toDto(updatedMaterials);
 
         restMaterialsMockMvc.perform(put("/api/materials").with(csrf())
@@ -339,6 +350,7 @@ public class MaterialsResourceIT {
         assertThat(materialsList).hasSize(databaseSizeBeforeUpdate);
         Materials testMaterials = materialsList.get(materialsList.size() - 1);
         assertThat(testMaterials.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testMaterials.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
     }
 
     @Test

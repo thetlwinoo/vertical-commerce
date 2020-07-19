@@ -103,7 +103,8 @@ class PersonEmailAddressGatlingTest extends Simulation {
                 "id":null
                 , "emailAddress":"SAMPLE_TEXT"
                 , "defaultInd":null
-                , "activeInd":null
+                , "validFrom":"2020-01-01T00:00:00.000Z"
+                , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_personEmailAddress_url"))).exitHereIfFailed

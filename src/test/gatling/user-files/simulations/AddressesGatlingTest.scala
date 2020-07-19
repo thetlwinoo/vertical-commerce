@@ -106,10 +106,10 @@ class AddressesGatlingTest extends Simulation {
                 , "contactEmailAddress":"SAMPLE_TEXT"
                 , "addressLine1":"SAMPLE_TEXT"
                 , "addressLine2":"SAMPLE_TEXT"
-                , "city":"SAMPLE_TEXT"
                 , "postalCode":"SAMPLE_TEXT"
-                , "defaultInd":null
-                , "activeInd":null
+                , "description":"SAMPLE_TEXT"
+                , "validFrom":"2020-01-01T00:00:00.000Z"
+                , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_addresses_url"))).exitHereIfFailed

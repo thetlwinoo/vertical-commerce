@@ -37,7 +37,7 @@ public class CitiesCriteria implements Serializable, Criteria {
 
     private InstantFilter validTo;
 
-    private LongFilter stateProvinceId;
+    private LongFilter regionId;
 
     public CitiesCriteria() {
     }
@@ -49,7 +49,7 @@ public class CitiesCriteria implements Serializable, Criteria {
         this.latestRecordedPopulation = other.latestRecordedPopulation == null ? null : other.latestRecordedPopulation.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
-        this.stateProvinceId = other.stateProvinceId == null ? null : other.stateProvinceId.copy();
+        this.regionId = other.regionId == null ? null : other.regionId.copy();
     }
 
     @Override
@@ -105,12 +105,12 @@ public class CitiesCriteria implements Serializable, Criteria {
         this.validTo = validTo;
     }
 
-    public LongFilter getStateProvinceId() {
-        return stateProvinceId;
+    public LongFilter getRegionId() {
+        return regionId;
     }
 
-    public void setStateProvinceId(LongFilter stateProvinceId) {
-        this.stateProvinceId = stateProvinceId;
+    public void setRegionId(LongFilter regionId) {
+        this.regionId = regionId;
     }
 
 
@@ -130,7 +130,7 @@ public class CitiesCriteria implements Serializable, Criteria {
             Objects.equals(latestRecordedPopulation, that.latestRecordedPopulation) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo) &&
-            Objects.equals(stateProvinceId, that.stateProvinceId);
+            Objects.equals(regionId, that.regionId);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class CitiesCriteria implements Serializable, Criteria {
         latestRecordedPopulation,
         validFrom,
         validTo,
-        stateProvinceId
+        regionId
         );
     }
 
@@ -156,7 +156,7 @@ public class CitiesCriteria implements Serializable, Criteria {
                 (latestRecordedPopulation != null ? "latestRecordedPopulation=" + latestRecordedPopulation + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
-                (stateProvinceId != null ? "stateProvinceId=" + stateProvinceId + ", " : "") +
+                (regionId != null ? "regionId=" + regionId + ", " : "") +
             "}";
     }
 

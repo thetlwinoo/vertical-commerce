@@ -115,11 +115,14 @@ public class OrderLinesQueryService extends QueryService<OrderLines> {
             if (criteria.getStatus() != null) {
                 specification = specification.and(buildSpecification(criteria.getStatus(), OrderLines_.status));
             }
-            if (criteria.getThumbnailUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), OrderLines_.thumbnailUrl));
-            }
             if (criteria.getLineRating() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLineRating(), OrderLines_.lineRating));
+            }
+            if (criteria.getStockItemPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getStockItemPhoto(), OrderLines_.stockItemPhoto));
+            }
+            if (criteria.getReviewPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getReviewPhoto(), OrderLines_.reviewPhoto));
             }
             if (criteria.getCustomerReviewedOn() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCustomerReviewedOn(), OrderLines_.customerReviewedOn));
@@ -143,10 +146,6 @@ public class OrderLinesQueryService extends QueryService<OrderLines> {
             if (criteria.getPackageTypeId() != null) {
                 specification = specification.and(buildSpecification(criteria.getPackageTypeId(),
                     root -> root.join(OrderLines_.packageType, JoinType.LEFT).get(PackageTypes_.id)));
-            }
-            if (criteria.getReviewImageId() != null) {
-                specification = specification.and(buildSpecification(criteria.getReviewImageId(),
-                    root -> root.join(OrderLines_.reviewImage, JoinType.LEFT).get(Photos_.id)));
             }
             if (criteria.getSupplierId() != null) {
                 specification = specification.and(buildSpecification(criteria.getSupplierId(),

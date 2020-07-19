@@ -100,18 +100,20 @@ public class PaymentMethodsQueryService extends QueryService<PaymentMethods> {
             if (criteria.getDisabled() != null) {
                 specification = specification.and(buildSpecification(criteria.getDisabled(), PaymentMethods_.disabled));
             }
-            if (criteria.getActiveInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getActiveInd(), PaymentMethods_.activeInd));
-            }
             if (criteria.getSortOrder() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getSortOrder(), PaymentMethods_.sortOrder));
             }
             if (criteria.getIconFont() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getIconFont(), PaymentMethods_.iconFont));
             }
-            if (criteria.getIconId() != null) {
-                specification = specification.and(buildSpecification(criteria.getIconId(),
-                    root -> root.join(PaymentMethods_.icon, JoinType.LEFT).get(Photos_.id)));
+            if (criteria.getIconPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getIconPhoto(), PaymentMethods_.iconPhoto));
+            }
+            if (criteria.getValidFrom() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), PaymentMethods_.validFrom));
+            }
+            if (criteria.getValidTo() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidTo(), PaymentMethods_.validTo));
             }
         }
         return specification;

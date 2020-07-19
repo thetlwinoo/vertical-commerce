@@ -44,9 +44,9 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
 
     private InstantFilter lastEditedWhen;
 
-    private LongFilter sourceZoneId;
+    private LongFilter sourceTownId;
 
-    private LongFilter destinationZoneId;
+    private LongFilter destinationTownId;
 
     private LongFilter deliveryMethodId;
 
@@ -63,8 +63,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
         this.price = other.price == null ? null : other.price.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
-        this.sourceZoneId = other.sourceZoneId == null ? null : other.sourceZoneId.copy();
-        this.destinationZoneId = other.destinationZoneId == null ? null : other.destinationZoneId.copy();
+        this.sourceTownId = other.sourceTownId == null ? null : other.sourceTownId.copy();
+        this.destinationTownId = other.destinationTownId == null ? null : other.destinationTownId.copy();
         this.deliveryMethodId = other.deliveryMethodId == null ? null : other.deliveryMethodId.copy();
     }
 
@@ -145,20 +145,20 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public LongFilter getSourceZoneId() {
-        return sourceZoneId;
+    public LongFilter getSourceTownId() {
+        return sourceTownId;
     }
 
-    public void setSourceZoneId(LongFilter sourceZoneId) {
-        this.sourceZoneId = sourceZoneId;
+    public void setSourceTownId(LongFilter sourceTownId) {
+        this.sourceTownId = sourceTownId;
     }
 
-    public LongFilter getDestinationZoneId() {
-        return destinationZoneId;
+    public LongFilter getDestinationTownId() {
+        return destinationTownId;
     }
 
-    public void setDestinationZoneId(LongFilter destinationZoneId) {
-        this.destinationZoneId = destinationZoneId;
+    public void setDestinationTownId(LongFilter destinationTownId) {
+        this.destinationTownId = destinationTownId;
     }
 
     public LongFilter getDeliveryMethodId() {
@@ -189,8 +189,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
             Objects.equals(price, that.price) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
-            Objects.equals(sourceZoneId, that.sourceZoneId) &&
-            Objects.equals(destinationZoneId, that.destinationZoneId) &&
+            Objects.equals(sourceTownId, that.sourceTownId) &&
+            Objects.equals(destinationTownId, that.destinationTownId) &&
             Objects.equals(deliveryMethodId, that.deliveryMethodId);
     }
 
@@ -206,8 +206,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
         price,
         lastEditedBy,
         lastEditedWhen,
-        sourceZoneId,
-        destinationZoneId,
+        sourceTownId,
+        destinationTownId,
         deliveryMethodId
         );
     }
@@ -225,8 +225,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
                 (price != null ? "price=" + price + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
-                (sourceZoneId != null ? "sourceZoneId=" + sourceZoneId + ", " : "") +
-                (destinationZoneId != null ? "destinationZoneId=" + destinationZoneId + ", " : "") +
+                (sourceTownId != null ? "sourceTownId=" + sourceTownId + ", " : "") +
+                (destinationTownId != null ? "destinationTownId=" + destinationTownId + ", " : "") +
                 (deliveryMethodId != null ? "deliveryMethodId=" + deliveryMethodId + ", " : "") +
             "}";
     }

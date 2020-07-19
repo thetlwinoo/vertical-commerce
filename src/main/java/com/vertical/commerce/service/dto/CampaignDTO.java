@@ -19,12 +19,8 @@ public class CampaignDTO implements Serializable {
 
     private String iconFont;
 
-    private String thumbnailUrl;
+    private String iconPhoto;
 
-
-    private Long iconId;
-
-    private String iconThumbnailUrl;
     
     public Long getId() {
         return id;
@@ -66,28 +62,12 @@ public class CampaignDTO implements Serializable {
         this.iconFont = iconFont;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getIconPhoto() {
+        return iconPhoto;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public Long getIconId() {
-        return iconId;
-    }
-
-    public void setIconId(Long photosId) {
-        this.iconId = photosId;
-    }
-
-    public String getIconThumbnailUrl() {
-        return iconThumbnailUrl;
-    }
-
-    public void setIconThumbnailUrl(String photosThumbnailUrl) {
-        this.iconThumbnailUrl = photosThumbnailUrl;
+    public void setIconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
     }
 
     @Override
@@ -116,9 +96,7 @@ public class CampaignDTO implements Serializable {
             ", shortLabel='" + getShortLabel() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
-            ", iconId=" + getIconId() +
-            ", iconThumbnailUrl='" + getIconThumbnailUrl() + "'" +
+            ", iconPhoto='" + getIconPhoto() + "'" +
             "}";
     }
 }

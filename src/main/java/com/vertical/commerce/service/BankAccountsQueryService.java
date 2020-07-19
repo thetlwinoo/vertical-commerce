@@ -115,15 +115,14 @@ public class BankAccountsQueryService extends QueryService<BankAccounts> {
             if (criteria.getLastEditedBy() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLastEditedBy(), BankAccounts_.lastEditedBy));
             }
+            if (criteria.getLogoPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLogoPhoto(), BankAccounts_.logoPhoto));
+            }
             if (criteria.getValidForm() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidForm(), BankAccounts_.validForm));
             }
             if (criteria.getValidTo() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidTo(), BankAccounts_.validTo));
-            }
-            if (criteria.getLogoId() != null) {
-                specification = specification.and(buildSpecification(criteria.getLogoId(),
-                    root -> root.join(BankAccounts_.logo, JoinType.LEFT).get(Photos_.id)));
             }
         }
         return specification;

@@ -3,6 +3,7 @@ package com.vertical.commerce.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -29,6 +30,11 @@ public class Cities implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "culture_details")
+    private String cultureDetails;
+
     @Column(name = "location")
     private String location;
 
@@ -39,13 +45,12 @@ public class Cities implements Serializable {
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
 
-    @NotNull
-    @Column(name = "valid_to", nullable = false)
+    @Column(name = "valid_to")
     private Instant validTo;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "cities", allowSetters = true)
-    private StateProvinces stateProvince;
+    private Regions region;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -67,6 +72,19 @@ public class Cities implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public Cities cultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
+        return this;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getLocation() {
@@ -121,17 +139,17 @@ public class Cities implements Serializable {
         this.validTo = validTo;
     }
 
-    public StateProvinces getStateProvince() {
-        return stateProvince;
+    public Regions getRegion() {
+        return region;
     }
 
-    public Cities stateProvince(StateProvinces stateProvinces) {
-        this.stateProvince = stateProvinces;
+    public Cities region(Regions regions) {
+        this.region = regions;
         return this;
     }
 
-    public void setStateProvince(StateProvinces stateProvinces) {
-        this.stateProvince = stateProvinces;
+    public void setRegion(Regions regions) {
+        this.region = regions;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -157,6 +175,7 @@ public class Cities implements Serializable {
         return "Cities{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", location='" + getLocation() + "'" +
             ", latestRecordedPopulation=" + getLatestRecordedPopulation() +
             ", validFrom='" + getValidFrom() + "'" +

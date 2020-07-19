@@ -15,6 +15,8 @@ public class ShoppingCartsDTO implements Serializable {
 
     private BigDecimal totalPrice;
 
+    private BigDecimal totalTaxAmount;
+
     private BigDecimal subTotalPrice;
 
     private BigDecimal totalShippingFee;
@@ -29,10 +31,10 @@ public class ShoppingCartsDTO implements Serializable {
     private String packageDetails;
 
     @Lob
-    private String cartString;
+    private String cartDetails;
 
     @Lob
-    private String dealString;
+    private String dealDetails;
 
     @NotNull
     private String lastEditedBy;
@@ -65,6 +67,14 @@ public class ShoppingCartsDTO implements Serializable {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getTotalTaxAmount() {
+        return totalTaxAmount;
+    }
+
+    public void setTotalTaxAmount(BigDecimal totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
     }
 
     public BigDecimal getSubTotalPrice() {
@@ -115,20 +125,20 @@ public class ShoppingCartsDTO implements Serializable {
         this.packageDetails = packageDetails;
     }
 
-    public String getCartString() {
-        return cartString;
+    public String getCartDetails() {
+        return cartDetails;
     }
 
-    public void setCartString(String cartString) {
-        this.cartString = cartString;
+    public void setCartDetails(String cartDetails) {
+        this.cartDetails = cartDetails;
     }
 
-    public String getDealString() {
-        return dealString;
+    public String getDealDetails() {
+        return dealDetails;
     }
 
-    public void setDealString(String dealString) {
-        this.dealString = dealString;
+    public void setDealDetails(String dealDetails) {
+        this.dealDetails = dealDetails;
     }
 
     public String getLastEditedBy() {
@@ -210,14 +220,15 @@ public class ShoppingCartsDTO implements Serializable {
         return "ShoppingCartsDTO{" +
             "id=" + getId() +
             ", totalPrice=" + getTotalPrice() +
+            ", totalTaxAmount=" + getTotalTaxAmount() +
             ", subTotalPrice=" + getSubTotalPrice() +
             ", totalShippingFee=" + getTotalShippingFee() +
             ", totalShippingFeeDiscount=" + getTotalShippingFeeDiscount() +
             ", promotionTotal=" + getPromotionTotal() +
             ", voucherTotal=" + getVoucherTotal() +
             ", packageDetails='" + getPackageDetails() + "'" +
-            ", cartString='" + getCartString() + "'" +
-            ", dealString='" + getDealString() + "'" +
+            ", cartDetails='" + getCartDetails() + "'" +
+            ", dealDetails='" + getDealDetails() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", cartUserId=" + getCartUserId() +

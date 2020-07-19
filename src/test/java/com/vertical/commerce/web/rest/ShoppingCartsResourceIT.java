@@ -48,6 +48,10 @@ public class ShoppingCartsResourceIT {
     private static final BigDecimal UPDATED_TOTAL_PRICE = new BigDecimal(2);
     private static final BigDecimal SMALLER_TOTAL_PRICE = new BigDecimal(1 - 1);
 
+    private static final BigDecimal DEFAULT_TOTAL_TAX_AMOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL_TAX_AMOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_TOTAL_TAX_AMOUNT = new BigDecimal(1 - 1);
+
     private static final BigDecimal DEFAULT_SUB_TOTAL_PRICE = new BigDecimal(1);
     private static final BigDecimal UPDATED_SUB_TOTAL_PRICE = new BigDecimal(2);
     private static final BigDecimal SMALLER_SUB_TOTAL_PRICE = new BigDecimal(1 - 1);
@@ -71,11 +75,11 @@ public class ShoppingCartsResourceIT {
     private static final String DEFAULT_PACKAGE_DETAILS = "AAAAAAAAAA";
     private static final String UPDATED_PACKAGE_DETAILS = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CART_STRING = "AAAAAAAAAA";
-    private static final String UPDATED_CART_STRING = "BBBBBBBBBB";
+    private static final String DEFAULT_CART_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_CART_DETAILS = "BBBBBBBBBB";
 
-    private static final String DEFAULT_DEAL_STRING = "AAAAAAAAAA";
-    private static final String UPDATED_DEAL_STRING = "BBBBBBBBBB";
+    private static final String DEFAULT_DEAL_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_DEAL_DETAILS = "BBBBBBBBBB";
 
     private static final String DEFAULT_LAST_EDITED_BY = "AAAAAAAAAA";
     private static final String UPDATED_LAST_EDITED_BY = "BBBBBBBBBB";
@@ -112,14 +116,15 @@ public class ShoppingCartsResourceIT {
     public static ShoppingCarts createEntity(EntityManager em) {
         ShoppingCarts shoppingCarts = new ShoppingCarts()
             .totalPrice(DEFAULT_TOTAL_PRICE)
+            .totalTaxAmount(DEFAULT_TOTAL_TAX_AMOUNT)
             .subTotalPrice(DEFAULT_SUB_TOTAL_PRICE)
             .totalShippingFee(DEFAULT_TOTAL_SHIPPING_FEE)
             .totalShippingFeeDiscount(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT)
             .promotionTotal(DEFAULT_PROMOTION_TOTAL)
             .voucherTotal(DEFAULT_VOUCHER_TOTAL)
             .packageDetails(DEFAULT_PACKAGE_DETAILS)
-            .cartString(DEFAULT_CART_STRING)
-            .dealString(DEFAULT_DEAL_STRING)
+            .cartDetails(DEFAULT_CART_DETAILS)
+            .dealDetails(DEFAULT_DEAL_DETAILS)
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
             .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN);
         return shoppingCarts;
@@ -133,14 +138,15 @@ public class ShoppingCartsResourceIT {
     public static ShoppingCarts createUpdatedEntity(EntityManager em) {
         ShoppingCarts shoppingCarts = new ShoppingCarts()
             .totalPrice(UPDATED_TOTAL_PRICE)
+            .totalTaxAmount(UPDATED_TOTAL_TAX_AMOUNT)
             .subTotalPrice(UPDATED_SUB_TOTAL_PRICE)
             .totalShippingFee(UPDATED_TOTAL_SHIPPING_FEE)
             .totalShippingFeeDiscount(UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT)
             .promotionTotal(UPDATED_PROMOTION_TOTAL)
             .voucherTotal(UPDATED_VOUCHER_TOTAL)
             .packageDetails(UPDATED_PACKAGE_DETAILS)
-            .cartString(UPDATED_CART_STRING)
-            .dealString(UPDATED_DEAL_STRING)
+            .cartDetails(UPDATED_CART_DETAILS)
+            .dealDetails(UPDATED_DEAL_DETAILS)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
         return shoppingCarts;
@@ -167,14 +173,15 @@ public class ShoppingCartsResourceIT {
         assertThat(shoppingCartsList).hasSize(databaseSizeBeforeCreate + 1);
         ShoppingCarts testShoppingCarts = shoppingCartsList.get(shoppingCartsList.size() - 1);
         assertThat(testShoppingCarts.getTotalPrice()).isEqualTo(DEFAULT_TOTAL_PRICE);
+        assertThat(testShoppingCarts.getTotalTaxAmount()).isEqualTo(DEFAULT_TOTAL_TAX_AMOUNT);
         assertThat(testShoppingCarts.getSubTotalPrice()).isEqualTo(DEFAULT_SUB_TOTAL_PRICE);
         assertThat(testShoppingCarts.getTotalShippingFee()).isEqualTo(DEFAULT_TOTAL_SHIPPING_FEE);
         assertThat(testShoppingCarts.getTotalShippingFeeDiscount()).isEqualTo(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT);
         assertThat(testShoppingCarts.getPromotionTotal()).isEqualTo(DEFAULT_PROMOTION_TOTAL);
         assertThat(testShoppingCarts.getVoucherTotal()).isEqualTo(DEFAULT_VOUCHER_TOTAL);
         assertThat(testShoppingCarts.getPackageDetails()).isEqualTo(DEFAULT_PACKAGE_DETAILS);
-        assertThat(testShoppingCarts.getCartString()).isEqualTo(DEFAULT_CART_STRING);
-        assertThat(testShoppingCarts.getDealString()).isEqualTo(DEFAULT_DEAL_STRING);
+        assertThat(testShoppingCarts.getCartDetails()).isEqualTo(DEFAULT_CART_DETAILS);
+        assertThat(testShoppingCarts.getDealDetails()).isEqualTo(DEFAULT_DEAL_DETAILS);
         assertThat(testShoppingCarts.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
         assertThat(testShoppingCarts.getLastEditedWhen()).isEqualTo(DEFAULT_LAST_EDITED_WHEN);
     }
@@ -252,14 +259,15 @@ public class ShoppingCartsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(shoppingCarts.getId().intValue())))
             .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(DEFAULT_TOTAL_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].totalTaxAmount").value(hasItem(DEFAULT_TOTAL_TAX_AMOUNT.intValue())))
             .andExpect(jsonPath("$.[*].subTotalPrice").value(hasItem(DEFAULT_SUB_TOTAL_PRICE.intValue())))
             .andExpect(jsonPath("$.[*].totalShippingFee").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE.intValue())))
             .andExpect(jsonPath("$.[*].totalShippingFeeDiscount").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT.intValue())))
             .andExpect(jsonPath("$.[*].promotionTotal").value(hasItem(DEFAULT_PROMOTION_TOTAL.intValue())))
             .andExpect(jsonPath("$.[*].voucherTotal").value(hasItem(DEFAULT_VOUCHER_TOTAL.intValue())))
             .andExpect(jsonPath("$.[*].packageDetails").value(hasItem(DEFAULT_PACKAGE_DETAILS.toString())))
-            .andExpect(jsonPath("$.[*].cartString").value(hasItem(DEFAULT_CART_STRING.toString())))
-            .andExpect(jsonPath("$.[*].dealString").value(hasItem(DEFAULT_DEAL_STRING.toString())))
+            .andExpect(jsonPath("$.[*].cartDetails").value(hasItem(DEFAULT_CART_DETAILS.toString())))
+            .andExpect(jsonPath("$.[*].dealDetails").value(hasItem(DEFAULT_DEAL_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
     }
@@ -276,14 +284,15 @@ public class ShoppingCartsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(shoppingCarts.getId().intValue()))
             .andExpect(jsonPath("$.totalPrice").value(DEFAULT_TOTAL_PRICE.intValue()))
+            .andExpect(jsonPath("$.totalTaxAmount").value(DEFAULT_TOTAL_TAX_AMOUNT.intValue()))
             .andExpect(jsonPath("$.subTotalPrice").value(DEFAULT_SUB_TOTAL_PRICE.intValue()))
             .andExpect(jsonPath("$.totalShippingFee").value(DEFAULT_TOTAL_SHIPPING_FEE.intValue()))
             .andExpect(jsonPath("$.totalShippingFeeDiscount").value(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT.intValue()))
             .andExpect(jsonPath("$.promotionTotal").value(DEFAULT_PROMOTION_TOTAL.intValue()))
             .andExpect(jsonPath("$.voucherTotal").value(DEFAULT_VOUCHER_TOTAL.intValue()))
             .andExpect(jsonPath("$.packageDetails").value(DEFAULT_PACKAGE_DETAILS.toString()))
-            .andExpect(jsonPath("$.cartString").value(DEFAULT_CART_STRING.toString()))
-            .andExpect(jsonPath("$.dealString").value(DEFAULT_DEAL_STRING.toString()))
+            .andExpect(jsonPath("$.cartDetails").value(DEFAULT_CART_DETAILS.toString()))
+            .andExpect(jsonPath("$.dealDetails").value(DEFAULT_DEAL_DETAILS.toString()))
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
             .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()));
     }
@@ -410,6 +419,111 @@ public class ShoppingCartsResourceIT {
 
         // Get all the shoppingCartsList where totalPrice is greater than SMALLER_TOTAL_PRICE
         defaultShoppingCartsShouldBeFound("totalPrice.greaterThan=" + SMALLER_TOTAL_PRICE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalTaxAmountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalTaxAmount equals to DEFAULT_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldBeFound("totalTaxAmount.equals=" + DEFAULT_TOTAL_TAX_AMOUNT);
+
+        // Get all the shoppingCartsList where totalTaxAmount equals to UPDATED_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldNotBeFound("totalTaxAmount.equals=" + UPDATED_TOTAL_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalTaxAmountIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalTaxAmount not equals to DEFAULT_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldNotBeFound("totalTaxAmount.notEquals=" + DEFAULT_TOTAL_TAX_AMOUNT);
+
+        // Get all the shoppingCartsList where totalTaxAmount not equals to UPDATED_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldBeFound("totalTaxAmount.notEquals=" + UPDATED_TOTAL_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalTaxAmountIsInShouldWork() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalTaxAmount in DEFAULT_TOTAL_TAX_AMOUNT or UPDATED_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldBeFound("totalTaxAmount.in=" + DEFAULT_TOTAL_TAX_AMOUNT + "," + UPDATED_TOTAL_TAX_AMOUNT);
+
+        // Get all the shoppingCartsList where totalTaxAmount equals to UPDATED_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldNotBeFound("totalTaxAmount.in=" + UPDATED_TOTAL_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalTaxAmountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalTaxAmount is not null
+        defaultShoppingCartsShouldBeFound("totalTaxAmount.specified=true");
+
+        // Get all the shoppingCartsList where totalTaxAmount is null
+        defaultShoppingCartsShouldNotBeFound("totalTaxAmount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalTaxAmountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalTaxAmount is greater than or equal to DEFAULT_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldBeFound("totalTaxAmount.greaterThanOrEqual=" + DEFAULT_TOTAL_TAX_AMOUNT);
+
+        // Get all the shoppingCartsList where totalTaxAmount is greater than or equal to UPDATED_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldNotBeFound("totalTaxAmount.greaterThanOrEqual=" + UPDATED_TOTAL_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalTaxAmountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalTaxAmount is less than or equal to DEFAULT_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldBeFound("totalTaxAmount.lessThanOrEqual=" + DEFAULT_TOTAL_TAX_AMOUNT);
+
+        // Get all the shoppingCartsList where totalTaxAmount is less than or equal to SMALLER_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldNotBeFound("totalTaxAmount.lessThanOrEqual=" + SMALLER_TOTAL_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalTaxAmountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalTaxAmount is less than DEFAULT_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldNotBeFound("totalTaxAmount.lessThan=" + DEFAULT_TOTAL_TAX_AMOUNT);
+
+        // Get all the shoppingCartsList where totalTaxAmount is less than UPDATED_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldBeFound("totalTaxAmount.lessThan=" + UPDATED_TOTAL_TAX_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    public void getAllShoppingCartsByTotalTaxAmountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        shoppingCartsRepository.saveAndFlush(shoppingCarts);
+
+        // Get all the shoppingCartsList where totalTaxAmount is greater than DEFAULT_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldNotBeFound("totalTaxAmount.greaterThan=" + DEFAULT_TOTAL_TAX_AMOUNT);
+
+        // Get all the shoppingCartsList where totalTaxAmount is greater than SMALLER_TOTAL_TAX_AMOUNT
+        defaultShoppingCartsShouldBeFound("totalTaxAmount.greaterThan=" + SMALLER_TOTAL_TAX_AMOUNT);
     }
 
 
@@ -1156,14 +1270,15 @@ public class ShoppingCartsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(shoppingCarts.getId().intValue())))
             .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(DEFAULT_TOTAL_PRICE.intValue())))
+            .andExpect(jsonPath("$.[*].totalTaxAmount").value(hasItem(DEFAULT_TOTAL_TAX_AMOUNT.intValue())))
             .andExpect(jsonPath("$.[*].subTotalPrice").value(hasItem(DEFAULT_SUB_TOTAL_PRICE.intValue())))
             .andExpect(jsonPath("$.[*].totalShippingFee").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE.intValue())))
             .andExpect(jsonPath("$.[*].totalShippingFeeDiscount").value(hasItem(DEFAULT_TOTAL_SHIPPING_FEE_DISCOUNT.intValue())))
             .andExpect(jsonPath("$.[*].promotionTotal").value(hasItem(DEFAULT_PROMOTION_TOTAL.intValue())))
             .andExpect(jsonPath("$.[*].voucherTotal").value(hasItem(DEFAULT_VOUCHER_TOTAL.intValue())))
             .andExpect(jsonPath("$.[*].packageDetails").value(hasItem(DEFAULT_PACKAGE_DETAILS.toString())))
-            .andExpect(jsonPath("$.[*].cartString").value(hasItem(DEFAULT_CART_STRING.toString())))
-            .andExpect(jsonPath("$.[*].dealString").value(hasItem(DEFAULT_DEAL_STRING.toString())))
+            .andExpect(jsonPath("$.[*].cartDetails").value(hasItem(DEFAULT_CART_DETAILS.toString())))
+            .andExpect(jsonPath("$.[*].dealDetails").value(hasItem(DEFAULT_DEAL_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
 
@@ -1213,14 +1328,15 @@ public class ShoppingCartsResourceIT {
         em.detach(updatedShoppingCarts);
         updatedShoppingCarts
             .totalPrice(UPDATED_TOTAL_PRICE)
+            .totalTaxAmount(UPDATED_TOTAL_TAX_AMOUNT)
             .subTotalPrice(UPDATED_SUB_TOTAL_PRICE)
             .totalShippingFee(UPDATED_TOTAL_SHIPPING_FEE)
             .totalShippingFeeDiscount(UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT)
             .promotionTotal(UPDATED_PROMOTION_TOTAL)
             .voucherTotal(UPDATED_VOUCHER_TOTAL)
             .packageDetails(UPDATED_PACKAGE_DETAILS)
-            .cartString(UPDATED_CART_STRING)
-            .dealString(UPDATED_DEAL_STRING)
+            .cartDetails(UPDATED_CART_DETAILS)
+            .dealDetails(UPDATED_DEAL_DETAILS)
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN);
         ShoppingCartsDTO shoppingCartsDTO = shoppingCartsMapper.toDto(updatedShoppingCarts);
@@ -1235,14 +1351,15 @@ public class ShoppingCartsResourceIT {
         assertThat(shoppingCartsList).hasSize(databaseSizeBeforeUpdate);
         ShoppingCarts testShoppingCarts = shoppingCartsList.get(shoppingCartsList.size() - 1);
         assertThat(testShoppingCarts.getTotalPrice()).isEqualTo(UPDATED_TOTAL_PRICE);
+        assertThat(testShoppingCarts.getTotalTaxAmount()).isEqualTo(UPDATED_TOTAL_TAX_AMOUNT);
         assertThat(testShoppingCarts.getSubTotalPrice()).isEqualTo(UPDATED_SUB_TOTAL_PRICE);
         assertThat(testShoppingCarts.getTotalShippingFee()).isEqualTo(UPDATED_TOTAL_SHIPPING_FEE);
         assertThat(testShoppingCarts.getTotalShippingFeeDiscount()).isEqualTo(UPDATED_TOTAL_SHIPPING_FEE_DISCOUNT);
         assertThat(testShoppingCarts.getPromotionTotal()).isEqualTo(UPDATED_PROMOTION_TOTAL);
         assertThat(testShoppingCarts.getVoucherTotal()).isEqualTo(UPDATED_VOUCHER_TOTAL);
         assertThat(testShoppingCarts.getPackageDetails()).isEqualTo(UPDATED_PACKAGE_DETAILS);
-        assertThat(testShoppingCarts.getCartString()).isEqualTo(UPDATED_CART_STRING);
-        assertThat(testShoppingCarts.getDealString()).isEqualTo(UPDATED_DEAL_STRING);
+        assertThat(testShoppingCarts.getCartDetails()).isEqualTo(UPDATED_CART_DETAILS);
+        assertThat(testShoppingCarts.getDealDetails()).isEqualTo(UPDATED_DEAL_DETAILS);
         assertThat(testShoppingCarts.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
         assertThat(testShoppingCarts.getLastEditedWhen()).isEqualTo(UPDATED_LAST_EDITED_WHEN);
     }

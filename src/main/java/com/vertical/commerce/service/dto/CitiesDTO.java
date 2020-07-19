@@ -3,6 +3,7 @@ package com.vertical.commerce.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.vertical.commerce.domain.Cities} entity.
@@ -14,6 +15,9 @@ public class CitiesDTO implements Serializable {
     @NotNull
     private String name;
 
+    @Lob
+    private String cultureDetails;
+
     private String location;
 
     private Long latestRecordedPopulation;
@@ -21,13 +25,12 @@ public class CitiesDTO implements Serializable {
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
 
-    private Long stateProvinceId;
+    private Long regionId;
 
-    private String stateProvinceName;
+    private String regionName;
     
     public Long getId() {
         return id;
@@ -43,6 +46,14 @@ public class CitiesDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getLocation() {
@@ -77,20 +88,20 @@ public class CitiesDTO implements Serializable {
         this.validTo = validTo;
     }
 
-    public Long getStateProvinceId() {
-        return stateProvinceId;
+    public Long getRegionId() {
+        return regionId;
     }
 
-    public void setStateProvinceId(Long stateProvincesId) {
-        this.stateProvinceId = stateProvincesId;
+    public void setRegionId(Long regionsId) {
+        this.regionId = regionsId;
     }
 
-    public String getStateProvinceName() {
-        return stateProvinceName;
+    public String getRegionName() {
+        return regionName;
     }
 
-    public void setStateProvinceName(String stateProvincesName) {
-        this.stateProvinceName = stateProvincesName;
+    public void setRegionName(String regionsName) {
+        this.regionName = regionsName;
     }
 
     @Override
@@ -116,12 +127,13 @@ public class CitiesDTO implements Serializable {
         return "CitiesDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", location='" + getLocation() + "'" +
             ", latestRecordedPopulation=" + getLatestRecordedPopulation() +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
-            ", stateProvinceId=" + getStateProvinceId() +
-            ", stateProvinceName='" + getStateProvinceName() + "'" +
+            ", regionId=" + getRegionId() +
+            ", regionName='" + getRegionName() + "'" +
             "}";
     }
 }

@@ -28,16 +28,13 @@ public class BankAccountsDTO implements Serializable {
     @NotNull
     private String lastEditedBy;
 
+    private String logoPhoto;
+
     @NotNull
     private Instant validForm;
 
-    @NotNull
     private Instant validTo;
 
-
-    private Long logoId;
-
-    private String logoThumbnailUrl;
     
     public Long getId() {
         return id;
@@ -111,6 +108,14 @@ public class BankAccountsDTO implements Serializable {
         this.lastEditedBy = lastEditedBy;
     }
 
+    public String getLogoPhoto() {
+        return logoPhoto;
+    }
+
+    public void setLogoPhoto(String logoPhoto) {
+        this.logoPhoto = logoPhoto;
+    }
+
     public Instant getValidForm() {
         return validForm;
     }
@@ -125,22 +130,6 @@ public class BankAccountsDTO implements Serializable {
 
     public void setValidTo(Instant validTo) {
         this.validTo = validTo;
-    }
-
-    public Long getLogoId() {
-        return logoId;
-    }
-
-    public void setLogoId(Long photosId) {
-        this.logoId = photosId;
-    }
-
-    public String getLogoThumbnailUrl() {
-        return logoThumbnailUrl;
-    }
-
-    public void setLogoThumbnailUrl(String photosThumbnailUrl) {
-        this.logoThumbnailUrl = photosThumbnailUrl;
     }
 
     @Override
@@ -173,10 +162,9 @@ public class BankAccountsDTO implements Serializable {
             ", bank='" + getBank() + "'" +
             ", internationalCode='" + getInternationalCode() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
+            ", logoPhoto='" + getLogoPhoto() + "'" +
             ", validForm='" + getValidForm() + "'" +
             ", validTo='" + getValidTo() + "'" +
-            ", logoId=" + getLogoId() +
-            ", logoThumbnailUrl='" + getLogoThumbnailUrl() + "'" +
             "}";
     }
 }

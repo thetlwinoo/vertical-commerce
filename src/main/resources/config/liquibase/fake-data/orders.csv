@@ -1,11 +1,11 @@
 id;order_date;sub_total;total_tax_amount;total_shipping_fee;total_shipping_fee_discount;total_voucher_discount;total_promtion_discount;total_due;payment_status;customer_purchase_order_number;status;order_details;is_under_supply_back_ordered;last_edited_by;last_edited_when
-1;2020-06-17T10:08:28;81740;19508;87778;9260;2813;84830;35961;CASH_ON_DELIVERY;program;REFUNDED;../fake-data/blob/hipster.txt;true;Wooden;2020-06-17T14:22:59
-2;2020-06-17T15:01:12;71585;741;13356;13451;78370;52751;38213;PENDING;empowering;CANCELLED;../fake-data/blob/hipster.txt;false;calculate;2020-06-16T22:59:52
-3;2020-06-16T19:39:38;29839;1414;67586;21921;74037;18679;58819;PAID;primary Fresh;PENDING;../fake-data/blob/hipster.txt;true;Executive;2020-06-17T07:29:44
-4;2020-06-16T23:09:03;89753;24774;40537;34623;51649;89732;31956;PENDING;payment Manor;SHIPPED;../fake-data/blob/hipster.txt;true;hub Dynamic;2020-06-17T00:25:41
-5;2020-06-17T04:04:00;93951;25757;50216;98613;82214;67244;26871;PENDING;Internal indexing Hat;NEW_ORDER;../fake-data/blob/hipster.txt;false;Central;2020-06-16T22:46:38
-6;2020-06-17T06:17:26;31830;16209;28170;62251;53615;46702;37817;UNSUCCESSFUL;withdrawal Sleek;SHIPPED;../fake-data/blob/hipster.txt;false;ivory;2020-06-17T10:22:42
-7;2020-06-17T15:50:31;55077;55654;2500;69237;77153;92061;59779;CASH_ON_DELIVERY;content virtual;PENDING;../fake-data/blob/hipster.txt;false;Mount Bacon transform;2020-06-17T01:18:58
-8;2020-06-17T00:13:57;914;9104;10820;18044;8491;1187;5134;CANCELLED;compress;SHIPPED;../fake-data/blob/hipster.txt;true;Rubber Mayotte;2020-06-17T16:13:44
-9;2020-06-17T07:03:43;53359;95941;11463;56821;51968;10412;35257;CASH_ON_DELIVERY;invoice;READY_TO_SHIP;../fake-data/blob/hipster.txt;true;Handcrafted Lebanon Beauty;2020-06-17T06:54:53
-10;2020-06-17T04:29:51;98762;66302;28027;44251;17146;76531;39271;PENDING;turn-key;READY_TO_SHIP;../fake-data/blob/hipster.txt;true;Home Loan Account;2020-06-17T06:08:01
+1;2020-07-18T01:58:36;81740;19508;87778;9260;2813;84830;35961;PENDING;program;REFUNDED;../fake-data/blob/hipster.txt;true;Wooden;2020-07-18T06:13:07
+2;2020-07-18T06:51:20;71585;741;13356;13451;78370;52751;38213;TO_CHECK;empowering;CANCELLED;../fake-data/blob/hipster.txt;false;calculate;2020-07-17T14:50:00
+3;2020-07-17T11:29:46;29839;1414;67586;21921;74037;18679;58819;PAID;primary Fresh;PENDING;../fake-data/blob/hipster.txt;true;Executive;2020-07-17T23:19:52
+4;2020-07-17T14:59:11;89753;24774;40537;34623;51649;89732;31956;TO_CHECK;payment Manor;SHIPPED;../fake-data/blob/hipster.txt;true;hub Dynamic;2020-07-17T16:15:49
+5;2020-07-17T19:54:08;93951;25757;50216;98613;82214;67244;26871;TO_CHECK;Internal indexing Hat;NEW_ORDER;../fake-data/blob/hipster.txt;false;Central;2020-07-17T14:36:46
+6;2020-07-17T22:07:34;31830;16209;28170;62251;53615;46702;37817;UNSUCCESSFUL;withdrawal Sleek;SHIPPED;../fake-data/blob/hipster.txt;false;ivory;2020-07-18T02:12:50
+7;2020-07-18T07:40:39;55077;55654;2500;69237;77153;92061;59779;PENDING;content virtual;PENDING;../fake-data/blob/hipster.txt;false;Mount Bacon transform;2020-07-17T17:09:06
+8;2020-07-17T16:04:05;914;9104;10820;18044;8491;1187;5134;CANCELLED;compress;SHIPPED;../fake-data/blob/hipster.txt;true;Rubber Mayotte;2020-07-18T08:03:52
+9;2020-07-17T22:53:51;53359;95941;11463;56821;51968;10412;35257;PENDING;invoice;READY_TO_SHIP;../fake-data/blob/hipster.txt;true;Handcrafted Lebanon Beauty;2020-07-17T22:45:01
+10;2020-07-17T20:19:59;98762;66302;28027;44251;17146;76531;39271;TO_CHECK;turn-key;READY_TO_SHIP;../fake-data/blob/hipster.txt;true;Home Loan Account;2020-07-17T21:58:09

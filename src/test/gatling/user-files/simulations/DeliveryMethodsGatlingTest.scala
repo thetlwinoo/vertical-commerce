@@ -105,7 +105,6 @@ class DeliveryMethodsGatlingTest extends Simulation {
                 , "thirdPartyName":"SAMPLE_TEXT"
                 , "expectedMinArrivalDays":"0"
                 , "expectedMaxArrivalDays":"0"
-                , "activeInd":null
                 , "defaultInd":null
                 , "deliveryNote":"SAMPLE_TEXT"
                 , "validFrom":"2020-01-01T00:00:00.000Z"

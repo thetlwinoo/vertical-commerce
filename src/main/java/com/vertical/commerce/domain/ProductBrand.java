@@ -1,13 +1,14 @@
 package com.vertical.commerce.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * A ProductBrand.
@@ -28,6 +29,11 @@ public class ProductBrand implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "culture_details")
+    private String cultureDetails;
+
     @Column(name = "short_label")
     private String shortLabel;
 
@@ -37,16 +43,19 @@ public class ProductBrand implements Serializable {
     @Column(name = "icon_font")
     private String iconFont;
 
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
+    @Column(name = "icon_photo")
+    private String iconPhoto;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "productBrands", allowSetters = true)
-    private Suppliers supplier;
+    @NotNull
+    @Column(name = "active_flag", nullable = false)
+    private Boolean activeFlag;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "productBrands", allowSetters = true)
-    private Photos icon;
+    @NotNull
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
+
+    @Column(name = "valid_to")
+    private Instant validTo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -68,6 +77,19 @@ public class ProductBrand implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public ProductBrand cultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
+        return this;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getShortLabel() {
@@ -109,43 +131,56 @@ public class ProductBrand implements Serializable {
         this.iconFont = iconFont;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getIconPhoto() {
+        return iconPhoto;
     }
 
-    public ProductBrand thumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public ProductBrand iconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
         return this;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setIconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
     }
 
-    public Suppliers getSupplier() {
-        return supplier;
+    public Boolean isActiveFlag() {
+        return activeFlag;
     }
 
-    public ProductBrand supplier(Suppliers suppliers) {
-        this.supplier = suppliers;
+    public ProductBrand activeFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
         return this;
     }
 
-    public void setSupplier(Suppliers suppliers) {
-        this.supplier = suppliers;
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
-    public Photos getIcon() {
-        return icon;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public ProductBrand icon(Photos photos) {
-        this.icon = photos;
+    public ProductBrand validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
         return this;
     }
 
-    public void setIcon(Photos photos) {
-        this.icon = photos;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public ProductBrand validTo(Instant validTo) {
+        this.validTo = validTo;
+        return this;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -171,10 +206,14 @@ public class ProductBrand implements Serializable {
         return "ProductBrand{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", shortLabel='" + getShortLabel() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
+            ", iconPhoto='" + getIconPhoto() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

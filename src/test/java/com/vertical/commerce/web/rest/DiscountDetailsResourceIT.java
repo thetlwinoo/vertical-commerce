@@ -3,7 +3,7 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.DiscountDetails;
-import com.vertical.commerce.domain.Discount;
+import com.vertical.commerce.domain.Discounts;
 import com.vertical.commerce.domain.StockItems;
 import com.vertical.commerce.domain.ProductCategory;
 import com.vertical.commerce.repository.DiscountDetailsRepository;
@@ -1535,7 +1535,7 @@ public class DiscountDetailsResourceIT {
     public void getAllDiscountDetailsByDiscountIsEqualToSomething() throws Exception {
         // Initialize the database
         discountDetailsRepository.saveAndFlush(discountDetails);
-        Discount discount = DiscountResourceIT.createEntity(em);
+        Discounts discount = DiscountsResourceIT.createEntity(em);
         em.persist(discount);
         em.flush();
         discountDetails.setDiscount(discount);

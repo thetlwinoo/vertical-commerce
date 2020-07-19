@@ -16,7 +16,7 @@
       "otherEntityField": "value"
     }
   ],
-  "changelogDate": "20200617163804",
+  "changelogDate": "20200718083012",
   "entityTableName": "product_attribute_set",
   "dto": "mapstruct",
   "pagination": "no",

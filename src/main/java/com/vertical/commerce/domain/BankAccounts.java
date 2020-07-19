@@ -1,6 +1,5 @@
 package com.vertical.commerce.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -50,17 +49,15 @@ public class BankAccounts implements Serializable {
     @Column(name = "last_edited_by", nullable = false)
     private String lastEditedBy;
 
+    @Column(name = "logo_photo")
+    private String logoPhoto;
+
     @NotNull
     @Column(name = "valid_form", nullable = false)
     private Instant validForm;
 
-    @NotNull
-    @Column(name = "valid_to", nullable = false)
+    @Column(name = "valid_to")
     private Instant validTo;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "bankAccounts", allowSetters = true)
-    private Photos logo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -175,6 +172,19 @@ public class BankAccounts implements Serializable {
         this.lastEditedBy = lastEditedBy;
     }
 
+    public String getLogoPhoto() {
+        return logoPhoto;
+    }
+
+    public BankAccounts logoPhoto(String logoPhoto) {
+        this.logoPhoto = logoPhoto;
+        return this;
+    }
+
+    public void setLogoPhoto(String logoPhoto) {
+        this.logoPhoto = logoPhoto;
+    }
+
     public Instant getValidForm() {
         return validForm;
     }
@@ -199,19 +209,6 @@ public class BankAccounts implements Serializable {
 
     public void setValidTo(Instant validTo) {
         this.validTo = validTo;
-    }
-
-    public Photos getLogo() {
-        return logo;
-    }
-
-    public BankAccounts logo(Photos photos) {
-        this.logo = photos;
-        return this;
-    }
-
-    public void setLogo(Photos photos) {
-        this.logo = photos;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -244,6 +241,7 @@ public class BankAccounts implements Serializable {
             ", bank='" + getBank() + "'" +
             ", internationalCode='" + getInternationalCode() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
+            ", logoPhoto='" + getLogoPhoto() + "'" +
             ", validForm='" + getValidForm() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

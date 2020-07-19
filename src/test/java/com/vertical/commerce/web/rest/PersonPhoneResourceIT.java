@@ -22,6 +22,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,8 +46,11 @@ public class PersonPhoneResourceIT {
     private static final Boolean DEFAULT_DEFAULT_IND = false;
     private static final Boolean UPDATED_DEFAULT_IND = true;
 
-    private static final Boolean DEFAULT_ACTIVE_IND = false;
-    private static final Boolean UPDATED_ACTIVE_IND = true;
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private PersonPhoneRepository personPhoneRepository;
@@ -77,7 +82,8 @@ public class PersonPhoneResourceIT {
         PersonPhone personPhone = new PersonPhone()
             .phoneNumber(DEFAULT_PHONE_NUMBER)
             .defaultInd(DEFAULT_DEFAULT_IND)
-            .activeInd(DEFAULT_ACTIVE_IND);
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return personPhone;
     }
     /**
@@ -90,7 +96,8 @@ public class PersonPhoneResourceIT {
         PersonPhone personPhone = new PersonPhone()
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .defaultInd(UPDATED_DEFAULT_IND)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return personPhone;
     }
 
@@ -116,7 +123,8 @@ public class PersonPhoneResourceIT {
         PersonPhone testPersonPhone = personPhoneList.get(personPhoneList.size() - 1);
         assertThat(testPersonPhone.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
         assertThat(testPersonPhone.isDefaultInd()).isEqualTo(DEFAULT_DEFAULT_IND);
-        assertThat(testPersonPhone.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
+        assertThat(testPersonPhone.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testPersonPhone.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -162,6 +170,26 @@ public class PersonPhoneResourceIT {
 
     @Test
     @Transactional
+    public void checkValidFromIsRequired() throws Exception {
+        int databaseSizeBeforeTest = personPhoneRepository.findAll().size();
+        // set the field null
+        personPhone.setValidFrom(null);
+
+        // Create the PersonPhone, which fails.
+        PersonPhoneDTO personPhoneDTO = personPhoneMapper.toDto(personPhone);
+
+
+        restPersonPhoneMockMvc.perform(post("/api/person-phones").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(personPhoneDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<PersonPhone> personPhoneList = personPhoneRepository.findAll();
+        assertThat(personPhoneList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPersonPhones() throws Exception {
         // Initialize the database
         personPhoneRepository.saveAndFlush(personPhone);
@@ -173,7 +201,8 @@ public class PersonPhoneResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(personPhone.getId().intValue())))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].defaultInd").value(hasItem(DEFAULT_DEFAULT_IND.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -189,7 +218,8 @@ public class PersonPhoneResourceIT {
             .andExpect(jsonPath("$.id").value(personPhone.getId().intValue()))
             .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER))
             .andExpect(jsonPath("$.defaultInd").value(DEFAULT_DEFAULT_IND.booleanValue()))
-            .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()));
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -344,54 +374,106 @@ public class PersonPhoneResourceIT {
 
     @Test
     @Transactional
-    public void getAllPersonPhonesByActiveIndIsEqualToSomething() throws Exception {
+    public void getAllPersonPhonesByValidFromIsEqualToSomething() throws Exception {
         // Initialize the database
         personPhoneRepository.saveAndFlush(personPhone);
 
-        // Get all the personPhoneList where activeInd equals to DEFAULT_ACTIVE_IND
-        defaultPersonPhoneShouldBeFound("activeInd.equals=" + DEFAULT_ACTIVE_IND);
+        // Get all the personPhoneList where validFrom equals to DEFAULT_VALID_FROM
+        defaultPersonPhoneShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
 
-        // Get all the personPhoneList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultPersonPhoneShouldNotBeFound("activeInd.equals=" + UPDATED_ACTIVE_IND);
+        // Get all the personPhoneList where validFrom equals to UPDATED_VALID_FROM
+        defaultPersonPhoneShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllPersonPhonesByActiveIndIsNotEqualToSomething() throws Exception {
+    public void getAllPersonPhonesByValidFromIsNotEqualToSomething() throws Exception {
         // Initialize the database
         personPhoneRepository.saveAndFlush(personPhone);
 
-        // Get all the personPhoneList where activeInd not equals to DEFAULT_ACTIVE_IND
-        defaultPersonPhoneShouldNotBeFound("activeInd.notEquals=" + DEFAULT_ACTIVE_IND);
+        // Get all the personPhoneList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultPersonPhoneShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
 
-        // Get all the personPhoneList where activeInd not equals to UPDATED_ACTIVE_IND
-        defaultPersonPhoneShouldBeFound("activeInd.notEquals=" + UPDATED_ACTIVE_IND);
+        // Get all the personPhoneList where validFrom not equals to UPDATED_VALID_FROM
+        defaultPersonPhoneShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllPersonPhonesByActiveIndIsInShouldWork() throws Exception {
+    public void getAllPersonPhonesByValidFromIsInShouldWork() throws Exception {
         // Initialize the database
         personPhoneRepository.saveAndFlush(personPhone);
 
-        // Get all the personPhoneList where activeInd in DEFAULT_ACTIVE_IND or UPDATED_ACTIVE_IND
-        defaultPersonPhoneShouldBeFound("activeInd.in=" + DEFAULT_ACTIVE_IND + "," + UPDATED_ACTIVE_IND);
+        // Get all the personPhoneList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultPersonPhoneShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
 
-        // Get all the personPhoneList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultPersonPhoneShouldNotBeFound("activeInd.in=" + UPDATED_ACTIVE_IND);
+        // Get all the personPhoneList where validFrom equals to UPDATED_VALID_FROM
+        defaultPersonPhoneShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllPersonPhonesByActiveIndIsNullOrNotNull() throws Exception {
+    public void getAllPersonPhonesByValidFromIsNullOrNotNull() throws Exception {
         // Initialize the database
         personPhoneRepository.saveAndFlush(personPhone);
 
-        // Get all the personPhoneList where activeInd is not null
-        defaultPersonPhoneShouldBeFound("activeInd.specified=true");
+        // Get all the personPhoneList where validFrom is not null
+        defaultPersonPhoneShouldBeFound("validFrom.specified=true");
 
-        // Get all the personPhoneList where activeInd is null
-        defaultPersonPhoneShouldNotBeFound("activeInd.specified=false");
+        // Get all the personPhoneList where validFrom is null
+        defaultPersonPhoneShouldNotBeFound("validFrom.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonPhonesByValidToIsEqualToSomething() throws Exception {
+        // Initialize the database
+        personPhoneRepository.saveAndFlush(personPhone);
+
+        // Get all the personPhoneList where validTo equals to DEFAULT_VALID_TO
+        defaultPersonPhoneShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the personPhoneList where validTo equals to UPDATED_VALID_TO
+        defaultPersonPhoneShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonPhonesByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        personPhoneRepository.saveAndFlush(personPhone);
+
+        // Get all the personPhoneList where validTo not equals to DEFAULT_VALID_TO
+        defaultPersonPhoneShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the personPhoneList where validTo not equals to UPDATED_VALID_TO
+        defaultPersonPhoneShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonPhonesByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        personPhoneRepository.saveAndFlush(personPhone);
+
+        // Get all the personPhoneList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultPersonPhoneShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the personPhoneList where validTo equals to UPDATED_VALID_TO
+        defaultPersonPhoneShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPersonPhonesByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        personPhoneRepository.saveAndFlush(personPhone);
+
+        // Get all the personPhoneList where validTo is not null
+        defaultPersonPhoneShouldBeFound("validTo.specified=true");
+
+        // Get all the personPhoneList where validTo is null
+        defaultPersonPhoneShouldNotBeFound("validTo.specified=false");
     }
 
     @Test
@@ -443,7 +525,8 @@ public class PersonPhoneResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(personPhone.getId().intValue())))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].defaultInd").value(hasItem(DEFAULT_DEFAULT_IND.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restPersonPhoneMockMvc.perform(get("/api/person-phones/count?sort=id,desc&" + filter))
@@ -492,7 +575,8 @@ public class PersonPhoneResourceIT {
         updatedPersonPhone
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .defaultInd(UPDATED_DEFAULT_IND)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         PersonPhoneDTO personPhoneDTO = personPhoneMapper.toDto(updatedPersonPhone);
 
         restPersonPhoneMockMvc.perform(put("/api/person-phones").with(csrf())
@@ -506,7 +590,8 @@ public class PersonPhoneResourceIT {
         PersonPhone testPersonPhone = personPhoneList.get(personPhoneList.size() - 1);
         assertThat(testPersonPhone.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
         assertThat(testPersonPhone.isDefaultInd()).isEqualTo(UPDATED_DEFAULT_IND);
-        assertThat(testPersonPhone.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
+        assertThat(testPersonPhone.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testPersonPhone.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

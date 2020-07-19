@@ -29,11 +29,13 @@ public class LogisticsCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
-    private BooleanFilter activeInd;
-
     private StringFilter lastEditedBy;
 
     private InstantFilter lastEditedWhen;
+
+    private InstantFilter validFrom;
+
+    private InstantFilter validTo;
 
     public LogisticsCriteria() {
     }
@@ -41,9 +43,10 @@ public class LogisticsCriteria implements Serializable, Criteria {
     public LogisticsCriteria(LogisticsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
-        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
     }
 
     @Override
@@ -67,14 +70,6 @@ public class LogisticsCriteria implements Serializable, Criteria {
         this.name = name;
     }
 
-    public BooleanFilter getActiveInd() {
-        return activeInd;
-    }
-
-    public void setActiveInd(BooleanFilter activeInd) {
-        this.activeInd = activeInd;
-    }
-
     public StringFilter getLastEditedBy() {
         return lastEditedBy;
     }
@@ -91,6 +86,22 @@ public class LogisticsCriteria implements Serializable, Criteria {
         this.lastEditedWhen = lastEditedWhen;
     }
 
+    public InstantFilter getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public InstantFilter getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -104,9 +115,10 @@ public class LogisticsCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
-            Objects.equals(activeInd, that.activeInd) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
-            Objects.equals(lastEditedWhen, that.lastEditedWhen);
+            Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo);
     }
 
     @Override
@@ -114,9 +126,10 @@ public class LogisticsCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         name,
-        activeInd,
         lastEditedBy,
-        lastEditedWhen
+        lastEditedWhen,
+        validFrom,
+        validTo
         );
     }
 
@@ -126,9 +139,10 @@ public class LogisticsCriteria implements Serializable, Criteria {
         return "LogisticsCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
-                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
             "}";
     }
 

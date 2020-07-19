@@ -32,6 +32,9 @@ public class ShoppingCarts implements Serializable {
     @Column(name = "total_price", precision = 21, scale = 2)
     private BigDecimal totalPrice;
 
+    @Column(name = "total_tax_amount", precision = 21, scale = 2)
+    private BigDecimal totalTaxAmount;
+
     @Column(name = "sub_total_price", precision = 21, scale = 2)
     private BigDecimal subTotalPrice;
 
@@ -54,13 +57,13 @@ public class ShoppingCarts implements Serializable {
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "cart_string")
-    private String cartString;
+    @Column(name = "cart_details")
+    private String cartDetails;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "deal_string")
-    private String dealString;
+    @Column(name = "deal_details")
+    private String dealDetails;
 
     @NotNull
     @Column(name = "last_edited_by", nullable = false)
@@ -106,6 +109,19 @@ public class ShoppingCarts implements Serializable {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getTotalTaxAmount() {
+        return totalTaxAmount;
+    }
+
+    public ShoppingCarts totalTaxAmount(BigDecimal totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
+        return this;
+    }
+
+    public void setTotalTaxAmount(BigDecimal totalTaxAmount) {
+        this.totalTaxAmount = totalTaxAmount;
     }
 
     public BigDecimal getSubTotalPrice() {
@@ -186,30 +202,30 @@ public class ShoppingCarts implements Serializable {
         this.packageDetails = packageDetails;
     }
 
-    public String getCartString() {
-        return cartString;
+    public String getCartDetails() {
+        return cartDetails;
     }
 
-    public ShoppingCarts cartString(String cartString) {
-        this.cartString = cartString;
+    public ShoppingCarts cartDetails(String cartDetails) {
+        this.cartDetails = cartDetails;
         return this;
     }
 
-    public void setCartString(String cartString) {
-        this.cartString = cartString;
+    public void setCartDetails(String cartDetails) {
+        this.cartDetails = cartDetails;
     }
 
-    public String getDealString() {
-        return dealString;
+    public String getDealDetails() {
+        return dealDetails;
     }
 
-    public ShoppingCarts dealString(String dealString) {
-        this.dealString = dealString;
+    public ShoppingCarts dealDetails(String dealDetails) {
+        this.dealDetails = dealDetails;
         return this;
     }
 
-    public void setDealString(String dealString) {
-        this.dealString = dealString;
+    public void setDealDetails(String dealDetails) {
+        this.dealDetails = dealDetails;
     }
 
     public String getLastEditedBy() {
@@ -325,14 +341,15 @@ public class ShoppingCarts implements Serializable {
         return "ShoppingCarts{" +
             "id=" + getId() +
             ", totalPrice=" + getTotalPrice() +
+            ", totalTaxAmount=" + getTotalTaxAmount() +
             ", subTotalPrice=" + getSubTotalPrice() +
             ", totalShippingFee=" + getTotalShippingFee() +
             ", totalShippingFeeDiscount=" + getTotalShippingFeeDiscount() +
             ", promotionTotal=" + getPromotionTotal() +
             ", voucherTotal=" + getVoucherTotal() +
             ", packageDetails='" + getPackageDetails() + "'" +
-            ", cartString='" + getCartString() + "'" +
-            ", dealString='" + getDealString() + "'" +
+            ", cartDetails='" + getCartDetails() + "'" +
+            ", dealDetails='" + getDealDetails() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             "}";

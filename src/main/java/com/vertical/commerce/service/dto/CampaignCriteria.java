@@ -34,9 +34,7 @@ public class CampaignCriteria implements Serializable, Criteria {
 
     private StringFilter iconFont;
 
-    private StringFilter thumbnailUrl;
-
-    private LongFilter iconId;
+    private StringFilter iconPhoto;
 
     public CampaignCriteria() {
     }
@@ -47,8 +45,7 @@ public class CampaignCriteria implements Serializable, Criteria {
         this.shortLabel = other.shortLabel == null ? null : other.shortLabel.copy();
         this.sortOrder = other.sortOrder == null ? null : other.sortOrder.copy();
         this.iconFont = other.iconFont == null ? null : other.iconFont.copy();
-        this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
-        this.iconId = other.iconId == null ? null : other.iconId.copy();
+        this.iconPhoto = other.iconPhoto == null ? null : other.iconPhoto.copy();
     }
 
     @Override
@@ -96,20 +93,12 @@ public class CampaignCriteria implements Serializable, Criteria {
         this.iconFont = iconFont;
     }
 
-    public StringFilter getThumbnailUrl() {
-        return thumbnailUrl;
+    public StringFilter getIconPhoto() {
+        return iconPhoto;
     }
 
-    public void setThumbnailUrl(StringFilter thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public LongFilter getIconId() {
-        return iconId;
-    }
-
-    public void setIconId(LongFilter iconId) {
-        this.iconId = iconId;
+    public void setIconPhoto(StringFilter iconPhoto) {
+        this.iconPhoto = iconPhoto;
     }
 
 
@@ -128,8 +117,7 @@ public class CampaignCriteria implements Serializable, Criteria {
             Objects.equals(shortLabel, that.shortLabel) &&
             Objects.equals(sortOrder, that.sortOrder) &&
             Objects.equals(iconFont, that.iconFont) &&
-            Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
-            Objects.equals(iconId, that.iconId);
+            Objects.equals(iconPhoto, that.iconPhoto);
     }
 
     @Override
@@ -140,8 +128,7 @@ public class CampaignCriteria implements Serializable, Criteria {
         shortLabel,
         sortOrder,
         iconFont,
-        thumbnailUrl,
-        iconId
+        iconPhoto
         );
     }
 
@@ -154,8 +141,7 @@ public class CampaignCriteria implements Serializable, Criteria {
                 (shortLabel != null ? "shortLabel=" + shortLabel + ", " : "") +
                 (sortOrder != null ? "sortOrder=" + sortOrder + ", " : "") +
                 (iconFont != null ? "iconFont=" + iconFont + ", " : "") +
-                (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
-                (iconId != null ? "iconId=" + iconId + ", " : "") +
+                (iconPhoto != null ? "iconPhoto=" + iconPhoto + ", " : "") +
             "}";
     }
 

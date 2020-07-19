@@ -17,7 +17,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617165804",
+  "changelogDate": "20200718085412",
   "entityTableName": "wishlist_lines",
   "dto": "mapstruct",
   "pagination": "no",

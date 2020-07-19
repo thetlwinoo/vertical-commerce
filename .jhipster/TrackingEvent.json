@@ -5,10 +5,14 @@
       "fieldName": "name",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
     }
   ],
   "relationships": [],
-  "changelogDate": "20200617162204",
+  "changelogDate": "20200718081212",
   "entityTableName": "tracking_event",
   "dto": "mapstruct",
   "pagination": "no",

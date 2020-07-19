@@ -7,6 +7,7 @@ import com.vertical.commerce.domain.enumeration.OrderLineStatus;
 import com.vertical.commerce.domain.enumeration.OrderStatus;
 import com.vertical.commerce.domain.enumeration.PaymentStatus;
 import com.vertical.commerce.repository.*;
+import com.vertical.commerce.security.SecurityUtils;
 import com.vertical.commerce.service.CommonService;
 import com.vertical.commerce.service.OrderPackagesService;
 import com.vertical.commerce.service.OrdersExtendService;
@@ -85,6 +86,7 @@ public class OrdersExtendServiceImpl implements OrdersExtendService {
     public OrdersDTO postOrder(Principal principal, OrdersDTO ordersDTO) throws JsonProcessingException, ParseException {
         People people = commonService.getPeopleByPrincipal(principal);
         Customers customer = commonService.getCustomerByPrincipal(principal);
+        String userLogin = SecurityUtils.getCurrentUserLogin().get();
 
         ShoppingCarts cart = people.getCart();
         if (cart == null) {
@@ -103,7 +105,7 @@ public class OrdersExtendServiceImpl implements OrdersExtendService {
         saveOrder.setSubTotal(cart.getSubTotalPrice());
         saveOrder.setSpecialDeals(cart.getSpecialDeals());
         saveOrder.setStatus(OrderStatus.NEW_ORDER);
-        saveOrder.setLastEditedBy(people.getFullName());
+        saveOrder.setLastEditedBy(userLogin);
         saveOrder.setLastEditedWhen(Instant.now());
 
         saveOrder = ordersExtendRepository.save(saveOrder);
@@ -116,7 +118,7 @@ public class OrdersExtendServiceImpl implements OrdersExtendService {
         for(OrderPackagesJson orderPackagesJson:orderPackagesJsons){
 
             OrderPackages orderPackages = new OrderPackages();
-            orderPackages.setLastEditedBy(people.getFullName());
+            orderPackages.setLastEditedBy(userLogin);
             orderPackages.setLastEditedWhen(Instant.now());
 
             Suppliers suppliers = suppliersRepository.getOne(orderPackagesJson.getSupplierId());
@@ -141,10 +143,10 @@ public class OrdersExtendServiceImpl implements OrdersExtendService {
                 StockItems stockItems = stockItemsRepository.getOne(item.getStockItemId());
                 orderLines.setStockItem(stockItems);
                 orderLines.setUnitPrice(item.getUnitPrice());
-                orderLines.setLastEditedBy(people.getFullName());
+                orderLines.setLastEditedBy(userLogin);
                 orderLines.setLastEditedWhen(Instant.now());
                 orderLines.setStatus(OrderLineStatus.AVAILABLE);
-                orderLines.setThumbnailUrl(stockItems.getThumbnailUrl());
+                orderLines.setStockItemPhoto(stockItems.getThumbnailPhoto());
                 orderLines.setDescription(stockItems.getName());
                 orderLines.setTaxRate(stockItems.getTaxRate());
                 orderLines.setSupplier(suppliers);

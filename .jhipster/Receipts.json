@@ -43,7 +43,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617161104",
+  "changelogDate": "20200718080112",
   "entityTableName": "receipts",
   "dto": "mapstruct",
   "pagination": "no",

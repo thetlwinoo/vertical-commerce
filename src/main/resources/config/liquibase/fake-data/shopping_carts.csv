@@ -1,11 +1,11 @@
-id;total_price;sub_total_price;total_shipping_fee;total_shipping_fee_discount;promotion_total;voucher_total;package_details;cart_string;deal_string;last_edited_by;last_edited_when
-1;61158;48880;49999;59833;15484;25493;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Designer;2020-06-17T00:31:05
-2;7499;55762;75544;72154;72537;4905;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Falkland Islands Pound;2020-06-17T06:55:38
-3;18607;95046;96479;75809;22105;27028;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Balboa US Dollar Credit Card Account;2020-06-17T01:49:50
-4;8933;63476;26120;89214;60175;34763;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;magenta Rustic Metal Shoes Belize Dollar;2020-06-17T11:30:31
-5;7099;29978;10953;27974;56219;19218;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Borders;2020-06-17T09:24:42
-6;82969;66623;42445;26473;67950;2047;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;capacitor Personal Loan Account generate;2020-06-17T04:21:27
-7;61125;50738;29242;94816;95542;83389;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;override Computer Strategist;2020-06-17T01:51:26
-8;80535;73307;97247;86362;94050;71826;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Cotton Ergonomic monitor;2020-06-16T19:56:47
-9;67074;53627;56223;79900;45599;87486;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Kuwaiti Dinar Integration;2020-06-17T06:45:07
-10;24701;28031;20712;72570;69027;50336;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Ergonomic;2020-06-17T02:41:32
+id;total_price;total_tax_amount;sub_total_price;total_shipping_fee;total_shipping_fee_discount;promotion_total;voucher_total;package_details;cart_details;deal_details;last_edited_by;last_edited_when
+1;61158;48880;49999;59833;15484;25493;17889;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Palestinian Territory Awesome synthesize;2020-07-17T15:26:39
+2;4905;16497;69521;26107;41626;18607;95046;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;override fault-tolerant Balboa US Dollar;2020-07-17T18:06:51
+3;74228;62862;8933;63476;26120;89214;60175;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;microchip driver;2020-07-18T05:51:09
+4;67955;46742;69955;13738;22536;7099;29978;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;leading edge;2020-07-18T04:14:26
+5;6264;49892;64552;31274;82969;66623;42445;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Armenian Dram;2020-07-17T15:18:58
+6;73142;93297;59512;89375;76948;50673;52333;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Bedfordshire Usability;2020-07-17T12:50:23
+7;97678;76849;21465;16018;11246;98243;98828;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;1080p Facilitator;2020-07-17T10:16:51
+8;71826;82039;13572;43050;9918;8057;71565;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;SMTP Mauritius online;2020-07-17T11:51:23
+9;65800;69807;44047;95993;23165;42355;24701;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;lime;2020-07-17T16:17:11
+10;50336;4132;8108;9656;59271;98486;90644;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;../fake-data/blob/hipster.txt;Tuna Rustic Sausages;2020-07-17T09:05:05

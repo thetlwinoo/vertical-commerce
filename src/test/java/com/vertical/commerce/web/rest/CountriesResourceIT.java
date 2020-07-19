@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -40,6 +41,9 @@ public class CountriesResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
 
     private static final String DEFAULT_FORMAL_NAME = "AAAAAAAAAA";
     private static final String UPDATED_FORMAL_NAME = "BBBBBBBBBB";
@@ -64,8 +68,8 @@ public class CountriesResourceIT {
     private static final String DEFAULT_REGION = "AAAAAAAAAA";
     private static final String UPDATED_REGION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_SUBREGION = "AAAAAAAAAA";
-    private static final String UPDATED_SUBREGION = "BBBBBBBBBB";
+    private static final String DEFAULT_SUB_REGION = "AAAAAAAAAA";
+    private static final String UPDATED_SUB_REGION = "BBBBBBBBBB";
 
     private static final String DEFAULT_BORDER = "AAAAAAAAAA";
     private static final String UPDATED_BORDER = "BBBBBBBBBB";
@@ -105,6 +109,7 @@ public class CountriesResourceIT {
     public static Countries createEntity(EntityManager em) {
         Countries countries = new Countries()
             .name(DEFAULT_NAME)
+            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .formalName(DEFAULT_FORMAL_NAME)
             .isoAplha3Code(DEFAULT_ISO_APLHA_3_CODE)
             .isoNumericCode(DEFAULT_ISO_NUMERIC_CODE)
@@ -112,7 +117,7 @@ public class CountriesResourceIT {
             .latestRecordedPopulation(DEFAULT_LATEST_RECORDED_POPULATION)
             .continent(DEFAULT_CONTINENT)
             .region(DEFAULT_REGION)
-            .subregion(DEFAULT_SUBREGION)
+            .subRegion(DEFAULT_SUB_REGION)
             .border(DEFAULT_BORDER)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
@@ -127,6 +132,7 @@ public class CountriesResourceIT {
     public static Countries createUpdatedEntity(EntityManager em) {
         Countries countries = new Countries()
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .formalName(UPDATED_FORMAL_NAME)
             .isoAplha3Code(UPDATED_ISO_APLHA_3_CODE)
             .isoNumericCode(UPDATED_ISO_NUMERIC_CODE)
@@ -134,7 +140,7 @@ public class CountriesResourceIT {
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
             .continent(UPDATED_CONTINENT)
             .region(UPDATED_REGION)
-            .subregion(UPDATED_SUBREGION)
+            .subRegion(UPDATED_SUB_REGION)
             .border(UPDATED_BORDER)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
@@ -162,6 +168,7 @@ public class CountriesResourceIT {
         assertThat(countriesList).hasSize(databaseSizeBeforeCreate + 1);
         Countries testCountries = countriesList.get(countriesList.size() - 1);
         assertThat(testCountries.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testCountries.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testCountries.getFormalName()).isEqualTo(DEFAULT_FORMAL_NAME);
         assertThat(testCountries.getIsoAplha3Code()).isEqualTo(DEFAULT_ISO_APLHA_3_CODE);
         assertThat(testCountries.getIsoNumericCode()).isEqualTo(DEFAULT_ISO_NUMERIC_CODE);
@@ -169,7 +176,7 @@ public class CountriesResourceIT {
         assertThat(testCountries.getLatestRecordedPopulation()).isEqualTo(DEFAULT_LATEST_RECORDED_POPULATION);
         assertThat(testCountries.getContinent()).isEqualTo(DEFAULT_CONTINENT);
         assertThat(testCountries.getRegion()).isEqualTo(DEFAULT_REGION);
-        assertThat(testCountries.getSubregion()).isEqualTo(DEFAULT_SUBREGION);
+        assertThat(testCountries.getSubRegion()).isEqualTo(DEFAULT_SUB_REGION);
         assertThat(testCountries.getBorder()).isEqualTo(DEFAULT_BORDER);
         assertThat(testCountries.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testCountries.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
@@ -278,10 +285,10 @@ public class CountriesResourceIT {
 
     @Test
     @Transactional
-    public void checkSubregionIsRequired() throws Exception {
+    public void checkSubRegionIsRequired() throws Exception {
         int databaseSizeBeforeTest = countriesRepository.findAll().size();
         // set the field null
-        countries.setSubregion(null);
+        countries.setSubRegion(null);
 
         // Create the Countries, which fails.
         CountriesDTO countriesDTO = countriesMapper.toDto(countries);
@@ -318,26 +325,6 @@ public class CountriesResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = countriesRepository.findAll().size();
-        // set the field null
-        countries.setValidTo(null);
-
-        // Create the Countries, which fails.
-        CountriesDTO countriesDTO = countriesMapper.toDto(countries);
-
-
-        restCountriesMockMvc.perform(post("/api/countries").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(countriesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Countries> countriesList = countriesRepository.findAll();
-        assertThat(countriesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllCountries() throws Exception {
         // Initialize the database
         countriesRepository.saveAndFlush(countries);
@@ -348,6 +335,7 @@ public class CountriesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(countries.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].formalName").value(hasItem(DEFAULT_FORMAL_NAME)))
             .andExpect(jsonPath("$.[*].isoAplha3Code").value(hasItem(DEFAULT_ISO_APLHA_3_CODE)))
             .andExpect(jsonPath("$.[*].isoNumericCode").value(hasItem(DEFAULT_ISO_NUMERIC_CODE)))
@@ -355,7 +343,7 @@ public class CountriesResourceIT {
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
             .andExpect(jsonPath("$.[*].continent").value(hasItem(DEFAULT_CONTINENT)))
             .andExpect(jsonPath("$.[*].region").value(hasItem(DEFAULT_REGION)))
-            .andExpect(jsonPath("$.[*].subregion").value(hasItem(DEFAULT_SUBREGION)))
+            .andExpect(jsonPath("$.[*].subRegion").value(hasItem(DEFAULT_SUB_REGION)))
             .andExpect(jsonPath("$.[*].border").value(hasItem(DEFAULT_BORDER)))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
@@ -373,6 +361,7 @@ public class CountriesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(countries.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.formalName").value(DEFAULT_FORMAL_NAME))
             .andExpect(jsonPath("$.isoAplha3Code").value(DEFAULT_ISO_APLHA_3_CODE))
             .andExpect(jsonPath("$.isoNumericCode").value(DEFAULT_ISO_NUMERIC_CODE))
@@ -380,7 +369,7 @@ public class CountriesResourceIT {
             .andExpect(jsonPath("$.latestRecordedPopulation").value(DEFAULT_LATEST_RECORDED_POPULATION.intValue()))
             .andExpect(jsonPath("$.continent").value(DEFAULT_CONTINENT))
             .andExpect(jsonPath("$.region").value(DEFAULT_REGION))
-            .andExpect(jsonPath("$.subregion").value(DEFAULT_SUBREGION))
+            .andExpect(jsonPath("$.subRegion").value(DEFAULT_SUB_REGION))
             .andExpect(jsonPath("$.border").value(DEFAULT_BORDER))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
@@ -1086,79 +1075,79 @@ public class CountriesResourceIT {
 
     @Test
     @Transactional
-    public void getAllCountriesBySubregionIsEqualToSomething() throws Exception {
+    public void getAllCountriesBySubRegionIsEqualToSomething() throws Exception {
         // Initialize the database
         countriesRepository.saveAndFlush(countries);
 
-        // Get all the countriesList where subregion equals to DEFAULT_SUBREGION
-        defaultCountriesShouldBeFound("subregion.equals=" + DEFAULT_SUBREGION);
+        // Get all the countriesList where subRegion equals to DEFAULT_SUB_REGION
+        defaultCountriesShouldBeFound("subRegion.equals=" + DEFAULT_SUB_REGION);
 
-        // Get all the countriesList where subregion equals to UPDATED_SUBREGION
-        defaultCountriesShouldNotBeFound("subregion.equals=" + UPDATED_SUBREGION);
+        // Get all the countriesList where subRegion equals to UPDATED_SUB_REGION
+        defaultCountriesShouldNotBeFound("subRegion.equals=" + UPDATED_SUB_REGION);
     }
 
     @Test
     @Transactional
-    public void getAllCountriesBySubregionIsNotEqualToSomething() throws Exception {
+    public void getAllCountriesBySubRegionIsNotEqualToSomething() throws Exception {
         // Initialize the database
         countriesRepository.saveAndFlush(countries);
 
-        // Get all the countriesList where subregion not equals to DEFAULT_SUBREGION
-        defaultCountriesShouldNotBeFound("subregion.notEquals=" + DEFAULT_SUBREGION);
+        // Get all the countriesList where subRegion not equals to DEFAULT_SUB_REGION
+        defaultCountriesShouldNotBeFound("subRegion.notEquals=" + DEFAULT_SUB_REGION);
 
-        // Get all the countriesList where subregion not equals to UPDATED_SUBREGION
-        defaultCountriesShouldBeFound("subregion.notEquals=" + UPDATED_SUBREGION);
+        // Get all the countriesList where subRegion not equals to UPDATED_SUB_REGION
+        defaultCountriesShouldBeFound("subRegion.notEquals=" + UPDATED_SUB_REGION);
     }
 
     @Test
     @Transactional
-    public void getAllCountriesBySubregionIsInShouldWork() throws Exception {
+    public void getAllCountriesBySubRegionIsInShouldWork() throws Exception {
         // Initialize the database
         countriesRepository.saveAndFlush(countries);
 
-        // Get all the countriesList where subregion in DEFAULT_SUBREGION or UPDATED_SUBREGION
-        defaultCountriesShouldBeFound("subregion.in=" + DEFAULT_SUBREGION + "," + UPDATED_SUBREGION);
+        // Get all the countriesList where subRegion in DEFAULT_SUB_REGION or UPDATED_SUB_REGION
+        defaultCountriesShouldBeFound("subRegion.in=" + DEFAULT_SUB_REGION + "," + UPDATED_SUB_REGION);
 
-        // Get all the countriesList where subregion equals to UPDATED_SUBREGION
-        defaultCountriesShouldNotBeFound("subregion.in=" + UPDATED_SUBREGION);
+        // Get all the countriesList where subRegion equals to UPDATED_SUB_REGION
+        defaultCountriesShouldNotBeFound("subRegion.in=" + UPDATED_SUB_REGION);
     }
 
     @Test
     @Transactional
-    public void getAllCountriesBySubregionIsNullOrNotNull() throws Exception {
+    public void getAllCountriesBySubRegionIsNullOrNotNull() throws Exception {
         // Initialize the database
         countriesRepository.saveAndFlush(countries);
 
-        // Get all the countriesList where subregion is not null
-        defaultCountriesShouldBeFound("subregion.specified=true");
+        // Get all the countriesList where subRegion is not null
+        defaultCountriesShouldBeFound("subRegion.specified=true");
 
-        // Get all the countriesList where subregion is null
-        defaultCountriesShouldNotBeFound("subregion.specified=false");
+        // Get all the countriesList where subRegion is null
+        defaultCountriesShouldNotBeFound("subRegion.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllCountriesBySubregionContainsSomething() throws Exception {
+    public void getAllCountriesBySubRegionContainsSomething() throws Exception {
         // Initialize the database
         countriesRepository.saveAndFlush(countries);
 
-        // Get all the countriesList where subregion contains DEFAULT_SUBREGION
-        defaultCountriesShouldBeFound("subregion.contains=" + DEFAULT_SUBREGION);
+        // Get all the countriesList where subRegion contains DEFAULT_SUB_REGION
+        defaultCountriesShouldBeFound("subRegion.contains=" + DEFAULT_SUB_REGION);
 
-        // Get all the countriesList where subregion contains UPDATED_SUBREGION
-        defaultCountriesShouldNotBeFound("subregion.contains=" + UPDATED_SUBREGION);
+        // Get all the countriesList where subRegion contains UPDATED_SUB_REGION
+        defaultCountriesShouldNotBeFound("subRegion.contains=" + UPDATED_SUB_REGION);
     }
 
     @Test
     @Transactional
-    public void getAllCountriesBySubregionNotContainsSomething() throws Exception {
+    public void getAllCountriesBySubRegionNotContainsSomething() throws Exception {
         // Initialize the database
         countriesRepository.saveAndFlush(countries);
 
-        // Get all the countriesList where subregion does not contain DEFAULT_SUBREGION
-        defaultCountriesShouldNotBeFound("subregion.doesNotContain=" + DEFAULT_SUBREGION);
+        // Get all the countriesList where subRegion does not contain DEFAULT_SUB_REGION
+        defaultCountriesShouldNotBeFound("subRegion.doesNotContain=" + DEFAULT_SUB_REGION);
 
-        // Get all the countriesList where subregion does not contain UPDATED_SUBREGION
-        defaultCountriesShouldBeFound("subregion.doesNotContain=" + UPDATED_SUBREGION);
+        // Get all the countriesList where subRegion does not contain UPDATED_SUB_REGION
+        defaultCountriesShouldBeFound("subRegion.doesNotContain=" + UPDATED_SUB_REGION);
     }
 
 
@@ -1352,6 +1341,7 @@ public class CountriesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(countries.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].formalName").value(hasItem(DEFAULT_FORMAL_NAME)))
             .andExpect(jsonPath("$.[*].isoAplha3Code").value(hasItem(DEFAULT_ISO_APLHA_3_CODE)))
             .andExpect(jsonPath("$.[*].isoNumericCode").value(hasItem(DEFAULT_ISO_NUMERIC_CODE)))
@@ -1359,7 +1349,7 @@ public class CountriesResourceIT {
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
             .andExpect(jsonPath("$.[*].continent").value(hasItem(DEFAULT_CONTINENT)))
             .andExpect(jsonPath("$.[*].region").value(hasItem(DEFAULT_REGION)))
-            .andExpect(jsonPath("$.[*].subregion").value(hasItem(DEFAULT_SUBREGION)))
+            .andExpect(jsonPath("$.[*].subRegion").value(hasItem(DEFAULT_SUB_REGION)))
             .andExpect(jsonPath("$.[*].border").value(hasItem(DEFAULT_BORDER)))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
@@ -1410,6 +1400,7 @@ public class CountriesResourceIT {
         em.detach(updatedCountries);
         updatedCountries
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .formalName(UPDATED_FORMAL_NAME)
             .isoAplha3Code(UPDATED_ISO_APLHA_3_CODE)
             .isoNumericCode(UPDATED_ISO_NUMERIC_CODE)
@@ -1417,7 +1408,7 @@ public class CountriesResourceIT {
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
             .continent(UPDATED_CONTINENT)
             .region(UPDATED_REGION)
-            .subregion(UPDATED_SUBREGION)
+            .subRegion(UPDATED_SUB_REGION)
             .border(UPDATED_BORDER)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
@@ -1433,6 +1424,7 @@ public class CountriesResourceIT {
         assertThat(countriesList).hasSize(databaseSizeBeforeUpdate);
         Countries testCountries = countriesList.get(countriesList.size() - 1);
         assertThat(testCountries.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testCountries.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testCountries.getFormalName()).isEqualTo(UPDATED_FORMAL_NAME);
         assertThat(testCountries.getIsoAplha3Code()).isEqualTo(UPDATED_ISO_APLHA_3_CODE);
         assertThat(testCountries.getIsoNumericCode()).isEqualTo(UPDATED_ISO_NUMERIC_CODE);
@@ -1440,7 +1432,7 @@ public class CountriesResourceIT {
         assertThat(testCountries.getLatestRecordedPopulation()).isEqualTo(UPDATED_LATEST_RECORDED_POPULATION);
         assertThat(testCountries.getContinent()).isEqualTo(UPDATED_CONTINENT);
         assertThat(testCountries.getRegion()).isEqualTo(UPDATED_REGION);
-        assertThat(testCountries.getSubregion()).isEqualTo(UPDATED_SUBREGION);
+        assertThat(testCountries.getSubRegion()).isEqualTo(UPDATED_SUB_REGION);
         assertThat(testCountries.getBorder()).isEqualTo(UPDATED_BORDER);
         assertThat(testCountries.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testCountries.getValidTo()).isEqualTo(UPDATED_VALID_TO);

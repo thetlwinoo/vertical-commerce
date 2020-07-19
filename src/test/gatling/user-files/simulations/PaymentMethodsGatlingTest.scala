@@ -104,9 +104,11 @@ class PaymentMethodsGatlingTest extends Simulation {
                 , "name":"SAMPLE_TEXT"
                 , "code":"SAMPLE_TEXT"
                 , "disabled":null
-                , "activeInd":null
                 , "sortOrder":"0"
                 , "iconFont":"SAMPLE_TEXT"
+                , "iconPhoto":"SAMPLE_TEXT"
+                , "validFrom":"2020-01-01T00:00:00.000Z"
+                , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_paymentMethods_url"))).exitHereIfFailed

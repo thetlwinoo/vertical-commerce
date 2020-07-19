@@ -17,7 +17,6 @@ public class SupplierCategoriesDTO implements Serializable {
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
     

@@ -3,7 +3,6 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.Campaign;
-import com.vertical.commerce.domain.Photos;
 import com.vertical.commerce.repository.CampaignRepository;
 import com.vertical.commerce.service.CampaignService;
 import com.vertical.commerce.service.dto.CampaignDTO;
@@ -50,8 +49,8 @@ public class CampaignResourceIT {
     private static final String DEFAULT_ICON_FONT = "AAAAAAAAAA";
     private static final String UPDATED_ICON_FONT = "BBBBBBBBBB";
 
-    private static final String DEFAULT_THUMBNAIL_URL = "AAAAAAAAAA";
-    private static final String UPDATED_THUMBNAIL_URL = "BBBBBBBBBB";
+    private static final String DEFAULT_ICON_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_ICON_PHOTO = "BBBBBBBBBB";
 
     @Autowired
     private CampaignRepository campaignRepository;
@@ -85,7 +84,7 @@ public class CampaignResourceIT {
             .shortLabel(DEFAULT_SHORT_LABEL)
             .sortOrder(DEFAULT_SORT_ORDER)
             .iconFont(DEFAULT_ICON_FONT)
-            .thumbnailUrl(DEFAULT_THUMBNAIL_URL);
+            .iconPhoto(DEFAULT_ICON_PHOTO);
         return campaign;
     }
     /**
@@ -100,7 +99,7 @@ public class CampaignResourceIT {
             .shortLabel(UPDATED_SHORT_LABEL)
             .sortOrder(UPDATED_SORT_ORDER)
             .iconFont(UPDATED_ICON_FONT)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL);
+            .iconPhoto(UPDATED_ICON_PHOTO);
         return campaign;
     }
 
@@ -128,7 +127,7 @@ public class CampaignResourceIT {
         assertThat(testCampaign.getShortLabel()).isEqualTo(DEFAULT_SHORT_LABEL);
         assertThat(testCampaign.getSortOrder()).isEqualTo(DEFAULT_SORT_ORDER);
         assertThat(testCampaign.getIconFont()).isEqualTo(DEFAULT_ICON_FONT);
-        assertThat(testCampaign.getThumbnailUrl()).isEqualTo(DEFAULT_THUMBNAIL_URL);
+        assertThat(testCampaign.getIconPhoto()).isEqualTo(DEFAULT_ICON_PHOTO);
     }
 
     @Test
@@ -187,7 +186,7 @@ public class CampaignResourceIT {
             .andExpect(jsonPath("$.[*].shortLabel").value(hasItem(DEFAULT_SHORT_LABEL)))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
             .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)));
+            .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)));
     }
     
     @Test
@@ -205,7 +204,7 @@ public class CampaignResourceIT {
             .andExpect(jsonPath("$.shortLabel").value(DEFAULT_SHORT_LABEL))
             .andExpect(jsonPath("$.sortOrder").value(DEFAULT_SORT_ORDER))
             .andExpect(jsonPath("$.iconFont").value(DEFAULT_ICON_FONT))
-            .andExpect(jsonPath("$.thumbnailUrl").value(DEFAULT_THUMBNAIL_URL));
+            .andExpect(jsonPath("$.iconPhoto").value(DEFAULT_ICON_PHOTO));
     }
 
 
@@ -569,99 +568,79 @@ public class CampaignResourceIT {
 
     @Test
     @Transactional
-    public void getAllCampaignsByThumbnailUrlIsEqualToSomething() throws Exception {
+    public void getAllCampaignsByIconPhotoIsEqualToSomething() throws Exception {
         // Initialize the database
         campaignRepository.saveAndFlush(campaign);
 
-        // Get all the campaignList where thumbnailUrl equals to DEFAULT_THUMBNAIL_URL
-        defaultCampaignShouldBeFound("thumbnailUrl.equals=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the campaignList where iconPhoto equals to DEFAULT_ICON_PHOTO
+        defaultCampaignShouldBeFound("iconPhoto.equals=" + DEFAULT_ICON_PHOTO);
 
-        // Get all the campaignList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultCampaignShouldNotBeFound("thumbnailUrl.equals=" + UPDATED_THUMBNAIL_URL);
+        // Get all the campaignList where iconPhoto equals to UPDATED_ICON_PHOTO
+        defaultCampaignShouldNotBeFound("iconPhoto.equals=" + UPDATED_ICON_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCampaignsByThumbnailUrlIsNotEqualToSomething() throws Exception {
+    public void getAllCampaignsByIconPhotoIsNotEqualToSomething() throws Exception {
         // Initialize the database
         campaignRepository.saveAndFlush(campaign);
 
-        // Get all the campaignList where thumbnailUrl not equals to DEFAULT_THUMBNAIL_URL
-        defaultCampaignShouldNotBeFound("thumbnailUrl.notEquals=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the campaignList where iconPhoto not equals to DEFAULT_ICON_PHOTO
+        defaultCampaignShouldNotBeFound("iconPhoto.notEquals=" + DEFAULT_ICON_PHOTO);
 
-        // Get all the campaignList where thumbnailUrl not equals to UPDATED_THUMBNAIL_URL
-        defaultCampaignShouldBeFound("thumbnailUrl.notEquals=" + UPDATED_THUMBNAIL_URL);
+        // Get all the campaignList where iconPhoto not equals to UPDATED_ICON_PHOTO
+        defaultCampaignShouldBeFound("iconPhoto.notEquals=" + UPDATED_ICON_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCampaignsByThumbnailUrlIsInShouldWork() throws Exception {
+    public void getAllCampaignsByIconPhotoIsInShouldWork() throws Exception {
         // Initialize the database
         campaignRepository.saveAndFlush(campaign);
 
-        // Get all the campaignList where thumbnailUrl in DEFAULT_THUMBNAIL_URL or UPDATED_THUMBNAIL_URL
-        defaultCampaignShouldBeFound("thumbnailUrl.in=" + DEFAULT_THUMBNAIL_URL + "," + UPDATED_THUMBNAIL_URL);
+        // Get all the campaignList where iconPhoto in DEFAULT_ICON_PHOTO or UPDATED_ICON_PHOTO
+        defaultCampaignShouldBeFound("iconPhoto.in=" + DEFAULT_ICON_PHOTO + "," + UPDATED_ICON_PHOTO);
 
-        // Get all the campaignList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultCampaignShouldNotBeFound("thumbnailUrl.in=" + UPDATED_THUMBNAIL_URL);
+        // Get all the campaignList where iconPhoto equals to UPDATED_ICON_PHOTO
+        defaultCampaignShouldNotBeFound("iconPhoto.in=" + UPDATED_ICON_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCampaignsByThumbnailUrlIsNullOrNotNull() throws Exception {
+    public void getAllCampaignsByIconPhotoIsNullOrNotNull() throws Exception {
         // Initialize the database
         campaignRepository.saveAndFlush(campaign);
 
-        // Get all the campaignList where thumbnailUrl is not null
-        defaultCampaignShouldBeFound("thumbnailUrl.specified=true");
+        // Get all the campaignList where iconPhoto is not null
+        defaultCampaignShouldBeFound("iconPhoto.specified=true");
 
-        // Get all the campaignList where thumbnailUrl is null
-        defaultCampaignShouldNotBeFound("thumbnailUrl.specified=false");
+        // Get all the campaignList where iconPhoto is null
+        defaultCampaignShouldNotBeFound("iconPhoto.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllCampaignsByThumbnailUrlContainsSomething() throws Exception {
+    public void getAllCampaignsByIconPhotoContainsSomething() throws Exception {
         // Initialize the database
         campaignRepository.saveAndFlush(campaign);
 
-        // Get all the campaignList where thumbnailUrl contains DEFAULT_THUMBNAIL_URL
-        defaultCampaignShouldBeFound("thumbnailUrl.contains=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the campaignList where iconPhoto contains DEFAULT_ICON_PHOTO
+        defaultCampaignShouldBeFound("iconPhoto.contains=" + DEFAULT_ICON_PHOTO);
 
-        // Get all the campaignList where thumbnailUrl contains UPDATED_THUMBNAIL_URL
-        defaultCampaignShouldNotBeFound("thumbnailUrl.contains=" + UPDATED_THUMBNAIL_URL);
+        // Get all the campaignList where iconPhoto contains UPDATED_ICON_PHOTO
+        defaultCampaignShouldNotBeFound("iconPhoto.contains=" + UPDATED_ICON_PHOTO);
     }
 
     @Test
     @Transactional
-    public void getAllCampaignsByThumbnailUrlNotContainsSomething() throws Exception {
+    public void getAllCampaignsByIconPhotoNotContainsSomething() throws Exception {
         // Initialize the database
         campaignRepository.saveAndFlush(campaign);
 
-        // Get all the campaignList where thumbnailUrl does not contain DEFAULT_THUMBNAIL_URL
-        defaultCampaignShouldNotBeFound("thumbnailUrl.doesNotContain=" + DEFAULT_THUMBNAIL_URL);
+        // Get all the campaignList where iconPhoto does not contain DEFAULT_ICON_PHOTO
+        defaultCampaignShouldNotBeFound("iconPhoto.doesNotContain=" + DEFAULT_ICON_PHOTO);
 
-        // Get all the campaignList where thumbnailUrl does not contain UPDATED_THUMBNAIL_URL
-        defaultCampaignShouldBeFound("thumbnailUrl.doesNotContain=" + UPDATED_THUMBNAIL_URL);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllCampaignsByIconIsEqualToSomething() throws Exception {
-        // Initialize the database
-        campaignRepository.saveAndFlush(campaign);
-        Photos icon = PhotosResourceIT.createEntity(em);
-        em.persist(icon);
-        em.flush();
-        campaign.setIcon(icon);
-        campaignRepository.saveAndFlush(campaign);
-        Long iconId = icon.getId();
-
-        // Get all the campaignList where icon equals to iconId
-        defaultCampaignShouldBeFound("iconId.equals=" + iconId);
-
-        // Get all the campaignList where icon equals to iconId + 1
-        defaultCampaignShouldNotBeFound("iconId.equals=" + (iconId + 1));
+        // Get all the campaignList where iconPhoto does not contain UPDATED_ICON_PHOTO
+        defaultCampaignShouldBeFound("iconPhoto.doesNotContain=" + UPDATED_ICON_PHOTO);
     }
 
     /**
@@ -676,7 +655,7 @@ public class CampaignResourceIT {
             .andExpect(jsonPath("$.[*].shortLabel").value(hasItem(DEFAULT_SHORT_LABEL)))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
             .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)));
+            .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)));
 
         // Check, that the count call also returns 1
         restCampaignMockMvc.perform(get("/api/campaigns/count?sort=id,desc&" + filter))
@@ -727,7 +706,7 @@ public class CampaignResourceIT {
             .shortLabel(UPDATED_SHORT_LABEL)
             .sortOrder(UPDATED_SORT_ORDER)
             .iconFont(UPDATED_ICON_FONT)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL);
+            .iconPhoto(UPDATED_ICON_PHOTO);
         CampaignDTO campaignDTO = campaignMapper.toDto(updatedCampaign);
 
         restCampaignMockMvc.perform(put("/api/campaigns").with(csrf())
@@ -743,7 +722,7 @@ public class CampaignResourceIT {
         assertThat(testCampaign.getShortLabel()).isEqualTo(UPDATED_SHORT_LABEL);
         assertThat(testCampaign.getSortOrder()).isEqualTo(UPDATED_SORT_ORDER);
         assertThat(testCampaign.getIconFont()).isEqualTo(UPDATED_ICON_FONT);
-        assertThat(testCampaign.getThumbnailUrl()).isEqualTo(UPDATED_THUMBNAIL_URL);
+        assertThat(testCampaign.getIconPhoto()).isEqualTo(UPDATED_ICON_PHOTO);
     }
 
     @Test

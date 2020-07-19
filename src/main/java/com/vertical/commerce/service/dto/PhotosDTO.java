@@ -1,5 +1,6 @@
 package com.vertical.commerce.service.dto;
 
+import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
@@ -10,33 +11,44 @@ public class PhotosDTO implements Serializable {
     
     private Long id;
 
+    @NotNull
     private String blobId;
 
-    @NotNull
-    private String thumbnailUrl;
-
-    @NotNull
-    private String originalUrl;
-
-    private String bannerTallUrl;
-
-    private String bannerWideUrl;
-
-    private String circleUrl;
-
-    private String sharpenedUrl;
-
-    private String squareUrl;
-
-    private String watermarkUrl;
-
     private Integer priority;
+
+    private String uid;
+
+    private Integer size;
+
+    private String name;
+
+    private String fileName;
+
+    private String url;
+
+    private String status;
+
+    private String thumbUrl;
+
+    private Integer percent;
+
+    private String type;
 
     @NotNull
     private Boolean defaultInd;
 
+    private Boolean activeFlag;
+
+    private String lastModified;
+
+    private Instant lastModifiedDate;
+
 
     private Long stockItemId;
+
+    private Long supplierBannerId;
+
+    private Long supplierDocumentId;
     
     public Long getId() {
         return id;
@@ -54,76 +66,84 @@ public class PhotosDTO implements Serializable {
         this.blobId = blobId;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public String getOriginalUrl() {
-        return originalUrl;
-    }
-
-    public void setOriginalUrl(String originalUrl) {
-        this.originalUrl = originalUrl;
-    }
-
-    public String getBannerTallUrl() {
-        return bannerTallUrl;
-    }
-
-    public void setBannerTallUrl(String bannerTallUrl) {
-        this.bannerTallUrl = bannerTallUrl;
-    }
-
-    public String getBannerWideUrl() {
-        return bannerWideUrl;
-    }
-
-    public void setBannerWideUrl(String bannerWideUrl) {
-        this.bannerWideUrl = bannerWideUrl;
-    }
-
-    public String getCircleUrl() {
-        return circleUrl;
-    }
-
-    public void setCircleUrl(String circleUrl) {
-        this.circleUrl = circleUrl;
-    }
-
-    public String getSharpenedUrl() {
-        return sharpenedUrl;
-    }
-
-    public void setSharpenedUrl(String sharpenedUrl) {
-        this.sharpenedUrl = sharpenedUrl;
-    }
-
-    public String getSquareUrl() {
-        return squareUrl;
-    }
-
-    public void setSquareUrl(String squareUrl) {
-        this.squareUrl = squareUrl;
-    }
-
-    public String getWatermarkUrl() {
-        return watermarkUrl;
-    }
-
-    public void setWatermarkUrl(String watermarkUrl) {
-        this.watermarkUrl = watermarkUrl;
-    }
-
     public Integer getPriority() {
         return priority;
     }
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getThumbUrl() {
+        return thumbUrl;
+    }
+
+    public void setThumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
+    }
+
+    public Integer getPercent() {
+        return percent;
+    }
+
+    public void setPercent(Integer percent) {
+        this.percent = percent;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Boolean isDefaultInd() {
@@ -134,12 +154,52 @@ public class PhotosDTO implements Serializable {
         this.defaultInd = defaultInd;
     }
 
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
     public Long getStockItemId() {
         return stockItemId;
     }
 
     public void setStockItemId(Long stockItemsId) {
         this.stockItemId = stockItemsId;
+    }
+
+    public Long getSupplierBannerId() {
+        return supplierBannerId;
+    }
+
+    public void setSupplierBannerId(Long suppliersId) {
+        this.supplierBannerId = suppliersId;
+    }
+
+    public Long getSupplierDocumentId() {
+        return supplierDocumentId;
+    }
+
+    public void setSupplierDocumentId(Long suppliersId) {
+        this.supplierDocumentId = suppliersId;
     }
 
     @Override
@@ -165,17 +225,23 @@ public class PhotosDTO implements Serializable {
         return "PhotosDTO{" +
             "id=" + getId() +
             ", blobId='" + getBlobId() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
-            ", originalUrl='" + getOriginalUrl() + "'" +
-            ", bannerTallUrl='" + getBannerTallUrl() + "'" +
-            ", bannerWideUrl='" + getBannerWideUrl() + "'" +
-            ", circleUrl='" + getCircleUrl() + "'" +
-            ", sharpenedUrl='" + getSharpenedUrl() + "'" +
-            ", squareUrl='" + getSquareUrl() + "'" +
-            ", watermarkUrl='" + getWatermarkUrl() + "'" +
             ", priority=" + getPriority() +
+            ", uid='" + getUid() + "'" +
+            ", size=" + getSize() +
+            ", name='" + getName() + "'" +
+            ", fileName='" + getFileName() + "'" +
+            ", url='" + getUrl() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", thumbUrl='" + getThumbUrl() + "'" +
+            ", percent=" + getPercent() +
+            ", type='" + getType() + "'" +
             ", defaultInd='" + isDefaultInd() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
+            ", lastModified='" + getLastModified() + "'" +
+            ", lastModifiedDate='" + getLastModifiedDate() + "'" +
             ", stockItemId=" + getStockItemId() +
+            ", supplierBannerId=" + getSupplierBannerId() +
+            ", supplierDocumentId=" + getSupplierDocumentId() +
             "}";
     }
 }

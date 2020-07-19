@@ -8,11 +8,12 @@
     },
     {
       "fieldName": "refer",
-      "fieldType": "String"
+      "fieldType": "AddressTypeRefer",
+      "fieldValues": "CUSTOMERS,SUPPLIERS,OTHERS"
     }
   ],
   "relationships": [],
-  "changelogDate": "20200617153304",
+  "changelogDate": "20200718071512",
   "entityTableName": "address_types",
   "dto": "mapstruct",
   "pagination": "no",

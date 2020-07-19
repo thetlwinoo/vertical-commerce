@@ -148,15 +148,18 @@ public class PeopleQueryService extends QueryService<People> {
             if (criteria.getUserId() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getUserId(), People_.userId));
             }
+            if (criteria.getProfilePhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getProfilePhoto(), People_.profilePhoto));
+            }
             if (criteria.getValidFrom() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), People_.validFrom));
             }
             if (criteria.getValidTo() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidTo(), People_.validTo));
             }
-            if (criteria.getProfileId() != null) {
-                specification = specification.and(buildSpecification(criteria.getProfileId(),
-                    root -> root.join(People_.profile, JoinType.LEFT).get(Photos_.id)));
+            if (criteria.getSupplierId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierId(),
+                    root -> root.join(People_.suppliers, JoinType.LEFT).get(Suppliers_.id)));
             }
             if (criteria.getCartId() != null) {
                 specification = specification.and(buildSpecification(criteria.getCartId(),

@@ -63,7 +63,7 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "discount",
+      "otherEntityName": "discounts",
       "otherEntityRelationshipName": "discountDetails",
       "relationshipName": "discount",
       "otherEntityField": "name"
@@ -83,7 +83,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617162604",
+  "changelogDate": "20200718081612",
   "entityTableName": "discount_details",
   "dto": "mapstruct",
   "pagination": "no",

@@ -22,8 +22,13 @@
       "fieldType": "Instant"
     },
     {
-      "fieldName": "activeInd",
-      "fieldType": "Boolean"
+      "fieldName": "validFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validTo",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
@@ -49,7 +54,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617170104",
+  "changelogDate": "20200718085712",
   "entityTableName": "questions",
   "dto": "mapstruct",
   "pagination": "no",

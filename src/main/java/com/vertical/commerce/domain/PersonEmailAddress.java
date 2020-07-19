@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * A PersonEmailAddress.
@@ -32,8 +33,12 @@ public class PersonEmailAddress implements Serializable {
     @Column(name = "default_ind")
     private Boolean defaultInd;
 
-    @Column(name = "active_ind")
-    private Boolean activeInd;
+    @NotNull
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
+
+    @Column(name = "valid_to")
+    private Instant validTo;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "personEmailAddresses", allowSetters = true)
@@ -74,17 +79,30 @@ public class PersonEmailAddress implements Serializable {
         this.defaultInd = defaultInd;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public PersonEmailAddress activeInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public PersonEmailAddress validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
         return this;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public PersonEmailAddress validTo(Instant validTo) {
+        this.validTo = validTo;
+        return this;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     public People getPerson() {
@@ -124,7 +142,8 @@ public class PersonEmailAddress implements Serializable {
             "id=" + getId() +
             ", emailAddress='" + getEmailAddress() + "'" +
             ", defaultInd='" + isDefaultInd() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

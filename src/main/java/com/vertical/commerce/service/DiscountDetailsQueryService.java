@@ -132,7 +132,7 @@ public class DiscountDetailsQueryService extends QueryService<DiscountDetails> {
             }
             if (criteria.getDiscountId() != null) {
                 specification = specification.and(buildSpecification(criteria.getDiscountId(),
-                    root -> root.join(DiscountDetails_.discount, JoinType.LEFT).get(Discount_.id)));
+                    root -> root.join(DiscountDetails_.discount, JoinType.LEFT).get(Discounts_.id)));
             }
             if (criteria.getStockItemId() != null) {
                 specification = specification.and(buildSpecification(criteria.getStockItemId(),

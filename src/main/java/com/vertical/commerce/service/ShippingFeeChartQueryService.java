@@ -115,13 +115,13 @@ public class ShippingFeeChartQueryService extends QueryService<ShippingFeeChart>
             if (criteria.getLastEditedWhen() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastEditedWhen(), ShippingFeeChart_.lastEditedWhen));
             }
-            if (criteria.getSourceZoneId() != null) {
-                specification = specification.and(buildSpecification(criteria.getSourceZoneId(),
-                    root -> root.join(ShippingFeeChart_.sourceZone, JoinType.LEFT).get(Zone_.id)));
+            if (criteria.getSourceTownId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSourceTownId(),
+                    root -> root.join(ShippingFeeChart_.sourceTown, JoinType.LEFT).get(Towns_.id)));
             }
-            if (criteria.getDestinationZoneId() != null) {
-                specification = specification.and(buildSpecification(criteria.getDestinationZoneId(),
-                    root -> root.join(ShippingFeeChart_.destinationZone, JoinType.LEFT).get(Zone_.id)));
+            if (criteria.getDestinationTownId() != null) {
+                specification = specification.and(buildSpecification(criteria.getDestinationTownId(),
+                    root -> root.join(ShippingFeeChart_.destinationTown, JoinType.LEFT).get(Towns_.id)));
             }
             if (criteria.getDeliveryMethodId() != null) {
                 specification = specification.and(buildSpecification(criteria.getDeliveryMethodId(),

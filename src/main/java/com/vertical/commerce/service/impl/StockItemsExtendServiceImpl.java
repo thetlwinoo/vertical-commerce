@@ -5,6 +5,7 @@ import com.vertical.commerce.repository.CurrencyRepository;
 import com.vertical.commerce.repository.ProductsRepository;
 import com.vertical.commerce.repository.StockItemsExtendRepository;
 import com.vertical.commerce.repository.StockItemsRepository;
+import com.vertical.commerce.security.SecurityUtils;
 import com.vertical.commerce.service.CommonService;
 import com.vertical.commerce.service.ProductsExtendService;
 import com.vertical.commerce.service.StockItemsExtendService;
@@ -56,7 +57,8 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
     @Override
     public StockItemsDTO importStockItems(StockItemsDTO stockItemsDTO, Principal principal){
         try{
-            People people = commonService.getPeopleByPrincipal(principal);
+//            People people = commonService.getPeopleByPrincipal(principal);
+            String userLogin = SecurityUtils.getCurrentUserLogin().get();
 
             StockItems saveStockItems = new StockItems();
             saveStockItems.setId(stockItemsDTO.getId());
@@ -103,7 +105,7 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
             saveStockItems.setSellStartDate(stockItemsDTO.getSellStartDate());
             saveStockItems.setSellEndDate(stockItemsDTO.getSellEndDate());
             saveStockItems.setCustomFields(stockItemsDTO.getCustomFields());
-            saveStockItems.setActiveInd(false);
+            saveStockItems.setActiveFlag(false);
             saveStockItems.setLiveInd(true);
             saveStockItems.setSellCount(0);
             saveStockItems.setProduct(productsRepository.getOne(stockItemsDTO.getProductId()));
@@ -118,12 +120,15 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
             saveStockItems.setLastStockTakeQuantity(stockItemsDTO.getLastStockTakeQuantity());
             saveStockItems.targetStockLevel(stockItemsDTO.getTargetStockLevel());
             saveStockItems.setSearchDetails(stockItemsDTO.getSearchDetails());
-            saveStockItems.setLastEditedBy(people.getFullName());
+            saveStockItems.setLastEditedBy(userLogin);
             saveStockItems.setLastEditedWhen(Instant.now());
             saveStockItems.setIsChillerStock(stockItemsDTO.isIsChillerStock());
-            saveStockItems.setTaxRate(BigDecimal.valueOf(commonService.getTaxByCode("ECT").getRate()));
+//            saveStockItems.setTaxRate(BigDecimal.valueOf(commonService.getTaxByCode("ECT").getRate()));
+            saveStockItems.setTaxRate(BigDecimal.valueOf(0.05));
             Currency currency = commonService.getCurrencyEntity(stockItemsDTO.getCurrencyId(),stockItemsDTO.getCurrencyCode());
             saveStockItems.setCurrency(currency);
+            saveStockItems.validFrom(stockItemsDTO.getValidFrom());
+            saveStockItems.validTo(stockItemsDTO.getValidTo());
 
             Random random= new Random();
             int pnum = random.nextInt(10000);
@@ -139,9 +144,8 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
     }
 
     @Override
-    public Page<StockItemsDTO> getAllStockItems(StockItemsCriteria criteria, Pageable pageable, Principal principal){
-        Suppliers suppliers = commonService.getSupplierByPrincipal(principal);
-        List<Long> productIds = productsExtendService.getProductIdsBySupplier(suppliers.getId());
+    public Page<StockItemsDTO> getAllStockItems(Long supplierId, StockItemsCriteria criteria, Pageable pageable, Principal principal){
+        List<Long> productIds = productsExtendService.getProductIdsBySupplier(supplierId);
         if (productIds.size() > 0) {
             LongFilter productIdsFilter = new LongFilter();
             productIdsFilter.setIn(productIds);
@@ -152,9 +156,9 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
     }
 
     @Override
-    public JSONObject getStatistics(Principal principal){
-        Suppliers suppliers = commonService.getSupplierByPrincipal(principal);
-        List<Object[]> statistics = stockItemsExtendRepository.getStatistics(suppliers.getId());
+    public JSONObject getStatistics(Long supplierId){
+//        Suppliers suppliers = commonService.getSupplierByPrincipal(principal);
+        List<Object[]> statistics = stockItemsExtendRepository.getStatistics(supplierId);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("all",statistics.get(0)[0]);
         jsonObject.put("active",statistics.get(0)[1]);

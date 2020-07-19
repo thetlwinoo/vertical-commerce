@@ -94,6 +94,9 @@ public class ShoppingCartsQueryService extends QueryService<ShoppingCarts> {
             if (criteria.getTotalPrice() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getTotalPrice(), ShoppingCarts_.totalPrice));
             }
+            if (criteria.getTotalTaxAmount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getTotalTaxAmount(), ShoppingCarts_.totalTaxAmount));
+            }
             if (criteria.getSubTotalPrice() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getSubTotalPrice(), ShoppingCarts_.subTotalPrice));
             }

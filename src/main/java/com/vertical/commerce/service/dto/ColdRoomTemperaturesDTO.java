@@ -24,7 +24,6 @@ public class ColdRoomTemperaturesDTO implements Serializable {
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
     

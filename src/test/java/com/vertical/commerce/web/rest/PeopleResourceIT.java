@@ -3,7 +3,7 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.People;
-import com.vertical.commerce.domain.Photos;
+import com.vertical.commerce.domain.Suppliers;
 import com.vertical.commerce.domain.ShoppingCarts;
 import com.vertical.commerce.domain.Wishlists;
 import com.vertical.commerce.domain.Compares;
@@ -16,9 +16,14 @@ import com.vertical.commerce.service.PeopleQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,11 +31,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -39,6 +46,7 @@ import com.vertical.commerce.domain.enumeration.Gender;
  * Integration tests for the {@link PeopleResource} REST controller.
  */
 @SpringBootTest(classes = { VscommerceApp.class, TestSecurityConfiguration.class })
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 public class PeopleResourceIT {
@@ -88,8 +96,8 @@ public class PeopleResourceIT {
     private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL_ADDRESS = "fzT@4Us\\.l))\\";
-    private static final String UPDATED_EMAIL_ADDRESS = "LNMu6*@-\\$Cv8.ZM";
+    private static final String DEFAULT_EMAIL_ADDRESS = "!%xt@I({D.7";
+    private static final String UPDATED_EMAIL_ADDRESS = "uG@>{P$Ex.I";
 
     private static final String DEFAULT_CUSTOM_FIELDS = "AAAAAAAAAA";
     private static final String UPDATED_CUSTOM_FIELDS = "BBBBBBBBBB";
@@ -100,6 +108,9 @@ public class PeopleResourceIT {
     private static final String DEFAULT_USER_ID = "AAAAAAAAAA";
     private static final String UPDATED_USER_ID = "BBBBBBBBBB";
 
+    private static final String DEFAULT_PROFILE_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_PROFILE_PHOTO = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -109,8 +120,14 @@ public class PeopleResourceIT {
     @Autowired
     private PeopleRepository peopleRepository;
 
+    @Mock
+    private PeopleRepository peopleRepositoryMock;
+
     @Autowired
     private PeopleMapper peopleMapper;
+
+    @Mock
+    private PeopleService peopleServiceMock;
 
     @Autowired
     private PeopleService peopleService;
@@ -153,6 +170,7 @@ public class PeopleResourceIT {
             .customFields(DEFAULT_CUSTOM_FIELDS)
             .otherLanguages(DEFAULT_OTHER_LANGUAGES)
             .userId(DEFAULT_USER_ID)
+            .profilePhoto(DEFAULT_PROFILE_PHOTO)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return people;
@@ -184,6 +202,7 @@ public class PeopleResourceIT {
             .customFields(UPDATED_CUSTOM_FIELDS)
             .otherLanguages(UPDATED_OTHER_LANGUAGES)
             .userId(UPDATED_USER_ID)
+            .profilePhoto(UPDATED_PROFILE_PHOTO)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return people;
@@ -228,6 +247,7 @@ public class PeopleResourceIT {
         assertThat(testPeople.getCustomFields()).isEqualTo(DEFAULT_CUSTOM_FIELDS);
         assertThat(testPeople.getOtherLanguages()).isEqualTo(DEFAULT_OTHER_LANGUAGES);
         assertThat(testPeople.getUserId()).isEqualTo(DEFAULT_USER_ID);
+        assertThat(testPeople.getProfilePhoto()).isEqualTo(DEFAULT_PROFILE_PHOTO);
         assertThat(testPeople.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testPeople.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -299,26 +319,6 @@ public class PeopleResourceIT {
         int databaseSizeBeforeTest = peopleRepository.findAll().size();
         // set the field null
         people.setSearchName(null);
-
-        // Create the People, which fails.
-        PeopleDTO peopleDTO = peopleMapper.toDto(people);
-
-
-        restPeopleMockMvc.perform(post("/api/people").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(peopleDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<People> peopleList = peopleRepository.findAll();
-        assertThat(peopleList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkGenderIsRequired() throws Exception {
-        int databaseSizeBeforeTest = peopleRepository.findAll().size();
-        // set the field null
-        people.setGender(null);
 
         // Create the People, which fails.
         PeopleDTO peopleDTO = peopleMapper.toDto(people);
@@ -475,6 +475,26 @@ public class PeopleResourceIT {
 
     @Test
     @Transactional
+    public void checkEmailAddressIsRequired() throws Exception {
+        int databaseSizeBeforeTest = peopleRepository.findAll().size();
+        // set the field null
+        people.setEmailAddress(null);
+
+        // Create the People, which fails.
+        PeopleDTO peopleDTO = peopleMapper.toDto(people);
+
+
+        restPeopleMockMvc.perform(post("/api/people").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(peopleDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<People> peopleList = peopleRepository.findAll();
+        assertThat(peopleList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void checkUserIdIsRequired() throws Exception {
         int databaseSizeBeforeTest = peopleRepository.findAll().size();
         // set the field null
@@ -499,26 +519,6 @@ public class PeopleResourceIT {
         int databaseSizeBeforeTest = peopleRepository.findAll().size();
         // set the field null
         people.setValidFrom(null);
-
-        // Create the People, which fails.
-        PeopleDTO peopleDTO = peopleMapper.toDto(people);
-
-
-        restPeopleMockMvc.perform(post("/api/people").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(peopleDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<People> peopleList = peopleRepository.findAll();
-        assertThat(peopleList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = peopleRepository.findAll().size();
-        // set the field null
-        people.setValidTo(null);
 
         // Create the People, which fails.
         PeopleDTO peopleDTO = peopleMapper.toDto(people);
@@ -563,10 +563,31 @@ public class PeopleResourceIT {
             .andExpect(jsonPath("$.[*].customFields").value(hasItem(DEFAULT_CUSTOM_FIELDS)))
             .andExpect(jsonPath("$.[*].otherLanguages").value(hasItem(DEFAULT_OTHER_LANGUAGES)))
             .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID)))
+            .andExpect(jsonPath("$.[*].profilePhoto").value(hasItem(DEFAULT_PROFILE_PHOTO)))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllPeopleWithEagerRelationshipsIsEnabled() throws Exception {
+        when(peopleServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restPeopleMockMvc.perform(get("/api/people?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(peopleServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllPeopleWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(peopleServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restPeopleMockMvc.perform(get("/api/people?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(peopleServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getPeople() throws Exception {
@@ -597,6 +618,7 @@ public class PeopleResourceIT {
             .andExpect(jsonPath("$.customFields").value(DEFAULT_CUSTOM_FIELDS))
             .andExpect(jsonPath("$.otherLanguages").value(DEFAULT_OTHER_LANGUAGES))
             .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID))
+            .andExpect(jsonPath("$.profilePhoto").value(DEFAULT_PROFILE_PHOTO))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -1871,6 +1893,84 @@ public class PeopleResourceIT {
 
     @Test
     @Transactional
+    public void getAllPeopleByProfilePhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        peopleRepository.saveAndFlush(people);
+
+        // Get all the peopleList where profilePhoto equals to DEFAULT_PROFILE_PHOTO
+        defaultPeopleShouldBeFound("profilePhoto.equals=" + DEFAULT_PROFILE_PHOTO);
+
+        // Get all the peopleList where profilePhoto equals to UPDATED_PROFILE_PHOTO
+        defaultPeopleShouldNotBeFound("profilePhoto.equals=" + UPDATED_PROFILE_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPeopleByProfilePhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        peopleRepository.saveAndFlush(people);
+
+        // Get all the peopleList where profilePhoto not equals to DEFAULT_PROFILE_PHOTO
+        defaultPeopleShouldNotBeFound("profilePhoto.notEquals=" + DEFAULT_PROFILE_PHOTO);
+
+        // Get all the peopleList where profilePhoto not equals to UPDATED_PROFILE_PHOTO
+        defaultPeopleShouldBeFound("profilePhoto.notEquals=" + UPDATED_PROFILE_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPeopleByProfilePhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        peopleRepository.saveAndFlush(people);
+
+        // Get all the peopleList where profilePhoto in DEFAULT_PROFILE_PHOTO or UPDATED_PROFILE_PHOTO
+        defaultPeopleShouldBeFound("profilePhoto.in=" + DEFAULT_PROFILE_PHOTO + "," + UPDATED_PROFILE_PHOTO);
+
+        // Get all the peopleList where profilePhoto equals to UPDATED_PROFILE_PHOTO
+        defaultPeopleShouldNotBeFound("profilePhoto.in=" + UPDATED_PROFILE_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPeopleByProfilePhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        peopleRepository.saveAndFlush(people);
+
+        // Get all the peopleList where profilePhoto is not null
+        defaultPeopleShouldBeFound("profilePhoto.specified=true");
+
+        // Get all the peopleList where profilePhoto is null
+        defaultPeopleShouldNotBeFound("profilePhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllPeopleByProfilePhotoContainsSomething() throws Exception {
+        // Initialize the database
+        peopleRepository.saveAndFlush(people);
+
+        // Get all the peopleList where profilePhoto contains DEFAULT_PROFILE_PHOTO
+        defaultPeopleShouldBeFound("profilePhoto.contains=" + DEFAULT_PROFILE_PHOTO);
+
+        // Get all the peopleList where profilePhoto contains UPDATED_PROFILE_PHOTO
+        defaultPeopleShouldNotBeFound("profilePhoto.contains=" + UPDATED_PROFILE_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllPeopleByProfilePhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        peopleRepository.saveAndFlush(people);
+
+        // Get all the peopleList where profilePhoto does not contain DEFAULT_PROFILE_PHOTO
+        defaultPeopleShouldNotBeFound("profilePhoto.doesNotContain=" + DEFAULT_PROFILE_PHOTO);
+
+        // Get all the peopleList where profilePhoto does not contain UPDATED_PROFILE_PHOTO
+        defaultPeopleShouldBeFound("profilePhoto.doesNotContain=" + UPDATED_PROFILE_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllPeopleByValidFromIsEqualToSomething() throws Exception {
         // Initialize the database
         peopleRepository.saveAndFlush(people);
@@ -1975,21 +2075,21 @@ public class PeopleResourceIT {
 
     @Test
     @Transactional
-    public void getAllPeopleByProfileIsEqualToSomething() throws Exception {
+    public void getAllPeopleBySupplierIsEqualToSomething() throws Exception {
         // Initialize the database
         peopleRepository.saveAndFlush(people);
-        Photos profile = PhotosResourceIT.createEntity(em);
-        em.persist(profile);
+        Suppliers supplier = SuppliersResourceIT.createEntity(em);
+        em.persist(supplier);
         em.flush();
-        people.setProfile(profile);
+        people.addSupplier(supplier);
         peopleRepository.saveAndFlush(people);
-        Long profileId = profile.getId();
+        Long supplierId = supplier.getId();
 
-        // Get all the peopleList where profile equals to profileId
-        defaultPeopleShouldBeFound("profileId.equals=" + profileId);
+        // Get all the peopleList where supplier equals to supplierId
+        defaultPeopleShouldBeFound("supplierId.equals=" + supplierId);
 
-        // Get all the peopleList where profile equals to profileId + 1
-        defaultPeopleShouldNotBeFound("profileId.equals=" + (profileId + 1));
+        // Get all the peopleList where supplier equals to supplierId + 1
+        defaultPeopleShouldNotBeFound("supplierId.equals=" + (supplierId + 1));
     }
 
 
@@ -2082,6 +2182,7 @@ public class PeopleResourceIT {
             .andExpect(jsonPath("$.[*].customFields").value(hasItem(DEFAULT_CUSTOM_FIELDS)))
             .andExpect(jsonPath("$.[*].otherLanguages").value(hasItem(DEFAULT_OTHER_LANGUAGES)))
             .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID)))
+            .andExpect(jsonPath("$.[*].profilePhoto").value(hasItem(DEFAULT_PROFILE_PHOTO)))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -2149,6 +2250,7 @@ public class PeopleResourceIT {
             .customFields(UPDATED_CUSTOM_FIELDS)
             .otherLanguages(UPDATED_OTHER_LANGUAGES)
             .userId(UPDATED_USER_ID)
+            .profilePhoto(UPDATED_PROFILE_PHOTO)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         PeopleDTO peopleDTO = peopleMapper.toDto(updatedPeople);
@@ -2181,6 +2283,7 @@ public class PeopleResourceIT {
         assertThat(testPeople.getCustomFields()).isEqualTo(UPDATED_CUSTOM_FIELDS);
         assertThat(testPeople.getOtherLanguages()).isEqualTo(UPDATED_OTHER_LANGUAGES);
         assertThat(testPeople.getUserId()).isEqualTo(UPDATED_USER_ID);
+        assertThat(testPeople.getProfilePhoto()).isEqualTo(UPDATED_PROFILE_PHOTO);
         assertThat(testPeople.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testPeople.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

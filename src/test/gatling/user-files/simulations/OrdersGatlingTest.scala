@@ -109,7 +109,7 @@ class OrdersGatlingTest extends Simulation {
                 , "totalVoucherDiscount":"0"
                 , "totalPromtionDiscount":"0"
                 , "totalDue":"0"
-                , "paymentStatus":"CASH_ON_DELIVERY"
+                , "paymentStatus":"PENDING"
                 , "customerPurchaseOrderNumber":"SAMPLE_TEXT"
                 , "status":"NEW_ORDER"
                 , "orderDetails":null

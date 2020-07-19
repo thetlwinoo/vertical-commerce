@@ -7,6 +7,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "cultureDetails",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
       "fieldName": "location",
       "fieldType": "String"
     },
@@ -21,20 +26,19 @@
     },
     {
       "fieldName": "validTo",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "stateProvinces",
+      "otherEntityName": "regions",
       "otherEntityRelationshipName": "cities",
-      "relationshipName": "stateProvince",
+      "relationshipName": "region",
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617154604",
+  "changelogDate": "20200718073012",
   "entityTableName": "cities",
   "dto": "mapstruct",
   "pagination": "no",

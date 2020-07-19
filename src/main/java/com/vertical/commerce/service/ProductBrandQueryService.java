@@ -103,16 +103,17 @@ public class ProductBrandQueryService extends QueryService<ProductBrand> {
             if (criteria.getIconFont() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getIconFont(), ProductBrand_.iconFont));
             }
-            if (criteria.getThumbnailUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), ProductBrand_.thumbnailUrl));
+            if (criteria.getIconPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getIconPhoto(), ProductBrand_.iconPhoto));
             }
-            if (criteria.getSupplierId() != null) {
-                specification = specification.and(buildSpecification(criteria.getSupplierId(),
-                    root -> root.join(ProductBrand_.supplier, JoinType.LEFT).get(Suppliers_.id)));
+            if (criteria.getActiveFlag() != null) {
+                specification = specification.and(buildSpecification(criteria.getActiveFlag(), ProductBrand_.activeFlag));
             }
-            if (criteria.getIconId() != null) {
-                specification = specification.and(buildSpecification(criteria.getIconId(),
-                    root -> root.join(ProductBrand_.icon, JoinType.LEFT).get(Photos_.id)));
+            if (criteria.getValidFrom() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), ProductBrand_.validFrom));
+            }
+            if (criteria.getValidTo() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidTo(), ProductBrand_.validTo));
             }
         }
         return specification;

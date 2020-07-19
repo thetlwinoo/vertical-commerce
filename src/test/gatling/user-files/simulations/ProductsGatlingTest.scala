@@ -102,22 +102,25 @@ class ProductsGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
+                , "cultureDetails":null
                 , "handle":"SAMPLE_TEXT"
                 , "searchDetails":"SAMPLE_TEXT"
                 , "productNumber":"SAMPLE_TEXT"
                 , "sellCount":"0"
                 , "productDetails":null
                 , "totalWishlist":"0"
-                , "totalStars":"0"
-                , "discountedPercentage":"0"
+                , "overallRating":"0"
                 , "preferredInd":null
-                , "availableDeliveryInd":null
-                , "activeInd":null
+                , "freeShippingInd":null
+                , "madeInMyanmarInd":null
                 , "questionsAboutProductInd":null
-                , "lastEditedBy":"SAMPLE_TEXT"
-                , "lastEditedWhen":"2020-01-01T00:00:00.000Z"
                 , "releaseDate":"2020-01-01T00:00:00.000Z"
                 , "availableDate":"2020-01-01T00:00:00.000Z"
+                , "activeFlag":null
+                , "lastEditedBy":"SAMPLE_TEXT"
+                , "lastEditedWhen":"2020-01-01T00:00:00.000Z"
+                , "validFrom":"2020-01-01T00:00:00.000Z"
+                , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_products_url"))).exitHereIfFailed

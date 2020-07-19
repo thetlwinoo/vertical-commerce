@@ -109,6 +109,7 @@ class BankAccountsGatlingTest extends Simulation {
                 , "bank":"SAMPLE_TEXT"
                 , "internationalCode":"SAMPLE_TEXT"
                 , "lastEditedBy":"SAMPLE_TEXT"
+                , "logoPhoto":"SAMPLE_TEXT"
                 , "validForm":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

@@ -91,8 +91,8 @@ public class CustomerPaymentBankTransferQueryService extends QueryService<Custom
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), CustomerPaymentBankTransfer_.id));
             }
-            if (criteria.getReceiptImageUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getReceiptImageUrl(), CustomerPaymentBankTransfer_.receiptImageUrl));
+            if (criteria.getReceiptPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getReceiptPhoto(), CustomerPaymentBankTransfer_.receiptPhoto));
             }
             if (criteria.getNameInBankAccount() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getNameInBankAccount(), CustomerPaymentBankTransfer_.nameInBankAccount));
@@ -103,8 +103,11 @@ public class CustomerPaymentBankTransferQueryService extends QueryService<Custom
             if (criteria.getAmountTransferred() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getAmountTransferred(), CustomerPaymentBankTransfer_.amountTransferred));
             }
-            if (criteria.getLastEdityBy() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getLastEdityBy(), CustomerPaymentBankTransfer_.lastEdityBy));
+            if (criteria.getBankName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getBankName(), CustomerPaymentBankTransfer_.bankName));
+            }
+            if (criteria.getLastEditedBy() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLastEditedBy(), CustomerPaymentBankTransfer_.lastEditedBy));
             }
             if (criteria.getLastEditedWhen() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastEditedWhen(), CustomerPaymentBankTransfer_.lastEditedWhen));

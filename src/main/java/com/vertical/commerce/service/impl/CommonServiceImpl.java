@@ -527,7 +527,8 @@ public class CommonServiceImpl implements CommonService {
     public Suppliers getSupplierByPrincipal(Principal principal) {
         People people = getPeopleByPrincipal(principal);
 
-        return suppliersExtendRepository.findSuppliersByPeopleId(people.getId());
+//        return suppliersExtendRepository.findSuppliersByPeopleId(people.getId());
+        return (Suppliers)people.getSuppliers().toArray()[0];
     }
 
     @Override
@@ -574,7 +575,7 @@ public class CommonServiceImpl implements CommonService {
             jsonObject.put("quantity",i.getQuantity());
             jsonObject.put("unitPrice",i.getStockItem().getUnitPrice());
             jsonObject.put("quantityOnHand",i.getStockItem().getQuantityOnHand());
-            jsonObject.put("photo",i.getStockItem().getThumbnailUrl());
+            jsonObject.put("photo",i.getStockItem().getThumbnailPhoto());
             cartItemList.add(jsonObject);
         }
         return cartItemList;
@@ -598,14 +599,14 @@ public class CommonServiceImpl implements CommonService {
                 JSONObject orderLineObject = new JSONObject();
                 orderLineObject.put("orderLineId",j.getId());
                 orderLineObject.put("stockItemName",j.getStockItem().getName());
-                orderLineObject.put("thumbnailUrl",j.getStockItem().getThumbnailUrl());
+                orderLineObject.put("imageBlob",j.getStockItem().getThumbnailPhoto());
                 orderLineObject.put("quantity",j.getQuantity());
                 orderLineObject.put("unitPrice",j.getStockItem().getUnitPrice());
-
-                if(j.getReviewImage() != null){
-                    orderLineObject.put("reviewImageId",j.getReviewImage().getId());
-                    orderLineObject.put("reviewImageThumbnailUrl",j.getReviewImage().getThumbnailUrl());
-                }
+                orderLineObject.put("reviewPhoto",j.getReviewPhoto());
+//                if(j.getReviewImage() != null){
+//                    orderLineObject.put("reviewImageId",j.getReviewImage().getId());
+//                    orderLineObject.put("reviewImageThumbnailUrl",j.getReviewImage().getThumbnailUrl());
+//                }
 
                 if(j.getLineRating() != null){
                     orderLineObject.put("lineRating",j.getLineRating());

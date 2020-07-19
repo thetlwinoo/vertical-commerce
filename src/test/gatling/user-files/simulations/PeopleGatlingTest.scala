@@ -120,6 +120,7 @@ class PeopleGatlingTest extends Simulation {
                 , "customFields":"SAMPLE_TEXT"
                 , "otherLanguages":"SAMPLE_TEXT"
                 , "userId":"SAMPLE_TEXT"
+                , "profilePhoto":"SAMPLE_TEXT"
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

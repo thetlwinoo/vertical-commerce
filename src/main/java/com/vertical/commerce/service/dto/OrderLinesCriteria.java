@@ -63,9 +63,11 @@ public class OrderLinesCriteria implements Serializable, Criteria {
 
     private OrderLineStatusFilter status;
 
-    private StringFilter thumbnailUrl;
-
     private IntegerFilter lineRating;
+
+    private StringFilter stockItemPhoto;
+
+    private StringFilter reviewPhoto;
 
     private InstantFilter customerReviewedOn;
 
@@ -80,8 +82,6 @@ public class OrderLinesCriteria implements Serializable, Criteria {
     private LongFilter stockItemId;
 
     private LongFilter packageTypeId;
-
-    private LongFilter reviewImageId;
 
     private LongFilter supplierId;
 
@@ -100,8 +100,9 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         this.pickedQuantity = other.pickedQuantity == null ? null : other.pickedQuantity.copy();
         this.pickingCompletedWhen = other.pickingCompletedWhen == null ? null : other.pickingCompletedWhen.copy();
         this.status = other.status == null ? null : other.status.copy();
-        this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
         this.lineRating = other.lineRating == null ? null : other.lineRating.copy();
+        this.stockItemPhoto = other.stockItemPhoto == null ? null : other.stockItemPhoto.copy();
+        this.reviewPhoto = other.reviewPhoto == null ? null : other.reviewPhoto.copy();
         this.customerReviewedOn = other.customerReviewedOn == null ? null : other.customerReviewedOn.copy();
         this.supplierResponseOn = other.supplierResponseOn == null ? null : other.supplierResponseOn.copy();
         this.likeCount = other.likeCount == null ? null : other.likeCount.copy();
@@ -109,7 +110,6 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
         this.stockItemId = other.stockItemId == null ? null : other.stockItemId.copy();
         this.packageTypeId = other.packageTypeId == null ? null : other.packageTypeId.copy();
-        this.reviewImageId = other.reviewImageId == null ? null : other.reviewImageId.copy();
         this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
         this.orderPackageId = other.orderPackageId == null ? null : other.orderPackageId.copy();
     }
@@ -191,20 +191,28 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         this.status = status;
     }
 
-    public StringFilter getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(StringFilter thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
     public IntegerFilter getLineRating() {
         return lineRating;
     }
 
     public void setLineRating(IntegerFilter lineRating) {
         this.lineRating = lineRating;
+    }
+
+    public StringFilter getStockItemPhoto() {
+        return stockItemPhoto;
+    }
+
+    public void setStockItemPhoto(StringFilter stockItemPhoto) {
+        this.stockItemPhoto = stockItemPhoto;
+    }
+
+    public StringFilter getReviewPhoto() {
+        return reviewPhoto;
+    }
+
+    public void setReviewPhoto(StringFilter reviewPhoto) {
+        this.reviewPhoto = reviewPhoto;
     }
 
     public InstantFilter getCustomerReviewedOn() {
@@ -263,14 +271,6 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         this.packageTypeId = packageTypeId;
     }
 
-    public LongFilter getReviewImageId() {
-        return reviewImageId;
-    }
-
-    public void setReviewImageId(LongFilter reviewImageId) {
-        this.reviewImageId = reviewImageId;
-    }
-
     public LongFilter getSupplierId() {
         return supplierId;
     }
@@ -307,8 +307,9 @@ public class OrderLinesCriteria implements Serializable, Criteria {
             Objects.equals(pickedQuantity, that.pickedQuantity) &&
             Objects.equals(pickingCompletedWhen, that.pickingCompletedWhen) &&
             Objects.equals(status, that.status) &&
-            Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
             Objects.equals(lineRating, that.lineRating) &&
+            Objects.equals(stockItemPhoto, that.stockItemPhoto) &&
+            Objects.equals(reviewPhoto, that.reviewPhoto) &&
             Objects.equals(customerReviewedOn, that.customerReviewedOn) &&
             Objects.equals(supplierResponseOn, that.supplierResponseOn) &&
             Objects.equals(likeCount, that.likeCount) &&
@@ -316,7 +317,6 @@ public class OrderLinesCriteria implements Serializable, Criteria {
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
             Objects.equals(stockItemId, that.stockItemId) &&
             Objects.equals(packageTypeId, that.packageTypeId) &&
-            Objects.equals(reviewImageId, that.reviewImageId) &&
             Objects.equals(supplierId, that.supplierId) &&
             Objects.equals(orderPackageId, that.orderPackageId);
     }
@@ -333,8 +333,9 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         pickedQuantity,
         pickingCompletedWhen,
         status,
-        thumbnailUrl,
         lineRating,
+        stockItemPhoto,
+        reviewPhoto,
         customerReviewedOn,
         supplierResponseOn,
         likeCount,
@@ -342,7 +343,6 @@ public class OrderLinesCriteria implements Serializable, Criteria {
         lastEditedWhen,
         stockItemId,
         packageTypeId,
-        reviewImageId,
         supplierId,
         orderPackageId
         );
@@ -361,8 +361,9 @@ public class OrderLinesCriteria implements Serializable, Criteria {
                 (pickedQuantity != null ? "pickedQuantity=" + pickedQuantity + ", " : "") +
                 (pickingCompletedWhen != null ? "pickingCompletedWhen=" + pickingCompletedWhen + ", " : "") +
                 (status != null ? "status=" + status + ", " : "") +
-                (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
                 (lineRating != null ? "lineRating=" + lineRating + ", " : "") +
+                (stockItemPhoto != null ? "stockItemPhoto=" + stockItemPhoto + ", " : "") +
+                (reviewPhoto != null ? "reviewPhoto=" + reviewPhoto + ", " : "") +
                 (customerReviewedOn != null ? "customerReviewedOn=" + customerReviewedOn + ", " : "") +
                 (supplierResponseOn != null ? "supplierResponseOn=" + supplierResponseOn + ", " : "") +
                 (likeCount != null ? "likeCount=" + likeCount + ", " : "") +
@@ -370,7 +371,6 @@ public class OrderLinesCriteria implements Serializable, Criteria {
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
                 (stockItemId != null ? "stockItemId=" + stockItemId + ", " : "") +
                 (packageTypeId != null ? "packageTypeId=" + packageTypeId + ", " : "") +
-                (reviewImageId != null ? "reviewImageId=" + reviewImageId + ", " : "") +
                 (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
                 (orderPackageId != null ? "orderPackageId=" + orderPackageId + ", " : "") +
             "}";

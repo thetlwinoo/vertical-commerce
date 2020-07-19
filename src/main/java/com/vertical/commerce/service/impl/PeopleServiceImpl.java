@@ -8,6 +8,8 @@ import com.vertical.commerce.service.mapper.PeopleMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,11 +60,20 @@ public class PeopleServiceImpl implements PeopleService {
     @Transactional(readOnly = true)
     public List<PeopleDTO> findAll() {
         log.debug("Request to get all People");
-        return peopleRepository.findAll().stream()
+        return peopleRepository.findAllWithEagerRelationships().stream()
             .map(peopleMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
+    /**
+     * Get all the people with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<PeopleDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return peopleRepository.findAllWithEagerRelationships(pageable).map(peopleMapper::toDto);
+    }
 
 
     /**
@@ -119,7 +130,7 @@ public class PeopleServiceImpl implements PeopleService {
     @Transactional(readOnly = true)
     public Optional<PeopleDTO> findOne(Long id) {
         log.debug("Request to get People : {}", id);
-        return peopleRepository.findById(id)
+        return peopleRepository.findOneWithEagerRelationships(id)
             .map(peopleMapper::toDto);
     }
 

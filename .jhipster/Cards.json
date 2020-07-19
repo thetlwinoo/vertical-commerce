@@ -11,7 +11,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200617161404",
+  "changelogDate": "20200718080412",
   "entityTableName": "cards",
   "dto": "mapstruct",
   "pagination": "no",

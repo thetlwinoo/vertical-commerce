@@ -17,7 +17,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617170004",
+  "changelogDate": "20200718085612",
   "entityTableName": "compare_lines",
   "dto": "mapstruct",
   "pagination": "no",

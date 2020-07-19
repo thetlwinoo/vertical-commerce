@@ -27,8 +27,8 @@ public class CustomerPaymentBankTransfer implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "receipt_image_url", nullable = false)
-    private String receiptImageUrl;
+    @Column(name = "receipt_photo", nullable = false)
+    private String receiptPhoto;
 
     @NotNull
     @Column(name = "name_in_bank_account", nullable = false)
@@ -42,9 +42,12 @@ public class CustomerPaymentBankTransfer implements Serializable {
     @Column(name = "amount_transferred", precision = 21, scale = 2, nullable = false)
     private BigDecimal amountTransferred;
 
+    @Column(name = "bank_name")
+    private String bankName;
+
     @NotNull
-    @Column(name = "last_edity_by", nullable = false)
-    private String lastEdityBy;
+    @Column(name = "last_edited_by", nullable = false)
+    private String lastEditedBy;
 
     @NotNull
     @Column(name = "last_edited_when", nullable = false)
@@ -67,17 +70,17 @@ public class CustomerPaymentBankTransfer implements Serializable {
         this.id = id;
     }
 
-    public String getReceiptImageUrl() {
-        return receiptImageUrl;
+    public String getReceiptPhoto() {
+        return receiptPhoto;
     }
 
-    public CustomerPaymentBankTransfer receiptImageUrl(String receiptImageUrl) {
-        this.receiptImageUrl = receiptImageUrl;
+    public CustomerPaymentBankTransfer receiptPhoto(String receiptPhoto) {
+        this.receiptPhoto = receiptPhoto;
         return this;
     }
 
-    public void setReceiptImageUrl(String receiptImageUrl) {
-        this.receiptImageUrl = receiptImageUrl;
+    public void setReceiptPhoto(String receiptPhoto) {
+        this.receiptPhoto = receiptPhoto;
     }
 
     public String getNameInBankAccount() {
@@ -119,17 +122,30 @@ public class CustomerPaymentBankTransfer implements Serializable {
         this.amountTransferred = amountTransferred;
     }
 
-    public String getLastEdityBy() {
-        return lastEdityBy;
+    public String getBankName() {
+        return bankName;
     }
 
-    public CustomerPaymentBankTransfer lastEdityBy(String lastEdityBy) {
-        this.lastEdityBy = lastEdityBy;
+    public CustomerPaymentBankTransfer bankName(String bankName) {
+        this.bankName = bankName;
         return this;
     }
 
-    public void setLastEdityBy(String lastEdityBy) {
-        this.lastEdityBy = lastEdityBy;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getLastEditedBy() {
+        return lastEditedBy;
+    }
+
+    public CustomerPaymentBankTransfer lastEditedBy(String lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
+        return this;
+    }
+
+    public void setLastEditedBy(String lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
     }
 
     public Instant getLastEditedWhen() {
@@ -193,11 +209,12 @@ public class CustomerPaymentBankTransfer implements Serializable {
     public String toString() {
         return "CustomerPaymentBankTransfer{" +
             "id=" + getId() +
-            ", receiptImageUrl='" + getReceiptImageUrl() + "'" +
+            ", receiptPhoto='" + getReceiptPhoto() + "'" +
             ", nameInBankAccount='" + getNameInBankAccount() + "'" +
             ", dateOfTransfer='" + getDateOfTransfer() + "'" +
             ", amountTransferred=" + getAmountTransferred() +
-            ", lastEdityBy='" + getLastEdityBy() + "'" +
+            ", bankName='" + getBankName() + "'" +
+            ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             "}";
     }

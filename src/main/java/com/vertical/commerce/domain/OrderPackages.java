@@ -32,6 +32,12 @@ public class OrderPackages implements Serializable {
     @Column(name = "expected_delivery_date")
     private Instant expectedDeliveryDate;
 
+    @Column(name = "order_placed_on")
+    private Instant orderPlacedOn;
+
+    @Column(name = "order_delivered_on")
+    private Instant orderDeliveredOn;
+
     @Column(name = "comments")
     private String comments;
 
@@ -143,6 +149,32 @@ public class OrderPackages implements Serializable {
 
     public void setExpectedDeliveryDate(Instant expectedDeliveryDate) {
         this.expectedDeliveryDate = expectedDeliveryDate;
+    }
+
+    public Instant getOrderPlacedOn() {
+        return orderPlacedOn;
+    }
+
+    public OrderPackages orderPlacedOn(Instant orderPlacedOn) {
+        this.orderPlacedOn = orderPlacedOn;
+        return this;
+    }
+
+    public void setOrderPlacedOn(Instant orderPlacedOn) {
+        this.orderPlacedOn = orderPlacedOn;
+    }
+
+    public Instant getOrderDeliveredOn() {
+        return orderDeliveredOn;
+    }
+
+    public OrderPackages orderDeliveredOn(Instant orderDeliveredOn) {
+        this.orderDeliveredOn = orderDeliveredOn;
+        return this;
+    }
+
+    public void setOrderDeliveredOn(Instant orderDeliveredOn) {
+        this.orderDeliveredOn = orderDeliveredOn;
     }
 
     public String getComments() {
@@ -518,6 +550,8 @@ public class OrderPackages implements Serializable {
         return "OrderPackages{" +
             "id=" + getId() +
             ", expectedDeliveryDate='" + getExpectedDeliveryDate() + "'" +
+            ", orderPlacedOn='" + getOrderPlacedOn() + "'" +
+            ", orderDeliveredOn='" + getOrderDeliveredOn() + "'" +
             ", comments='" + getComments() + "'" +
             ", deliveryInstructions='" + getDeliveryInstructions() + "'" +
             ", internalComments='" + getInternalComments() + "'" +

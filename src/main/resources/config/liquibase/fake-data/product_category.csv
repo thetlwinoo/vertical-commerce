@@ -1,11 +1,11 @@
-id;name;short_label;sort_order;icon_font;just_for_you_ind;show_in_nav_ind;active_ind
-1;firmware;Liaison compress proactive;97402;Pennsylvania Tasty Frozen Sausages;true;true;true
-2;cross-platform Salad Clothing;Bike e-tailers;18153;Granite;false;false;false
-3;Idaho Avon sky blue;collaboration connecting Avenue;54731;Checking Account Fresh Branding;false;false;false
-4;Georgia Berkshire bypass;application Sports driver;14485;Utah Savings Account Dynamic;false;true;false
-5;New Jersey quantifying bus;Health;90186;transmit vertical bandwidth;false;false;true
-6;Marshall Islands;Corporate Ohio;10167;Guernsey;true;false;false
-7;copy;SDD Sudan;69932;content olive;false;true;false
-8;Moldova Mississippi Buckinghamshire;calculate standardization Cambridgeshire;34919;markets infomediaries;true;false;true
-9;TCP;Checking Account Interactions Fundamental;97070;haptic Coordinator;true;true;false
-10;programming calculate;Sri Lanka invoice parsing;65406;Pants Refined Rubber Computer efficient;true;true;true
+id;name;culture_details;short_label;sort_order;icon_font;icon_photo;just_for_you_ind;show_in_nav_ind;valid_from;valid_to
+1;firmware;../fake-data/blob/hipster.txt;Liaison compress proactive;97402;Pennsylvania Tasty Frozen Sausages;capacitor Data orchestrate;true;false;2020-07-17T16:20:18;2020-07-17T17:50:55
+2;Monitored;../fake-data/blob/hipster.txt;Chair;14407;Ergonomic Cotton Pizza Idaho;Intelligent Granite Fish collaboration;true;true;2020-07-17T21:35:51;2020-07-18T08:31:29
+3;Balboa US Dollar Games;../fake-data/blob/hipster.txt;Branding Chair Seamless;57808;Berkshire;Licensed Plastic Car Sports driver;false;true;2020-07-17T19:10:48;2020-07-17T11:39:31
+4;Universal Iraqi Dinar;../fake-data/blob/hipster.txt;Clothing New Jersey;81848;bus Advanced;Human transmit;false;false;2020-07-17T22:11:38;2020-07-17T16:40:50
+5;relationships;../fake-data/blob/hipster.txt;Marshall Islands;53428;Soap Brunei Dollar sky blue;Tactics Movies;true;false;2020-07-17T23:52:09;2020-07-17T11:25:06
+6;Sudan;../fake-data/blob/hipster.txt;technologies eyeballs withdrawal;64525;Mauritius Rupee;Mississippi Buckinghamshire;true;true;2020-07-17T18:02:07;2020-07-18T01:00:28
+7;Cambridgeshire bleeding-edge markets;../fake-data/blob/hipster.txt;Leone radical;27160;Sports Checking Account Interactions;holistic;true;true;2020-07-17T20:40:32;2020-07-17T08:54:49
+8;transmitter Mill;../fake-data/blob/hipster.txt;USB invoice Sri Lanka;65058;parsing invoice Pants;generating;false;false;2020-07-17T19:11:47;2020-07-17T10:03:36
+9;payment indigo Soft;../fake-data/blob/hipster.txt;optical Global deposit;29334;haptic;Drive United States Minor Outlying Islands;false;false;2020-07-18T04:27:38;2020-07-17T10:40:17
+10;cross-media firewall compress;../fake-data/blob/hipster.txt;incubate Cambridgeshire;54598;orange Angola;blue;true;false;2020-07-18T03:18:30;2020-07-17T20:04:16

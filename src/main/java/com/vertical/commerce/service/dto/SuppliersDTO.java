@@ -28,7 +28,6 @@ public class SuppliersDTO implements Serializable {
 
     private String bankInternationalCode;
 
-    @NotNull
     private Integer paymentDays;
 
     private String internalComments;
@@ -36,30 +35,45 @@ public class SuppliersDTO implements Serializable {
     @NotNull
     private String phoneNumber;
 
+    private String emailAddress;
+
+    private String nric;
+
+    private String companyRegistrationNo;
+
     private String faxNumber;
 
-    private String websiteURL;
+    private String websiteUrl;
 
     private String webServiceUrl;
 
     private Integer creditRating;
 
+    private Boolean officialStoreInd;
+
+    private String storeName;
+
+    private String logo;
+
+    private String nricFrontPhoto;
+
+    private String nricBackPhoto;
+
+    @NotNull
+    private String bankBookPhoto;
+
+    private String companyRegistrationPhoto;
+
+    private String distributorCertificatePhoto;
+
+    @NotNull
     private Boolean activeFlag;
-
-    private String thumbnailUrl;
-
-    private Boolean pickupSameAsHeadOffice;
 
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
-
-    private Long peopleId;
-
-    private String peopleFullName;
 
     private Long supplierCategoryId;
 
@@ -68,6 +82,12 @@ public class SuppliersDTO implements Serializable {
     private Long pickupAddressId;
 
     private Long headOfficeAddressId;
+
+    private Long returnAddressId;
+
+    private Long contactPersonId;
+
+    private String contactPersonFullName;
     private Set<DeliveryMethodsDTO> deliveryMethods = new HashSet<>();
     
     public Long getId() {
@@ -158,6 +178,30 @@ public class SuppliersDTO implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getNric() {
+        return nric;
+    }
+
+    public void setNric(String nric) {
+        this.nric = nric;
+    }
+
+    public String getCompanyRegistrationNo() {
+        return companyRegistrationNo;
+    }
+
+    public void setCompanyRegistrationNo(String companyRegistrationNo) {
+        this.companyRegistrationNo = companyRegistrationNo;
+    }
+
     public String getFaxNumber() {
         return faxNumber;
     }
@@ -166,12 +210,12 @@ public class SuppliersDTO implements Serializable {
         this.faxNumber = faxNumber;
     }
 
-    public String getWebsiteURL() {
-        return websiteURL;
+    public String getWebsiteUrl() {
+        return websiteUrl;
     }
 
-    public void setWebsiteURL(String websiteURL) {
-        this.websiteURL = websiteURL;
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
     }
 
     public String getWebServiceUrl() {
@@ -190,28 +234,76 @@ public class SuppliersDTO implements Serializable {
         this.creditRating = creditRating;
     }
 
+    public Boolean isOfficialStoreInd() {
+        return officialStoreInd;
+    }
+
+    public void setOfficialStoreInd(Boolean officialStoreInd) {
+        this.officialStoreInd = officialStoreInd;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getNricFrontPhoto() {
+        return nricFrontPhoto;
+    }
+
+    public void setNricFrontPhoto(String nricFrontPhoto) {
+        this.nricFrontPhoto = nricFrontPhoto;
+    }
+
+    public String getNricBackPhoto() {
+        return nricBackPhoto;
+    }
+
+    public void setNricBackPhoto(String nricBackPhoto) {
+        this.nricBackPhoto = nricBackPhoto;
+    }
+
+    public String getBankBookPhoto() {
+        return bankBookPhoto;
+    }
+
+    public void setBankBookPhoto(String bankBookPhoto) {
+        this.bankBookPhoto = bankBookPhoto;
+    }
+
+    public String getCompanyRegistrationPhoto() {
+        return companyRegistrationPhoto;
+    }
+
+    public void setCompanyRegistrationPhoto(String companyRegistrationPhoto) {
+        this.companyRegistrationPhoto = companyRegistrationPhoto;
+    }
+
+    public String getDistributorCertificatePhoto() {
+        return distributorCertificatePhoto;
+    }
+
+    public void setDistributorCertificatePhoto(String distributorCertificatePhoto) {
+        this.distributorCertificatePhoto = distributorCertificatePhoto;
+    }
+
     public Boolean isActiveFlag() {
         return activeFlag;
     }
 
     public void setActiveFlag(Boolean activeFlag) {
         this.activeFlag = activeFlag;
-    }
-
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public Boolean isPickupSameAsHeadOffice() {
-        return pickupSameAsHeadOffice;
-    }
-
-    public void setPickupSameAsHeadOffice(Boolean pickupSameAsHeadOffice) {
-        this.pickupSameAsHeadOffice = pickupSameAsHeadOffice;
     }
 
     public Instant getValidFrom() {
@@ -228,22 +320,6 @@ public class SuppliersDTO implements Serializable {
 
     public void setValidTo(Instant validTo) {
         this.validTo = validTo;
-    }
-
-    public Long getPeopleId() {
-        return peopleId;
-    }
-
-    public void setPeopleId(Long peopleId) {
-        this.peopleId = peopleId;
-    }
-
-    public String getPeopleFullName() {
-        return peopleFullName;
-    }
-
-    public void setPeopleFullName(String peopleFullName) {
-        this.peopleFullName = peopleFullName;
     }
 
     public Long getSupplierCategoryId() {
@@ -276,6 +352,30 @@ public class SuppliersDTO implements Serializable {
 
     public void setHeadOfficeAddressId(Long addressesId) {
         this.headOfficeAddressId = addressesId;
+    }
+
+    public Long getReturnAddressId() {
+        return returnAddressId;
+    }
+
+    public void setReturnAddressId(Long addressesId) {
+        this.returnAddressId = addressesId;
+    }
+
+    public Long getContactPersonId() {
+        return contactPersonId;
+    }
+
+    public void setContactPersonId(Long peopleId) {
+        this.contactPersonId = peopleId;
+    }
+
+    public String getContactPersonFullName() {
+        return contactPersonFullName;
+    }
+
+    public void setContactPersonFullName(String peopleFullName) {
+        this.contactPersonFullName = peopleFullName;
     }
 
     public Set<DeliveryMethodsDTO> getDeliveryMethods() {
@@ -318,21 +418,31 @@ public class SuppliersDTO implements Serializable {
             ", paymentDays=" + getPaymentDays() +
             ", internalComments='" + getInternalComments() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", emailAddress='" + getEmailAddress() + "'" +
+            ", nric='" + getNric() + "'" +
+            ", companyRegistrationNo='" + getCompanyRegistrationNo() + "'" +
             ", faxNumber='" + getFaxNumber() + "'" +
-            ", websiteURL='" + getWebsiteURL() + "'" +
+            ", websiteUrl='" + getWebsiteUrl() + "'" +
             ", webServiceUrl='" + getWebServiceUrl() + "'" +
             ", creditRating=" + getCreditRating() +
+            ", officialStoreInd='" + isOfficialStoreInd() + "'" +
+            ", storeName='" + getStoreName() + "'" +
+            ", logo='" + getLogo() + "'" +
+            ", nricFrontPhoto='" + getNricFrontPhoto() + "'" +
+            ", nricBackPhoto='" + getNricBackPhoto() + "'" +
+            ", bankBookPhoto='" + getBankBookPhoto() + "'" +
+            ", companyRegistrationPhoto='" + getCompanyRegistrationPhoto() + "'" +
+            ", distributorCertificatePhoto='" + getDistributorCertificatePhoto() + "'" +
             ", activeFlag='" + isActiveFlag() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
-            ", pickupSameAsHeadOffice='" + isPickupSameAsHeadOffice() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
-            ", peopleId=" + getPeopleId() +
-            ", peopleFullName='" + getPeopleFullName() + "'" +
             ", supplierCategoryId=" + getSupplierCategoryId() +
             ", supplierCategoryName='" + getSupplierCategoryName() + "'" +
             ", pickupAddressId=" + getPickupAddressId() +
             ", headOfficeAddressId=" + getHeadOfficeAddressId() +
+            ", returnAddressId=" + getReturnAddressId() +
+            ", contactPersonId=" + getContactPersonId() +
+            ", contactPersonFullName='" + getContactPersonFullName() + "'" +
             ", deliveryMethods='" + getDeliveryMethods() + "'" +
             "}";
     }

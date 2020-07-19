@@ -56,9 +56,6 @@ public class OrderLines implements Serializable {
     @Column(name = "status", nullable = false)
     private OrderLineStatus status;
 
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
-
     @Column(name = "line_rating")
     private Integer lineRating;
 
@@ -66,6 +63,12 @@ public class OrderLines implements Serializable {
     @Type(type = "org.hibernate.type.TextType")
     @Column(name = "line_review")
     private String lineReview;
+
+    @Column(name = "stock_item_photo")
+    private String stockItemPhoto;
+
+    @Column(name = "review_photo")
+    private String reviewPhoto;
 
     @Column(name = "customer_reviewed_on")
     private Instant customerReviewedOn;
@@ -96,10 +99,6 @@ public class OrderLines implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "orderLines", allowSetters = true)
     private PackageTypes packageType;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "orderLines", allowSetters = true)
-    private Photos reviewImage;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "orderLines", allowSetters = true)
@@ -222,19 +221,6 @@ public class OrderLines implements Serializable {
         this.status = status;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public OrderLines thumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-        return this;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
     public Integer getLineRating() {
         return lineRating;
     }
@@ -259,6 +245,32 @@ public class OrderLines implements Serializable {
 
     public void setLineReview(String lineReview) {
         this.lineReview = lineReview;
+    }
+
+    public String getStockItemPhoto() {
+        return stockItemPhoto;
+    }
+
+    public OrderLines stockItemPhoto(String stockItemPhoto) {
+        this.stockItemPhoto = stockItemPhoto;
+        return this;
+    }
+
+    public void setStockItemPhoto(String stockItemPhoto) {
+        this.stockItemPhoto = stockItemPhoto;
+    }
+
+    public String getReviewPhoto() {
+        return reviewPhoto;
+    }
+
+    public OrderLines reviewPhoto(String reviewPhoto) {
+        this.reviewPhoto = reviewPhoto;
+        return this;
+    }
+
+    public void setReviewPhoto(String reviewPhoto) {
+        this.reviewPhoto = reviewPhoto;
     }
 
     public Instant getCustomerReviewedOn() {
@@ -365,19 +377,6 @@ public class OrderLines implements Serializable {
         this.packageType = packageTypes;
     }
 
-    public Photos getReviewImage() {
-        return reviewImage;
-    }
-
-    public OrderLines reviewImage(Photos photos) {
-        this.reviewImage = photos;
-        return this;
-    }
-
-    public void setReviewImage(Photos photos) {
-        this.reviewImage = photos;
-    }
-
     public Suppliers getSupplier() {
         return supplier;
     }
@@ -434,9 +433,10 @@ public class OrderLines implements Serializable {
             ", pickedQuantity=" + getPickedQuantity() +
             ", pickingCompletedWhen='" + getPickingCompletedWhen() + "'" +
             ", status='" + getStatus() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
             ", lineRating=" + getLineRating() +
             ", lineReview='" + getLineReview() + "'" +
+            ", stockItemPhoto='" + getStockItemPhoto() + "'" +
+            ", reviewPhoto='" + getReviewPhoto() + "'" +
             ", customerReviewedOn='" + getCustomerReviewedOn() + "'" +
             ", supplierResponse='" + getSupplierResponse() + "'" +
             ", supplierResponseOn='" + getSupplierResponseOn() + "'" +

@@ -15,6 +15,10 @@ public class OrderPackagesDTO implements Serializable {
 
     private Instant expectedDeliveryDate;
 
+    private Instant orderPlacedOn;
+
+    private Instant orderDeliveredOn;
+
     private String comments;
 
     private String deliveryInstructions;
@@ -89,6 +93,22 @@ public class OrderPackagesDTO implements Serializable {
 
     public void setExpectedDeliveryDate(Instant expectedDeliveryDate) {
         this.expectedDeliveryDate = expectedDeliveryDate;
+    }
+
+    public Instant getOrderPlacedOn() {
+        return orderPlacedOn;
+    }
+
+    public void setOrderPlacedOn(Instant orderPlacedOn) {
+        this.orderPlacedOn = orderPlacedOn;
+    }
+
+    public Instant getOrderDeliveredOn() {
+        return orderDeliveredOn;
+    }
+
+    public void setOrderDeliveredOn(Instant orderDeliveredOn) {
+        this.orderDeliveredOn = orderDeliveredOn;
     }
 
     public String getComments() {
@@ -330,6 +350,8 @@ public class OrderPackagesDTO implements Serializable {
         return "OrderPackagesDTO{" +
             "id=" + getId() +
             ", expectedDeliveryDate='" + getExpectedDeliveryDate() + "'" +
+            ", orderPlacedOn='" + getOrderPlacedOn() + "'" +
+            ", orderDeliveredOn='" + getOrderDeliveredOn() + "'" +
             ", comments='" + getComments() + "'" +
             ", deliveryInstructions='" + getDeliveryInstructions() + "'" +
             ", internalComments='" + getInternalComments() + "'" +

@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -44,6 +45,9 @@ public class StateProvincesResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
 
     private static final String DEFAULT_SALES_TERRITORY = "AAAAAAAAAA";
     private static final String UPDATED_SALES_TERRITORY = "BBBBBBBBBB";
@@ -91,6 +95,7 @@ public class StateProvincesResourceIT {
         StateProvinces stateProvinces = new StateProvinces()
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
+            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .salesTerritory(DEFAULT_SALES_TERRITORY)
             .border(DEFAULT_BORDER)
             .latestRecordedPopulation(DEFAULT_LATEST_RECORDED_POPULATION)
@@ -108,6 +113,7 @@ public class StateProvincesResourceIT {
         StateProvinces stateProvinces = new StateProvinces()
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .salesTerritory(UPDATED_SALES_TERRITORY)
             .border(UPDATED_BORDER)
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
@@ -138,6 +144,7 @@ public class StateProvincesResourceIT {
         StateProvinces testStateProvinces = stateProvincesList.get(stateProvincesList.size() - 1);
         assertThat(testStateProvinces.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testStateProvinces.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testStateProvinces.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testStateProvinces.getSalesTerritory()).isEqualTo(DEFAULT_SALES_TERRITORY);
         assertThat(testStateProvinces.getBorder()).isEqualTo(DEFAULT_BORDER);
         assertThat(testStateProvinces.getLatestRecordedPopulation()).isEqualTo(DEFAULT_LATEST_RECORDED_POPULATION);
@@ -208,50 +215,10 @@ public class StateProvincesResourceIT {
 
     @Test
     @Transactional
-    public void checkSalesTerritoryIsRequired() throws Exception {
-        int databaseSizeBeforeTest = stateProvincesRepository.findAll().size();
-        // set the field null
-        stateProvinces.setSalesTerritory(null);
-
-        // Create the StateProvinces, which fails.
-        StateProvincesDTO stateProvincesDTO = stateProvincesMapper.toDto(stateProvinces);
-
-
-        restStateProvincesMockMvc.perform(post("/api/state-provinces").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(stateProvincesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<StateProvinces> stateProvincesList = stateProvincesRepository.findAll();
-        assertThat(stateProvincesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkValidFromIsRequired() throws Exception {
         int databaseSizeBeforeTest = stateProvincesRepository.findAll().size();
         // set the field null
         stateProvinces.setValidFrom(null);
-
-        // Create the StateProvinces, which fails.
-        StateProvincesDTO stateProvincesDTO = stateProvincesMapper.toDto(stateProvinces);
-
-
-        restStateProvincesMockMvc.perform(post("/api/state-provinces").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(stateProvincesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<StateProvinces> stateProvincesList = stateProvincesRepository.findAll();
-        assertThat(stateProvincesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = stateProvincesRepository.findAll().size();
-        // set the field null
-        stateProvinces.setValidTo(null);
 
         // Create the StateProvinces, which fails.
         StateProvincesDTO stateProvincesDTO = stateProvincesMapper.toDto(stateProvinces);
@@ -279,6 +246,7 @@ public class StateProvincesResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(stateProvinces.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].salesTerritory").value(hasItem(DEFAULT_SALES_TERRITORY)))
             .andExpect(jsonPath("$.[*].border").value(hasItem(DEFAULT_BORDER)))
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
@@ -299,6 +267,7 @@ public class StateProvincesResourceIT {
             .andExpect(jsonPath("$.id").value(stateProvinces.getId().intValue()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.salesTerritory").value(DEFAULT_SALES_TERRITORY))
             .andExpect(jsonPath("$.border").value(DEFAULT_BORDER))
             .andExpect(jsonPath("$.latestRecordedPopulation").value(DEFAULT_LATEST_RECORDED_POPULATION.intValue()))
@@ -876,6 +845,7 @@ public class StateProvincesResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(stateProvinces.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].salesTerritory").value(hasItem(DEFAULT_SALES_TERRITORY)))
             .andExpect(jsonPath("$.[*].border").value(hasItem(DEFAULT_BORDER)))
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
@@ -929,6 +899,7 @@ public class StateProvincesResourceIT {
         updatedStateProvinces
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .salesTerritory(UPDATED_SALES_TERRITORY)
             .border(UPDATED_BORDER)
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
@@ -947,6 +918,7 @@ public class StateProvincesResourceIT {
         StateProvinces testStateProvinces = stateProvincesList.get(stateProvincesList.size() - 1);
         assertThat(testStateProvinces.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testStateProvinces.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testStateProvinces.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testStateProvinces.getSalesTerritory()).isEqualTo(UPDATED_SALES_TERRITORY);
         assertThat(testStateProvinces.getBorder()).isEqualTo(UPDATED_BORDER);
         assertThat(testStateProvinces.getLatestRecordedPopulation()).isEqualTo(UPDATED_LATEST_RECORDED_POPULATION);

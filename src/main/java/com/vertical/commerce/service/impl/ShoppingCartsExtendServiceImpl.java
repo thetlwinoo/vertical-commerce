@@ -3,6 +3,7 @@ package com.vertical.commerce.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.vertical.commerce.domain.*;
 import com.vertical.commerce.repository.*;
+import com.vertical.commerce.security.SecurityUtils;
 import com.vertical.commerce.service.CommonService;
 import com.vertical.commerce.service.PriceService;
 import com.vertical.commerce.service.ShoppingCartsExtendService;
@@ -49,6 +50,8 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
     public ShoppingCartsDTO addToCart(Principal principal, Long id, Integer quantity) {
         try {
             People people = commonService.getPeopleByPrincipal(principal);
+            String userLogin = SecurityUtils.getCurrentUserLogin().get();
+
             if (quantity <= 0 || id <= 0) {
                 throw new IllegalArgumentException("Invalid parameters");
             }
@@ -61,7 +64,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
                 cart = new ShoppingCarts();
                 cart.setCartUser(people);
                 cart.setCustomer(customer);
-                cart.setLastEditedBy(people.getFullName());
+                cart.setLastEditedBy(userLogin);
                 cart.setLastEditedWhen(Instant.now());
                 shoppingCartsRepository.save(cart);
             } else if (cart.getCartItemLists() != null || !cart.getCartItemLists().isEmpty()) {
@@ -69,7 +72,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
                     if (i.getStockItem().getId().equals(id)) {
                         i.setQuantity(i.getQuantity() + quantity);
                         ShoppingCarts returnCart = priceService.calculatePrice(cart);
-                        returnCart.setCartString(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
+                        returnCart.setCartDetails(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
                         shoppingCartsRepository.save(returnCart);
                         return shoppingCartsMapper.toDto(returnCart) ;
                     }
@@ -80,7 +83,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
             ShoppingCartItems cartItem = new ShoppingCartItems();
             cartItem.setQuantity(quantity);
             cartItem.setStockItem(stockItems);
-            cartItem.setLastEditedBy(people.getFullName());
+            cartItem.setLastEditedBy(userLogin);
             cartItem.setLastEditedWhen(Instant.now());
             cartItem.setSelectOrder(false);
             cartItem.setDeliveryMethod(commonService.getDeliveryMethodsEntity(null,"Standard"));
@@ -90,7 +93,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
 
             shoppingCartItemsRepository.save(cartItem);
 
-            cart.setCartString(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
+            cart.setCartDetails(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
             shoppingCartsRepository.save(cart);
 
             return shoppingCartsMapper.toDto(cart) ;
@@ -107,7 +110,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
 
         if(cart != null){
             cart = priceService.calculatePrice(cart);
-            cart.setCartString(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
+            cart.setCartDetails(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
         }
 
 
@@ -146,7 +149,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
         cart.setCartItemLists(cartItemsList);
         cart = priceService.calculatePrice(cart);
         shoppingCartItemsRepository.delete(cartItemToDelete);
-        cart.setCartString(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
+        cart.setCartDetails(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
         shoppingCartsRepository.save(cart);
 
         return shoppingCartsMapper.toDto(cart);
@@ -180,7 +183,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
 
         cart.setCartItemLists(cartItemsList);
         cart = priceService.calculatePrice(cart);
-        cart.setCartString(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
+        cart.setCartDetails(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
         shoppingCartsRepository.save(cart);
 
         return shoppingCartsMapper.toDto(cart);
@@ -219,7 +222,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
             cart.setCartItemLists(cartItemsList);
             cart = priceService.calculatePrice(cart);
             shoppingCartItemsRepository.save(cartItemToEdit);
-            cart.setCartString(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
+            cart.setCartDetails(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
 
         } else {
             cartItemsList.remove(cartItemToEdit);
@@ -291,7 +294,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
         shoppingCartItemsRepository.save(cartItemToEdit);
         cart = priceService.calculatePrice(cart);
 
-        cart.setCartString(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
+        cart.setCartDetails(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
         shoppingCartsRepository.save(cart);
         return shoppingCartsMapper.toDto(cart);
     }
@@ -323,7 +326,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
 
 
         cart = priceService.calculatePrice(cart);
-        cart.setCartString(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
+        cart.setCartDetails(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
         shoppingCartsRepository.save(cart);
         return shoppingCartsMapper.toDto(cart);
     }
@@ -346,7 +349,7 @@ public class ShoppingCartsExtendServiceImpl implements ShoppingCartsExtendServic
         }
 
         cart = priceService.calculatePrice(cart);
-        cart.setCartString(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
+        cart.setCartDetails(shoppingCartsExtendRepository.getCartDetails(cart.getId()));
         shoppingCartsRepository.save(cart);
         return shoppingCartsMapper.toDto(cart);
     }

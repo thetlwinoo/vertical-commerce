@@ -162,26 +162,6 @@ public class CustomerCategoriesResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = customerCategoriesRepository.findAll().size();
-        // set the field null
-        customerCategories.setValidTo(null);
-
-        // Create the CustomerCategories, which fails.
-        CustomerCategoriesDTO customerCategoriesDTO = customerCategoriesMapper.toDto(customerCategories);
-
-
-        restCustomerCategoriesMockMvc.perform(post("/api/customer-categories").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(customerCategoriesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<CustomerCategories> customerCategoriesList = customerCategoriesRepository.findAll();
-        assertThat(customerCategoriesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllCustomerCategories() throws Exception {
         // Initialize the database
         customerCategoriesRepository.saveAndFlush(customerCategories);

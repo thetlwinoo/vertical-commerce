@@ -2,6 +2,7 @@ package com.vertical.commerce.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -28,6 +29,11 @@ public class Countries implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "culture_details")
+    private String cultureDetails;
+
     @NotNull
     @Column(name = "formal_name", nullable = false)
     private String formalName;
@@ -53,8 +59,8 @@ public class Countries implements Serializable {
     private String region;
 
     @NotNull
-    @Column(name = "subregion", nullable = false)
-    private String subregion;
+    @Column(name = "sub_region", nullable = false)
+    private String subRegion;
 
     @Column(name = "border")
     private String border;
@@ -63,8 +69,7 @@ public class Countries implements Serializable {
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
 
-    @NotNull
-    @Column(name = "valid_to", nullable = false)
+    @Column(name = "valid_to")
     private Instant validTo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -87,6 +92,19 @@ public class Countries implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public Countries cultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
+        return this;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getFormalName() {
@@ -180,17 +198,17 @@ public class Countries implements Serializable {
         this.region = region;
     }
 
-    public String getSubregion() {
-        return subregion;
+    public String getSubRegion() {
+        return subRegion;
     }
 
-    public Countries subregion(String subregion) {
-        this.subregion = subregion;
+    public Countries subRegion(String subRegion) {
+        this.subRegion = subRegion;
         return this;
     }
 
-    public void setSubregion(String subregion) {
-        this.subregion = subregion;
+    public void setSubRegion(String subRegion) {
+        this.subRegion = subRegion;
     }
 
     public String getBorder() {
@@ -255,6 +273,7 @@ public class Countries implements Serializable {
         return "Countries{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", formalName='" + getFormalName() + "'" +
             ", isoAplha3Code='" + getIsoAplha3Code() + "'" +
             ", isoNumericCode=" + getIsoNumericCode() +
@@ -262,7 +281,7 @@ public class Countries implements Serializable {
             ", latestRecordedPopulation=" + getLatestRecordedPopulation() +
             ", continent='" + getContinent() + "'" +
             ", region='" + getRegion() + "'" +
-            ", subregion='" + getSubregion() + "'" +
+            ", subRegion='" + getSubRegion() + "'" +
             ", border='" + getBorder() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +

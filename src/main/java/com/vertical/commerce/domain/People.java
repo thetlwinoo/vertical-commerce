@@ -1,7 +1,6 @@
 package com.vertical.commerce.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,6 +9,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.vertical.commerce.domain.enumeration.Gender;
 
@@ -40,9 +41,8 @@ public class People implements Serializable {
     @Column(name = "search_name", nullable = false)
     private String searchName;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender")
     private Gender gender;
 
     @Column(name = "date_of_birth")
@@ -85,8 +85,9 @@ public class People implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @NotNull
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
-    @Column(name = "email_address")
+    @Column(name = "email_address", nullable = false)
     private String emailAddress;
 
     @Column(name = "custom_fields")
@@ -99,17 +100,22 @@ public class People implements Serializable {
     @Column(name = "user_id", nullable = false)
     private String userId;
 
+    @Column(name = "profile_photo")
+    private String profilePhoto;
+
     @NotNull
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
 
-    @NotNull
-    @Column(name = "valid_to", nullable = false)
+    @Column(name = "valid_to")
     private Instant validTo;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "people", allowSetters = true)
-    private Photos profile;
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "people_supplier",
+               joinColumns = @JoinColumn(name = "people_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "id"))
+    private Set<Suppliers> suppliers = new HashSet<>();
 
     @OneToOne(mappedBy = "cartUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -379,6 +385,19 @@ public class People implements Serializable {
         this.userId = userId;
     }
 
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public People profilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+        return this;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
     public Instant getValidFrom() {
         return validFrom;
     }
@@ -405,17 +424,29 @@ public class People implements Serializable {
         this.validTo = validTo;
     }
 
-    public Photos getProfile() {
-        return profile;
+    public Set<Suppliers> getSuppliers() {
+        return suppliers;
     }
 
-    public People profile(Photos photos) {
-        this.profile = photos;
+    public People suppliers(Set<Suppliers> suppliers) {
+        this.suppliers = suppliers;
         return this;
     }
 
-    public void setProfile(Photos photos) {
-        this.profile = photos;
+    public People addSupplier(Suppliers suppliers) {
+        this.suppliers.add(suppliers);
+        suppliers.getPeople().add(this);
+        return this;
+    }
+
+    public People removeSupplier(Suppliers suppliers) {
+        this.suppliers.remove(suppliers);
+        suppliers.getPeople().remove(this);
+        return this;
+    }
+
+    public void setSuppliers(Set<Suppliers> suppliers) {
+        this.suppliers = suppliers;
     }
 
     public ShoppingCarts getCart() {
@@ -498,6 +529,7 @@ public class People implements Serializable {
             ", customFields='" + getCustomFields() + "'" +
             ", otherLanguages='" + getOtherLanguages() + "'" +
             ", userId='" + getUserId() + "'" +
+            ", profilePhoto='" + getProfilePhoto() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

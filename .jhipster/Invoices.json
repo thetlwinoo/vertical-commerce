@@ -65,7 +65,7 @@
     {
       "fieldName": "status",
       "fieldType": "InvoiceStatus",
-      "fieldValues": "PAID,ISSUED,CANCELLED",
+      "fieldValues": "PAID,ISSUED,CANCELLED,PRINTED",
       "fieldValidateRules": ["required"]
     },
     {
@@ -157,7 +157,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617161004",
+  "changelogDate": "20200718080012",
   "entityTableName": "invoices",
   "dto": "mapstruct",
   "pagination": "no",

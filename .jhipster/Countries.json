@@ -7,6 +7,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "cultureDetails",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
       "fieldName": "formalName",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
@@ -38,7 +43,7 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "subregion",
+      "fieldName": "subRegion",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },
@@ -53,12 +58,11 @@
     },
     {
       "fieldName": "validTo",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Instant"
     }
   ],
   "relationships": [],
-  "changelogDate": "20200617154404",
+  "changelogDate": "20200718072612",
   "entityTableName": "countries",
   "dto": "mapstruct",
   "pagination": "no",

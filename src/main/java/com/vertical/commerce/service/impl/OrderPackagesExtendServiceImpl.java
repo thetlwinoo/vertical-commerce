@@ -102,11 +102,11 @@ public class OrderPackagesExtendServiceImpl implements OrderPackagesExtendServic
                 orderLines.setLineRating(lineRatingNode.intValue());
                 orderLines.setLineReview(lineReviewNode.textValue());
                 orderLines.setCustomerReviewedOn(Instant.now());
-
-                if(reviewImageNode != null){
-                    Photos photos = photosRepository.getOne(reviewImageNode.longValue());
-                    orderLines.setReviewImage(photos);
-                }
+                orderLines.setReviewPhoto(reviewImageNode.textValue());
+//                if(reviewImageNode != null){
+//                    Photos photos = photosRepository.getOne(reviewImageNode.longValue());
+//                    orderLines.setReviewImage(photos);
+//                }
 
                 orderLines.setOrderPackage(orderPackages);
             }

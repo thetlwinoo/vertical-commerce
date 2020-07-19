@@ -15,13 +15,15 @@ public class LogisticsDTO implements Serializable {
     private String name;
 
     @NotNull
-    private Boolean activeInd;
-
-    @NotNull
     private String lastEditedBy;
 
     @NotNull
     private Instant lastEditedWhen;
+
+    @NotNull
+    private Instant validFrom;
+
+    private Instant validTo;
 
     
     public Long getId() {
@@ -40,14 +42,6 @@ public class LogisticsDTO implements Serializable {
         this.name = name;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
-    }
-
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
-    }
-
     public String getLastEditedBy() {
         return lastEditedBy;
     }
@@ -62,6 +56,22 @@ public class LogisticsDTO implements Serializable {
 
     public void setLastEditedWhen(Instant lastEditedWhen) {
         this.lastEditedWhen = lastEditedWhen;
+    }
+
+    public Instant getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     @Override
@@ -87,9 +97,10 @@ public class LogisticsDTO implements Serializable {
         return "LogisticsDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

@@ -1,5 +1,6 @@
 package com.vertical.commerce.service.dto;
 
+import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
@@ -15,7 +16,10 @@ public class PersonPhoneDTO implements Serializable {
 
     private Boolean defaultInd;
 
-    private Boolean activeInd;
+    @NotNull
+    private Instant validFrom;
+
+    private Instant validTo;
 
 
     private Long personId;
@@ -50,12 +54,20 @@ public class PersonPhoneDTO implements Serializable {
         this.defaultInd = defaultInd;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     public Long getPersonId() {
@@ -114,7 +126,8 @@ public class PersonPhoneDTO implements Serializable {
             "id=" + getId() +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", defaultInd='" + isDefaultInd() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             ", personId=" + getPersonId() +
             ", personFullName='" + getPersonFullName() + "'" +
             ", phoneNumberTypeId=" + getPhoneNumberTypeId() +

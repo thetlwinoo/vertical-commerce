@@ -11,6 +11,7 @@ import com.vertical.commerce.domain.*;
 import com.vertical.commerce.domain.enumeration.OrderStatus;
 import com.vertical.commerce.domain.enumeration.PaymentStatus;
 import com.vertical.commerce.repository.*;
+import com.vertical.commerce.security.SecurityUtils;
 import com.vertical.commerce.service.*;
 import com.vertical.commerce.service.dto.CustomerPaymentBankTransferDTO;
 import com.vertical.commerce.service.dto.CustomerPaymentDTO;
@@ -321,7 +322,8 @@ public class CustomerPaymentExtendServiceImpl implements CustomerPaymentExtendSe
     @Transactional
     public Map<String, Object> completePayment(Long orderId,Principal principal) {
         Map<String, Object> response = new HashMap<String, Object>();
-        People people = commonService.getPeopleByPrincipal(principal);
+//        People people = commonService.getPeopleByPrincipal(principal);
+        String userLogin = SecurityUtils.getCurrentUserLogin().get();
 
         try {
             Orders orders = ordersRepository.getOne(orderId);
@@ -330,7 +332,7 @@ public class CustomerPaymentExtendServiceImpl implements CustomerPaymentExtendSe
             customerPaymentDTO.setAmountExcludingTax(orders.getSubTotal() == null ? BigDecimal.ZERO : orders.getSubTotal());
             customerPaymentDTO.setTaxAmount(orders.getTotalTaxAmount() == null? BigDecimal.ZERO : orders.getTotalTaxAmount());
             customerPaymentDTO.setTransactionAmount(orders.getTotalDue());
-            customerPaymentDTO.setLastEditedBy(people.getFullName());
+            customerPaymentDTO.setLastEditedBy(userLogin);
             customerPaymentDTO.setLastEditedWhen(Instant.now());
             customerPaymentService.save(customerPaymentDTO);
 

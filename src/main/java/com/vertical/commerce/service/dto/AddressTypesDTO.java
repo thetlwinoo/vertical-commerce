@@ -2,6 +2,7 @@ package com.vertical.commerce.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import com.vertical.commerce.domain.enumeration.AddressTypeRefer;
 
 /**
  * A DTO for the {@link com.vertical.commerce.domain.AddressTypes} entity.
@@ -13,7 +14,7 @@ public class AddressTypesDTO implements Serializable {
     @NotNull
     private String name;
 
-    private String refer;
+    private AddressTypeRefer refer;
 
     
     public Long getId() {
@@ -32,11 +33,11 @@ public class AddressTypesDTO implements Serializable {
         this.name = name;
     }
 
-    public String getRefer() {
+    public AddressTypeRefer getRefer() {
         return refer;
     }
 
-    public void setRefer(String refer) {
+    public void setRefer(AddressTypeRefer refer) {
         this.refer = refer;
     }
 

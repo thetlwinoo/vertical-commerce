@@ -3,11 +3,13 @@ package com.vertical.commerce.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * A ProductCategory.
@@ -28,6 +30,11 @@ public class ProductCategory implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "culture_details")
+    private String cultureDetails;
+
     @Column(name = "short_label")
     private String shortLabel;
 
@@ -37,22 +44,25 @@ public class ProductCategory implements Serializable {
     @Column(name = "icon_font")
     private String iconFont;
 
+    @Column(name = "icon_photo")
+    private String iconPhoto;
+
     @Column(name = "just_for_you_ind")
     private Boolean justForYouInd;
 
     @Column(name = "show_in_nav_ind")
     private Boolean showInNavInd;
 
-    @Column(name = "active_ind")
-    private Boolean activeInd;
+    @NotNull
+    @Column(name = "valid_from", nullable = false)
+    private Instant validFrom;
+
+    @Column(name = "valid_to")
+    private Instant validTo;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "productCategories", allowSetters = true)
     private ProductCategory parent;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "productCategories", allowSetters = true)
-    private Photos icon;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -74,6 +84,19 @@ public class ProductCategory implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public ProductCategory cultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
+        return this;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getShortLabel() {
@@ -115,6 +138,19 @@ public class ProductCategory implements Serializable {
         this.iconFont = iconFont;
     }
 
+    public String getIconPhoto() {
+        return iconPhoto;
+    }
+
+    public ProductCategory iconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
+        return this;
+    }
+
+    public void setIconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
+    }
+
     public Boolean isJustForYouInd() {
         return justForYouInd;
     }
@@ -141,17 +177,30 @@ public class ProductCategory implements Serializable {
         this.showInNavInd = showInNavInd;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public ProductCategory activeInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public ProductCategory validFrom(Instant validFrom) {
+        this.validFrom = validFrom;
         return this;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public ProductCategory validTo(Instant validTo) {
+        this.validTo = validTo;
+        return this;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     public ProductCategory getParent() {
@@ -165,19 +214,6 @@ public class ProductCategory implements Serializable {
 
     public void setParent(ProductCategory productCategory) {
         this.parent = productCategory;
-    }
-
-    public Photos getIcon() {
-        return icon;
-    }
-
-    public ProductCategory icon(Photos photos) {
-        this.icon = photos;
-        return this;
-    }
-
-    public void setIcon(Photos photos) {
-        this.icon = photos;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -203,12 +239,15 @@ public class ProductCategory implements Serializable {
         return "ProductCategory{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", shortLabel='" + getShortLabel() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
+            ", iconPhoto='" + getIconPhoto() + "'" +
             ", justForYouInd='" + isJustForYouInd() + "'" +
             ", showInNavInd='" + isShowInNavInd() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

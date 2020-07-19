@@ -10,6 +10,7 @@ import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+import io.github.jhipster.service.filter.InstantFilter;
 
 /**
  * Criteria class for the {@link com.vertical.commerce.domain.PersonPhone} entity. This class is used
@@ -30,7 +31,9 @@ public class PersonPhoneCriteria implements Serializable, Criteria {
 
     private BooleanFilter defaultInd;
 
-    private BooleanFilter activeInd;
+    private InstantFilter validFrom;
+
+    private InstantFilter validTo;
 
     private LongFilter personId;
 
@@ -43,7 +46,8 @@ public class PersonPhoneCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.phoneNumber = other.phoneNumber == null ? null : other.phoneNumber.copy();
         this.defaultInd = other.defaultInd == null ? null : other.defaultInd.copy();
-        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.personId = other.personId == null ? null : other.personId.copy();
         this.phoneNumberTypeId = other.phoneNumberTypeId == null ? null : other.phoneNumberTypeId.copy();
     }
@@ -77,12 +81,20 @@ public class PersonPhoneCriteria implements Serializable, Criteria {
         this.defaultInd = defaultInd;
     }
 
-    public BooleanFilter getActiveInd() {
-        return activeInd;
+    public InstantFilter getValidFrom() {
+        return validFrom;
     }
 
-    public void setActiveInd(BooleanFilter activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public InstantFilter getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
     }
 
     public LongFilter getPersonId() {
@@ -115,7 +127,8 @@ public class PersonPhoneCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(phoneNumber, that.phoneNumber) &&
             Objects.equals(defaultInd, that.defaultInd) &&
-            Objects.equals(activeInd, that.activeInd) &&
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo) &&
             Objects.equals(personId, that.personId) &&
             Objects.equals(phoneNumberTypeId, that.phoneNumberTypeId);
     }
@@ -126,7 +139,8 @@ public class PersonPhoneCriteria implements Serializable, Criteria {
         id,
         phoneNumber,
         defaultInd,
-        activeInd,
+        validFrom,
+        validTo,
         personId,
         phoneNumberTypeId
         );
@@ -139,7 +153,8 @@ public class PersonPhoneCriteria implements Serializable, Criteria {
                 (id != null ? "id=" + id + ", " : "") +
                 (phoneNumber != null ? "phoneNumber=" + phoneNumber + ", " : "") +
                 (defaultInd != null ? "defaultInd=" + defaultInd + ", " : "") +
-                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (personId != null ? "personId=" + personId + ", " : "") +
                 (phoneNumberTypeId != null ? "phoneNumberTypeId=" + phoneNumberTypeId + ", " : "") +
             "}";

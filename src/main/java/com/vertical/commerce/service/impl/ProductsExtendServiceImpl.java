@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vertical.commerce.domain.*;
 import com.vertical.commerce.repository.*;
+import com.vertical.commerce.security.SecurityUtils;
 import com.vertical.commerce.service.CommonService;
 import com.vertical.commerce.service.ProductsExtendService;
 import com.vertical.commerce.service.ProductsQueryService;
@@ -40,20 +41,22 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
     private final ProductCategoryMapper productCategoryMapper;
     private final CommonService commonService;
     private final ProductsMapper productsMapper;
-    private final ProductDocumentRepository productDocumentRepository;
+    private final ProductDocumentsRepository productDocumentsRepository;
     private final ProductsQueryService productsQueryService;
     private final ProductTagsRepository productTagsRepository;
+    private final SuppliersRepository suppliersRepository;
 
-    public ProductsExtendServiceImpl(ProductsExtendRepository productsExtendRepository, ProductsRepository productsRepository, ProductsExtendFilterRepository productsExtendFilterRepository, ProductCategoryMapper productCategoryMapper,CommonService commonService, ProductsMapper productsMapper, ProductDocumentRepository productDocumentRepository, ProductsQueryService productsQueryService, ProductTagsRepository productTagsRepository) {
+    public ProductsExtendServiceImpl(ProductsExtendRepository productsExtendRepository, ProductsRepository productsRepository, ProductsExtendFilterRepository productsExtendFilterRepository, ProductCategoryMapper productCategoryMapper, CommonService commonService, ProductsMapper productsMapper, ProductDocumentsRepository productDocumentsRepository, ProductsQueryService productsQueryService, ProductTagsRepository productTagsRepository, SuppliersRepository suppliersRepository) {
         this.productsExtendRepository = productsExtendRepository;
         this.productsRepository = productsRepository;
         this.productsExtendFilterRepository = productsExtendFilterRepository;
         this.productCategoryMapper = productCategoryMapper;
         this.commonService = commonService;
         this.productsMapper = productsMapper;
-        this.productDocumentRepository = productDocumentRepository;
+        this.productDocumentsRepository = productDocumentsRepository;
         this.productsQueryService = productsQueryService;
         this.productTagsRepository = productTagsRepository;
+        this.suppliersRepository = suppliersRepository;
     }
 
     @Override
@@ -211,27 +214,28 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
     @Transactional
     public ProductsDTO importProducts(ProductsDTO productsDTO, Principal principal) {
         Products saveProduct = new Products();
-        People people = commonService.getPeopleByPrincipal(principal);
+//        People people = commonService.getPeopleByPrincipal(principal);
+        String userLogin = SecurityUtils.getCurrentUserLogin().get();
 
         try{
             saveProduct.setId(productsDTO.getId());
             saveProduct.setName(productsDTO.getName());
             saveProduct.setHandle(productsDTO.getHandle());
             saveProduct.setSearchDetails(productsDTO.getSearchDetails());
-            saveProduct.setActiveInd(productsDTO.isActiveInd());
+            saveProduct.setActiveFlag(productsDTO.isActiveFlag());
             ProductCategory productCategory = commonService.getProductCategoryEntity(productsDTO.getProductCategoryId(),productsDTO.getProductCategoryName());
             saveProduct.setProductCategory(productCategory);
             ProductBrand productBrand = commonService.getProductBrandsEntity(productsDTO.getProductBrandId(),productsDTO.getProductBrandName());
             saveProduct.setProductBrand(productBrand);
             saveProduct.setReleaseDate(productsDTO.getReleaseDate());
             saveProduct.setAvailableDate(productsDTO.getAvailableDate());
-            saveProduct.setLastEditedBy(people.getFullName());
+            saveProduct.setLastEditedBy(userLogin);
             saveProduct.setLastEditedWhen(Instant.now());
             saveProduct.setSellCount(0);
-            Suppliers suppliers = commonService.getSupplierByPrincipal(principal);
+            Suppliers suppliers = suppliersRepository.getOne(productsDTO.getSupplierId());
             saveProduct.setSupplier(suppliers);
             saveProduct.setQuestionsAboutProductInd(true);
-            ProductDocument productDocument = productDocumentRepository.getOne(productsDTO.getProductDocumentId());
+            ProductDocuments productDocument = productDocumentsRepository.getOne(productsDTO.getProductDocumentId());
             saveProduct.setProductDocument(productDocument);
             String prefixNumber = saveProduct.getName().replaceAll("[^a-zA-Z0-9]", "").toUpperCase();
             prefixNumber = prefixNumber.length() > 7 ? prefixNumber.substring(0,7): prefixNumber;
@@ -239,6 +243,8 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
             int pnum = random.nextInt(10000);
             prefixNumber = prefixNumber + pnum;
             saveProduct.setProductNumber(prefixNumber);
+            saveProduct.validFrom(productsDTO.getValidFrom());
+            saveProduct.validTo(productsDTO.getValidTo());
             saveProduct = productsExtendRepository.save(saveProduct);
         }catch (Exception ex) {
             System.err.println(ex.getMessage());
@@ -313,7 +319,7 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
             Integer totalWishlist = jsonNode2.intValue();
 
             product.setProductDetails(productDetails);
-            product.setTotalStars(overallRating);
+            product.setOverallRating(overallRating);
             product.setTotalWishlist(totalWishlist);
 
             productsRepository.save(product);
@@ -337,7 +343,7 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
             Integer totalWishlist = jsonNode2.intValue();
 
             products.setProductDetails(productDetails);
-            products.setTotalStars(overallRating);
+            products.setOverallRating(overallRating);
             products.setTotalWishlist(totalWishlist);
 
             productsRepository.save(products);

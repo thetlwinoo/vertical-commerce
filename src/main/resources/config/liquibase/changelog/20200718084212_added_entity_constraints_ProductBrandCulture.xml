@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity ProductBrandCulture.
+    -->
+    <changeSet id="20200718084212-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="culture_id"
+                                 baseTableName="product_brand_culture"
+                                 constraintName="fk_product_brand_culture_culture_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="culture"/>
+
+        <addForeignKeyConstraint baseColumnNames="product_brand_id"
+                                 baseTableName="product_brand_culture"
+                                 constraintName="fk_product_brand_culture_product_brand_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="product_brand"/>
+
+    </changeSet>
+</databaseChangeLog>

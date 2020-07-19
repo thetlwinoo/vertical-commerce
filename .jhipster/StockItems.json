@@ -7,6 +7,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "cultureDetails",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
       "fieldName": "vendorCode",
       "fieldType": "String"
     },
@@ -160,13 +165,8 @@
       "fieldTypeBlobContent": "text"
     },
     {
-      "fieldName": "thumbnailUrl",
+      "fieldName": "thumbnailPhoto",
       "fieldType": "String"
-    },
-    {
-      "fieldName": "activeInd",
-      "fieldType": "Boolean",
-      "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "liveInd",
@@ -187,6 +187,20 @@
       "fieldName": "lastEditedWhen",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "activeFlag",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validTo",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
@@ -294,7 +308,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200617163204",
+  "changelogDate": "20200718082312",
   "entityTableName": "stock_items",
   "dto": "mapstruct",
   "pagination": "pagination",

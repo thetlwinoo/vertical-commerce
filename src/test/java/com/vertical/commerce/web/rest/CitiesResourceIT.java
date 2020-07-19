@@ -3,7 +3,7 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.Cities;
-import com.vertical.commerce.domain.StateProvinces;
+import com.vertical.commerce.domain.Regions;
 import com.vertical.commerce.repository.CitiesRepository;
 import com.vertical.commerce.service.CitiesService;
 import com.vertical.commerce.service.dto.CitiesDTO;
@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -41,6 +42,9 @@ public class CitiesResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
 
     private static final String DEFAULT_LOCATION = "AAAAAAAAAA";
     private static final String UPDATED_LOCATION = "BBBBBBBBBB";
@@ -84,6 +88,7 @@ public class CitiesResourceIT {
     public static Cities createEntity(EntityManager em) {
         Cities cities = new Cities()
             .name(DEFAULT_NAME)
+            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .location(DEFAULT_LOCATION)
             .latestRecordedPopulation(DEFAULT_LATEST_RECORDED_POPULATION)
             .validFrom(DEFAULT_VALID_FROM)
@@ -99,6 +104,7 @@ public class CitiesResourceIT {
     public static Cities createUpdatedEntity(EntityManager em) {
         Cities cities = new Cities()
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .location(UPDATED_LOCATION)
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
             .validFrom(UPDATED_VALID_FROM)
@@ -127,6 +133,7 @@ public class CitiesResourceIT {
         assertThat(citiesList).hasSize(databaseSizeBeforeCreate + 1);
         Cities testCities = citiesList.get(citiesList.size() - 1);
         assertThat(testCities.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testCities.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testCities.getLocation()).isEqualTo(DEFAULT_LOCATION);
         assertThat(testCities.getLatestRecordedPopulation()).isEqualTo(DEFAULT_LATEST_RECORDED_POPULATION);
         assertThat(testCities.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
@@ -196,26 +203,6 @@ public class CitiesResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = citiesRepository.findAll().size();
-        // set the field null
-        cities.setValidTo(null);
-
-        // Create the Cities, which fails.
-        CitiesDTO citiesDTO = citiesMapper.toDto(cities);
-
-
-        restCitiesMockMvc.perform(post("/api/cities").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(citiesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Cities> citiesList = citiesRepository.findAll();
-        assertThat(citiesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllCities() throws Exception {
         // Initialize the database
         citiesRepository.saveAndFlush(cities);
@@ -226,6 +213,7 @@ public class CitiesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cities.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)))
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
@@ -244,6 +232,7 @@ public class CitiesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(cities.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION))
             .andExpect(jsonPath("$.latestRecordedPopulation").value(DEFAULT_LATEST_RECORDED_POPULATION.intValue()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
@@ -637,21 +626,21 @@ public class CitiesResourceIT {
 
     @Test
     @Transactional
-    public void getAllCitiesByStateProvinceIsEqualToSomething() throws Exception {
+    public void getAllCitiesByRegionIsEqualToSomething() throws Exception {
         // Initialize the database
         citiesRepository.saveAndFlush(cities);
-        StateProvinces stateProvince = StateProvincesResourceIT.createEntity(em);
-        em.persist(stateProvince);
+        Regions region = RegionsResourceIT.createEntity(em);
+        em.persist(region);
         em.flush();
-        cities.setStateProvince(stateProvince);
+        cities.setRegion(region);
         citiesRepository.saveAndFlush(cities);
-        Long stateProvinceId = stateProvince.getId();
+        Long regionId = region.getId();
 
-        // Get all the citiesList where stateProvince equals to stateProvinceId
-        defaultCitiesShouldBeFound("stateProvinceId.equals=" + stateProvinceId);
+        // Get all the citiesList where region equals to regionId
+        defaultCitiesShouldBeFound("regionId.equals=" + regionId);
 
-        // Get all the citiesList where stateProvince equals to stateProvinceId + 1
-        defaultCitiesShouldNotBeFound("stateProvinceId.equals=" + (stateProvinceId + 1));
+        // Get all the citiesList where region equals to regionId + 1
+        defaultCitiesShouldNotBeFound("regionId.equals=" + (regionId + 1));
     }
 
     /**
@@ -663,6 +652,7 @@ public class CitiesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cities.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)))
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
@@ -714,6 +704,7 @@ public class CitiesResourceIT {
         em.detach(updatedCities);
         updatedCities
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .location(UPDATED_LOCATION)
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
             .validFrom(UPDATED_VALID_FROM)
@@ -730,6 +721,7 @@ public class CitiesResourceIT {
         assertThat(citiesList).hasSize(databaseSizeBeforeUpdate);
         Cities testCities = citiesList.get(citiesList.size() - 1);
         assertThat(testCities.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testCities.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testCities.getLocation()).isEqualTo(UPDATED_LOCATION);
         assertThat(testCities.getLatestRecordedPopulation()).isEqualTo(UPDATED_LATEST_RECORDED_POPULATION);
         assertThat(testCities.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);

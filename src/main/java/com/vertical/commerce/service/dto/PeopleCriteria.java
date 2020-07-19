@@ -84,11 +84,13 @@ public class PeopleCriteria implements Serializable, Criteria {
 
     private StringFilter userId;
 
+    private StringFilter profilePhoto;
+
     private InstantFilter validFrom;
 
     private InstantFilter validTo;
 
-    private LongFilter profileId;
+    private LongFilter supplierId;
 
     private LongFilter cartId;
 
@@ -120,9 +122,10 @@ public class PeopleCriteria implements Serializable, Criteria {
         this.customFields = other.customFields == null ? null : other.customFields.copy();
         this.otherLanguages = other.otherLanguages == null ? null : other.otherLanguages.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
+        this.profilePhoto = other.profilePhoto == null ? null : other.profilePhoto.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
-        this.profileId = other.profileId == null ? null : other.profileId.copy();
+        this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
         this.cartId = other.cartId == null ? null : other.cartId.copy();
         this.wishlistId = other.wishlistId == null ? null : other.wishlistId.copy();
         this.compareId = other.compareId == null ? null : other.compareId.copy();
@@ -293,6 +296,14 @@ public class PeopleCriteria implements Serializable, Criteria {
         this.userId = userId;
     }
 
+    public StringFilter getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(StringFilter profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
     public InstantFilter getValidFrom() {
         return validFrom;
     }
@@ -309,12 +320,12 @@ public class PeopleCriteria implements Serializable, Criteria {
         this.validTo = validTo;
     }
 
-    public LongFilter getProfileId() {
-        return profileId;
+    public LongFilter getSupplierId() {
+        return supplierId;
     }
 
-    public void setProfileId(LongFilter profileId) {
-        this.profileId = profileId;
+    public void setSupplierId(LongFilter supplierId) {
+        this.supplierId = supplierId;
     }
 
     public LongFilter getCartId() {
@@ -372,9 +383,10 @@ public class PeopleCriteria implements Serializable, Criteria {
             Objects.equals(customFields, that.customFields) &&
             Objects.equals(otherLanguages, that.otherLanguages) &&
             Objects.equals(userId, that.userId) &&
+            Objects.equals(profilePhoto, that.profilePhoto) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo) &&
-            Objects.equals(profileId, that.profileId) &&
+            Objects.equals(supplierId, that.supplierId) &&
             Objects.equals(cartId, that.cartId) &&
             Objects.equals(wishlistId, that.wishlistId) &&
             Objects.equals(compareId, that.compareId);
@@ -403,9 +415,10 @@ public class PeopleCriteria implements Serializable, Criteria {
         customFields,
         otherLanguages,
         userId,
+        profilePhoto,
         validFrom,
         validTo,
-        profileId,
+        supplierId,
         cartId,
         wishlistId,
         compareId
@@ -436,9 +449,10 @@ public class PeopleCriteria implements Serializable, Criteria {
                 (customFields != null ? "customFields=" + customFields + ", " : "") +
                 (otherLanguages != null ? "otherLanguages=" + otherLanguages + ", " : "") +
                 (userId != null ? "userId=" + userId + ", " : "") +
+                (profilePhoto != null ? "profilePhoto=" + profilePhoto + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
-                (profileId != null ? "profileId=" + profileId + ", " : "") +
+                (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
                 (cartId != null ? "cartId=" + cartId + ", " : "") +
                 (wishlistId != null ? "wishlistId=" + wishlistId + ", " : "") +
                 (compareId != null ? "compareId=" + compareId + ", " : "") +

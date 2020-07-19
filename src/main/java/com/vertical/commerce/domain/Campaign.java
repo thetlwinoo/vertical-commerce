@@ -1,6 +1,5 @@
 package com.vertical.commerce.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -37,12 +36,8 @@ public class Campaign implements Serializable {
     @Column(name = "icon_font")
     private String iconFont;
 
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "campaigns", allowSetters = true)
-    private Photos icon;
+    @Column(name = "icon_photo")
+    private String iconPhoto;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -105,30 +100,17 @@ public class Campaign implements Serializable {
         this.iconFont = iconFont;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getIconPhoto() {
+        return iconPhoto;
     }
 
-    public Campaign thumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public Campaign iconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
         return this;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public Photos getIcon() {
-        return icon;
-    }
-
-    public Campaign icon(Photos photos) {
-        this.icon = photos;
-        return this;
-    }
-
-    public void setIcon(Photos photos) {
-        this.icon = photos;
+    public void setIconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -157,7 +139,7 @@ public class Campaign implements Serializable {
             ", shortLabel='" + getShortLabel() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
+            ", iconPhoto='" + getIconPhoto() + "'" +
             "}";
     }
 }

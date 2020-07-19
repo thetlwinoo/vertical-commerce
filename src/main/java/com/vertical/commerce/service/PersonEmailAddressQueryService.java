@@ -97,8 +97,11 @@ public class PersonEmailAddressQueryService extends QueryService<PersonEmailAddr
             if (criteria.getDefaultInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getDefaultInd(), PersonEmailAddress_.defaultInd));
             }
-            if (criteria.getActiveInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getActiveInd(), PersonEmailAddress_.activeInd));
+            if (criteria.getValidFrom() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), PersonEmailAddress_.validFrom));
+            }
+            if (criteria.getValidTo() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidTo(), PersonEmailAddress_.validTo));
             }
             if (criteria.getPersonId() != null) {
                 specification = specification.and(buildSpecification(criteria.getPersonId(),

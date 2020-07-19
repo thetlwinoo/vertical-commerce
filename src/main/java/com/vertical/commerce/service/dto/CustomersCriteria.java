@@ -46,11 +46,13 @@ public class CustomersCriteria implements Serializable, Criteria {
 
     private StringFilter runPosition;
 
-    private StringFilter thumbnailUrl;
+    private StringFilter profilePhoto;
 
     private BooleanFilter billToAddressSameAsDeliveryAddress;
 
     private StringFilter lastEditedBy;
+
+    private BooleanFilter activeFlag;
 
     private InstantFilter validFrom;
 
@@ -78,9 +80,10 @@ public class CustomersCriteria implements Serializable, Criteria {
         this.paymentDays = other.paymentDays == null ? null : other.paymentDays.copy();
         this.deliveryRun = other.deliveryRun == null ? null : other.deliveryRun.copy();
         this.runPosition = other.runPosition == null ? null : other.runPosition.copy();
-        this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
+        this.profilePhoto = other.profilePhoto == null ? null : other.profilePhoto.copy();
         this.billToAddressSameAsDeliveryAddress = other.billToAddressSameAsDeliveryAddress == null ? null : other.billToAddressSameAsDeliveryAddress.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
+        this.activeFlag = other.activeFlag == null ? null : other.activeFlag.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.peopleId = other.peopleId == null ? null : other.peopleId.copy();
@@ -174,12 +177,12 @@ public class CustomersCriteria implements Serializable, Criteria {
         this.runPosition = runPosition;
     }
 
-    public StringFilter getThumbnailUrl() {
-        return thumbnailUrl;
+    public StringFilter getProfilePhoto() {
+        return profilePhoto;
     }
 
-    public void setThumbnailUrl(StringFilter thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setProfilePhoto(StringFilter profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public BooleanFilter getBillToAddressSameAsDeliveryAddress() {
@@ -196,6 +199,14 @@ public class CustomersCriteria implements Serializable, Criteria {
 
     public void setLastEditedBy(StringFilter lastEditedBy) {
         this.lastEditedBy = lastEditedBy;
+    }
+
+    public BooleanFilter getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(BooleanFilter activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public InstantFilter getValidFrom() {
@@ -267,9 +278,10 @@ public class CustomersCriteria implements Serializable, Criteria {
             Objects.equals(paymentDays, that.paymentDays) &&
             Objects.equals(deliveryRun, that.deliveryRun) &&
             Objects.equals(runPosition, that.runPosition) &&
-            Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
+            Objects.equals(profilePhoto, that.profilePhoto) &&
             Objects.equals(billToAddressSameAsDeliveryAddress, that.billToAddressSameAsDeliveryAddress) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
+            Objects.equals(activeFlag, that.activeFlag) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo) &&
             Objects.equals(peopleId, that.peopleId) &&
@@ -291,9 +303,10 @@ public class CustomersCriteria implements Serializable, Criteria {
         paymentDays,
         deliveryRun,
         runPosition,
-        thumbnailUrl,
+        profilePhoto,
         billToAddressSameAsDeliveryAddress,
         lastEditedBy,
+        activeFlag,
         validFrom,
         validTo,
         peopleId,
@@ -317,9 +330,10 @@ public class CustomersCriteria implements Serializable, Criteria {
                 (paymentDays != null ? "paymentDays=" + paymentDays + ", " : "") +
                 (deliveryRun != null ? "deliveryRun=" + deliveryRun + ", " : "") +
                 (runPosition != null ? "runPosition=" + runPosition + ", " : "") +
-                (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
+                (profilePhoto != null ? "profilePhoto=" + profilePhoto + ", " : "") +
                 (billToAddressSameAsDeliveryAddress != null ? "billToAddressSameAsDeliveryAddress=" + billToAddressSameAsDeliveryAddress + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
+                (activeFlag != null ? "activeFlag=" + activeFlag + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (peopleId != null ? "peopleId=" + peopleId + ", " : "") +

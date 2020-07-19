@@ -115,8 +115,8 @@ public class CountriesQueryService extends QueryService<Countries> {
             if (criteria.getRegion() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getRegion(), Countries_.region));
             }
-            if (criteria.getSubregion() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getSubregion(), Countries_.subregion));
+            if (criteria.getSubRegion() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getSubRegion(), Countries_.subRegion));
             }
             if (criteria.getBorder() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getBorder(), Countries_.border));

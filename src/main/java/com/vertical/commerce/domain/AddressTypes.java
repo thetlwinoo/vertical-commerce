@@ -8,6 +8,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 
+import com.vertical.commerce.domain.enumeration.AddressTypeRefer;
+
 /**
  * A AddressTypes.
  */
@@ -27,8 +29,9 @@ public class AddressTypes implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "refer")
-    private String refer;
+    private AddressTypeRefer refer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -52,16 +55,16 @@ public class AddressTypes implements Serializable {
         this.name = name;
     }
 
-    public String getRefer() {
+    public AddressTypeRefer getRefer() {
         return refer;
     }
 
-    public AddressTypes refer(String refer) {
+    public AddressTypes refer(AddressTypeRefer refer) {
         this.refer = refer;
         return this;
     }
 
-    public void setRefer(String refer) {
+    public void setRefer(AddressTypeRefer refer) {
         this.refer = refer;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

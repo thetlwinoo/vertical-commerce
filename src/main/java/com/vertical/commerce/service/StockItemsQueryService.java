@@ -202,11 +202,8 @@ public class StockItemsQueryService extends QueryService<StockItems> {
             if (criteria.getSearchDetails() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getSearchDetails(), StockItems_.searchDetails));
             }
-            if (criteria.getThumbnailUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), StockItems_.thumbnailUrl));
-            }
-            if (criteria.getActiveInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getActiveInd(), StockItems_.activeInd));
+            if (criteria.getThumbnailPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getThumbnailPhoto(), StockItems_.thumbnailPhoto));
             }
             if (criteria.getLiveInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getLiveInd(), StockItems_.liveInd));
@@ -219,6 +216,15 @@ public class StockItemsQueryService extends QueryService<StockItems> {
             }
             if (criteria.getLastEditedWhen() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastEditedWhen(), StockItems_.lastEditedWhen));
+            }
+            if (criteria.getActiveFlag() != null) {
+                specification = specification.and(buildSpecification(criteria.getActiveFlag(), StockItems_.activeFlag));
+            }
+            if (criteria.getValidFrom() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), StockItems_.validFrom));
+            }
+            if (criteria.getValidTo() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getValidTo(), StockItems_.validTo));
             }
             if (criteria.getSpecialDealListId() != null) {
                 specification = specification.and(buildSpecification(criteria.getSpecialDealListId(),

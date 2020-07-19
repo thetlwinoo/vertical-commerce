@@ -101,11 +101,12 @@ class CustomerPaymentBankTransferGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "id":null
-                , "receiptImageUrl":"SAMPLE_TEXT"
+                , "receiptPhoto":"SAMPLE_TEXT"
                 , "nameInBankAccount":"SAMPLE_TEXT"
                 , "dateOfTransfer":"2020-01-01T00:00:00.000Z"
                 , "amountTransferred":"0"
-                , "lastEdityBy":"SAMPLE_TEXT"
+                , "bankName":"SAMPLE_TEXT"
+                , "lastEditedBy":"SAMPLE_TEXT"
                 , "lastEditedWhen":"2020-01-01T00:00:00.000Z"
                 }""")).asJson
             .check(status.is(201))

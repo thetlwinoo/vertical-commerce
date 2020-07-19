@@ -1,11 +1,11 @@
-id;phone_number;default_ind;active_ind
-1;Advanced Sausages;false;true
-2;Gorgeous Frozen Mouse Avon;false;true
-3;Towels;true;true
-4;bandwidth Rubber;false;false
-5;index Cambridgeshire virtual;true;true
-6;District;true;false
-7;salmon Towels Wells;false;false
-8;Visionary deposit;true;false
-9;Street Credit Card Account;false;false
-10;Human green Buckinghamshire;false;false
+id;phone_number;default_ind;valid_from;valid_to
+1;Advanced Sausages;false;2020-07-17T18:14:48;2020-07-17T16:28:47
+2;Virtual;false;2020-07-17T19:26:11;2020-07-18T06:36:12
+3;hack Towels;true;2020-07-17T13:38:21;2020-07-17T21:39:51
+4;Rustic Maryland enterprise;true;2020-07-17T21:12:22;2020-07-17T19:02:31
+5;virtual payment Universal;false;2020-07-17T13:47:44;2020-07-18T05:53:07
+6;salmon Towels Wells;false;2020-07-18T02:25:17;2020-07-17T16:37:00
+7;Technician;false;2020-07-17T12:24:34;2020-07-18T06:57:19
+8;Street Credit Card Account;false;2020-07-18T06:33:02;2020-07-17T13:37:06
+9;SSL Sleek Metal Table Cotton;true;2020-07-17T18:07:27;2020-07-17T12:52:44
+10;Washington deposit compress;false;2020-07-18T01:22:56;2020-07-17T15:39:06

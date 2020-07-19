@@ -59,8 +59,8 @@ public class Customers implements Serializable {
     @Column(name = "run_position")
     private String runPosition;
 
-    @Column(name = "thumbnail_url")
-    private String thumbnailUrl;
+    @Column(name = "profile_photo")
+    private String profilePhoto;
 
     @Column(name = "bill_to_address_same_as_delivery_address")
     private Boolean billToAddressSameAsDeliveryAddress;
@@ -70,11 +70,14 @@ public class Customers implements Serializable {
     private String lastEditedBy;
 
     @NotNull
+    @Column(name = "active_flag", nullable = false)
+    private Boolean activeFlag;
+
+    @NotNull
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
 
-    @NotNull
-    @Column(name = "valid_to", nullable = false)
+    @Column(name = "valid_to")
     private Instant validTo;
 
     @OneToOne
@@ -219,17 +222,17 @@ public class Customers implements Serializable {
         this.runPosition = runPosition;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getProfilePhoto() {
+        return profilePhoto;
     }
 
-    public Customers thumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public Customers profilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
         return this;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public Boolean isBillToAddressSameAsDeliveryAddress() {
@@ -256,6 +259,19 @@ public class Customers implements Serializable {
 
     public void setLastEditedBy(String lastEditedBy) {
         this.lastEditedBy = lastEditedBy;
+    }
+
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public Customers activeFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+        return this;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public Instant getValidFrom() {
@@ -367,9 +383,10 @@ public class Customers implements Serializable {
             ", paymentDays=" + getPaymentDays() +
             ", deliveryRun='" + getDeliveryRun() + "'" +
             ", runPosition='" + getRunPosition() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
+            ", profilePhoto='" + getProfilePhoto() + "'" +
             ", billToAddressSameAsDeliveryAddress='" + isBillToAddressSameAsDeliveryAddress() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

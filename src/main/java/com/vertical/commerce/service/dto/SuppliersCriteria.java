@@ -47,25 +47,45 @@ public class SuppliersCriteria implements Serializable, Criteria {
 
     private StringFilter phoneNumber;
 
+    private StringFilter emailAddress;
+
+    private StringFilter nric;
+
+    private StringFilter companyRegistrationNo;
+
     private StringFilter faxNumber;
 
-    private StringFilter websiteURL;
+    private StringFilter websiteUrl;
 
     private StringFilter webServiceUrl;
 
     private IntegerFilter creditRating;
 
+    private BooleanFilter officialStoreInd;
+
+    private StringFilter storeName;
+
+    private StringFilter logo;
+
+    private StringFilter nricFrontPhoto;
+
+    private StringFilter nricBackPhoto;
+
+    private StringFilter bankBookPhoto;
+
+    private StringFilter companyRegistrationPhoto;
+
+    private StringFilter distributorCertificatePhoto;
+
     private BooleanFilter activeFlag;
-
-    private StringFilter thumbnailUrl;
-
-    private BooleanFilter pickupSameAsHeadOffice;
 
     private InstantFilter validFrom;
 
     private InstantFilter validTo;
 
-    private LongFilter peopleId;
+    private LongFilter bannerListId;
+
+    private LongFilter documentListId;
 
     private LongFilter supplierCategoryId;
 
@@ -73,7 +93,13 @@ public class SuppliersCriteria implements Serializable, Criteria {
 
     private LongFilter headOfficeAddressId;
 
+    private LongFilter returnAddressId;
+
+    private LongFilter contactPersonId;
+
     private LongFilter deliveryMethodId;
+
+    private LongFilter peopleId;
 
     public SuppliersCriteria() {
     }
@@ -90,20 +116,33 @@ public class SuppliersCriteria implements Serializable, Criteria {
         this.paymentDays = other.paymentDays == null ? null : other.paymentDays.copy();
         this.internalComments = other.internalComments == null ? null : other.internalComments.copy();
         this.phoneNumber = other.phoneNumber == null ? null : other.phoneNumber.copy();
+        this.emailAddress = other.emailAddress == null ? null : other.emailAddress.copy();
+        this.nric = other.nric == null ? null : other.nric.copy();
+        this.companyRegistrationNo = other.companyRegistrationNo == null ? null : other.companyRegistrationNo.copy();
         this.faxNumber = other.faxNumber == null ? null : other.faxNumber.copy();
-        this.websiteURL = other.websiteURL == null ? null : other.websiteURL.copy();
+        this.websiteUrl = other.websiteUrl == null ? null : other.websiteUrl.copy();
         this.webServiceUrl = other.webServiceUrl == null ? null : other.webServiceUrl.copy();
         this.creditRating = other.creditRating == null ? null : other.creditRating.copy();
+        this.officialStoreInd = other.officialStoreInd == null ? null : other.officialStoreInd.copy();
+        this.storeName = other.storeName == null ? null : other.storeName.copy();
+        this.logo = other.logo == null ? null : other.logo.copy();
+        this.nricFrontPhoto = other.nricFrontPhoto == null ? null : other.nricFrontPhoto.copy();
+        this.nricBackPhoto = other.nricBackPhoto == null ? null : other.nricBackPhoto.copy();
+        this.bankBookPhoto = other.bankBookPhoto == null ? null : other.bankBookPhoto.copy();
+        this.companyRegistrationPhoto = other.companyRegistrationPhoto == null ? null : other.companyRegistrationPhoto.copy();
+        this.distributorCertificatePhoto = other.distributorCertificatePhoto == null ? null : other.distributorCertificatePhoto.copy();
         this.activeFlag = other.activeFlag == null ? null : other.activeFlag.copy();
-        this.thumbnailUrl = other.thumbnailUrl == null ? null : other.thumbnailUrl.copy();
-        this.pickupSameAsHeadOffice = other.pickupSameAsHeadOffice == null ? null : other.pickupSameAsHeadOffice.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
-        this.peopleId = other.peopleId == null ? null : other.peopleId.copy();
+        this.bannerListId = other.bannerListId == null ? null : other.bannerListId.copy();
+        this.documentListId = other.documentListId == null ? null : other.documentListId.copy();
         this.supplierCategoryId = other.supplierCategoryId == null ? null : other.supplierCategoryId.copy();
         this.pickupAddressId = other.pickupAddressId == null ? null : other.pickupAddressId.copy();
         this.headOfficeAddressId = other.headOfficeAddressId == null ? null : other.headOfficeAddressId.copy();
+        this.returnAddressId = other.returnAddressId == null ? null : other.returnAddressId.copy();
+        this.contactPersonId = other.contactPersonId == null ? null : other.contactPersonId.copy();
         this.deliveryMethodId = other.deliveryMethodId == null ? null : other.deliveryMethodId.copy();
+        this.peopleId = other.peopleId == null ? null : other.peopleId.copy();
     }
 
     @Override
@@ -199,6 +238,30 @@ public class SuppliersCriteria implements Serializable, Criteria {
         this.phoneNumber = phoneNumber;
     }
 
+    public StringFilter getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(StringFilter emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public StringFilter getNric() {
+        return nric;
+    }
+
+    public void setNric(StringFilter nric) {
+        this.nric = nric;
+    }
+
+    public StringFilter getCompanyRegistrationNo() {
+        return companyRegistrationNo;
+    }
+
+    public void setCompanyRegistrationNo(StringFilter companyRegistrationNo) {
+        this.companyRegistrationNo = companyRegistrationNo;
+    }
+
     public StringFilter getFaxNumber() {
         return faxNumber;
     }
@@ -207,12 +270,12 @@ public class SuppliersCriteria implements Serializable, Criteria {
         this.faxNumber = faxNumber;
     }
 
-    public StringFilter getWebsiteURL() {
-        return websiteURL;
+    public StringFilter getWebsiteUrl() {
+        return websiteUrl;
     }
 
-    public void setWebsiteURL(StringFilter websiteURL) {
-        this.websiteURL = websiteURL;
+    public void setWebsiteUrl(StringFilter websiteUrl) {
+        this.websiteUrl = websiteUrl;
     }
 
     public StringFilter getWebServiceUrl() {
@@ -231,28 +294,76 @@ public class SuppliersCriteria implements Serializable, Criteria {
         this.creditRating = creditRating;
     }
 
+    public BooleanFilter getOfficialStoreInd() {
+        return officialStoreInd;
+    }
+
+    public void setOfficialStoreInd(BooleanFilter officialStoreInd) {
+        this.officialStoreInd = officialStoreInd;
+    }
+
+    public StringFilter getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(StringFilter storeName) {
+        this.storeName = storeName;
+    }
+
+    public StringFilter getLogo() {
+        return logo;
+    }
+
+    public void setLogo(StringFilter logo) {
+        this.logo = logo;
+    }
+
+    public StringFilter getNricFrontPhoto() {
+        return nricFrontPhoto;
+    }
+
+    public void setNricFrontPhoto(StringFilter nricFrontPhoto) {
+        this.nricFrontPhoto = nricFrontPhoto;
+    }
+
+    public StringFilter getNricBackPhoto() {
+        return nricBackPhoto;
+    }
+
+    public void setNricBackPhoto(StringFilter nricBackPhoto) {
+        this.nricBackPhoto = nricBackPhoto;
+    }
+
+    public StringFilter getBankBookPhoto() {
+        return bankBookPhoto;
+    }
+
+    public void setBankBookPhoto(StringFilter bankBookPhoto) {
+        this.bankBookPhoto = bankBookPhoto;
+    }
+
+    public StringFilter getCompanyRegistrationPhoto() {
+        return companyRegistrationPhoto;
+    }
+
+    public void setCompanyRegistrationPhoto(StringFilter companyRegistrationPhoto) {
+        this.companyRegistrationPhoto = companyRegistrationPhoto;
+    }
+
+    public StringFilter getDistributorCertificatePhoto() {
+        return distributorCertificatePhoto;
+    }
+
+    public void setDistributorCertificatePhoto(StringFilter distributorCertificatePhoto) {
+        this.distributorCertificatePhoto = distributorCertificatePhoto;
+    }
+
     public BooleanFilter getActiveFlag() {
         return activeFlag;
     }
 
     public void setActiveFlag(BooleanFilter activeFlag) {
         this.activeFlag = activeFlag;
-    }
-
-    public StringFilter getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(StringFilter thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public BooleanFilter getPickupSameAsHeadOffice() {
-        return pickupSameAsHeadOffice;
-    }
-
-    public void setPickupSameAsHeadOffice(BooleanFilter pickupSameAsHeadOffice) {
-        this.pickupSameAsHeadOffice = pickupSameAsHeadOffice;
     }
 
     public InstantFilter getValidFrom() {
@@ -271,12 +382,20 @@ public class SuppliersCriteria implements Serializable, Criteria {
         this.validTo = validTo;
     }
 
-    public LongFilter getPeopleId() {
-        return peopleId;
+    public LongFilter getBannerListId() {
+        return bannerListId;
     }
 
-    public void setPeopleId(LongFilter peopleId) {
-        this.peopleId = peopleId;
+    public void setBannerListId(LongFilter bannerListId) {
+        this.bannerListId = bannerListId;
+    }
+
+    public LongFilter getDocumentListId() {
+        return documentListId;
+    }
+
+    public void setDocumentListId(LongFilter documentListId) {
+        this.documentListId = documentListId;
     }
 
     public LongFilter getSupplierCategoryId() {
@@ -303,12 +422,36 @@ public class SuppliersCriteria implements Serializable, Criteria {
         this.headOfficeAddressId = headOfficeAddressId;
     }
 
+    public LongFilter getReturnAddressId() {
+        return returnAddressId;
+    }
+
+    public void setReturnAddressId(LongFilter returnAddressId) {
+        this.returnAddressId = returnAddressId;
+    }
+
+    public LongFilter getContactPersonId() {
+        return contactPersonId;
+    }
+
+    public void setContactPersonId(LongFilter contactPersonId) {
+        this.contactPersonId = contactPersonId;
+    }
+
     public LongFilter getDeliveryMethodId() {
         return deliveryMethodId;
     }
 
     public void setDeliveryMethodId(LongFilter deliveryMethodId) {
         this.deliveryMethodId = deliveryMethodId;
+    }
+
+    public LongFilter getPeopleId() {
+        return peopleId;
+    }
+
+    public void setPeopleId(LongFilter peopleId) {
+        this.peopleId = peopleId;
     }
 
 
@@ -333,20 +476,33 @@ public class SuppliersCriteria implements Serializable, Criteria {
             Objects.equals(paymentDays, that.paymentDays) &&
             Objects.equals(internalComments, that.internalComments) &&
             Objects.equals(phoneNumber, that.phoneNumber) &&
+            Objects.equals(emailAddress, that.emailAddress) &&
+            Objects.equals(nric, that.nric) &&
+            Objects.equals(companyRegistrationNo, that.companyRegistrationNo) &&
             Objects.equals(faxNumber, that.faxNumber) &&
-            Objects.equals(websiteURL, that.websiteURL) &&
+            Objects.equals(websiteUrl, that.websiteUrl) &&
             Objects.equals(webServiceUrl, that.webServiceUrl) &&
             Objects.equals(creditRating, that.creditRating) &&
+            Objects.equals(officialStoreInd, that.officialStoreInd) &&
+            Objects.equals(storeName, that.storeName) &&
+            Objects.equals(logo, that.logo) &&
+            Objects.equals(nricFrontPhoto, that.nricFrontPhoto) &&
+            Objects.equals(nricBackPhoto, that.nricBackPhoto) &&
+            Objects.equals(bankBookPhoto, that.bankBookPhoto) &&
+            Objects.equals(companyRegistrationPhoto, that.companyRegistrationPhoto) &&
+            Objects.equals(distributorCertificatePhoto, that.distributorCertificatePhoto) &&
             Objects.equals(activeFlag, that.activeFlag) &&
-            Objects.equals(thumbnailUrl, that.thumbnailUrl) &&
-            Objects.equals(pickupSameAsHeadOffice, that.pickupSameAsHeadOffice) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo) &&
-            Objects.equals(peopleId, that.peopleId) &&
+            Objects.equals(bannerListId, that.bannerListId) &&
+            Objects.equals(documentListId, that.documentListId) &&
             Objects.equals(supplierCategoryId, that.supplierCategoryId) &&
             Objects.equals(pickupAddressId, that.pickupAddressId) &&
             Objects.equals(headOfficeAddressId, that.headOfficeAddressId) &&
-            Objects.equals(deliveryMethodId, that.deliveryMethodId);
+            Objects.equals(returnAddressId, that.returnAddressId) &&
+            Objects.equals(contactPersonId, that.contactPersonId) &&
+            Objects.equals(deliveryMethodId, that.deliveryMethodId) &&
+            Objects.equals(peopleId, that.peopleId);
     }
 
     @Override
@@ -363,20 +519,33 @@ public class SuppliersCriteria implements Serializable, Criteria {
         paymentDays,
         internalComments,
         phoneNumber,
+        emailAddress,
+        nric,
+        companyRegistrationNo,
         faxNumber,
-        websiteURL,
+        websiteUrl,
         webServiceUrl,
         creditRating,
+        officialStoreInd,
+        storeName,
+        logo,
+        nricFrontPhoto,
+        nricBackPhoto,
+        bankBookPhoto,
+        companyRegistrationPhoto,
+        distributorCertificatePhoto,
         activeFlag,
-        thumbnailUrl,
-        pickupSameAsHeadOffice,
         validFrom,
         validTo,
-        peopleId,
+        bannerListId,
+        documentListId,
         supplierCategoryId,
         pickupAddressId,
         headOfficeAddressId,
-        deliveryMethodId
+        returnAddressId,
+        contactPersonId,
+        deliveryMethodId,
+        peopleId
         );
     }
 
@@ -395,20 +564,33 @@ public class SuppliersCriteria implements Serializable, Criteria {
                 (paymentDays != null ? "paymentDays=" + paymentDays + ", " : "") +
                 (internalComments != null ? "internalComments=" + internalComments + ", " : "") +
                 (phoneNumber != null ? "phoneNumber=" + phoneNumber + ", " : "") +
+                (emailAddress != null ? "emailAddress=" + emailAddress + ", " : "") +
+                (nric != null ? "nric=" + nric + ", " : "") +
+                (companyRegistrationNo != null ? "companyRegistrationNo=" + companyRegistrationNo + ", " : "") +
                 (faxNumber != null ? "faxNumber=" + faxNumber + ", " : "") +
-                (websiteURL != null ? "websiteURL=" + websiteURL + ", " : "") +
+                (websiteUrl != null ? "websiteUrl=" + websiteUrl + ", " : "") +
                 (webServiceUrl != null ? "webServiceUrl=" + webServiceUrl + ", " : "") +
                 (creditRating != null ? "creditRating=" + creditRating + ", " : "") +
+                (officialStoreInd != null ? "officialStoreInd=" + officialStoreInd + ", " : "") +
+                (storeName != null ? "storeName=" + storeName + ", " : "") +
+                (logo != null ? "logo=" + logo + ", " : "") +
+                (nricFrontPhoto != null ? "nricFrontPhoto=" + nricFrontPhoto + ", " : "") +
+                (nricBackPhoto != null ? "nricBackPhoto=" + nricBackPhoto + ", " : "") +
+                (bankBookPhoto != null ? "bankBookPhoto=" + bankBookPhoto + ", " : "") +
+                (companyRegistrationPhoto != null ? "companyRegistrationPhoto=" + companyRegistrationPhoto + ", " : "") +
+                (distributorCertificatePhoto != null ? "distributorCertificatePhoto=" + distributorCertificatePhoto + ", " : "") +
                 (activeFlag != null ? "activeFlag=" + activeFlag + ", " : "") +
-                (thumbnailUrl != null ? "thumbnailUrl=" + thumbnailUrl + ", " : "") +
-                (pickupSameAsHeadOffice != null ? "pickupSameAsHeadOffice=" + pickupSameAsHeadOffice + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
-                (peopleId != null ? "peopleId=" + peopleId + ", " : "") +
+                (bannerListId != null ? "bannerListId=" + bannerListId + ", " : "") +
+                (documentListId != null ? "documentListId=" + documentListId + ", " : "") +
                 (supplierCategoryId != null ? "supplierCategoryId=" + supplierCategoryId + ", " : "") +
                 (pickupAddressId != null ? "pickupAddressId=" + pickupAddressId + ", " : "") +
                 (headOfficeAddressId != null ? "headOfficeAddressId=" + headOfficeAddressId + ", " : "") +
+                (returnAddressId != null ? "returnAddressId=" + returnAddressId + ", " : "") +
+                (contactPersonId != null ? "contactPersonId=" + contactPersonId + ", " : "") +
                 (deliveryMethodId != null ? "deliveryMethodId=" + deliveryMethodId + ", " : "") +
+                (peopleId != null ? "peopleId=" + peopleId + ", " : "") +
             "}";
     }
 

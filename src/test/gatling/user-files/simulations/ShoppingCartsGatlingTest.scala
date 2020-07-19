@@ -102,14 +102,15 @@ class ShoppingCartsGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "totalPrice":"0"
+                , "totalTaxAmount":"0"
                 , "subTotalPrice":"0"
                 , "totalShippingFee":"0"
                 , "totalShippingFeeDiscount":"0"
                 , "promotionTotal":"0"
                 , "voucherTotal":"0"
                 , "packageDetails":null
-                , "cartString":null
-                , "dealString":null
+                , "cartDetails":null
+                , "dealDetails":null
                 , "lastEditedBy":"SAMPLE_TEXT"
                 , "lastEditedWhen":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

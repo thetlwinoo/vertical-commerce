@@ -35,26 +35,21 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "logoPhoto",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "validForm",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "validTo",
-      "fieldType": "Instant",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Instant"
     }
   ],
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "photos",
-      "otherEntityRelationshipName": "bankAccounts",
-      "relationshipName": "logo",
-      "otherEntityField": "thumbnailUrl"
-    }
-  ],
-  "changelogDate": "20200617161304",
+  "relationships": [],
+  "changelogDate": "20200718080312",
   "entityTableName": "bank_accounts",
   "dto": "mapstruct",
   "pagination": "no",

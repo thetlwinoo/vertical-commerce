@@ -30,6 +30,10 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
 
     private InstantFilter expectedDeliveryDate;
 
+    private InstantFilter orderPlacedOn;
+
+    private InstantFilter orderDeliveredOn;
+
     private StringFilter comments;
 
     private StringFilter deliveryInstructions;
@@ -82,6 +86,8 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
     public OrderPackagesCriteria(OrderPackagesCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.expectedDeliveryDate = other.expectedDeliveryDate == null ? null : other.expectedDeliveryDate.copy();
+        this.orderPlacedOn = other.orderPlacedOn == null ? null : other.orderPlacedOn.copy();
+        this.orderDeliveredOn = other.orderDeliveredOn == null ? null : other.orderDeliveredOn.copy();
         this.comments = other.comments == null ? null : other.comments.copy();
         this.deliveryInstructions = other.deliveryInstructions == null ? null : other.deliveryInstructions.copy();
         this.internalComments = other.internalComments == null ? null : other.internalComments.copy();
@@ -126,6 +132,22 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
 
     public void setExpectedDeliveryDate(InstantFilter expectedDeliveryDate) {
         this.expectedDeliveryDate = expectedDeliveryDate;
+    }
+
+    public InstantFilter getOrderPlacedOn() {
+        return orderPlacedOn;
+    }
+
+    public void setOrderPlacedOn(InstantFilter orderPlacedOn) {
+        this.orderPlacedOn = orderPlacedOn;
+    }
+
+    public InstantFilter getOrderDeliveredOn() {
+        return orderDeliveredOn;
+    }
+
+    public void setOrderDeliveredOn(InstantFilter orderDeliveredOn) {
+        this.orderDeliveredOn = orderDeliveredOn;
     }
 
     public StringFilter getComments() {
@@ -325,6 +347,8 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(expectedDeliveryDate, that.expectedDeliveryDate) &&
+            Objects.equals(orderPlacedOn, that.orderPlacedOn) &&
+            Objects.equals(orderDeliveredOn, that.orderDeliveredOn) &&
             Objects.equals(comments, that.comments) &&
             Objects.equals(deliveryInstructions, that.deliveryInstructions) &&
             Objects.equals(internalComments, that.internalComments) &&
@@ -355,6 +379,8 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         expectedDeliveryDate,
+        orderPlacedOn,
+        orderDeliveredOn,
         comments,
         deliveryInstructions,
         internalComments,
@@ -387,6 +413,8 @@ public class OrderPackagesCriteria implements Serializable, Criteria {
         return "OrderPackagesCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (expectedDeliveryDate != null ? "expectedDeliveryDate=" + expectedDeliveryDate + ", " : "") +
+                (orderPlacedOn != null ? "orderPlacedOn=" + orderPlacedOn + ", " : "") +
+                (orderDeliveredOn != null ? "orderDeliveredOn=" + orderDeliveredOn + ", " : "") +
                 (comments != null ? "comments=" + comments + ", " : "") +
                 (deliveryInstructions != null ? "deliveryInstructions=" + deliveryInstructions + ", " : "") +
                 (internalComments != null ? "internalComments=" + internalComments + ", " : "") +

@@ -43,7 +43,7 @@ public class CountriesCriteria implements Serializable, Criteria {
 
     private StringFilter region;
 
-    private StringFilter subregion;
+    private StringFilter subRegion;
 
     private StringFilter border;
 
@@ -64,7 +64,7 @@ public class CountriesCriteria implements Serializable, Criteria {
         this.latestRecordedPopulation = other.latestRecordedPopulation == null ? null : other.latestRecordedPopulation.copy();
         this.continent = other.continent == null ? null : other.continent.copy();
         this.region = other.region == null ? null : other.region.copy();
-        this.subregion = other.subregion == null ? null : other.subregion.copy();
+        this.subRegion = other.subRegion == null ? null : other.subRegion.copy();
         this.border = other.border == null ? null : other.border.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
@@ -147,12 +147,12 @@ public class CountriesCriteria implements Serializable, Criteria {
         this.region = region;
     }
 
-    public StringFilter getSubregion() {
-        return subregion;
+    public StringFilter getSubRegion() {
+        return subRegion;
     }
 
-    public void setSubregion(StringFilter subregion) {
-        this.subregion = subregion;
+    public void setSubRegion(StringFilter subRegion) {
+        this.subRegion = subRegion;
     }
 
     public StringFilter getBorder() {
@@ -199,7 +199,7 @@ public class CountriesCriteria implements Serializable, Criteria {
             Objects.equals(latestRecordedPopulation, that.latestRecordedPopulation) &&
             Objects.equals(continent, that.continent) &&
             Objects.equals(region, that.region) &&
-            Objects.equals(subregion, that.subregion) &&
+            Objects.equals(subRegion, that.subRegion) &&
             Objects.equals(border, that.border) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo);
@@ -217,7 +217,7 @@ public class CountriesCriteria implements Serializable, Criteria {
         latestRecordedPopulation,
         continent,
         region,
-        subregion,
+        subRegion,
         border,
         validFrom,
         validTo
@@ -237,7 +237,7 @@ public class CountriesCriteria implements Serializable, Criteria {
                 (latestRecordedPopulation != null ? "latestRecordedPopulation=" + latestRecordedPopulation + ", " : "") +
                 (continent != null ? "continent=" + continent + ", " : "") +
                 (region != null ? "region=" + region + ", " : "") +
-                (subregion != null ? "subregion=" + subregion + ", " : "") +
+                (subRegion != null ? "subRegion=" + subRegion + ", " : "") +
                 (border != null ? "border=" + border + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +

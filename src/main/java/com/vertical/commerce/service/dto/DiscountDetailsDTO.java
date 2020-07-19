@@ -173,16 +173,16 @@ public class DiscountDetailsDTO implements Serializable {
         return discountId;
     }
 
-    public void setDiscountId(Long discountId) {
-        this.discountId = discountId;
+    public void setDiscountId(Long discountsId) {
+        this.discountId = discountsId;
     }
 
     public String getDiscountName() {
         return discountName;
     }
 
-    public void setDiscountName(String discountName) {
-        this.discountName = discountName;
+    public void setDiscountName(String discountsName) {
+        this.discountName = discountsName;
     }
 
     public Long getStockItemId() {

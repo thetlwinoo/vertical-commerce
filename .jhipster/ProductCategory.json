@@ -7,6 +7,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "cultureDetails",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
       "fieldName": "shortLabel",
       "fieldType": "String"
     },
@@ -19,6 +24,10 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "iconPhoto",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "justForYouInd",
       "fieldType": "Boolean"
     },
@@ -27,8 +36,13 @@
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "activeInd",
-      "fieldType": "Boolean"
+      "fieldName": "validFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validTo",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
@@ -38,16 +52,9 @@
       "otherEntityRelationshipName": "productCategory",
       "relationshipName": "parent",
       "otherEntityField": "name"
-    },
-    {
-      "relationshipType": "many-to-one",
-      "otherEntityName": "photos",
-      "otherEntityRelationshipName": "productCategory",
-      "relationshipName": "icon",
-      "otherEntityField": "thumbnailUrl"
     }
   ],
-  "changelogDate": "20200617164804",
+  "changelogDate": "20200718084312",
   "entityTableName": "product_category",
   "dto": "mapstruct",
   "pagination": "no",

@@ -3,6 +3,7 @@ package com.vertical.commerce.service.dto;
 import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.vertical.commerce.domain.StateProvinces} entity.
@@ -17,7 +18,9 @@ public class StateProvincesDTO implements Serializable {
     @NotNull
     private String name;
 
-    @NotNull
+    @Lob
+    private String cultureDetails;
+
     private String salesTerritory;
 
     private String border;
@@ -27,7 +30,6 @@ public class StateProvincesDTO implements Serializable {
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
 
@@ -57,6 +59,14 @@ public class StateProvincesDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getSalesTerritory() {
@@ -139,6 +149,7 @@ public class StateProvincesDTO implements Serializable {
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", salesTerritory='" + getSalesTerritory() + "'" +
             ", border='" + getBorder() + "'" +
             ", latestRecordedPopulation=" + getLatestRecordedPopulation() +

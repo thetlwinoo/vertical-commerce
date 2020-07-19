@@ -103,9 +103,6 @@ public class DeliveryMethodsQueryService extends QueryService<DeliveryMethods> {
             if (criteria.getExpectedMaxArrivalDays() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getExpectedMaxArrivalDays(), DeliveryMethods_.expectedMaxArrivalDays));
             }
-            if (criteria.getActiveInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getActiveInd(), DeliveryMethods_.activeInd));
-            }
             if (criteria.getDefaultInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getDefaultInd(), DeliveryMethods_.defaultInd));
             }

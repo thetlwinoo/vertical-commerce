@@ -106,9 +106,9 @@ public class CitiesQueryService extends QueryService<Cities> {
             if (criteria.getValidTo() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidTo(), Cities_.validTo));
             }
-            if (criteria.getStateProvinceId() != null) {
-                specification = specification.and(buildSpecification(criteria.getStateProvinceId(),
-                    root -> root.join(Cities_.stateProvince, JoinType.LEFT).get(StateProvinces_.id)));
+            if (criteria.getRegionId() != null) {
+                specification = specification.and(buildSpecification(criteria.getRegionId(),
+                    root -> root.join(Cities_.region, JoinType.LEFT).get(Regions_.id)));
             }
         }
         return specification;

@@ -27,7 +27,7 @@ public class CompareLines implements Serializable {
     @JsonIgnoreProperties(value = "compareLines", allowSetters = true)
     private StockItems stockItem;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne
     @JsonIgnoreProperties(value = "compareLineLists", allowSetters = true)
     private Compares compare;
 

@@ -90,7 +90,7 @@
       "ownerSide": false
     }
   ],
-  "changelogDate": "20200617160204",
+  "changelogDate": "20200718075212",
   "entityTableName": "customer_payment",
   "dto": "mapstruct",
   "pagination": "no",

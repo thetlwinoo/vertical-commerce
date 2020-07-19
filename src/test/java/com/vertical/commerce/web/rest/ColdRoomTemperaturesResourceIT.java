@@ -237,26 +237,6 @@ public class ColdRoomTemperaturesResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = coldRoomTemperaturesRepository.findAll().size();
-        // set the field null
-        coldRoomTemperatures.setValidTo(null);
-
-        // Create the ColdRoomTemperatures, which fails.
-        ColdRoomTemperaturesDTO coldRoomTemperaturesDTO = coldRoomTemperaturesMapper.toDto(coldRoomTemperatures);
-
-
-        restColdRoomTemperaturesMockMvc.perform(post("/api/cold-room-temperatures").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(coldRoomTemperaturesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<ColdRoomTemperatures> coldRoomTemperaturesList = coldRoomTemperaturesRepository.findAll();
-        assertThat(coldRoomTemperaturesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllColdRoomTemperatures() throws Exception {
         // Initialize the database
         coldRoomTemperaturesRepository.saveAndFlush(coldRoomTemperatures);

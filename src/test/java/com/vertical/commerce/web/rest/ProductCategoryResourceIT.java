@@ -4,7 +4,6 @@ import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.ProductCategory;
 import com.vertical.commerce.domain.ProductCategory;
-import com.vertical.commerce.domain.Photos;
 import com.vertical.commerce.repository.ProductCategoryRepository;
 import com.vertical.commerce.service.ProductCategoryService;
 import com.vertical.commerce.service.dto.ProductCategoryDTO;
@@ -21,7 +20,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,6 +43,9 @@ public class ProductCategoryResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
+    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
+
     private static final String DEFAULT_SHORT_LABEL = "AAAAAAAAAA";
     private static final String UPDATED_SHORT_LABEL = "BBBBBBBBBB";
 
@@ -51,14 +56,20 @@ public class ProductCategoryResourceIT {
     private static final String DEFAULT_ICON_FONT = "AAAAAAAAAA";
     private static final String UPDATED_ICON_FONT = "BBBBBBBBBB";
 
+    private static final String DEFAULT_ICON_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_ICON_PHOTO = "BBBBBBBBBB";
+
     private static final Boolean DEFAULT_JUST_FOR_YOU_IND = false;
     private static final Boolean UPDATED_JUST_FOR_YOU_IND = true;
 
     private static final Boolean DEFAULT_SHOW_IN_NAV_IND = false;
     private static final Boolean UPDATED_SHOW_IN_NAV_IND = true;
 
-    private static final Boolean DEFAULT_ACTIVE_IND = false;
-    private static final Boolean UPDATED_ACTIVE_IND = true;
+    private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_VALID_TO = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_VALID_TO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
@@ -89,12 +100,15 @@ public class ProductCategoryResourceIT {
     public static ProductCategory createEntity(EntityManager em) {
         ProductCategory productCategory = new ProductCategory()
             .name(DEFAULT_NAME)
+            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .shortLabel(DEFAULT_SHORT_LABEL)
             .sortOrder(DEFAULT_SORT_ORDER)
             .iconFont(DEFAULT_ICON_FONT)
+            .iconPhoto(DEFAULT_ICON_PHOTO)
             .justForYouInd(DEFAULT_JUST_FOR_YOU_IND)
             .showInNavInd(DEFAULT_SHOW_IN_NAV_IND)
-            .activeInd(DEFAULT_ACTIVE_IND);
+            .validFrom(DEFAULT_VALID_FROM)
+            .validTo(DEFAULT_VALID_TO);
         return productCategory;
     }
     /**
@@ -106,12 +120,15 @@ public class ProductCategoryResourceIT {
     public static ProductCategory createUpdatedEntity(EntityManager em) {
         ProductCategory productCategory = new ProductCategory()
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .shortLabel(UPDATED_SHORT_LABEL)
             .sortOrder(UPDATED_SORT_ORDER)
             .iconFont(UPDATED_ICON_FONT)
+            .iconPhoto(UPDATED_ICON_PHOTO)
             .justForYouInd(UPDATED_JUST_FOR_YOU_IND)
             .showInNavInd(UPDATED_SHOW_IN_NAV_IND)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         return productCategory;
     }
 
@@ -136,12 +153,15 @@ public class ProductCategoryResourceIT {
         assertThat(productCategoryList).hasSize(databaseSizeBeforeCreate + 1);
         ProductCategory testProductCategory = productCategoryList.get(productCategoryList.size() - 1);
         assertThat(testProductCategory.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProductCategory.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testProductCategory.getShortLabel()).isEqualTo(DEFAULT_SHORT_LABEL);
         assertThat(testProductCategory.getSortOrder()).isEqualTo(DEFAULT_SORT_ORDER);
         assertThat(testProductCategory.getIconFont()).isEqualTo(DEFAULT_ICON_FONT);
+        assertThat(testProductCategory.getIconPhoto()).isEqualTo(DEFAULT_ICON_PHOTO);
         assertThat(testProductCategory.isJustForYouInd()).isEqualTo(DEFAULT_JUST_FOR_YOU_IND);
         assertThat(testProductCategory.isShowInNavInd()).isEqualTo(DEFAULT_SHOW_IN_NAV_IND);
-        assertThat(testProductCategory.isActiveInd()).isEqualTo(DEFAULT_ACTIVE_IND);
+        assertThat(testProductCategory.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testProductCategory.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
 
     @Test
@@ -187,6 +207,26 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
+    public void checkValidFromIsRequired() throws Exception {
+        int databaseSizeBeforeTest = productCategoryRepository.findAll().size();
+        // set the field null
+        productCategory.setValidFrom(null);
+
+        // Create the ProductCategory, which fails.
+        ProductCategoryDTO productCategoryDTO = productCategoryMapper.toDto(productCategory);
+
+
+        restProductCategoryMockMvc.perform(post("/api/product-categories").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(productCategoryDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<ProductCategory> productCategoryList = productCategoryRepository.findAll();
+        assertThat(productCategoryList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllProductCategories() throws Exception {
         // Initialize the database
         productCategoryRepository.saveAndFlush(productCategory);
@@ -197,12 +237,15 @@ public class ProductCategoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productCategory.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].shortLabel").value(hasItem(DEFAULT_SHORT_LABEL)))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
             .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
+            .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)))
             .andExpect(jsonPath("$.[*].justForYouInd").value(hasItem(DEFAULT_JUST_FOR_YOU_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].showInNavInd").value(hasItem(DEFAULT_SHOW_IN_NAV_IND.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
     
     @Test
@@ -217,12 +260,15 @@ public class ProductCategoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productCategory.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.shortLabel").value(DEFAULT_SHORT_LABEL))
             .andExpect(jsonPath("$.sortOrder").value(DEFAULT_SORT_ORDER))
             .andExpect(jsonPath("$.iconFont").value(DEFAULT_ICON_FONT))
+            .andExpect(jsonPath("$.iconPhoto").value(DEFAULT_ICON_PHOTO))
             .andExpect(jsonPath("$.justForYouInd").value(DEFAULT_JUST_FOR_YOU_IND.booleanValue()))
             .andExpect(jsonPath("$.showInNavInd").value(DEFAULT_SHOW_IN_NAV_IND.booleanValue()))
-            .andExpect(jsonPath("$.activeInd").value(DEFAULT_ACTIVE_IND.booleanValue()));
+            .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
+            .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
 
 
@@ -586,6 +632,84 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
+    public void getAllProductCategoriesByIconPhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where iconPhoto equals to DEFAULT_ICON_PHOTO
+        defaultProductCategoryShouldBeFound("iconPhoto.equals=" + DEFAULT_ICON_PHOTO);
+
+        // Get all the productCategoryList where iconPhoto equals to UPDATED_ICON_PHOTO
+        defaultProductCategoryShouldNotBeFound("iconPhoto.equals=" + UPDATED_ICON_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductCategoriesByIconPhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where iconPhoto not equals to DEFAULT_ICON_PHOTO
+        defaultProductCategoryShouldNotBeFound("iconPhoto.notEquals=" + DEFAULT_ICON_PHOTO);
+
+        // Get all the productCategoryList where iconPhoto not equals to UPDATED_ICON_PHOTO
+        defaultProductCategoryShouldBeFound("iconPhoto.notEquals=" + UPDATED_ICON_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductCategoriesByIconPhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where iconPhoto in DEFAULT_ICON_PHOTO or UPDATED_ICON_PHOTO
+        defaultProductCategoryShouldBeFound("iconPhoto.in=" + DEFAULT_ICON_PHOTO + "," + UPDATED_ICON_PHOTO);
+
+        // Get all the productCategoryList where iconPhoto equals to UPDATED_ICON_PHOTO
+        defaultProductCategoryShouldNotBeFound("iconPhoto.in=" + UPDATED_ICON_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductCategoriesByIconPhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where iconPhoto is not null
+        defaultProductCategoryShouldBeFound("iconPhoto.specified=true");
+
+        // Get all the productCategoryList where iconPhoto is null
+        defaultProductCategoryShouldNotBeFound("iconPhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllProductCategoriesByIconPhotoContainsSomething() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where iconPhoto contains DEFAULT_ICON_PHOTO
+        defaultProductCategoryShouldBeFound("iconPhoto.contains=" + DEFAULT_ICON_PHOTO);
+
+        // Get all the productCategoryList where iconPhoto contains UPDATED_ICON_PHOTO
+        defaultProductCategoryShouldNotBeFound("iconPhoto.contains=" + UPDATED_ICON_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductCategoriesByIconPhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where iconPhoto does not contain DEFAULT_ICON_PHOTO
+        defaultProductCategoryShouldNotBeFound("iconPhoto.doesNotContain=" + DEFAULT_ICON_PHOTO);
+
+        // Get all the productCategoryList where iconPhoto does not contain UPDATED_ICON_PHOTO
+        defaultProductCategoryShouldBeFound("iconPhoto.doesNotContain=" + UPDATED_ICON_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllProductCategoriesByJustForYouIndIsEqualToSomething() throws Exception {
         // Initialize the database
         productCategoryRepository.saveAndFlush(productCategory);
@@ -690,54 +814,106 @@ public class ProductCategoryResourceIT {
 
     @Test
     @Transactional
-    public void getAllProductCategoriesByActiveIndIsEqualToSomething() throws Exception {
+    public void getAllProductCategoriesByValidFromIsEqualToSomething() throws Exception {
         // Initialize the database
         productCategoryRepository.saveAndFlush(productCategory);
 
-        // Get all the productCategoryList where activeInd equals to DEFAULT_ACTIVE_IND
-        defaultProductCategoryShouldBeFound("activeInd.equals=" + DEFAULT_ACTIVE_IND);
+        // Get all the productCategoryList where validFrom equals to DEFAULT_VALID_FROM
+        defaultProductCategoryShouldBeFound("validFrom.equals=" + DEFAULT_VALID_FROM);
 
-        // Get all the productCategoryList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultProductCategoryShouldNotBeFound("activeInd.equals=" + UPDATED_ACTIVE_IND);
+        // Get all the productCategoryList where validFrom equals to UPDATED_VALID_FROM
+        defaultProductCategoryShouldNotBeFound("validFrom.equals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllProductCategoriesByActiveIndIsNotEqualToSomething() throws Exception {
+    public void getAllProductCategoriesByValidFromIsNotEqualToSomething() throws Exception {
         // Initialize the database
         productCategoryRepository.saveAndFlush(productCategory);
 
-        // Get all the productCategoryList where activeInd not equals to DEFAULT_ACTIVE_IND
-        defaultProductCategoryShouldNotBeFound("activeInd.notEquals=" + DEFAULT_ACTIVE_IND);
+        // Get all the productCategoryList where validFrom not equals to DEFAULT_VALID_FROM
+        defaultProductCategoryShouldNotBeFound("validFrom.notEquals=" + DEFAULT_VALID_FROM);
 
-        // Get all the productCategoryList where activeInd not equals to UPDATED_ACTIVE_IND
-        defaultProductCategoryShouldBeFound("activeInd.notEquals=" + UPDATED_ACTIVE_IND);
+        // Get all the productCategoryList where validFrom not equals to UPDATED_VALID_FROM
+        defaultProductCategoryShouldBeFound("validFrom.notEquals=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllProductCategoriesByActiveIndIsInShouldWork() throws Exception {
+    public void getAllProductCategoriesByValidFromIsInShouldWork() throws Exception {
         // Initialize the database
         productCategoryRepository.saveAndFlush(productCategory);
 
-        // Get all the productCategoryList where activeInd in DEFAULT_ACTIVE_IND or UPDATED_ACTIVE_IND
-        defaultProductCategoryShouldBeFound("activeInd.in=" + DEFAULT_ACTIVE_IND + "," + UPDATED_ACTIVE_IND);
+        // Get all the productCategoryList where validFrom in DEFAULT_VALID_FROM or UPDATED_VALID_FROM
+        defaultProductCategoryShouldBeFound("validFrom.in=" + DEFAULT_VALID_FROM + "," + UPDATED_VALID_FROM);
 
-        // Get all the productCategoryList where activeInd equals to UPDATED_ACTIVE_IND
-        defaultProductCategoryShouldNotBeFound("activeInd.in=" + UPDATED_ACTIVE_IND);
+        // Get all the productCategoryList where validFrom equals to UPDATED_VALID_FROM
+        defaultProductCategoryShouldNotBeFound("validFrom.in=" + UPDATED_VALID_FROM);
     }
 
     @Test
     @Transactional
-    public void getAllProductCategoriesByActiveIndIsNullOrNotNull() throws Exception {
+    public void getAllProductCategoriesByValidFromIsNullOrNotNull() throws Exception {
         // Initialize the database
         productCategoryRepository.saveAndFlush(productCategory);
 
-        // Get all the productCategoryList where activeInd is not null
-        defaultProductCategoryShouldBeFound("activeInd.specified=true");
+        // Get all the productCategoryList where validFrom is not null
+        defaultProductCategoryShouldBeFound("validFrom.specified=true");
 
-        // Get all the productCategoryList where activeInd is null
-        defaultProductCategoryShouldNotBeFound("activeInd.specified=false");
+        // Get all the productCategoryList where validFrom is null
+        defaultProductCategoryShouldNotBeFound("validFrom.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductCategoriesByValidToIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where validTo equals to DEFAULT_VALID_TO
+        defaultProductCategoryShouldBeFound("validTo.equals=" + DEFAULT_VALID_TO);
+
+        // Get all the productCategoryList where validTo equals to UPDATED_VALID_TO
+        defaultProductCategoryShouldNotBeFound("validTo.equals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductCategoriesByValidToIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where validTo not equals to DEFAULT_VALID_TO
+        defaultProductCategoryShouldNotBeFound("validTo.notEquals=" + DEFAULT_VALID_TO);
+
+        // Get all the productCategoryList where validTo not equals to UPDATED_VALID_TO
+        defaultProductCategoryShouldBeFound("validTo.notEquals=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductCategoriesByValidToIsInShouldWork() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where validTo in DEFAULT_VALID_TO or UPDATED_VALID_TO
+        defaultProductCategoryShouldBeFound("validTo.in=" + DEFAULT_VALID_TO + "," + UPDATED_VALID_TO);
+
+        // Get all the productCategoryList where validTo equals to UPDATED_VALID_TO
+        defaultProductCategoryShouldNotBeFound("validTo.in=" + UPDATED_VALID_TO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductCategoriesByValidToIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        productCategoryRepository.saveAndFlush(productCategory);
+
+        // Get all the productCategoryList where validTo is not null
+        defaultProductCategoryShouldBeFound("validTo.specified=true");
+
+        // Get all the productCategoryList where validTo is null
+        defaultProductCategoryShouldNotBeFound("validTo.specified=false");
     }
 
     @Test
@@ -759,26 +935,6 @@ public class ProductCategoryResourceIT {
         defaultProductCategoryShouldNotBeFound("parentId.equals=" + (parentId + 1));
     }
 
-
-    @Test
-    @Transactional
-    public void getAllProductCategoriesByIconIsEqualToSomething() throws Exception {
-        // Initialize the database
-        productCategoryRepository.saveAndFlush(productCategory);
-        Photos icon = PhotosResourceIT.createEntity(em);
-        em.persist(icon);
-        em.flush();
-        productCategory.setIcon(icon);
-        productCategoryRepository.saveAndFlush(productCategory);
-        Long iconId = icon.getId();
-
-        // Get all the productCategoryList where icon equals to iconId
-        defaultProductCategoryShouldBeFound("iconId.equals=" + iconId);
-
-        // Get all the productCategoryList where icon equals to iconId + 1
-        defaultProductCategoryShouldNotBeFound("iconId.equals=" + (iconId + 1));
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -788,12 +944,15 @@ public class ProductCategoryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productCategory.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].shortLabel").value(hasItem(DEFAULT_SHORT_LABEL)))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
             .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
+            .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)))
             .andExpect(jsonPath("$.[*].justForYouInd").value(hasItem(DEFAULT_JUST_FOR_YOU_IND.booleanValue())))
             .andExpect(jsonPath("$.[*].showInNavInd").value(hasItem(DEFAULT_SHOW_IN_NAV_IND.booleanValue())))
-            .andExpect(jsonPath("$.[*].activeInd").value(hasItem(DEFAULT_ACTIVE_IND.booleanValue())));
+            .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
+            .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
         // Check, that the count call also returns 1
         restProductCategoryMockMvc.perform(get("/api/product-categories/count?sort=id,desc&" + filter))
@@ -841,12 +1000,15 @@ public class ProductCategoryResourceIT {
         em.detach(updatedProductCategory);
         updatedProductCategory
             .name(UPDATED_NAME)
+            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .shortLabel(UPDATED_SHORT_LABEL)
             .sortOrder(UPDATED_SORT_ORDER)
             .iconFont(UPDATED_ICON_FONT)
+            .iconPhoto(UPDATED_ICON_PHOTO)
             .justForYouInd(UPDATED_JUST_FOR_YOU_IND)
             .showInNavInd(UPDATED_SHOW_IN_NAV_IND)
-            .activeInd(UPDATED_ACTIVE_IND);
+            .validFrom(UPDATED_VALID_FROM)
+            .validTo(UPDATED_VALID_TO);
         ProductCategoryDTO productCategoryDTO = productCategoryMapper.toDto(updatedProductCategory);
 
         restProductCategoryMockMvc.perform(put("/api/product-categories").with(csrf())
@@ -859,12 +1021,15 @@ public class ProductCategoryResourceIT {
         assertThat(productCategoryList).hasSize(databaseSizeBeforeUpdate);
         ProductCategory testProductCategory = productCategoryList.get(productCategoryList.size() - 1);
         assertThat(testProductCategory.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProductCategory.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testProductCategory.getShortLabel()).isEqualTo(UPDATED_SHORT_LABEL);
         assertThat(testProductCategory.getSortOrder()).isEqualTo(UPDATED_SORT_ORDER);
         assertThat(testProductCategory.getIconFont()).isEqualTo(UPDATED_ICON_FONT);
+        assertThat(testProductCategory.getIconPhoto()).isEqualTo(UPDATED_ICON_PHOTO);
         assertThat(testProductCategory.isJustForYouInd()).isEqualTo(UPDATED_JUST_FOR_YOU_IND);
         assertThat(testProductCategory.isShowInNavInd()).isEqualTo(UPDATED_SHOW_IN_NAV_IND);
-        assertThat(testProductCategory.isActiveInd()).isEqualTo(UPDATED_ACTIVE_IND);
+        assertThat(testProductCategory.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
+        assertThat(testProductCategory.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
 
     @Test

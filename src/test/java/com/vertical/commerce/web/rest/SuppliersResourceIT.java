@@ -3,9 +3,10 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.Suppliers;
-import com.vertical.commerce.domain.People;
+import com.vertical.commerce.domain.Photos;
 import com.vertical.commerce.domain.SupplierCategories;
 import com.vertical.commerce.domain.Addresses;
+import com.vertical.commerce.domain.People;
 import com.vertical.commerce.domain.DeliveryMethods;
 import com.vertical.commerce.repository.SuppliersRepository;
 import com.vertical.commerce.service.SuppliersService;
@@ -81,6 +82,15 @@ public class SuppliersResourceIT {
     private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
 
+    private static final String DEFAULT_EMAIL_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL_ADDRESS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NRIC = "AAAAAAAAAA";
+    private static final String UPDATED_NRIC = "BBBBBBBBBB";
+
+    private static final String DEFAULT_COMPANY_REGISTRATION_NO = "AAAAAAAAAA";
+    private static final String UPDATED_COMPANY_REGISTRATION_NO = "BBBBBBBBBB";
+
     private static final String DEFAULT_FAX_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_FAX_NUMBER = "BBBBBBBBBB";
 
@@ -94,14 +104,32 @@ public class SuppliersResourceIT {
     private static final Integer UPDATED_CREDIT_RATING = 2;
     private static final Integer SMALLER_CREDIT_RATING = 1 - 1;
 
+    private static final Boolean DEFAULT_OFFICIAL_STORE_IND = false;
+    private static final Boolean UPDATED_OFFICIAL_STORE_IND = true;
+
+    private static final String DEFAULT_STORE_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_STORE_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LOGO = "AAAAAAAAAA";
+    private static final String UPDATED_LOGO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NRIC_FRONT_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_NRIC_FRONT_PHOTO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_NRIC_BACK_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_NRIC_BACK_PHOTO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_BANK_BOOK_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_BANK_BOOK_PHOTO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_COMPANY_REGISTRATION_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_COMPANY_REGISTRATION_PHOTO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO = "AAAAAAAAAA";
+    private static final String UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO = "BBBBBBBBBB";
+
     private static final Boolean DEFAULT_ACTIVE_FLAG = false;
     private static final Boolean UPDATED_ACTIVE_FLAG = true;
-
-    private static final String DEFAULT_THUMBNAIL_URL = "AAAAAAAAAA";
-    private static final String UPDATED_THUMBNAIL_URL = "BBBBBBBBBB";
-
-    private static final Boolean DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE = false;
-    private static final Boolean UPDATED_PICKUP_SAME_AS_HEAD_OFFICE = true;
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -153,13 +181,22 @@ public class SuppliersResourceIT {
             .paymentDays(DEFAULT_PAYMENT_DAYS)
             .internalComments(DEFAULT_INTERNAL_COMMENTS)
             .phoneNumber(DEFAULT_PHONE_NUMBER)
+            .emailAddress(DEFAULT_EMAIL_ADDRESS)
+            .nric(DEFAULT_NRIC)
+            .companyRegistrationNo(DEFAULT_COMPANY_REGISTRATION_NO)
             .faxNumber(DEFAULT_FAX_NUMBER)
-            .websiteURL(DEFAULT_WEBSITE_URL)
+            .websiteUrl(DEFAULT_WEBSITE_URL)
             .webServiceUrl(DEFAULT_WEB_SERVICE_URL)
             .creditRating(DEFAULT_CREDIT_RATING)
+            .officialStoreInd(DEFAULT_OFFICIAL_STORE_IND)
+            .storeName(DEFAULT_STORE_NAME)
+            .logo(DEFAULT_LOGO)
+            .nricFrontPhoto(DEFAULT_NRIC_FRONT_PHOTO)
+            .nricBackPhoto(DEFAULT_NRIC_BACK_PHOTO)
+            .bankBookPhoto(DEFAULT_BANK_BOOK_PHOTO)
+            .companyRegistrationPhoto(DEFAULT_COMPANY_REGISTRATION_PHOTO)
+            .distributorCertificatePhoto(DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO)
             .activeFlag(DEFAULT_ACTIVE_FLAG)
-            .thumbnailUrl(DEFAULT_THUMBNAIL_URL)
-            .pickupSameAsHeadOffice(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return suppliers;
@@ -182,13 +219,22 @@ public class SuppliersResourceIT {
             .paymentDays(UPDATED_PAYMENT_DAYS)
             .internalComments(UPDATED_INTERNAL_COMMENTS)
             .phoneNumber(UPDATED_PHONE_NUMBER)
+            .emailAddress(UPDATED_EMAIL_ADDRESS)
+            .nric(UPDATED_NRIC)
+            .companyRegistrationNo(UPDATED_COMPANY_REGISTRATION_NO)
             .faxNumber(UPDATED_FAX_NUMBER)
-            .websiteURL(UPDATED_WEBSITE_URL)
+            .websiteUrl(UPDATED_WEBSITE_URL)
             .webServiceUrl(UPDATED_WEB_SERVICE_URL)
             .creditRating(UPDATED_CREDIT_RATING)
+            .officialStoreInd(UPDATED_OFFICIAL_STORE_IND)
+            .storeName(UPDATED_STORE_NAME)
+            .logo(UPDATED_LOGO)
+            .nricFrontPhoto(UPDATED_NRIC_FRONT_PHOTO)
+            .nricBackPhoto(UPDATED_NRIC_BACK_PHOTO)
+            .bankBookPhoto(UPDATED_BANK_BOOK_PHOTO)
+            .companyRegistrationPhoto(UPDATED_COMPANY_REGISTRATION_PHOTO)
+            .distributorCertificatePhoto(UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO)
             .activeFlag(UPDATED_ACTIVE_FLAG)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
-            .pickupSameAsHeadOffice(UPDATED_PICKUP_SAME_AS_HEAD_OFFICE)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return suppliers;
@@ -224,13 +270,22 @@ public class SuppliersResourceIT {
         assertThat(testSuppliers.getPaymentDays()).isEqualTo(DEFAULT_PAYMENT_DAYS);
         assertThat(testSuppliers.getInternalComments()).isEqualTo(DEFAULT_INTERNAL_COMMENTS);
         assertThat(testSuppliers.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
+        assertThat(testSuppliers.getEmailAddress()).isEqualTo(DEFAULT_EMAIL_ADDRESS);
+        assertThat(testSuppliers.getNric()).isEqualTo(DEFAULT_NRIC);
+        assertThat(testSuppliers.getCompanyRegistrationNo()).isEqualTo(DEFAULT_COMPANY_REGISTRATION_NO);
         assertThat(testSuppliers.getFaxNumber()).isEqualTo(DEFAULT_FAX_NUMBER);
-        assertThat(testSuppliers.getWebsiteURL()).isEqualTo(DEFAULT_WEBSITE_URL);
+        assertThat(testSuppliers.getWebsiteUrl()).isEqualTo(DEFAULT_WEBSITE_URL);
         assertThat(testSuppliers.getWebServiceUrl()).isEqualTo(DEFAULT_WEB_SERVICE_URL);
         assertThat(testSuppliers.getCreditRating()).isEqualTo(DEFAULT_CREDIT_RATING);
+        assertThat(testSuppliers.isOfficialStoreInd()).isEqualTo(DEFAULT_OFFICIAL_STORE_IND);
+        assertThat(testSuppliers.getStoreName()).isEqualTo(DEFAULT_STORE_NAME);
+        assertThat(testSuppliers.getLogo()).isEqualTo(DEFAULT_LOGO);
+        assertThat(testSuppliers.getNricFrontPhoto()).isEqualTo(DEFAULT_NRIC_FRONT_PHOTO);
+        assertThat(testSuppliers.getNricBackPhoto()).isEqualTo(DEFAULT_NRIC_BACK_PHOTO);
+        assertThat(testSuppliers.getBankBookPhoto()).isEqualTo(DEFAULT_BANK_BOOK_PHOTO);
+        assertThat(testSuppliers.getCompanyRegistrationPhoto()).isEqualTo(DEFAULT_COMPANY_REGISTRATION_PHOTO);
+        assertThat(testSuppliers.getDistributorCertificatePhoto()).isEqualTo(DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO);
         assertThat(testSuppliers.isActiveFlag()).isEqualTo(DEFAULT_ACTIVE_FLAG);
-        assertThat(testSuppliers.getThumbnailUrl()).isEqualTo(DEFAULT_THUMBNAIL_URL);
-        assertThat(testSuppliers.isPickupSameAsHeadOffice()).isEqualTo(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE);
         assertThat(testSuppliers.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testSuppliers.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -278,10 +333,10 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
-    public void checkPaymentDaysIsRequired() throws Exception {
+    public void checkPhoneNumberIsRequired() throws Exception {
         int databaseSizeBeforeTest = suppliersRepository.findAll().size();
         // set the field null
-        suppliers.setPaymentDays(null);
+        suppliers.setPhoneNumber(null);
 
         // Create the Suppliers, which fails.
         SuppliersDTO suppliersDTO = suppliersMapper.toDto(suppliers);
@@ -298,10 +353,30 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
-    public void checkPhoneNumberIsRequired() throws Exception {
+    public void checkBankBookPhotoIsRequired() throws Exception {
         int databaseSizeBeforeTest = suppliersRepository.findAll().size();
         // set the field null
-        suppliers.setPhoneNumber(null);
+        suppliers.setBankBookPhoto(null);
+
+        // Create the Suppliers, which fails.
+        SuppliersDTO suppliersDTO = suppliersMapper.toDto(suppliers);
+
+
+        restSuppliersMockMvc.perform(post("/api/suppliers").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(suppliersDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Suppliers> suppliersList = suppliersRepository.findAll();
+        assertThat(suppliersList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkActiveFlagIsRequired() throws Exception {
+        int databaseSizeBeforeTest = suppliersRepository.findAll().size();
+        // set the field null
+        suppliers.setActiveFlag(null);
 
         // Create the Suppliers, which fails.
         SuppliersDTO suppliersDTO = suppliersMapper.toDto(suppliers);
@@ -338,26 +413,6 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = suppliersRepository.findAll().size();
-        // set the field null
-        suppliers.setValidTo(null);
-
-        // Create the Suppliers, which fails.
-        SuppliersDTO suppliersDTO = suppliersMapper.toDto(suppliers);
-
-
-        restSuppliersMockMvc.perform(post("/api/suppliers").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(suppliersDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Suppliers> suppliersList = suppliersRepository.findAll();
-        assertThat(suppliersList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllSuppliers() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
@@ -377,13 +432,22 @@ public class SuppliersResourceIT {
             .andExpect(jsonPath("$.[*].paymentDays").value(hasItem(DEFAULT_PAYMENT_DAYS)))
             .andExpect(jsonPath("$.[*].internalComments").value(hasItem(DEFAULT_INTERNAL_COMMENTS)))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
+            .andExpect(jsonPath("$.[*].emailAddress").value(hasItem(DEFAULT_EMAIL_ADDRESS)))
+            .andExpect(jsonPath("$.[*].nric").value(hasItem(DEFAULT_NRIC)))
+            .andExpect(jsonPath("$.[*].companyRegistrationNo").value(hasItem(DEFAULT_COMPANY_REGISTRATION_NO)))
             .andExpect(jsonPath("$.[*].faxNumber").value(hasItem(DEFAULT_FAX_NUMBER)))
-            .andExpect(jsonPath("$.[*].websiteURL").value(hasItem(DEFAULT_WEBSITE_URL)))
+            .andExpect(jsonPath("$.[*].websiteUrl").value(hasItem(DEFAULT_WEBSITE_URL)))
             .andExpect(jsonPath("$.[*].webServiceUrl").value(hasItem(DEFAULT_WEB_SERVICE_URL)))
             .andExpect(jsonPath("$.[*].creditRating").value(hasItem(DEFAULT_CREDIT_RATING)))
+            .andExpect(jsonPath("$.[*].officialStoreInd").value(hasItem(DEFAULT_OFFICIAL_STORE_IND.booleanValue())))
+            .andExpect(jsonPath("$.[*].storeName").value(hasItem(DEFAULT_STORE_NAME)))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(DEFAULT_LOGO)))
+            .andExpect(jsonPath("$.[*].nricFrontPhoto").value(hasItem(DEFAULT_NRIC_FRONT_PHOTO)))
+            .andExpect(jsonPath("$.[*].nricBackPhoto").value(hasItem(DEFAULT_NRIC_BACK_PHOTO)))
+            .andExpect(jsonPath("$.[*].bankBookPhoto").value(hasItem(DEFAULT_BANK_BOOK_PHOTO)))
+            .andExpect(jsonPath("$.[*].companyRegistrationPhoto").value(hasItem(DEFAULT_COMPANY_REGISTRATION_PHOTO)))
+            .andExpect(jsonPath("$.[*].distributorCertificatePhoto").value(hasItem(DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO)))
             .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
-            .andExpect(jsonPath("$.[*].pickupSameAsHeadOffice").value(hasItem(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -429,13 +493,22 @@ public class SuppliersResourceIT {
             .andExpect(jsonPath("$.paymentDays").value(DEFAULT_PAYMENT_DAYS))
             .andExpect(jsonPath("$.internalComments").value(DEFAULT_INTERNAL_COMMENTS))
             .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER))
+            .andExpect(jsonPath("$.emailAddress").value(DEFAULT_EMAIL_ADDRESS))
+            .andExpect(jsonPath("$.nric").value(DEFAULT_NRIC))
+            .andExpect(jsonPath("$.companyRegistrationNo").value(DEFAULT_COMPANY_REGISTRATION_NO))
             .andExpect(jsonPath("$.faxNumber").value(DEFAULT_FAX_NUMBER))
-            .andExpect(jsonPath("$.websiteURL").value(DEFAULT_WEBSITE_URL))
+            .andExpect(jsonPath("$.websiteUrl").value(DEFAULT_WEBSITE_URL))
             .andExpect(jsonPath("$.webServiceUrl").value(DEFAULT_WEB_SERVICE_URL))
             .andExpect(jsonPath("$.creditRating").value(DEFAULT_CREDIT_RATING))
+            .andExpect(jsonPath("$.officialStoreInd").value(DEFAULT_OFFICIAL_STORE_IND.booleanValue()))
+            .andExpect(jsonPath("$.storeName").value(DEFAULT_STORE_NAME))
+            .andExpect(jsonPath("$.logo").value(DEFAULT_LOGO))
+            .andExpect(jsonPath("$.nricFrontPhoto").value(DEFAULT_NRIC_FRONT_PHOTO))
+            .andExpect(jsonPath("$.nricBackPhoto").value(DEFAULT_NRIC_BACK_PHOTO))
+            .andExpect(jsonPath("$.bankBookPhoto").value(DEFAULT_BANK_BOOK_PHOTO))
+            .andExpect(jsonPath("$.companyRegistrationPhoto").value(DEFAULT_COMPANY_REGISTRATION_PHOTO))
+            .andExpect(jsonPath("$.distributorCertificatePhoto").value(DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO))
             .andExpect(jsonPath("$.activeFlag").value(DEFAULT_ACTIVE_FLAG.booleanValue()))
-            .andExpect(jsonPath("$.thumbnailUrl").value(DEFAULT_THUMBNAIL_URL))
-            .andExpect(jsonPath("$.pickupSameAsHeadOffice").value(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE.booleanValue()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -1269,6 +1342,240 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
+    public void getAllSuppliersByEmailAddressIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where emailAddress equals to DEFAULT_EMAIL_ADDRESS
+        defaultSuppliersShouldBeFound("emailAddress.equals=" + DEFAULT_EMAIL_ADDRESS);
+
+        // Get all the suppliersList where emailAddress equals to UPDATED_EMAIL_ADDRESS
+        defaultSuppliersShouldNotBeFound("emailAddress.equals=" + UPDATED_EMAIL_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByEmailAddressIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where emailAddress not equals to DEFAULT_EMAIL_ADDRESS
+        defaultSuppliersShouldNotBeFound("emailAddress.notEquals=" + DEFAULT_EMAIL_ADDRESS);
+
+        // Get all the suppliersList where emailAddress not equals to UPDATED_EMAIL_ADDRESS
+        defaultSuppliersShouldBeFound("emailAddress.notEquals=" + UPDATED_EMAIL_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByEmailAddressIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where emailAddress in DEFAULT_EMAIL_ADDRESS or UPDATED_EMAIL_ADDRESS
+        defaultSuppliersShouldBeFound("emailAddress.in=" + DEFAULT_EMAIL_ADDRESS + "," + UPDATED_EMAIL_ADDRESS);
+
+        // Get all the suppliersList where emailAddress equals to UPDATED_EMAIL_ADDRESS
+        defaultSuppliersShouldNotBeFound("emailAddress.in=" + UPDATED_EMAIL_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByEmailAddressIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where emailAddress is not null
+        defaultSuppliersShouldBeFound("emailAddress.specified=true");
+
+        // Get all the suppliersList where emailAddress is null
+        defaultSuppliersShouldNotBeFound("emailAddress.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByEmailAddressContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where emailAddress contains DEFAULT_EMAIL_ADDRESS
+        defaultSuppliersShouldBeFound("emailAddress.contains=" + DEFAULT_EMAIL_ADDRESS);
+
+        // Get all the suppliersList where emailAddress contains UPDATED_EMAIL_ADDRESS
+        defaultSuppliersShouldNotBeFound("emailAddress.contains=" + UPDATED_EMAIL_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByEmailAddressNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where emailAddress does not contain DEFAULT_EMAIL_ADDRESS
+        defaultSuppliersShouldNotBeFound("emailAddress.doesNotContain=" + DEFAULT_EMAIL_ADDRESS);
+
+        // Get all the suppliersList where emailAddress does not contain UPDATED_EMAIL_ADDRESS
+        defaultSuppliersShouldBeFound("emailAddress.doesNotContain=" + UPDATED_EMAIL_ADDRESS);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nric equals to DEFAULT_NRIC
+        defaultSuppliersShouldBeFound("nric.equals=" + DEFAULT_NRIC);
+
+        // Get all the suppliersList where nric equals to UPDATED_NRIC
+        defaultSuppliersShouldNotBeFound("nric.equals=" + UPDATED_NRIC);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nric not equals to DEFAULT_NRIC
+        defaultSuppliersShouldNotBeFound("nric.notEquals=" + DEFAULT_NRIC);
+
+        // Get all the suppliersList where nric not equals to UPDATED_NRIC
+        defaultSuppliersShouldBeFound("nric.notEquals=" + UPDATED_NRIC);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nric in DEFAULT_NRIC or UPDATED_NRIC
+        defaultSuppliersShouldBeFound("nric.in=" + DEFAULT_NRIC + "," + UPDATED_NRIC);
+
+        // Get all the suppliersList where nric equals to UPDATED_NRIC
+        defaultSuppliersShouldNotBeFound("nric.in=" + UPDATED_NRIC);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nric is not null
+        defaultSuppliersShouldBeFound("nric.specified=true");
+
+        // Get all the suppliersList where nric is null
+        defaultSuppliersShouldNotBeFound("nric.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByNricContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nric contains DEFAULT_NRIC
+        defaultSuppliersShouldBeFound("nric.contains=" + DEFAULT_NRIC);
+
+        // Get all the suppliersList where nric contains UPDATED_NRIC
+        defaultSuppliersShouldNotBeFound("nric.contains=" + UPDATED_NRIC);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nric does not contain DEFAULT_NRIC
+        defaultSuppliersShouldNotBeFound("nric.doesNotContain=" + DEFAULT_NRIC);
+
+        // Get all the suppliersList where nric does not contain UPDATED_NRIC
+        defaultSuppliersShouldBeFound("nric.doesNotContain=" + UPDATED_NRIC);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationNoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationNo equals to DEFAULT_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldBeFound("companyRegistrationNo.equals=" + DEFAULT_COMPANY_REGISTRATION_NO);
+
+        // Get all the suppliersList where companyRegistrationNo equals to UPDATED_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldNotBeFound("companyRegistrationNo.equals=" + UPDATED_COMPANY_REGISTRATION_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationNoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationNo not equals to DEFAULT_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldNotBeFound("companyRegistrationNo.notEquals=" + DEFAULT_COMPANY_REGISTRATION_NO);
+
+        // Get all the suppliersList where companyRegistrationNo not equals to UPDATED_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldBeFound("companyRegistrationNo.notEquals=" + UPDATED_COMPANY_REGISTRATION_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationNoIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationNo in DEFAULT_COMPANY_REGISTRATION_NO or UPDATED_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldBeFound("companyRegistrationNo.in=" + DEFAULT_COMPANY_REGISTRATION_NO + "," + UPDATED_COMPANY_REGISTRATION_NO);
+
+        // Get all the suppliersList where companyRegistrationNo equals to UPDATED_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldNotBeFound("companyRegistrationNo.in=" + UPDATED_COMPANY_REGISTRATION_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationNoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationNo is not null
+        defaultSuppliersShouldBeFound("companyRegistrationNo.specified=true");
+
+        // Get all the suppliersList where companyRegistrationNo is null
+        defaultSuppliersShouldNotBeFound("companyRegistrationNo.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationNoContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationNo contains DEFAULT_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldBeFound("companyRegistrationNo.contains=" + DEFAULT_COMPANY_REGISTRATION_NO);
+
+        // Get all the suppliersList where companyRegistrationNo contains UPDATED_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldNotBeFound("companyRegistrationNo.contains=" + UPDATED_COMPANY_REGISTRATION_NO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationNoNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationNo does not contain DEFAULT_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldNotBeFound("companyRegistrationNo.doesNotContain=" + DEFAULT_COMPANY_REGISTRATION_NO);
+
+        // Get all the suppliersList where companyRegistrationNo does not contain UPDATED_COMPANY_REGISTRATION_NO
+        defaultSuppliersShouldBeFound("companyRegistrationNo.doesNotContain=" + UPDATED_COMPANY_REGISTRATION_NO);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllSuppliersByFaxNumberIsEqualToSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
@@ -1347,79 +1654,79 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
-    public void getAllSuppliersByWebsiteURLIsEqualToSomething() throws Exception {
+    public void getAllSuppliersByWebsiteUrlIsEqualToSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
 
-        // Get all the suppliersList where websiteURL equals to DEFAULT_WEBSITE_URL
-        defaultSuppliersShouldBeFound("websiteURL.equals=" + DEFAULT_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl equals to DEFAULT_WEBSITE_URL
+        defaultSuppliersShouldBeFound("websiteUrl.equals=" + DEFAULT_WEBSITE_URL);
 
-        // Get all the suppliersList where websiteURL equals to UPDATED_WEBSITE_URL
-        defaultSuppliersShouldNotBeFound("websiteURL.equals=" + UPDATED_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl equals to UPDATED_WEBSITE_URL
+        defaultSuppliersShouldNotBeFound("websiteUrl.equals=" + UPDATED_WEBSITE_URL);
     }
 
     @Test
     @Transactional
-    public void getAllSuppliersByWebsiteURLIsNotEqualToSomething() throws Exception {
+    public void getAllSuppliersByWebsiteUrlIsNotEqualToSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
 
-        // Get all the suppliersList where websiteURL not equals to DEFAULT_WEBSITE_URL
-        defaultSuppliersShouldNotBeFound("websiteURL.notEquals=" + DEFAULT_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl not equals to DEFAULT_WEBSITE_URL
+        defaultSuppliersShouldNotBeFound("websiteUrl.notEquals=" + DEFAULT_WEBSITE_URL);
 
-        // Get all the suppliersList where websiteURL not equals to UPDATED_WEBSITE_URL
-        defaultSuppliersShouldBeFound("websiteURL.notEquals=" + UPDATED_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl not equals to UPDATED_WEBSITE_URL
+        defaultSuppliersShouldBeFound("websiteUrl.notEquals=" + UPDATED_WEBSITE_URL);
     }
 
     @Test
     @Transactional
-    public void getAllSuppliersByWebsiteURLIsInShouldWork() throws Exception {
+    public void getAllSuppliersByWebsiteUrlIsInShouldWork() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
 
-        // Get all the suppliersList where websiteURL in DEFAULT_WEBSITE_URL or UPDATED_WEBSITE_URL
-        defaultSuppliersShouldBeFound("websiteURL.in=" + DEFAULT_WEBSITE_URL + "," + UPDATED_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl in DEFAULT_WEBSITE_URL or UPDATED_WEBSITE_URL
+        defaultSuppliersShouldBeFound("websiteUrl.in=" + DEFAULT_WEBSITE_URL + "," + UPDATED_WEBSITE_URL);
 
-        // Get all the suppliersList where websiteURL equals to UPDATED_WEBSITE_URL
-        defaultSuppliersShouldNotBeFound("websiteURL.in=" + UPDATED_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl equals to UPDATED_WEBSITE_URL
+        defaultSuppliersShouldNotBeFound("websiteUrl.in=" + UPDATED_WEBSITE_URL);
     }
 
     @Test
     @Transactional
-    public void getAllSuppliersByWebsiteURLIsNullOrNotNull() throws Exception {
+    public void getAllSuppliersByWebsiteUrlIsNullOrNotNull() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
 
-        // Get all the suppliersList where websiteURL is not null
-        defaultSuppliersShouldBeFound("websiteURL.specified=true");
+        // Get all the suppliersList where websiteUrl is not null
+        defaultSuppliersShouldBeFound("websiteUrl.specified=true");
 
-        // Get all the suppliersList where websiteURL is null
-        defaultSuppliersShouldNotBeFound("websiteURL.specified=false");
+        // Get all the suppliersList where websiteUrl is null
+        defaultSuppliersShouldNotBeFound("websiteUrl.specified=false");
     }
                 @Test
     @Transactional
-    public void getAllSuppliersByWebsiteURLContainsSomething() throws Exception {
+    public void getAllSuppliersByWebsiteUrlContainsSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
 
-        // Get all the suppliersList where websiteURL contains DEFAULT_WEBSITE_URL
-        defaultSuppliersShouldBeFound("websiteURL.contains=" + DEFAULT_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl contains DEFAULT_WEBSITE_URL
+        defaultSuppliersShouldBeFound("websiteUrl.contains=" + DEFAULT_WEBSITE_URL);
 
-        // Get all the suppliersList where websiteURL contains UPDATED_WEBSITE_URL
-        defaultSuppliersShouldNotBeFound("websiteURL.contains=" + UPDATED_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl contains UPDATED_WEBSITE_URL
+        defaultSuppliersShouldNotBeFound("websiteUrl.contains=" + UPDATED_WEBSITE_URL);
     }
 
     @Test
     @Transactional
-    public void getAllSuppliersByWebsiteURLNotContainsSomething() throws Exception {
+    public void getAllSuppliersByWebsiteUrlNotContainsSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
 
-        // Get all the suppliersList where websiteURL does not contain DEFAULT_WEBSITE_URL
-        defaultSuppliersShouldNotBeFound("websiteURL.doesNotContain=" + DEFAULT_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl does not contain DEFAULT_WEBSITE_URL
+        defaultSuppliersShouldNotBeFound("websiteUrl.doesNotContain=" + DEFAULT_WEBSITE_URL);
 
-        // Get all the suppliersList where websiteURL does not contain UPDATED_WEBSITE_URL
-        defaultSuppliersShouldBeFound("websiteURL.doesNotContain=" + UPDATED_WEBSITE_URL);
+        // Get all the suppliersList where websiteUrl does not contain UPDATED_WEBSITE_URL
+        defaultSuppliersShouldBeFound("websiteUrl.doesNotContain=" + UPDATED_WEBSITE_URL);
     }
 
 
@@ -1608,6 +1915,604 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
+    public void getAllSuppliersByOfficialStoreIndIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where officialStoreInd equals to DEFAULT_OFFICIAL_STORE_IND
+        defaultSuppliersShouldBeFound("officialStoreInd.equals=" + DEFAULT_OFFICIAL_STORE_IND);
+
+        // Get all the suppliersList where officialStoreInd equals to UPDATED_OFFICIAL_STORE_IND
+        defaultSuppliersShouldNotBeFound("officialStoreInd.equals=" + UPDATED_OFFICIAL_STORE_IND);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByOfficialStoreIndIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where officialStoreInd not equals to DEFAULT_OFFICIAL_STORE_IND
+        defaultSuppliersShouldNotBeFound("officialStoreInd.notEquals=" + DEFAULT_OFFICIAL_STORE_IND);
+
+        // Get all the suppliersList where officialStoreInd not equals to UPDATED_OFFICIAL_STORE_IND
+        defaultSuppliersShouldBeFound("officialStoreInd.notEquals=" + UPDATED_OFFICIAL_STORE_IND);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByOfficialStoreIndIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where officialStoreInd in DEFAULT_OFFICIAL_STORE_IND or UPDATED_OFFICIAL_STORE_IND
+        defaultSuppliersShouldBeFound("officialStoreInd.in=" + DEFAULT_OFFICIAL_STORE_IND + "," + UPDATED_OFFICIAL_STORE_IND);
+
+        // Get all the suppliersList where officialStoreInd equals to UPDATED_OFFICIAL_STORE_IND
+        defaultSuppliersShouldNotBeFound("officialStoreInd.in=" + UPDATED_OFFICIAL_STORE_IND);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByOfficialStoreIndIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where officialStoreInd is not null
+        defaultSuppliersShouldBeFound("officialStoreInd.specified=true");
+
+        // Get all the suppliersList where officialStoreInd is null
+        defaultSuppliersShouldNotBeFound("officialStoreInd.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByStoreNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where storeName equals to DEFAULT_STORE_NAME
+        defaultSuppliersShouldBeFound("storeName.equals=" + DEFAULT_STORE_NAME);
+
+        // Get all the suppliersList where storeName equals to UPDATED_STORE_NAME
+        defaultSuppliersShouldNotBeFound("storeName.equals=" + UPDATED_STORE_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByStoreNameIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where storeName not equals to DEFAULT_STORE_NAME
+        defaultSuppliersShouldNotBeFound("storeName.notEquals=" + DEFAULT_STORE_NAME);
+
+        // Get all the suppliersList where storeName not equals to UPDATED_STORE_NAME
+        defaultSuppliersShouldBeFound("storeName.notEquals=" + UPDATED_STORE_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByStoreNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where storeName in DEFAULT_STORE_NAME or UPDATED_STORE_NAME
+        defaultSuppliersShouldBeFound("storeName.in=" + DEFAULT_STORE_NAME + "," + UPDATED_STORE_NAME);
+
+        // Get all the suppliersList where storeName equals to UPDATED_STORE_NAME
+        defaultSuppliersShouldNotBeFound("storeName.in=" + UPDATED_STORE_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByStoreNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where storeName is not null
+        defaultSuppliersShouldBeFound("storeName.specified=true");
+
+        // Get all the suppliersList where storeName is null
+        defaultSuppliersShouldNotBeFound("storeName.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByStoreNameContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where storeName contains DEFAULT_STORE_NAME
+        defaultSuppliersShouldBeFound("storeName.contains=" + DEFAULT_STORE_NAME);
+
+        // Get all the suppliersList where storeName contains UPDATED_STORE_NAME
+        defaultSuppliersShouldNotBeFound("storeName.contains=" + UPDATED_STORE_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByStoreNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where storeName does not contain DEFAULT_STORE_NAME
+        defaultSuppliersShouldNotBeFound("storeName.doesNotContain=" + DEFAULT_STORE_NAME);
+
+        // Get all the suppliersList where storeName does not contain UPDATED_STORE_NAME
+        defaultSuppliersShouldBeFound("storeName.doesNotContain=" + UPDATED_STORE_NAME);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByLogoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where logo equals to DEFAULT_LOGO
+        defaultSuppliersShouldBeFound("logo.equals=" + DEFAULT_LOGO);
+
+        // Get all the suppliersList where logo equals to UPDATED_LOGO
+        defaultSuppliersShouldNotBeFound("logo.equals=" + UPDATED_LOGO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByLogoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where logo not equals to DEFAULT_LOGO
+        defaultSuppliersShouldNotBeFound("logo.notEquals=" + DEFAULT_LOGO);
+
+        // Get all the suppliersList where logo not equals to UPDATED_LOGO
+        defaultSuppliersShouldBeFound("logo.notEquals=" + UPDATED_LOGO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByLogoIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where logo in DEFAULT_LOGO or UPDATED_LOGO
+        defaultSuppliersShouldBeFound("logo.in=" + DEFAULT_LOGO + "," + UPDATED_LOGO);
+
+        // Get all the suppliersList where logo equals to UPDATED_LOGO
+        defaultSuppliersShouldNotBeFound("logo.in=" + UPDATED_LOGO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByLogoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where logo is not null
+        defaultSuppliersShouldBeFound("logo.specified=true");
+
+        // Get all the suppliersList where logo is null
+        defaultSuppliersShouldNotBeFound("logo.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByLogoContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where logo contains DEFAULT_LOGO
+        defaultSuppliersShouldBeFound("logo.contains=" + DEFAULT_LOGO);
+
+        // Get all the suppliersList where logo contains UPDATED_LOGO
+        defaultSuppliersShouldNotBeFound("logo.contains=" + UPDATED_LOGO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByLogoNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where logo does not contain DEFAULT_LOGO
+        defaultSuppliersShouldNotBeFound("logo.doesNotContain=" + DEFAULT_LOGO);
+
+        // Get all the suppliersList where logo does not contain UPDATED_LOGO
+        defaultSuppliersShouldBeFound("logo.doesNotContain=" + UPDATED_LOGO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricFrontPhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricFrontPhoto equals to DEFAULT_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldBeFound("nricFrontPhoto.equals=" + DEFAULT_NRIC_FRONT_PHOTO);
+
+        // Get all the suppliersList where nricFrontPhoto equals to UPDATED_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldNotBeFound("nricFrontPhoto.equals=" + UPDATED_NRIC_FRONT_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricFrontPhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricFrontPhoto not equals to DEFAULT_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldNotBeFound("nricFrontPhoto.notEquals=" + DEFAULT_NRIC_FRONT_PHOTO);
+
+        // Get all the suppliersList where nricFrontPhoto not equals to UPDATED_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldBeFound("nricFrontPhoto.notEquals=" + UPDATED_NRIC_FRONT_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricFrontPhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricFrontPhoto in DEFAULT_NRIC_FRONT_PHOTO or UPDATED_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldBeFound("nricFrontPhoto.in=" + DEFAULT_NRIC_FRONT_PHOTO + "," + UPDATED_NRIC_FRONT_PHOTO);
+
+        // Get all the suppliersList where nricFrontPhoto equals to UPDATED_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldNotBeFound("nricFrontPhoto.in=" + UPDATED_NRIC_FRONT_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricFrontPhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricFrontPhoto is not null
+        defaultSuppliersShouldBeFound("nricFrontPhoto.specified=true");
+
+        // Get all the suppliersList where nricFrontPhoto is null
+        defaultSuppliersShouldNotBeFound("nricFrontPhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByNricFrontPhotoContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricFrontPhoto contains DEFAULT_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldBeFound("nricFrontPhoto.contains=" + DEFAULT_NRIC_FRONT_PHOTO);
+
+        // Get all the suppliersList where nricFrontPhoto contains UPDATED_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldNotBeFound("nricFrontPhoto.contains=" + UPDATED_NRIC_FRONT_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricFrontPhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricFrontPhoto does not contain DEFAULT_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldNotBeFound("nricFrontPhoto.doesNotContain=" + DEFAULT_NRIC_FRONT_PHOTO);
+
+        // Get all the suppliersList where nricFrontPhoto does not contain UPDATED_NRIC_FRONT_PHOTO
+        defaultSuppliersShouldBeFound("nricFrontPhoto.doesNotContain=" + UPDATED_NRIC_FRONT_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricBackPhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricBackPhoto equals to DEFAULT_NRIC_BACK_PHOTO
+        defaultSuppliersShouldBeFound("nricBackPhoto.equals=" + DEFAULT_NRIC_BACK_PHOTO);
+
+        // Get all the suppliersList where nricBackPhoto equals to UPDATED_NRIC_BACK_PHOTO
+        defaultSuppliersShouldNotBeFound("nricBackPhoto.equals=" + UPDATED_NRIC_BACK_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricBackPhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricBackPhoto not equals to DEFAULT_NRIC_BACK_PHOTO
+        defaultSuppliersShouldNotBeFound("nricBackPhoto.notEquals=" + DEFAULT_NRIC_BACK_PHOTO);
+
+        // Get all the suppliersList where nricBackPhoto not equals to UPDATED_NRIC_BACK_PHOTO
+        defaultSuppliersShouldBeFound("nricBackPhoto.notEquals=" + UPDATED_NRIC_BACK_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricBackPhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricBackPhoto in DEFAULT_NRIC_BACK_PHOTO or UPDATED_NRIC_BACK_PHOTO
+        defaultSuppliersShouldBeFound("nricBackPhoto.in=" + DEFAULT_NRIC_BACK_PHOTO + "," + UPDATED_NRIC_BACK_PHOTO);
+
+        // Get all the suppliersList where nricBackPhoto equals to UPDATED_NRIC_BACK_PHOTO
+        defaultSuppliersShouldNotBeFound("nricBackPhoto.in=" + UPDATED_NRIC_BACK_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricBackPhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricBackPhoto is not null
+        defaultSuppliersShouldBeFound("nricBackPhoto.specified=true");
+
+        // Get all the suppliersList where nricBackPhoto is null
+        defaultSuppliersShouldNotBeFound("nricBackPhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByNricBackPhotoContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricBackPhoto contains DEFAULT_NRIC_BACK_PHOTO
+        defaultSuppliersShouldBeFound("nricBackPhoto.contains=" + DEFAULT_NRIC_BACK_PHOTO);
+
+        // Get all the suppliersList where nricBackPhoto contains UPDATED_NRIC_BACK_PHOTO
+        defaultSuppliersShouldNotBeFound("nricBackPhoto.contains=" + UPDATED_NRIC_BACK_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByNricBackPhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where nricBackPhoto does not contain DEFAULT_NRIC_BACK_PHOTO
+        defaultSuppliersShouldNotBeFound("nricBackPhoto.doesNotContain=" + DEFAULT_NRIC_BACK_PHOTO);
+
+        // Get all the suppliersList where nricBackPhoto does not contain UPDATED_NRIC_BACK_PHOTO
+        defaultSuppliersShouldBeFound("nricBackPhoto.doesNotContain=" + UPDATED_NRIC_BACK_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByBankBookPhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where bankBookPhoto equals to DEFAULT_BANK_BOOK_PHOTO
+        defaultSuppliersShouldBeFound("bankBookPhoto.equals=" + DEFAULT_BANK_BOOK_PHOTO);
+
+        // Get all the suppliersList where bankBookPhoto equals to UPDATED_BANK_BOOK_PHOTO
+        defaultSuppliersShouldNotBeFound("bankBookPhoto.equals=" + UPDATED_BANK_BOOK_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByBankBookPhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where bankBookPhoto not equals to DEFAULT_BANK_BOOK_PHOTO
+        defaultSuppliersShouldNotBeFound("bankBookPhoto.notEquals=" + DEFAULT_BANK_BOOK_PHOTO);
+
+        // Get all the suppliersList where bankBookPhoto not equals to UPDATED_BANK_BOOK_PHOTO
+        defaultSuppliersShouldBeFound("bankBookPhoto.notEquals=" + UPDATED_BANK_BOOK_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByBankBookPhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where bankBookPhoto in DEFAULT_BANK_BOOK_PHOTO or UPDATED_BANK_BOOK_PHOTO
+        defaultSuppliersShouldBeFound("bankBookPhoto.in=" + DEFAULT_BANK_BOOK_PHOTO + "," + UPDATED_BANK_BOOK_PHOTO);
+
+        // Get all the suppliersList where bankBookPhoto equals to UPDATED_BANK_BOOK_PHOTO
+        defaultSuppliersShouldNotBeFound("bankBookPhoto.in=" + UPDATED_BANK_BOOK_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByBankBookPhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where bankBookPhoto is not null
+        defaultSuppliersShouldBeFound("bankBookPhoto.specified=true");
+
+        // Get all the suppliersList where bankBookPhoto is null
+        defaultSuppliersShouldNotBeFound("bankBookPhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByBankBookPhotoContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where bankBookPhoto contains DEFAULT_BANK_BOOK_PHOTO
+        defaultSuppliersShouldBeFound("bankBookPhoto.contains=" + DEFAULT_BANK_BOOK_PHOTO);
+
+        // Get all the suppliersList where bankBookPhoto contains UPDATED_BANK_BOOK_PHOTO
+        defaultSuppliersShouldNotBeFound("bankBookPhoto.contains=" + UPDATED_BANK_BOOK_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByBankBookPhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where bankBookPhoto does not contain DEFAULT_BANK_BOOK_PHOTO
+        defaultSuppliersShouldNotBeFound("bankBookPhoto.doesNotContain=" + DEFAULT_BANK_BOOK_PHOTO);
+
+        // Get all the suppliersList where bankBookPhoto does not contain UPDATED_BANK_BOOK_PHOTO
+        defaultSuppliersShouldBeFound("bankBookPhoto.doesNotContain=" + UPDATED_BANK_BOOK_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationPhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationPhoto equals to DEFAULT_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldBeFound("companyRegistrationPhoto.equals=" + DEFAULT_COMPANY_REGISTRATION_PHOTO);
+
+        // Get all the suppliersList where companyRegistrationPhoto equals to UPDATED_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldNotBeFound("companyRegistrationPhoto.equals=" + UPDATED_COMPANY_REGISTRATION_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationPhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationPhoto not equals to DEFAULT_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldNotBeFound("companyRegistrationPhoto.notEquals=" + DEFAULT_COMPANY_REGISTRATION_PHOTO);
+
+        // Get all the suppliersList where companyRegistrationPhoto not equals to UPDATED_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldBeFound("companyRegistrationPhoto.notEquals=" + UPDATED_COMPANY_REGISTRATION_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationPhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationPhoto in DEFAULT_COMPANY_REGISTRATION_PHOTO or UPDATED_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldBeFound("companyRegistrationPhoto.in=" + DEFAULT_COMPANY_REGISTRATION_PHOTO + "," + UPDATED_COMPANY_REGISTRATION_PHOTO);
+
+        // Get all the suppliersList where companyRegistrationPhoto equals to UPDATED_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldNotBeFound("companyRegistrationPhoto.in=" + UPDATED_COMPANY_REGISTRATION_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationPhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationPhoto is not null
+        defaultSuppliersShouldBeFound("companyRegistrationPhoto.specified=true");
+
+        // Get all the suppliersList where companyRegistrationPhoto is null
+        defaultSuppliersShouldNotBeFound("companyRegistrationPhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationPhotoContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationPhoto contains DEFAULT_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldBeFound("companyRegistrationPhoto.contains=" + DEFAULT_COMPANY_REGISTRATION_PHOTO);
+
+        // Get all the suppliersList where companyRegistrationPhoto contains UPDATED_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldNotBeFound("companyRegistrationPhoto.contains=" + UPDATED_COMPANY_REGISTRATION_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByCompanyRegistrationPhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where companyRegistrationPhoto does not contain DEFAULT_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldNotBeFound("companyRegistrationPhoto.doesNotContain=" + DEFAULT_COMPANY_REGISTRATION_PHOTO);
+
+        // Get all the suppliersList where companyRegistrationPhoto does not contain UPDATED_COMPANY_REGISTRATION_PHOTO
+        defaultSuppliersShouldBeFound("companyRegistrationPhoto.doesNotContain=" + UPDATED_COMPANY_REGISTRATION_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByDistributorCertificatePhotoIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where distributorCertificatePhoto equals to DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldBeFound("distributorCertificatePhoto.equals=" + DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO);
+
+        // Get all the suppliersList where distributorCertificatePhoto equals to UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldNotBeFound("distributorCertificatePhoto.equals=" + UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByDistributorCertificatePhotoIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where distributorCertificatePhoto not equals to DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldNotBeFound("distributorCertificatePhoto.notEquals=" + DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO);
+
+        // Get all the suppliersList where distributorCertificatePhoto not equals to UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldBeFound("distributorCertificatePhoto.notEquals=" + UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByDistributorCertificatePhotoIsInShouldWork() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where distributorCertificatePhoto in DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO or UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldBeFound("distributorCertificatePhoto.in=" + DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO + "," + UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO);
+
+        // Get all the suppliersList where distributorCertificatePhoto equals to UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldNotBeFound("distributorCertificatePhoto.in=" + UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByDistributorCertificatePhotoIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where distributorCertificatePhoto is not null
+        defaultSuppliersShouldBeFound("distributorCertificatePhoto.specified=true");
+
+        // Get all the suppliersList where distributorCertificatePhoto is null
+        defaultSuppliersShouldNotBeFound("distributorCertificatePhoto.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSuppliersByDistributorCertificatePhotoContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where distributorCertificatePhoto contains DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldBeFound("distributorCertificatePhoto.contains=" + DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO);
+
+        // Get all the suppliersList where distributorCertificatePhoto contains UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldNotBeFound("distributorCertificatePhoto.contains=" + UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByDistributorCertificatePhotoNotContainsSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+
+        // Get all the suppliersList where distributorCertificatePhoto does not contain DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldNotBeFound("distributorCertificatePhoto.doesNotContain=" + DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO);
+
+        // Get all the suppliersList where distributorCertificatePhoto does not contain UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO
+        defaultSuppliersShouldBeFound("distributorCertificatePhoto.doesNotContain=" + UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllSuppliersByActiveFlagIsEqualToSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
@@ -1656,136 +2561,6 @@ public class SuppliersResourceIT {
 
         // Get all the suppliersList where activeFlag is null
         defaultSuppliersShouldNotBeFound("activeFlag.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByThumbnailUrlIsEqualToSomething() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where thumbnailUrl equals to DEFAULT_THUMBNAIL_URL
-        defaultSuppliersShouldBeFound("thumbnailUrl.equals=" + DEFAULT_THUMBNAIL_URL);
-
-        // Get all the suppliersList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultSuppliersShouldNotBeFound("thumbnailUrl.equals=" + UPDATED_THUMBNAIL_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByThumbnailUrlIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where thumbnailUrl not equals to DEFAULT_THUMBNAIL_URL
-        defaultSuppliersShouldNotBeFound("thumbnailUrl.notEquals=" + DEFAULT_THUMBNAIL_URL);
-
-        // Get all the suppliersList where thumbnailUrl not equals to UPDATED_THUMBNAIL_URL
-        defaultSuppliersShouldBeFound("thumbnailUrl.notEquals=" + UPDATED_THUMBNAIL_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByThumbnailUrlIsInShouldWork() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where thumbnailUrl in DEFAULT_THUMBNAIL_URL or UPDATED_THUMBNAIL_URL
-        defaultSuppliersShouldBeFound("thumbnailUrl.in=" + DEFAULT_THUMBNAIL_URL + "," + UPDATED_THUMBNAIL_URL);
-
-        // Get all the suppliersList where thumbnailUrl equals to UPDATED_THUMBNAIL_URL
-        defaultSuppliersShouldNotBeFound("thumbnailUrl.in=" + UPDATED_THUMBNAIL_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByThumbnailUrlIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where thumbnailUrl is not null
-        defaultSuppliersShouldBeFound("thumbnailUrl.specified=true");
-
-        // Get all the suppliersList where thumbnailUrl is null
-        defaultSuppliersShouldNotBeFound("thumbnailUrl.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllSuppliersByThumbnailUrlContainsSomething() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where thumbnailUrl contains DEFAULT_THUMBNAIL_URL
-        defaultSuppliersShouldBeFound("thumbnailUrl.contains=" + DEFAULT_THUMBNAIL_URL);
-
-        // Get all the suppliersList where thumbnailUrl contains UPDATED_THUMBNAIL_URL
-        defaultSuppliersShouldNotBeFound("thumbnailUrl.contains=" + UPDATED_THUMBNAIL_URL);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByThumbnailUrlNotContainsSomething() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where thumbnailUrl does not contain DEFAULT_THUMBNAIL_URL
-        defaultSuppliersShouldNotBeFound("thumbnailUrl.doesNotContain=" + DEFAULT_THUMBNAIL_URL);
-
-        // Get all the suppliersList where thumbnailUrl does not contain UPDATED_THUMBNAIL_URL
-        defaultSuppliersShouldBeFound("thumbnailUrl.doesNotContain=" + UPDATED_THUMBNAIL_URL);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByPickupSameAsHeadOfficeIsEqualToSomething() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where pickupSameAsHeadOffice equals to DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE
-        defaultSuppliersShouldBeFound("pickupSameAsHeadOffice.equals=" + DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE);
-
-        // Get all the suppliersList where pickupSameAsHeadOffice equals to UPDATED_PICKUP_SAME_AS_HEAD_OFFICE
-        defaultSuppliersShouldNotBeFound("pickupSameAsHeadOffice.equals=" + UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByPickupSameAsHeadOfficeIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where pickupSameAsHeadOffice not equals to DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE
-        defaultSuppliersShouldNotBeFound("pickupSameAsHeadOffice.notEquals=" + DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE);
-
-        // Get all the suppliersList where pickupSameAsHeadOffice not equals to UPDATED_PICKUP_SAME_AS_HEAD_OFFICE
-        defaultSuppliersShouldBeFound("pickupSameAsHeadOffice.notEquals=" + UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByPickupSameAsHeadOfficeIsInShouldWork() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where pickupSameAsHeadOffice in DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE or UPDATED_PICKUP_SAME_AS_HEAD_OFFICE
-        defaultSuppliersShouldBeFound("pickupSameAsHeadOffice.in=" + DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE + "," + UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
-
-        // Get all the suppliersList where pickupSameAsHeadOffice equals to UPDATED_PICKUP_SAME_AS_HEAD_OFFICE
-        defaultSuppliersShouldNotBeFound("pickupSameAsHeadOffice.in=" + UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSuppliersByPickupSameAsHeadOfficeIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        suppliersRepository.saveAndFlush(suppliers);
-
-        // Get all the suppliersList where pickupSameAsHeadOffice is not null
-        defaultSuppliersShouldBeFound("pickupSameAsHeadOffice.specified=true");
-
-        // Get all the suppliersList where pickupSameAsHeadOffice is null
-        defaultSuppliersShouldNotBeFound("pickupSameAsHeadOffice.specified=false");
     }
 
     @Test
@@ -1894,21 +2669,41 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
-    public void getAllSuppliersByPeopleIsEqualToSomething() throws Exception {
+    public void getAllSuppliersByBannerListIsEqualToSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
-        People people = PeopleResourceIT.createEntity(em);
-        em.persist(people);
+        Photos bannerList = PhotosResourceIT.createEntity(em);
+        em.persist(bannerList);
         em.flush();
-        suppliers.setPeople(people);
+        suppliers.addBannerList(bannerList);
         suppliersRepository.saveAndFlush(suppliers);
-        Long peopleId = people.getId();
+        Long bannerListId = bannerList.getId();
 
-        // Get all the suppliersList where people equals to peopleId
-        defaultSuppliersShouldBeFound("peopleId.equals=" + peopleId);
+        // Get all the suppliersList where bannerList equals to bannerListId
+        defaultSuppliersShouldBeFound("bannerListId.equals=" + bannerListId);
 
-        // Get all the suppliersList where people equals to peopleId + 1
-        defaultSuppliersShouldNotBeFound("peopleId.equals=" + (peopleId + 1));
+        // Get all the suppliersList where bannerList equals to bannerListId + 1
+        defaultSuppliersShouldNotBeFound("bannerListId.equals=" + (bannerListId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByDocumentListIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+        Photos documentList = PhotosResourceIT.createEntity(em);
+        em.persist(documentList);
+        em.flush();
+        suppliers.addDocumentList(documentList);
+        suppliersRepository.saveAndFlush(suppliers);
+        Long documentListId = documentList.getId();
+
+        // Get all the suppliersList where documentList equals to documentListId
+        defaultSuppliersShouldBeFound("documentListId.equals=" + documentListId);
+
+        // Get all the suppliersList where documentList equals to documentListId + 1
+        defaultSuppliersShouldNotBeFound("documentListId.equals=" + (documentListId + 1));
     }
 
 
@@ -1974,6 +2769,46 @@ public class SuppliersResourceIT {
 
     @Test
     @Transactional
+    public void getAllSuppliersByReturnAddressIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+        Addresses returnAddress = AddressesResourceIT.createEntity(em);
+        em.persist(returnAddress);
+        em.flush();
+        suppliers.setReturnAddress(returnAddress);
+        suppliersRepository.saveAndFlush(suppliers);
+        Long returnAddressId = returnAddress.getId();
+
+        // Get all the suppliersList where returnAddress equals to returnAddressId
+        defaultSuppliersShouldBeFound("returnAddressId.equals=" + returnAddressId);
+
+        // Get all the suppliersList where returnAddress equals to returnAddressId + 1
+        defaultSuppliersShouldNotBeFound("returnAddressId.equals=" + (returnAddressId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByContactPersonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+        People contactPerson = PeopleResourceIT.createEntity(em);
+        em.persist(contactPerson);
+        em.flush();
+        suppliers.setContactPerson(contactPerson);
+        suppliersRepository.saveAndFlush(suppliers);
+        Long contactPersonId = contactPerson.getId();
+
+        // Get all the suppliersList where contactPerson equals to contactPersonId
+        defaultSuppliersShouldBeFound("contactPersonId.equals=" + contactPersonId);
+
+        // Get all the suppliersList where contactPerson equals to contactPersonId + 1
+        defaultSuppliersShouldNotBeFound("contactPersonId.equals=" + (contactPersonId + 1));
+    }
+
+
+    @Test
+    @Transactional
     public void getAllSuppliersByDeliveryMethodIsEqualToSomething() throws Exception {
         // Initialize the database
         suppliersRepository.saveAndFlush(suppliers);
@@ -1989,6 +2824,26 @@ public class SuppliersResourceIT {
 
         // Get all the suppliersList where deliveryMethod equals to deliveryMethodId + 1
         defaultSuppliersShouldNotBeFound("deliveryMethodId.equals=" + (deliveryMethodId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSuppliersByPeopleIsEqualToSomething() throws Exception {
+        // Initialize the database
+        suppliersRepository.saveAndFlush(suppliers);
+        People people = PeopleResourceIT.createEntity(em);
+        em.persist(people);
+        em.flush();
+        suppliers.addPeople(people);
+        suppliersRepository.saveAndFlush(suppliers);
+        Long peopleId = people.getId();
+
+        // Get all the suppliersList where people equals to peopleId
+        defaultSuppliersShouldBeFound("peopleId.equals=" + peopleId);
+
+        // Get all the suppliersList where people equals to peopleId + 1
+        defaultSuppliersShouldNotBeFound("peopleId.equals=" + (peopleId + 1));
     }
 
     /**
@@ -2009,13 +2864,22 @@ public class SuppliersResourceIT {
             .andExpect(jsonPath("$.[*].paymentDays").value(hasItem(DEFAULT_PAYMENT_DAYS)))
             .andExpect(jsonPath("$.[*].internalComments").value(hasItem(DEFAULT_INTERNAL_COMMENTS)))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
+            .andExpect(jsonPath("$.[*].emailAddress").value(hasItem(DEFAULT_EMAIL_ADDRESS)))
+            .andExpect(jsonPath("$.[*].nric").value(hasItem(DEFAULT_NRIC)))
+            .andExpect(jsonPath("$.[*].companyRegistrationNo").value(hasItem(DEFAULT_COMPANY_REGISTRATION_NO)))
             .andExpect(jsonPath("$.[*].faxNumber").value(hasItem(DEFAULT_FAX_NUMBER)))
-            .andExpect(jsonPath("$.[*].websiteURL").value(hasItem(DEFAULT_WEBSITE_URL)))
+            .andExpect(jsonPath("$.[*].websiteUrl").value(hasItem(DEFAULT_WEBSITE_URL)))
             .andExpect(jsonPath("$.[*].webServiceUrl").value(hasItem(DEFAULT_WEB_SERVICE_URL)))
             .andExpect(jsonPath("$.[*].creditRating").value(hasItem(DEFAULT_CREDIT_RATING)))
+            .andExpect(jsonPath("$.[*].officialStoreInd").value(hasItem(DEFAULT_OFFICIAL_STORE_IND.booleanValue())))
+            .andExpect(jsonPath("$.[*].storeName").value(hasItem(DEFAULT_STORE_NAME)))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(DEFAULT_LOGO)))
+            .andExpect(jsonPath("$.[*].nricFrontPhoto").value(hasItem(DEFAULT_NRIC_FRONT_PHOTO)))
+            .andExpect(jsonPath("$.[*].nricBackPhoto").value(hasItem(DEFAULT_NRIC_BACK_PHOTO)))
+            .andExpect(jsonPath("$.[*].bankBookPhoto").value(hasItem(DEFAULT_BANK_BOOK_PHOTO)))
+            .andExpect(jsonPath("$.[*].companyRegistrationPhoto").value(hasItem(DEFAULT_COMPANY_REGISTRATION_PHOTO)))
+            .andExpect(jsonPath("$.[*].distributorCertificatePhoto").value(hasItem(DEFAULT_DISTRIBUTOR_CERTIFICATE_PHOTO)))
             .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
-            .andExpect(jsonPath("$.[*].thumbnailUrl").value(hasItem(DEFAULT_THUMBNAIL_URL)))
-            .andExpect(jsonPath("$.[*].pickupSameAsHeadOffice").value(hasItem(DEFAULT_PICKUP_SAME_AS_HEAD_OFFICE.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -2074,13 +2938,22 @@ public class SuppliersResourceIT {
             .paymentDays(UPDATED_PAYMENT_DAYS)
             .internalComments(UPDATED_INTERNAL_COMMENTS)
             .phoneNumber(UPDATED_PHONE_NUMBER)
+            .emailAddress(UPDATED_EMAIL_ADDRESS)
+            .nric(UPDATED_NRIC)
+            .companyRegistrationNo(UPDATED_COMPANY_REGISTRATION_NO)
             .faxNumber(UPDATED_FAX_NUMBER)
-            .websiteURL(UPDATED_WEBSITE_URL)
+            .websiteUrl(UPDATED_WEBSITE_URL)
             .webServiceUrl(UPDATED_WEB_SERVICE_URL)
             .creditRating(UPDATED_CREDIT_RATING)
+            .officialStoreInd(UPDATED_OFFICIAL_STORE_IND)
+            .storeName(UPDATED_STORE_NAME)
+            .logo(UPDATED_LOGO)
+            .nricFrontPhoto(UPDATED_NRIC_FRONT_PHOTO)
+            .nricBackPhoto(UPDATED_NRIC_BACK_PHOTO)
+            .bankBookPhoto(UPDATED_BANK_BOOK_PHOTO)
+            .companyRegistrationPhoto(UPDATED_COMPANY_REGISTRATION_PHOTO)
+            .distributorCertificatePhoto(UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO)
             .activeFlag(UPDATED_ACTIVE_FLAG)
-            .thumbnailUrl(UPDATED_THUMBNAIL_URL)
-            .pickupSameAsHeadOffice(UPDATED_PICKUP_SAME_AS_HEAD_OFFICE)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         SuppliersDTO suppliersDTO = suppliersMapper.toDto(updatedSuppliers);
@@ -2104,13 +2977,22 @@ public class SuppliersResourceIT {
         assertThat(testSuppliers.getPaymentDays()).isEqualTo(UPDATED_PAYMENT_DAYS);
         assertThat(testSuppliers.getInternalComments()).isEqualTo(UPDATED_INTERNAL_COMMENTS);
         assertThat(testSuppliers.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
+        assertThat(testSuppliers.getEmailAddress()).isEqualTo(UPDATED_EMAIL_ADDRESS);
+        assertThat(testSuppliers.getNric()).isEqualTo(UPDATED_NRIC);
+        assertThat(testSuppliers.getCompanyRegistrationNo()).isEqualTo(UPDATED_COMPANY_REGISTRATION_NO);
         assertThat(testSuppliers.getFaxNumber()).isEqualTo(UPDATED_FAX_NUMBER);
-        assertThat(testSuppliers.getWebsiteURL()).isEqualTo(UPDATED_WEBSITE_URL);
+        assertThat(testSuppliers.getWebsiteUrl()).isEqualTo(UPDATED_WEBSITE_URL);
         assertThat(testSuppliers.getWebServiceUrl()).isEqualTo(UPDATED_WEB_SERVICE_URL);
         assertThat(testSuppliers.getCreditRating()).isEqualTo(UPDATED_CREDIT_RATING);
+        assertThat(testSuppliers.isOfficialStoreInd()).isEqualTo(UPDATED_OFFICIAL_STORE_IND);
+        assertThat(testSuppliers.getStoreName()).isEqualTo(UPDATED_STORE_NAME);
+        assertThat(testSuppliers.getLogo()).isEqualTo(UPDATED_LOGO);
+        assertThat(testSuppliers.getNricFrontPhoto()).isEqualTo(UPDATED_NRIC_FRONT_PHOTO);
+        assertThat(testSuppliers.getNricBackPhoto()).isEqualTo(UPDATED_NRIC_BACK_PHOTO);
+        assertThat(testSuppliers.getBankBookPhoto()).isEqualTo(UPDATED_BANK_BOOK_PHOTO);
+        assertThat(testSuppliers.getCompanyRegistrationPhoto()).isEqualTo(UPDATED_COMPANY_REGISTRATION_PHOTO);
+        assertThat(testSuppliers.getDistributorCertificatePhoto()).isEqualTo(UPDATED_DISTRIBUTOR_CERTIFICATE_PHOTO);
         assertThat(testSuppliers.isActiveFlag()).isEqualTo(UPDATED_ACTIVE_FLAG);
-        assertThat(testSuppliers.getThumbnailUrl()).isEqualTo(UPDATED_THUMBNAIL_URL);
-        assertThat(testSuppliers.isPickupSameAsHeadOffice()).isEqualTo(UPDATED_PICKUP_SAME_AS_HEAD_OFFICE);
         assertThat(testSuppliers.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testSuppliers.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

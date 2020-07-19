@@ -2,6 +2,9 @@ package com.vertical.commerce.service;
 
 import com.vertical.commerce.service.dto.PeopleDTO;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +45,13 @@ public interface PeopleService {
      * @return the {@link List} of entities.
      */
     List<PeopleDTO> findAllWhereCompareIsNull();
+
+    /**
+     * Get all the people with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    Page<PeopleDTO> findAllWithEagerRelationships(Pageable pageable);
 
 
     /**

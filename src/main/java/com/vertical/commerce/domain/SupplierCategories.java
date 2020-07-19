@@ -32,8 +32,7 @@ public class SupplierCategories implements Serializable {
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
 
-    @NotNull
-    @Column(name = "valid_to", nullable = false)
+    @Column(name = "valid_to")
     private Instant validTo;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

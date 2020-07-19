@@ -1,7 +1,9 @@
 package com.vertical.commerce.service.dto;
 
+import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.vertical.commerce.domain.ProductBrand} entity.
@@ -13,22 +15,25 @@ public class ProductBrandDTO implements Serializable {
     @NotNull
     private String name;
 
+    @Lob
+    private String cultureDetails;
+
     private String shortLabel;
 
     private Integer sortOrder;
 
     private String iconFont;
 
-    private String thumbnailUrl;
+    private String iconPhoto;
 
+    @NotNull
+    private Boolean activeFlag;
 
-    private Long supplierId;
+    @NotNull
+    private Instant validFrom;
 
-    private String supplierName;
+    private Instant validTo;
 
-    private Long iconId;
-
-    private String iconThumbnailUrl;
     
     public Long getId() {
         return id;
@@ -44,6 +49,14 @@ public class ProductBrandDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getShortLabel() {
@@ -70,44 +83,36 @@ public class ProductBrandDTO implements Serializable {
         this.iconFont = iconFont;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getIconPhoto() {
+        return iconPhoto;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setIconPhoto(String iconPhoto) {
+        this.iconPhoto = iconPhoto;
     }
 
-    public Long getSupplierId() {
-        return supplierId;
+    public Boolean isActiveFlag() {
+        return activeFlag;
     }
 
-    public void setSupplierId(Long suppliersId) {
-        this.supplierId = suppliersId;
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
-    public String getSupplierName() {
-        return supplierName;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public void setSupplierName(String suppliersName) {
-        this.supplierName = suppliersName;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
     }
 
-    public Long getIconId() {
-        return iconId;
+    public Instant getValidTo() {
+        return validTo;
     }
 
-    public void setIconId(Long photosId) {
-        this.iconId = photosId;
-    }
-
-    public String getIconThumbnailUrl() {
-        return iconThumbnailUrl;
-    }
-
-    public void setIconThumbnailUrl(String photosThumbnailUrl) {
-        this.iconThumbnailUrl = photosThumbnailUrl;
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     @Override
@@ -133,14 +138,14 @@ public class ProductBrandDTO implements Serializable {
         return "ProductBrandDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", shortLabel='" + getShortLabel() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
-            ", supplierId=" + getSupplierId() +
-            ", supplierName='" + getSupplierName() + "'" +
-            ", iconId=" + getIconId() +
-            ", iconThumbnailUrl='" + getIconThumbnailUrl() + "'" +
+            ", iconPhoto='" + getIconPhoto() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             "}";
     }
 }

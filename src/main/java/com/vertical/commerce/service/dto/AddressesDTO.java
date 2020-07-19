@@ -1,5 +1,6 @@
 package com.vertical.commerce.service.dto;
 
+import java.time.Instant;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
@@ -10,10 +11,8 @@ public class AddressesDTO implements Serializable {
     
     private Long id;
 
-    @NotNull
     private String contactPerson;
 
-    @NotNull
     private String contactNumber;
 
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
@@ -24,24 +23,43 @@ public class AddressesDTO implements Serializable {
 
     private String addressLine2;
 
-    private String city;
-
     private String postalCode;
 
-    private Boolean defaultInd;
+    private String description;
 
-    private Boolean activeInd;
+    @NotNull
+    private Instant validFrom;
+
+    private Instant validTo;
 
 
-    private Long zoneId;
+    private Long regionId;
 
-    private String zoneCode;
+    private String regionName;
+
+    private Long cityId;
+
+    private String cityName;
+
+    private Long townshipId;
+
+    private String townshipName;
+
+    private Long townId;
+
+    private String townName;
 
     private Long addressTypeId;
 
     private String addressTypeName;
 
-    private Long personId;
+    private Long customerAddressId;
+
+    private String customerAddressName;
+
+    private Long supplierAddressId;
+
+    private String supplierAddressName;
     
     public Long getId() {
         return id;
@@ -91,14 +109,6 @@ public class AddressesDTO implements Serializable {
         this.addressLine2 = addressLine2;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getPostalCode() {
         return postalCode;
     }
@@ -107,36 +117,92 @@ public class AddressesDTO implements Serializable {
         this.postalCode = postalCode;
     }
 
-    public Boolean isDefaultInd() {
-        return defaultInd;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDefaultInd(Boolean defaultInd) {
-        this.defaultInd = defaultInd;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Instant getValidFrom() {
+        return validFrom;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
     }
 
-    public Long getZoneId() {
-        return zoneId;
+    public Instant getValidTo() {
+        return validTo;
     }
 
-    public void setZoneId(Long zoneId) {
-        this.zoneId = zoneId;
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
-    public String getZoneCode() {
-        return zoneCode;
+    public Long getRegionId() {
+        return regionId;
     }
 
-    public void setZoneCode(String zoneCode) {
-        this.zoneCode = zoneCode;
+    public void setRegionId(Long regionsId) {
+        this.regionId = regionsId;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionsName) {
+        this.regionName = regionsName;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long citiesId) {
+        this.cityId = citiesId;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String citiesName) {
+        this.cityName = citiesName;
+    }
+
+    public Long getTownshipId() {
+        return townshipId;
+    }
+
+    public void setTownshipId(Long townshipsId) {
+        this.townshipId = townshipsId;
+    }
+
+    public String getTownshipName() {
+        return townshipName;
+    }
+
+    public void setTownshipName(String townshipsName) {
+        this.townshipName = townshipsName;
+    }
+
+    public Long getTownId() {
+        return townId;
+    }
+
+    public void setTownId(Long townsId) {
+        this.townId = townsId;
+    }
+
+    public String getTownName() {
+        return townName;
+    }
+
+    public void setTownName(String townsName) {
+        this.townName = townsName;
     }
 
     public Long getAddressTypeId() {
@@ -155,12 +221,36 @@ public class AddressesDTO implements Serializable {
         this.addressTypeName = addressTypesName;
     }
 
-    public Long getPersonId() {
-        return personId;
+    public Long getCustomerAddressId() {
+        return customerAddressId;
     }
 
-    public void setPersonId(Long peopleId) {
-        this.personId = peopleId;
+    public void setCustomerAddressId(Long customersId) {
+        this.customerAddressId = customersId;
+    }
+
+    public String getCustomerAddressName() {
+        return customerAddressName;
+    }
+
+    public void setCustomerAddressName(String customersName) {
+        this.customerAddressName = customersName;
+    }
+
+    public Long getSupplierAddressId() {
+        return supplierAddressId;
+    }
+
+    public void setSupplierAddressId(Long suppliersId) {
+        this.supplierAddressId = suppliersId;
+    }
+
+    public String getSupplierAddressName() {
+        return supplierAddressName;
+    }
+
+    public void setSupplierAddressName(String suppliersName) {
+        this.supplierAddressName = suppliersName;
     }
 
     @Override
@@ -190,15 +280,24 @@ public class AddressesDTO implements Serializable {
             ", contactEmailAddress='" + getContactEmailAddress() + "'" +
             ", addressLine1='" + getAddressLine1() + "'" +
             ", addressLine2='" + getAddressLine2() + "'" +
-            ", city='" + getCity() + "'" +
             ", postalCode='" + getPostalCode() + "'" +
-            ", defaultInd='" + isDefaultInd() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
-            ", zoneId=" + getZoneId() +
-            ", zoneCode='" + getZoneCode() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
+            ", regionId=" + getRegionId() +
+            ", regionName='" + getRegionName() + "'" +
+            ", cityId=" + getCityId() +
+            ", cityName='" + getCityName() + "'" +
+            ", townshipId=" + getTownshipId() +
+            ", townshipName='" + getTownshipName() + "'" +
+            ", townId=" + getTownId() +
+            ", townName='" + getTownName() + "'" +
             ", addressTypeId=" + getAddressTypeId() +
             ", addressTypeName='" + getAddressTypeName() + "'" +
-            ", personId=" + getPersonId() +
+            ", customerAddressId=" + getCustomerAddressId() +
+            ", customerAddressName='" + getCustomerAddressName() + "'" +
+            ", supplierAddressId=" + getSupplierAddressId() +
+            ", supplierAddressName='" + getSupplierAddressName() + "'" +
             "}";
     }
 }

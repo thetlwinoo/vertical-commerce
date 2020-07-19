@@ -182,26 +182,6 @@ public class SupplierCategoriesResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = supplierCategoriesRepository.findAll().size();
-        // set the field null
-        supplierCategories.setValidTo(null);
-
-        // Create the SupplierCategories, which fails.
-        SupplierCategoriesDTO supplierCategoriesDTO = supplierCategoriesMapper.toDto(supplierCategories);
-
-
-        restSupplierCategoriesMockMvc.perform(post("/api/supplier-categories").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(supplierCategoriesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<SupplierCategories> supplierCategoriesList = supplierCategoriesRepository.findAll();
-        assertThat(supplierCategoriesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllSupplierCategories() throws Exception {
         // Initialize the database
         supplierCategoriesRepository.saveAndFlush(supplierCategories);

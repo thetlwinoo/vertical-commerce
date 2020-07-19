@@ -15,6 +15,9 @@ public class ProductsDTO implements Serializable {
     @NotNull
     private String name;
 
+    @Lob
+    private String cultureDetails;
+
     private String handle;
 
     private String searchDetails;
@@ -28,17 +31,24 @@ public class ProductsDTO implements Serializable {
 
     private Integer totalWishlist;
 
-    private Integer totalStars;
-
-    private Integer discountedPercentage;
+    private Integer overallRating;
 
     private Boolean preferredInd;
 
-    private Boolean availableDeliveryInd;
+    private Boolean freeShippingInd;
 
-    private Boolean activeInd;
+    private Boolean madeInMyanmarInd;
 
     private Boolean questionsAboutProductInd;
+
+    @NotNull
+    private Instant releaseDate;
+
+    @NotNull
+    private Instant availableDate;
+
+    @NotNull
+    private Boolean activeFlag;
 
     @NotNull
     private String lastEditedBy;
@@ -47,10 +57,9 @@ public class ProductsDTO implements Serializable {
     private Instant lastEditedWhen;
 
     @NotNull
-    private Instant releaseDate;
+    private Instant validFrom;
 
-    @NotNull
-    private Instant availableDate;
+    private Instant validTo;
 
 
     private Long productDocumentId;
@@ -81,6 +90,14 @@ public class ProductsDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getHandle() {
@@ -131,20 +148,12 @@ public class ProductsDTO implements Serializable {
         this.totalWishlist = totalWishlist;
     }
 
-    public Integer getTotalStars() {
-        return totalStars;
+    public Integer getOverallRating() {
+        return overallRating;
     }
 
-    public void setTotalStars(Integer totalStars) {
-        this.totalStars = totalStars;
-    }
-
-    public Integer getDiscountedPercentage() {
-        return discountedPercentage;
-    }
-
-    public void setDiscountedPercentage(Integer discountedPercentage) {
-        this.discountedPercentage = discountedPercentage;
+    public void setOverallRating(Integer overallRating) {
+        this.overallRating = overallRating;
     }
 
     public Boolean isPreferredInd() {
@@ -155,20 +164,20 @@ public class ProductsDTO implements Serializable {
         this.preferredInd = preferredInd;
     }
 
-    public Boolean isAvailableDeliveryInd() {
-        return availableDeliveryInd;
+    public Boolean isFreeShippingInd() {
+        return freeShippingInd;
     }
 
-    public void setAvailableDeliveryInd(Boolean availableDeliveryInd) {
-        this.availableDeliveryInd = availableDeliveryInd;
+    public void setFreeShippingInd(Boolean freeShippingInd) {
+        this.freeShippingInd = freeShippingInd;
     }
 
-    public Boolean isActiveInd() {
-        return activeInd;
+    public Boolean isMadeInMyanmarInd() {
+        return madeInMyanmarInd;
     }
 
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setMadeInMyanmarInd(Boolean madeInMyanmarInd) {
+        this.madeInMyanmarInd = madeInMyanmarInd;
     }
 
     public Boolean isQuestionsAboutProductInd() {
@@ -177,22 +186,6 @@ public class ProductsDTO implements Serializable {
 
     public void setQuestionsAboutProductInd(Boolean questionsAboutProductInd) {
         this.questionsAboutProductInd = questionsAboutProductInd;
-    }
-
-    public String getLastEditedBy() {
-        return lastEditedBy;
-    }
-
-    public void setLastEditedBy(String lastEditedBy) {
-        this.lastEditedBy = lastEditedBy;
-    }
-
-    public Instant getLastEditedWhen() {
-        return lastEditedWhen;
-    }
-
-    public void setLastEditedWhen(Instant lastEditedWhen) {
-        this.lastEditedWhen = lastEditedWhen;
     }
 
     public Instant getReleaseDate() {
@@ -211,12 +204,52 @@ public class ProductsDTO implements Serializable {
         this.availableDate = availableDate;
     }
 
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public String getLastEditedBy() {
+        return lastEditedBy;
+    }
+
+    public void setLastEditedBy(String lastEditedBy) {
+        this.lastEditedBy = lastEditedBy;
+    }
+
+    public Instant getLastEditedWhen() {
+        return lastEditedWhen;
+    }
+
+    public void setLastEditedWhen(Instant lastEditedWhen) {
+        this.lastEditedWhen = lastEditedWhen;
+    }
+
+    public Instant getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
+    }
+
     public Long getProductDocumentId() {
         return productDocumentId;
     }
 
-    public void setProductDocumentId(Long productDocumentId) {
-        this.productDocumentId = productDocumentId;
+    public void setProductDocumentId(Long productDocumentsId) {
+        this.productDocumentId = productDocumentsId;
     }
 
     public Long getSupplierId() {
@@ -290,22 +323,25 @@ public class ProductsDTO implements Serializable {
         return "ProductsDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", handle='" + getHandle() + "'" +
             ", searchDetails='" + getSearchDetails() + "'" +
             ", productNumber='" + getProductNumber() + "'" +
             ", sellCount=" + getSellCount() +
             ", productDetails='" + getProductDetails() + "'" +
             ", totalWishlist=" + getTotalWishlist() +
-            ", totalStars=" + getTotalStars() +
-            ", discountedPercentage=" + getDiscountedPercentage() +
+            ", overallRating=" + getOverallRating() +
             ", preferredInd='" + isPreferredInd() + "'" +
-            ", availableDeliveryInd='" + isAvailableDeliveryInd() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", freeShippingInd='" + isFreeShippingInd() + "'" +
+            ", madeInMyanmarInd='" + isMadeInMyanmarInd() + "'" +
             ", questionsAboutProductInd='" + isQuestionsAboutProductInd() + "'" +
-            ", lastEditedBy='" + getLastEditedBy() + "'" +
-            ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", releaseDate='" + getReleaseDate() + "'" +
             ", availableDate='" + getAvailableDate() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
+            ", lastEditedBy='" + getLastEditedBy() + "'" +
+            ", lastEditedWhen='" + getLastEditedWhen() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             ", productDocumentId=" + getProductDocumentId() +
             ", supplierId=" + getSupplierId() +
             ", supplierName='" + getSupplierName() + "'" +

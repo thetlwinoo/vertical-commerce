@@ -109,9 +109,10 @@ class OrderLinesGatlingTest extends Simulation {
                 , "pickedQuantity":"0"
                 , "pickingCompletedWhen":"2020-01-01T00:00:00.000Z"
                 , "status":"AVAILABLE"
-                , "thumbnailUrl":"SAMPLE_TEXT"
                 , "lineRating":"0"
                 , "lineReview":null
+                , "stockItemPhoto":"SAMPLE_TEXT"
+                , "reviewPhoto":"SAMPLE_TEXT"
                 , "customerReviewedOn":"2020-01-01T00:00:00.000Z"
                 , "supplierResponse":null
                 , "supplierResponseOn":"2020-01-01T00:00:00.000Z"

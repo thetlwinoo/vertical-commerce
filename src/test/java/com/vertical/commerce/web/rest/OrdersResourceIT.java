@@ -82,7 +82,7 @@ public class OrdersResourceIT {
     private static final BigDecimal SMALLER_TOTAL_DUE = new BigDecimal(1 - 1);
 
     private static final PaymentStatus DEFAULT_PAYMENT_STATUS = PaymentStatus.PENDING;
-    private static final PaymentStatus UPDATED_PAYMENT_STATUS = PaymentStatus.PENDING;
+    private static final PaymentStatus UPDATED_PAYMENT_STATUS = PaymentStatus.TO_CHECK;
 
     private static final String DEFAULT_CUSTOMER_PURCHASE_ORDER_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_CUSTOMER_PURCHASE_ORDER_NUMBER = "BBBBBBBBBB";
@@ -338,7 +338,7 @@ public class OrdersResourceIT {
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())));
     }
-
+    
     @Test
     @Transactional
     public void getOrders() throws Exception {

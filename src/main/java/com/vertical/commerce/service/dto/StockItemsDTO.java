@@ -16,6 +16,9 @@ public class StockItemsDTO implements Serializable {
     @NotNull
     private String name;
 
+    @Lob
+    private String cultureDetails;
+
     private String vendorCode;
 
     private String vendorSKU;
@@ -95,10 +98,7 @@ public class StockItemsDTO implements Serializable {
     @Lob
     private String customFields;
 
-    private String thumbnailUrl;
-
-    @NotNull
-    private Boolean activeInd;
+    private String thumbnailPhoto;
 
     @NotNull
     private Boolean liveInd;
@@ -111,6 +111,14 @@ public class StockItemsDTO implements Serializable {
 
     @NotNull
     private Instant lastEditedWhen;
+
+    @NotNull
+    private Boolean activeFlag;
+
+    @NotNull
+    private Instant validFrom;
+
+    private Instant validTo;
 
 
     private Long itemLengthUnitId;
@@ -177,6 +185,14 @@ public class StockItemsDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCultureDetails() {
+        return cultureDetails;
+    }
+
+    public void setCultureDetails(String cultureDetails) {
+        this.cultureDetails = cultureDetails;
     }
 
     public String getVendorCode() {
@@ -475,20 +491,12 @@ public class StockItemsDTO implements Serializable {
         this.customFields = customFields;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getThumbnailPhoto() {
+        return thumbnailPhoto;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public Boolean isActiveInd() {
-        return activeInd;
-    }
-
-    public void setActiveInd(Boolean activeInd) {
-        this.activeInd = activeInd;
+    public void setThumbnailPhoto(String thumbnailPhoto) {
+        this.thumbnailPhoto = thumbnailPhoto;
     }
 
     public Boolean isLiveInd() {
@@ -521,6 +529,30 @@ public class StockItemsDTO implements Serializable {
 
     public void setLastEditedWhen(Instant lastEditedWhen) {
         this.lastEditedWhen = lastEditedWhen;
+    }
+
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public Instant getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(Instant validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public Instant getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Instant validTo) {
+        this.validTo = validTo;
     }
 
     public Long getItemLengthUnitId() {
@@ -746,6 +778,7 @@ public class StockItemsDTO implements Serializable {
         return "StockItemsDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", cultureDetails='" + getCultureDetails() + "'" +
             ", vendorCode='" + getVendorCode() + "'" +
             ", vendorSKU='" + getVendorSKU() + "'" +
             ", generatedSKU='" + getGeneratedSKU() + "'" +
@@ -783,12 +816,14 @@ public class StockItemsDTO implements Serializable {
             ", tags='" + getTags() + "'" +
             ", searchDetails='" + getSearchDetails() + "'" +
             ", customFields='" + getCustomFields() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
-            ", activeInd='" + isActiveInd() + "'" +
+            ", thumbnailPhoto='" + getThumbnailPhoto() + "'" +
             ", liveInd='" + isLiveInd() + "'" +
             ", cashOnDeliveryInd='" + isCashOnDeliveryInd() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validTo='" + getValidTo() + "'" +
             ", itemLengthUnitId=" + getItemLengthUnitId() +
             ", itemLengthUnitCode='" + getItemLengthUnitCode() + "'" +
             ", itemWidthUnitId=" + getItemWidthUnitId() +

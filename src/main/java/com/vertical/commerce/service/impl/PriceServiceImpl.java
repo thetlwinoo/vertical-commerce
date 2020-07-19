@@ -76,7 +76,7 @@ public class PriceServiceImpl implements PriceService {
                 totalPrice = totalPrice.subtract(cart.getSpecialDeals().getDiscountAmount());
             }
 
-            cart.setDealString(getDealString(cart));
+            cart.setDealDetails(getDealString(cart));
         }
 
         cart.setPackageDetails(shippingFeeJson);

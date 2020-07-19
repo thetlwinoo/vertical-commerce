@@ -94,6 +94,9 @@ public class TrackingEventQueryService extends QueryService<TrackingEvent> {
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), TrackingEvent_.name));
             }
+            if (criteria.getDescription() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDescription(), TrackingEvent_.description));
+            }
         }
         return specification;
     }

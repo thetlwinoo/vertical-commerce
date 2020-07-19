@@ -35,9 +35,9 @@ public class AddressesExtendResource {
         this.addressesExtendService = addressesExtendService;
     }
 
-    @GetMapping("/addresses-extend/fetch")
-    public ResponseEntity<List<AddressesDTO>> getAllAddresses(Principal principal) {
-        List<AddressesDTO> entityList = addressesExtendService.fetchAddresses(principal);
+    @GetMapping("/addresses-extend/fetch/customer")
+    public ResponseEntity<List<AddressesDTO>> getCustomerAddresses(Principal principal) {
+        List<AddressesDTO> entityList = addressesExtendService.fetchCustomerAddresses(principal);
         return ResponseEntity.ok().body(entityList);
     }
 
@@ -65,18 +65,18 @@ public class AddressesExtendResource {
             .body(result);
     }
 
-    @PostMapping("/addresses-extend/default")
-    public ResponseEntity<AddressesDTO> setDefaultAddress(@RequestParam(value="addressId") Long addressId,@RequestParam(value="isShipping") Boolean isShipping, Principal principal) throws URISyntaxException {
-       AddressesDTO defaultAddress =  addressesExtendService.setDefaultAddress(addressId,isShipping, principal);
-
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, defaultAddress.getId().toString()))
-            .body(defaultAddress);
-    }
-
-    @PostMapping("/addresses-extend/clear")
-    public ResponseEntity<AddressesDTO> clearDefaultAddress(Principal principal) throws URISyntaxException {
-        addressesExtendService.clearDefaultAddress(principal);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, null)).build();
-    }
+//    @PostMapping("/addresses-extend/default")
+//    public ResponseEntity<AddressesDTO> setDefaultAddress(@RequestParam(value="addressId") Long addressId,@RequestParam(value="isShipping") Boolean isShipping, Principal principal) throws URISyntaxException {
+//       AddressesDTO defaultAddress =  addressesExtendService.setDefaultAddress(addressId,isShipping, principal);
+//
+//        return ResponseEntity.ok()
+//            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, defaultAddress.getId().toString()))
+//            .body(defaultAddress);
+//    }
+//
+//    @PostMapping("/addresses-extend/clear")
+//    public ResponseEntity<AddressesDTO> clearDefaultAddress(Principal principal) throws URISyntaxException {
+//        addressesExtendService.clearDefaultAddress(principal);
+//        return ResponseEntity.noContent().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, null)).build();
+//    }
 }

@@ -3,6 +3,7 @@ package com.vertical.commerce.service.dto;
 import java.io.Serializable;
 import java.util.Objects;
 import io.github.jhipster.service.Criteria;
+import com.vertical.commerce.domain.enumeration.AddressTypeRefer;
 import io.github.jhipster.service.filter.BooleanFilter;
 import io.github.jhipster.service.filter.DoubleFilter;
 import io.github.jhipster.service.filter.Filter;
@@ -21,6 +22,24 @@ import io.github.jhipster.service.filter.StringFilter;
  * fix type specific filters.
  */
 public class AddressTypesCriteria implements Serializable, Criteria {
+    /**
+     * Class for filtering AddressTypeRefer
+     */
+    public static class AddressTypeReferFilter extends Filter<AddressTypeRefer> {
+
+        public AddressTypeReferFilter() {
+        }
+
+        public AddressTypeReferFilter(AddressTypeReferFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public AddressTypeReferFilter copy() {
+            return new AddressTypeReferFilter(this);
+        }
+
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +47,7 @@ public class AddressTypesCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
-    private StringFilter refer;
+    private AddressTypeReferFilter refer;
 
     public AddressTypesCriteria() {
     }
@@ -60,11 +79,11 @@ public class AddressTypesCriteria implements Serializable, Criteria {
         this.name = name;
     }
 
-    public StringFilter getRefer() {
+    public AddressTypeReferFilter getRefer() {
         return refer;
     }
 
-    public void setRefer(StringFilter refer) {
+    public void setRefer(AddressTypeReferFilter refer) {
         this.refer = refer;
     }
 

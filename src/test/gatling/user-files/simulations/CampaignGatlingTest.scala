@@ -105,7 +105,7 @@ class CampaignGatlingTest extends Simulation {
                 , "shortLabel":"SAMPLE_TEXT"
                 , "sortOrder":"0"
                 , "iconFont":"SAMPLE_TEXT"
-                , "thumbnailUrl":"SAMPLE_TEXT"
+                , "iconPhoto":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_campaign_url"))).exitHereIfFailed

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity TownshipsCulture.
+    -->
+    <changeSet id="20200718073312-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="culture_id"
+                                 baseTableName="townships_culture"
+                                 constraintName="fk_townships_culture_culture_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="culture"/>
+
+        <addForeignKeyConstraint baseColumnNames="township_id"
+                                 baseTableName="townships_culture"
+                                 constraintName="fk_townships_culture_township_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="townships"/>
+
+    </changeSet>
+</databaseChangeLog>

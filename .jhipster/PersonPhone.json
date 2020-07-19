@@ -11,8 +11,13 @@
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "activeInd",
-      "fieldType": "Boolean"
+      "fieldName": "validFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validTo",
+      "fieldType": "Instant"
     }
   ],
   "relationships": [
@@ -31,7 +36,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617154104",
+  "changelogDate": "20200718072312",
   "entityTableName": "person_phone",
   "dto": "mapstruct",
   "pagination": "no",

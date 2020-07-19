@@ -32,12 +32,14 @@ public class OrderLinesDTO implements Serializable {
     @NotNull
     private OrderLineStatus status;
 
-    private String thumbnailUrl;
-
     private Integer lineRating;
 
     @Lob
     private String lineReview;
+
+    private String stockItemPhoto;
+
+    private String reviewPhoto;
 
     private Instant customerReviewedOn;
 
@@ -62,10 +64,6 @@ public class OrderLinesDTO implements Serializable {
     private Long packageTypeId;
 
     private String packageTypeName;
-
-    private Long reviewImageId;
-
-    private String reviewImageThumbnailUrl;
 
     private Long supplierId;
 
@@ -145,14 +143,6 @@ public class OrderLinesDTO implements Serializable {
         this.status = status;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
     public Integer getLineRating() {
         return lineRating;
     }
@@ -167,6 +157,22 @@ public class OrderLinesDTO implements Serializable {
 
     public void setLineReview(String lineReview) {
         this.lineReview = lineReview;
+    }
+
+    public String getStockItemPhoto() {
+        return stockItemPhoto;
+    }
+
+    public void setStockItemPhoto(String stockItemPhoto) {
+        this.stockItemPhoto = stockItemPhoto;
+    }
+
+    public String getReviewPhoto() {
+        return reviewPhoto;
+    }
+
+    public void setReviewPhoto(String reviewPhoto) {
+        this.reviewPhoto = reviewPhoto;
     }
 
     public Instant getCustomerReviewedOn() {
@@ -249,22 +255,6 @@ public class OrderLinesDTO implements Serializable {
         this.packageTypeName = packageTypesName;
     }
 
-    public Long getReviewImageId() {
-        return reviewImageId;
-    }
-
-    public void setReviewImageId(Long photosId) {
-        this.reviewImageId = photosId;
-    }
-
-    public String getReviewImageThumbnailUrl() {
-        return reviewImageThumbnailUrl;
-    }
-
-    public void setReviewImageThumbnailUrl(String photosThumbnailUrl) {
-        this.reviewImageThumbnailUrl = photosThumbnailUrl;
-    }
-
     public Long getSupplierId() {
         return supplierId;
     }
@@ -319,9 +309,10 @@ public class OrderLinesDTO implements Serializable {
             ", pickedQuantity=" + getPickedQuantity() +
             ", pickingCompletedWhen='" + getPickingCompletedWhen() + "'" +
             ", status='" + getStatus() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
             ", lineRating=" + getLineRating() +
             ", lineReview='" + getLineReview() + "'" +
+            ", stockItemPhoto='" + getStockItemPhoto() + "'" +
+            ", reviewPhoto='" + getReviewPhoto() + "'" +
             ", customerReviewedOn='" + getCustomerReviewedOn() + "'" +
             ", supplierResponse='" + getSupplierResponse() + "'" +
             ", supplierResponseOn='" + getSupplierResponseOn() + "'" +
@@ -332,8 +323,6 @@ public class OrderLinesDTO implements Serializable {
             ", stockItemName='" + getStockItemName() + "'" +
             ", packageTypeId=" + getPackageTypeId() +
             ", packageTypeName='" + getPackageTypeName() + "'" +
-            ", reviewImageId=" + getReviewImageId() +
-            ", reviewImageThumbnailUrl='" + getReviewImageThumbnailUrl() + "'" +
             ", supplierId=" + getSupplierId() +
             ", supplierName='" + getSupplierName() + "'" +
             ", orderPackageId=" + getOrderPackageId() +

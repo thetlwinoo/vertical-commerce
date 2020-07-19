@@ -103,12 +103,8 @@ public class CampaignQueryService extends QueryService<Campaign> {
             if (criteria.getIconFont() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getIconFont(), Campaign_.iconFont));
             }
-            if (criteria.getThumbnailUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getThumbnailUrl(), Campaign_.thumbnailUrl));
-            }
-            if (criteria.getIconId() != null) {
-                specification = specification.and(buildSpecification(criteria.getIconId(),
-                    root -> root.join(Campaign_.icon, JoinType.LEFT).get(Photos_.id)));
+            if (criteria.getIconPhoto() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getIconPhoto(), Campaign_.iconPhoto));
             }
         }
         return specification;

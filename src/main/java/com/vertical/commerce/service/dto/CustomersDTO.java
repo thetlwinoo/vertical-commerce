@@ -36,7 +36,7 @@ public class CustomersDTO implements Serializable {
 
     private String runPosition;
 
-    private String thumbnailUrl;
+    private String profilePhoto;
 
     private Boolean billToAddressSameAsDeliveryAddress;
 
@@ -44,9 +44,11 @@ public class CustomersDTO implements Serializable {
     private String lastEditedBy;
 
     @NotNull
-    private Instant validFrom;
+    private Boolean activeFlag;
 
     @NotNull
+    private Instant validFrom;
+
     private Instant validTo;
 
 
@@ -142,12 +144,12 @@ public class CustomersDTO implements Serializable {
         this.runPosition = runPosition;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getProfilePhoto() {
+        return profilePhoto;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public Boolean isBillToAddressSameAsDeliveryAddress() {
@@ -164,6 +166,14 @@ public class CustomersDTO implements Serializable {
 
     public void setLastEditedBy(String lastEditedBy) {
         this.lastEditedBy = lastEditedBy;
+    }
+
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public Instant getValidFrom() {
@@ -261,9 +271,10 @@ public class CustomersDTO implements Serializable {
             ", paymentDays=" + getPaymentDays() +
             ", deliveryRun='" + getDeliveryRun() + "'" +
             ", runPosition='" + getRunPosition() + "'" +
-            ", thumbnailUrl='" + getThumbnailUrl() + "'" +
+            ", profilePhoto='" + getProfilePhoto() + "'" +
             ", billToAddressSameAsDeliveryAddress='" + isBillToAddressSameAsDeliveryAddress() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             ", peopleId=" + getPeopleId() +

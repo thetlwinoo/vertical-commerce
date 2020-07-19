@@ -182,26 +182,6 @@ public class PackageTypesResourceIT {
 
     @Test
     @Transactional
-    public void checkValidToIsRequired() throws Exception {
-        int databaseSizeBeforeTest = packageTypesRepository.findAll().size();
-        // set the field null
-        packageTypes.setValidTo(null);
-
-        // Create the PackageTypes, which fails.
-        PackageTypesDTO packageTypesDTO = packageTypesMapper.toDto(packageTypes);
-
-
-        restPackageTypesMockMvc.perform(post("/api/package-types").with(csrf())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(packageTypesDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<PackageTypes> packageTypesList = packageTypesRepository.findAll();
-        assertThat(packageTypesList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllPackageTypes() throws Exception {
         // Initialize the database
         packageTypesRepository.saveAndFlush(packageTypes);

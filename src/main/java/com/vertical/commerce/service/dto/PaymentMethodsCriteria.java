@@ -10,6 +10,7 @@ import io.github.jhipster.service.filter.FloatFilter;
 import io.github.jhipster.service.filter.IntegerFilter;
 import io.github.jhipster.service.filter.LongFilter;
 import io.github.jhipster.service.filter.StringFilter;
+import io.github.jhipster.service.filter.InstantFilter;
 
 /**
  * Criteria class for the {@link com.vertical.commerce.domain.PaymentMethods} entity. This class is used
@@ -32,13 +33,15 @@ public class PaymentMethodsCriteria implements Serializable, Criteria {
 
     private BooleanFilter disabled;
 
-    private BooleanFilter activeInd;
-
     private IntegerFilter sortOrder;
 
     private StringFilter iconFont;
 
-    private LongFilter iconId;
+    private StringFilter iconPhoto;
+
+    private InstantFilter validFrom;
+
+    private InstantFilter validTo;
 
     public PaymentMethodsCriteria() {
     }
@@ -48,10 +51,11 @@ public class PaymentMethodsCriteria implements Serializable, Criteria {
         this.name = other.name == null ? null : other.name.copy();
         this.code = other.code == null ? null : other.code.copy();
         this.disabled = other.disabled == null ? null : other.disabled.copy();
-        this.activeInd = other.activeInd == null ? null : other.activeInd.copy();
         this.sortOrder = other.sortOrder == null ? null : other.sortOrder.copy();
         this.iconFont = other.iconFont == null ? null : other.iconFont.copy();
-        this.iconId = other.iconId == null ? null : other.iconId.copy();
+        this.iconPhoto = other.iconPhoto == null ? null : other.iconPhoto.copy();
+        this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
+        this.validTo = other.validTo == null ? null : other.validTo.copy();
     }
 
     @Override
@@ -91,14 +95,6 @@ public class PaymentMethodsCriteria implements Serializable, Criteria {
         this.disabled = disabled;
     }
 
-    public BooleanFilter getActiveInd() {
-        return activeInd;
-    }
-
-    public void setActiveInd(BooleanFilter activeInd) {
-        this.activeInd = activeInd;
-    }
-
     public IntegerFilter getSortOrder() {
         return sortOrder;
     }
@@ -115,12 +111,28 @@ public class PaymentMethodsCriteria implements Serializable, Criteria {
         this.iconFont = iconFont;
     }
 
-    public LongFilter getIconId() {
-        return iconId;
+    public StringFilter getIconPhoto() {
+        return iconPhoto;
     }
 
-    public void setIconId(LongFilter iconId) {
-        this.iconId = iconId;
+    public void setIconPhoto(StringFilter iconPhoto) {
+        this.iconPhoto = iconPhoto;
+    }
+
+    public InstantFilter getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(InstantFilter validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public InstantFilter getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(InstantFilter validTo) {
+        this.validTo = validTo;
     }
 
 
@@ -138,10 +150,11 @@ public class PaymentMethodsCriteria implements Serializable, Criteria {
             Objects.equals(name, that.name) &&
             Objects.equals(code, that.code) &&
             Objects.equals(disabled, that.disabled) &&
-            Objects.equals(activeInd, that.activeInd) &&
             Objects.equals(sortOrder, that.sortOrder) &&
             Objects.equals(iconFont, that.iconFont) &&
-            Objects.equals(iconId, that.iconId);
+            Objects.equals(iconPhoto, that.iconPhoto) &&
+            Objects.equals(validFrom, that.validFrom) &&
+            Objects.equals(validTo, that.validTo);
     }
 
     @Override
@@ -151,10 +164,11 @@ public class PaymentMethodsCriteria implements Serializable, Criteria {
         name,
         code,
         disabled,
-        activeInd,
         sortOrder,
         iconFont,
-        iconId
+        iconPhoto,
+        validFrom,
+        validTo
         );
     }
 
@@ -166,10 +180,11 @@ public class PaymentMethodsCriteria implements Serializable, Criteria {
                 (name != null ? "name=" + name + ", " : "") +
                 (code != null ? "code=" + code + ", " : "") +
                 (disabled != null ? "disabled=" + disabled + ", " : "") +
-                (activeInd != null ? "activeInd=" + activeInd + ", " : "") +
                 (sortOrder != null ? "sortOrder=" + sortOrder + ", " : "") +
                 (iconFont != null ? "iconFont=" + iconFont + ", " : "") +
-                (iconId != null ? "iconId=" + iconId + ", " : "") +
+                (iconPhoto != null ? "iconPhoto=" + iconPhoto + ", " : "") +
+                (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
+                (validTo != null ? "validTo=" + validTo + ", " : "") +
             "}";
     }
 

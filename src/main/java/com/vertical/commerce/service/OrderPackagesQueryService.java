@@ -94,6 +94,12 @@ public class OrderPackagesQueryService extends QueryService<OrderPackages> {
             if (criteria.getExpectedDeliveryDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getExpectedDeliveryDate(), OrderPackages_.expectedDeliveryDate));
             }
+            if (criteria.getOrderPlacedOn() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getOrderPlacedOn(), OrderPackages_.orderPlacedOn));
+            }
+            if (criteria.getOrderDeliveredOn() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getOrderDeliveredOn(), OrderPackages_.orderDeliveredOn));
+            }
             if (criteria.getComments() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getComments(), OrderPackages_.comments));
             }

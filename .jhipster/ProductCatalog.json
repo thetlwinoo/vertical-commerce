@@ -17,7 +17,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200617165004",
+  "changelogDate": "20200718084612",
   "entityTableName": "product_catalog",
   "dto": "mapstruct",
   "pagination": "no",

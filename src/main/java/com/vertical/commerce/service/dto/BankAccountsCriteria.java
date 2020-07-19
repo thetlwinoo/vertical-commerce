@@ -43,11 +43,11 @@ public class BankAccountsCriteria implements Serializable, Criteria {
 
     private StringFilter lastEditedBy;
 
+    private StringFilter logoPhoto;
+
     private InstantFilter validForm;
 
     private InstantFilter validTo;
-
-    private LongFilter logoId;
 
     public BankAccountsCriteria() {
     }
@@ -62,9 +62,9 @@ public class BankAccountsCriteria implements Serializable, Criteria {
         this.bank = other.bank == null ? null : other.bank.copy();
         this.internationalCode = other.internationalCode == null ? null : other.internationalCode.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
+        this.logoPhoto = other.logoPhoto == null ? null : other.logoPhoto.copy();
         this.validForm = other.validForm == null ? null : other.validForm.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
-        this.logoId = other.logoId == null ? null : other.logoId.copy();
     }
 
     @Override
@@ -144,6 +144,14 @@ public class BankAccountsCriteria implements Serializable, Criteria {
         this.lastEditedBy = lastEditedBy;
     }
 
+    public StringFilter getLogoPhoto() {
+        return logoPhoto;
+    }
+
+    public void setLogoPhoto(StringFilter logoPhoto) {
+        this.logoPhoto = logoPhoto;
+    }
+
     public InstantFilter getValidForm() {
         return validForm;
     }
@@ -158,14 +166,6 @@ public class BankAccountsCriteria implements Serializable, Criteria {
 
     public void setValidTo(InstantFilter validTo) {
         this.validTo = validTo;
-    }
-
-    public LongFilter getLogoId() {
-        return logoId;
-    }
-
-    public void setLogoId(LongFilter logoId) {
-        this.logoId = logoId;
     }
 
 
@@ -188,9 +188,9 @@ public class BankAccountsCriteria implements Serializable, Criteria {
             Objects.equals(bank, that.bank) &&
             Objects.equals(internationalCode, that.internationalCode) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
+            Objects.equals(logoPhoto, that.logoPhoto) &&
             Objects.equals(validForm, that.validForm) &&
-            Objects.equals(validTo, that.validTo) &&
-            Objects.equals(logoId, that.logoId);
+            Objects.equals(validTo, that.validTo);
     }
 
     @Override
@@ -205,9 +205,9 @@ public class BankAccountsCriteria implements Serializable, Criteria {
         bank,
         internationalCode,
         lastEditedBy,
+        logoPhoto,
         validForm,
-        validTo,
-        logoId
+        validTo
         );
     }
 
@@ -224,9 +224,9 @@ public class BankAccountsCriteria implements Serializable, Criteria {
                 (bank != null ? "bank=" + bank + ", " : "") +
                 (internationalCode != null ? "internationalCode=" + internationalCode + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
+                (logoPhoto != null ? "logoPhoto=" + logoPhoto + ", " : "") +
                 (validForm != null ? "validForm=" + validForm + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
-                (logoId != null ? "logoId=" + logoId + ", " : "") +
             "}";
     }
 

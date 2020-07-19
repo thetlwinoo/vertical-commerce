@@ -48,6 +48,12 @@ public class OrderPackagesResourceIT {
     private static final Instant DEFAULT_EXPECTED_DELIVERY_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_EXPECTED_DELIVERY_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final Instant DEFAULT_ORDER_PLACED_ON = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_ORDER_PLACED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_ORDER_DELIVERED_ON = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_ORDER_DELIVERED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
     private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
     private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
 
@@ -149,6 +155,8 @@ public class OrderPackagesResourceIT {
     public static OrderPackages createEntity(EntityManager em) {
         OrderPackages orderPackages = new OrderPackages()
             .expectedDeliveryDate(DEFAULT_EXPECTED_DELIVERY_DATE)
+            .orderPlacedOn(DEFAULT_ORDER_PLACED_ON)
+            .orderDeliveredOn(DEFAULT_ORDER_DELIVERED_ON)
             .comments(DEFAULT_COMMENTS)
             .deliveryInstructions(DEFAULT_DELIVERY_INSTRUCTIONS)
             .internalComments(DEFAULT_INTERNAL_COMMENTS)
@@ -181,6 +189,8 @@ public class OrderPackagesResourceIT {
     public static OrderPackages createUpdatedEntity(EntityManager em) {
         OrderPackages orderPackages = new OrderPackages()
             .expectedDeliveryDate(UPDATED_EXPECTED_DELIVERY_DATE)
+            .orderPlacedOn(UPDATED_ORDER_PLACED_ON)
+            .orderDeliveredOn(UPDATED_ORDER_DELIVERED_ON)
             .comments(UPDATED_COMMENTS)
             .deliveryInstructions(UPDATED_DELIVERY_INSTRUCTIONS)
             .internalComments(UPDATED_INTERNAL_COMMENTS)
@@ -226,6 +236,8 @@ public class OrderPackagesResourceIT {
         assertThat(orderPackagesList).hasSize(databaseSizeBeforeCreate + 1);
         OrderPackages testOrderPackages = orderPackagesList.get(orderPackagesList.size() - 1);
         assertThat(testOrderPackages.getExpectedDeliveryDate()).isEqualTo(DEFAULT_EXPECTED_DELIVERY_DATE);
+        assertThat(testOrderPackages.getOrderPlacedOn()).isEqualTo(DEFAULT_ORDER_PLACED_ON);
+        assertThat(testOrderPackages.getOrderDeliveredOn()).isEqualTo(DEFAULT_ORDER_DELIVERED_ON);
         assertThat(testOrderPackages.getComments()).isEqualTo(DEFAULT_COMMENTS);
         assertThat(testOrderPackages.getDeliveryInstructions()).isEqualTo(DEFAULT_DELIVERY_INSTRUCTIONS);
         assertThat(testOrderPackages.getInternalComments()).isEqualTo(DEFAULT_INTERNAL_COMMENTS);
@@ -322,6 +334,8 @@ public class OrderPackagesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(orderPackages.getId().intValue())))
             .andExpect(jsonPath("$.[*].expectedDeliveryDate").value(hasItem(DEFAULT_EXPECTED_DELIVERY_DATE.toString())))
+            .andExpect(jsonPath("$.[*].orderPlacedOn").value(hasItem(DEFAULT_ORDER_PLACED_ON.toString())))
+            .andExpect(jsonPath("$.[*].orderDeliveredOn").value(hasItem(DEFAULT_ORDER_DELIVERED_ON.toString())))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
             .andExpect(jsonPath("$.[*].deliveryInstructions").value(hasItem(DEFAULT_DELIVERY_INSTRUCTIONS)))
             .andExpect(jsonPath("$.[*].internalComments").value(hasItem(DEFAULT_INTERNAL_COMMENTS)))
@@ -357,6 +371,8 @@ public class OrderPackagesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(orderPackages.getId().intValue()))
             .andExpect(jsonPath("$.expectedDeliveryDate").value(DEFAULT_EXPECTED_DELIVERY_DATE.toString()))
+            .andExpect(jsonPath("$.orderPlacedOn").value(DEFAULT_ORDER_PLACED_ON.toString()))
+            .andExpect(jsonPath("$.orderDeliveredOn").value(DEFAULT_ORDER_DELIVERED_ON.toString()))
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS))
             .andExpect(jsonPath("$.deliveryInstructions").value(DEFAULT_DELIVERY_INSTRUCTIONS))
             .andExpect(jsonPath("$.internalComments").value(DEFAULT_INTERNAL_COMMENTS))
@@ -450,6 +466,110 @@ public class OrderPackagesResourceIT {
 
         // Get all the orderPackagesList where expectedDeliveryDate is null
         defaultOrderPackagesShouldNotBeFound("expectedDeliveryDate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByOrderPlacedOnIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where orderPlacedOn equals to DEFAULT_ORDER_PLACED_ON
+        defaultOrderPackagesShouldBeFound("orderPlacedOn.equals=" + DEFAULT_ORDER_PLACED_ON);
+
+        // Get all the orderPackagesList where orderPlacedOn equals to UPDATED_ORDER_PLACED_ON
+        defaultOrderPackagesShouldNotBeFound("orderPlacedOn.equals=" + UPDATED_ORDER_PLACED_ON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByOrderPlacedOnIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where orderPlacedOn not equals to DEFAULT_ORDER_PLACED_ON
+        defaultOrderPackagesShouldNotBeFound("orderPlacedOn.notEquals=" + DEFAULT_ORDER_PLACED_ON);
+
+        // Get all the orderPackagesList where orderPlacedOn not equals to UPDATED_ORDER_PLACED_ON
+        defaultOrderPackagesShouldBeFound("orderPlacedOn.notEquals=" + UPDATED_ORDER_PLACED_ON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByOrderPlacedOnIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where orderPlacedOn in DEFAULT_ORDER_PLACED_ON or UPDATED_ORDER_PLACED_ON
+        defaultOrderPackagesShouldBeFound("orderPlacedOn.in=" + DEFAULT_ORDER_PLACED_ON + "," + UPDATED_ORDER_PLACED_ON);
+
+        // Get all the orderPackagesList where orderPlacedOn equals to UPDATED_ORDER_PLACED_ON
+        defaultOrderPackagesShouldNotBeFound("orderPlacedOn.in=" + UPDATED_ORDER_PLACED_ON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByOrderPlacedOnIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where orderPlacedOn is not null
+        defaultOrderPackagesShouldBeFound("orderPlacedOn.specified=true");
+
+        // Get all the orderPackagesList where orderPlacedOn is null
+        defaultOrderPackagesShouldNotBeFound("orderPlacedOn.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByOrderDeliveredOnIsEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where orderDeliveredOn equals to DEFAULT_ORDER_DELIVERED_ON
+        defaultOrderPackagesShouldBeFound("orderDeliveredOn.equals=" + DEFAULT_ORDER_DELIVERED_ON);
+
+        // Get all the orderPackagesList where orderDeliveredOn equals to UPDATED_ORDER_DELIVERED_ON
+        defaultOrderPackagesShouldNotBeFound("orderDeliveredOn.equals=" + UPDATED_ORDER_DELIVERED_ON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByOrderDeliveredOnIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where orderDeliveredOn not equals to DEFAULT_ORDER_DELIVERED_ON
+        defaultOrderPackagesShouldNotBeFound("orderDeliveredOn.notEquals=" + DEFAULT_ORDER_DELIVERED_ON);
+
+        // Get all the orderPackagesList where orderDeliveredOn not equals to UPDATED_ORDER_DELIVERED_ON
+        defaultOrderPackagesShouldBeFound("orderDeliveredOn.notEquals=" + UPDATED_ORDER_DELIVERED_ON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByOrderDeliveredOnIsInShouldWork() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where orderDeliveredOn in DEFAULT_ORDER_DELIVERED_ON or UPDATED_ORDER_DELIVERED_ON
+        defaultOrderPackagesShouldBeFound("orderDeliveredOn.in=" + DEFAULT_ORDER_DELIVERED_ON + "," + UPDATED_ORDER_DELIVERED_ON);
+
+        // Get all the orderPackagesList where orderDeliveredOn equals to UPDATED_ORDER_DELIVERED_ON
+        defaultOrderPackagesShouldNotBeFound("orderDeliveredOn.in=" + UPDATED_ORDER_DELIVERED_ON);
+    }
+
+    @Test
+    @Transactional
+    public void getAllOrderPackagesByOrderDeliveredOnIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        orderPackagesRepository.saveAndFlush(orderPackages);
+
+        // Get all the orderPackagesList where orderDeliveredOn is not null
+        defaultOrderPackagesShouldBeFound("orderDeliveredOn.specified=true");
+
+        // Get all the orderPackagesList where orderDeliveredOn is null
+        defaultOrderPackagesShouldNotBeFound("orderDeliveredOn.specified=false");
     }
 
     @Test
@@ -2077,6 +2197,8 @@ public class OrderPackagesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(orderPackages.getId().intValue())))
             .andExpect(jsonPath("$.[*].expectedDeliveryDate").value(hasItem(DEFAULT_EXPECTED_DELIVERY_DATE.toString())))
+            .andExpect(jsonPath("$.[*].orderPlacedOn").value(hasItem(DEFAULT_ORDER_PLACED_ON.toString())))
+            .andExpect(jsonPath("$.[*].orderDeliveredOn").value(hasItem(DEFAULT_ORDER_DELIVERED_ON.toString())))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
             .andExpect(jsonPath("$.[*].deliveryInstructions").value(hasItem(DEFAULT_DELIVERY_INSTRUCTIONS)))
             .andExpect(jsonPath("$.[*].internalComments").value(hasItem(DEFAULT_INTERNAL_COMMENTS)))
@@ -2145,6 +2267,8 @@ public class OrderPackagesResourceIT {
         em.detach(updatedOrderPackages);
         updatedOrderPackages
             .expectedDeliveryDate(UPDATED_EXPECTED_DELIVERY_DATE)
+            .orderPlacedOn(UPDATED_ORDER_PLACED_ON)
+            .orderDeliveredOn(UPDATED_ORDER_DELIVERED_ON)
             .comments(UPDATED_COMMENTS)
             .deliveryInstructions(UPDATED_DELIVERY_INSTRUCTIONS)
             .internalComments(UPDATED_INTERNAL_COMMENTS)
@@ -2178,6 +2302,8 @@ public class OrderPackagesResourceIT {
         assertThat(orderPackagesList).hasSize(databaseSizeBeforeUpdate);
         OrderPackages testOrderPackages = orderPackagesList.get(orderPackagesList.size() - 1);
         assertThat(testOrderPackages.getExpectedDeliveryDate()).isEqualTo(UPDATED_EXPECTED_DELIVERY_DATE);
+        assertThat(testOrderPackages.getOrderPlacedOn()).isEqualTo(UPDATED_ORDER_PLACED_ON);
+        assertThat(testOrderPackages.getOrderDeliveredOn()).isEqualTo(UPDATED_ORDER_DELIVERED_ON);
         assertThat(testOrderPackages.getComments()).isEqualTo(UPDATED_COMMENTS);
         assertThat(testOrderPackages.getDeliveryInstructions()).isEqualTo(UPDATED_DELIVERY_INSTRUCTIONS);
         assertThat(testOrderPackages.getInternalComments()).isEqualTo(UPDATED_INTERNAL_COMMENTS);

@@ -17,7 +17,6 @@ public class PackageTypesDTO implements Serializable {
     @NotNull
     private Instant validFrom;
 
-    @NotNull
     private Instant validTo;
 
     

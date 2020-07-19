@@ -3,7 +3,7 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.ShippingFeeChart;
-import com.vertical.commerce.domain.Zone;
+import com.vertical.commerce.domain.Towns;
 import com.vertical.commerce.domain.DeliveryMethods;
 import com.vertical.commerce.repository.ShippingFeeChartRepository;
 import com.vertical.commerce.service.ShippingFeeChartService;
@@ -1135,41 +1135,41 @@ public class ShippingFeeChartResourceIT {
 
     @Test
     @Transactional
-    public void getAllShippingFeeChartsBySourceZoneIsEqualToSomething() throws Exception {
+    public void getAllShippingFeeChartsBySourceTownIsEqualToSomething() throws Exception {
         // Initialize the database
         shippingFeeChartRepository.saveAndFlush(shippingFeeChart);
-        Zone sourceZone = ZoneResourceIT.createEntity(em);
-        em.persist(sourceZone);
+        Towns sourceTown = TownsResourceIT.createEntity(em);
+        em.persist(sourceTown);
         em.flush();
-        shippingFeeChart.setSourceZone(sourceZone);
+        shippingFeeChart.setSourceTown(sourceTown);
         shippingFeeChartRepository.saveAndFlush(shippingFeeChart);
-        Long sourceZoneId = sourceZone.getId();
+        Long sourceTownId = sourceTown.getId();
 
-        // Get all the shippingFeeChartList where sourceZone equals to sourceZoneId
-        defaultShippingFeeChartShouldBeFound("sourceZoneId.equals=" + sourceZoneId);
+        // Get all the shippingFeeChartList where sourceTown equals to sourceTownId
+        defaultShippingFeeChartShouldBeFound("sourceTownId.equals=" + sourceTownId);
 
-        // Get all the shippingFeeChartList where sourceZone equals to sourceZoneId + 1
-        defaultShippingFeeChartShouldNotBeFound("sourceZoneId.equals=" + (sourceZoneId + 1));
+        // Get all the shippingFeeChartList where sourceTown equals to sourceTownId + 1
+        defaultShippingFeeChartShouldNotBeFound("sourceTownId.equals=" + (sourceTownId + 1));
     }
 
 
     @Test
     @Transactional
-    public void getAllShippingFeeChartsByDestinationZoneIsEqualToSomething() throws Exception {
+    public void getAllShippingFeeChartsByDestinationTownIsEqualToSomething() throws Exception {
         // Initialize the database
         shippingFeeChartRepository.saveAndFlush(shippingFeeChart);
-        Zone destinationZone = ZoneResourceIT.createEntity(em);
-        em.persist(destinationZone);
+        Towns destinationTown = TownsResourceIT.createEntity(em);
+        em.persist(destinationTown);
         em.flush();
-        shippingFeeChart.setDestinationZone(destinationZone);
+        shippingFeeChart.setDestinationTown(destinationTown);
         shippingFeeChartRepository.saveAndFlush(shippingFeeChart);
-        Long destinationZoneId = destinationZone.getId();
+        Long destinationTownId = destinationTown.getId();
 
-        // Get all the shippingFeeChartList where destinationZone equals to destinationZoneId
-        defaultShippingFeeChartShouldBeFound("destinationZoneId.equals=" + destinationZoneId);
+        // Get all the shippingFeeChartList where destinationTown equals to destinationTownId
+        defaultShippingFeeChartShouldBeFound("destinationTownId.equals=" + destinationTownId);
 
-        // Get all the shippingFeeChartList where destinationZone equals to destinationZoneId + 1
-        defaultShippingFeeChartShouldNotBeFound("destinationZoneId.equals=" + (destinationZoneId + 1));
+        // Get all the shippingFeeChartList where destinationTown equals to destinationTownId + 1
+        defaultShippingFeeChartShouldNotBeFound("destinationTownId.equals=" + (destinationTownId + 1));
     }
 
 
