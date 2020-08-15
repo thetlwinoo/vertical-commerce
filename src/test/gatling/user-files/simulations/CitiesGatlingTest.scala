@@ -102,9 +102,9 @@ class CitiesGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
-                , "cultureDetails":null
                 , "location":"SAMPLE_TEXT"
                 , "latestRecordedPopulation":null
+                , "localization":null
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

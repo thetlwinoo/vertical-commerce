@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity MaterialsLocalize.
+    -->
+    <changeSet id="20200802181916-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="culture_id"
+                                 baseTableName="materials_localize"
+                                 constraintName="fk_materials_localize_culture_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="culture"/>
+
+        <addForeignKeyConstraint baseColumnNames="material_id"
+                                 baseTableName="materials_localize"
+                                 constraintName="fk_materials_localize_material_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="materials"/>
+
+    </changeSet>
+</databaseChangeLog>

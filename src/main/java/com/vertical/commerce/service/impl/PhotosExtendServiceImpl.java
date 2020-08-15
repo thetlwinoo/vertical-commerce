@@ -62,6 +62,10 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
             productsRepository.save(products);
         }else{
             photos = photosRepository.save(photos);
+            stockItems.setThumbnailPhoto(photos.getBlobId());
+            stockItemsRepository.save(stockItems);
+            Products products = productsRepository.getOne(stockItems.getProduct().getId());
+            products.setProductDetails(productsExtendService.getProductDetailsShort(products.getId()));
         }
 
         return photosMapper.toDto(photos);
@@ -111,6 +115,7 @@ public class PhotosExtendServiceImpl implements PhotosExtendService {
 
     @Override
     public void deleteByBlobId(String id){
-        photosExtendRepository.deletePhotosByBlobId(id);
+        String result = photosExtendRepository.deletePhotosByBlobId(id);
+        log.debug("Result:{}",result);
     }
 }

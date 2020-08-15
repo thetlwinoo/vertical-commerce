@@ -133,7 +133,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200718080912",
+  "changelogDate": "20200802175016",
   "entityTableName": "orders",
   "dto": "mapstruct",
   "pagination": "pagination",

@@ -43,11 +43,11 @@ public class TownshipsResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
-
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LOCALIZATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCALIZATION = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -84,8 +84,8 @@ public class TownshipsResourceIT {
     public static Townships createEntity(EntityManager em) {
         Townships townships = new Townships()
             .name(DEFAULT_NAME)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .description(DEFAULT_DESCRIPTION)
+            .localization(DEFAULT_LOCALIZATION)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return townships;
@@ -99,8 +99,8 @@ public class TownshipsResourceIT {
     public static Townships createUpdatedEntity(EntityManager em) {
         Townships townships = new Townships()
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .description(UPDATED_DESCRIPTION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return townships;
@@ -127,8 +127,8 @@ public class TownshipsResourceIT {
         assertThat(townshipsList).hasSize(databaseSizeBeforeCreate + 1);
         Townships testTownships = townshipsList.get(townshipsList.size() - 1);
         assertThat(testTownships.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testTownships.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testTownships.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testTownships.getLocalization()).isEqualTo(DEFAULT_LOCALIZATION);
         assertThat(testTownships.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testTownships.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -206,8 +206,8 @@ public class TownshipsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(townships.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -224,8 +224,8 @@ public class TownshipsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(townships.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.localization").value(DEFAULT_LOCALIZATION.toString()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -538,8 +538,8 @@ public class TownshipsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(townships.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -589,8 +589,8 @@ public class TownshipsResourceIT {
         em.detach(updatedTownships);
         updatedTownships
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .description(UPDATED_DESCRIPTION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         TownshipsDTO townshipsDTO = townshipsMapper.toDto(updatedTownships);
@@ -605,8 +605,8 @@ public class TownshipsResourceIT {
         assertThat(townshipsList).hasSize(databaseSizeBeforeUpdate);
         Townships testTownships = townshipsList.get(townshipsList.size() - 1);
         assertThat(testTownships.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testTownships.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testTownships.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testTownships.getLocalization()).isEqualTo(UPDATED_LOCALIZATION);
         assertThat(testTownships.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testTownships.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

@@ -1,11 +1,11 @@
-id;code;name;culture_details;sales_territory;border;latest_recorded_population;valid_from;valid_to
-1;repurpose;Rand Loti;../fake-data/blob/hipster.txt;pink clicks-and-mortar Armenia;utilize;80205;2020-07-18T07:28:07;2020-07-17T17:17:33
-2;AGP Sleek;installation Streamlined granular;../fake-data/blob/hipster.txt;Coordinator View;neural whiteboard purple;1887;2020-07-18T03:09:10;2020-07-17T12:14:32
-3;Credit Card Account invoice;Incredible Fresh Chicken emulation transform;../fake-data/blob/hipster.txt;Saint Lucia;Agent;56683;2020-07-17T10:21:00;2020-07-17T11:01:45
-4;success system-worthy;holistic;../fake-data/blob/hipster.txt;monitor bluetooth Consultant;Rubber Albania;68640;2020-07-18T01:48:22;2020-07-17T23:16:30
-5;Multi-layered Generic;models;../fake-data/blob/hipster.txt;withdrawal Computer Central;open-source;56986;2020-07-17T23:59:49;2020-07-17T22:06:24
-6;Money Market Account Small Plastic Chips Visionary;Quality solution;../fake-data/blob/hipster.txt;Developer Tasty plum;Orchestrator;28494;2020-07-18T04:05:10;2020-07-17T22:30:11
-7;Designer Money Market Account;Tasty Paradigm;../fake-data/blob/hipster.txt;envisioneer;users Computers bypassing;75590;2020-07-17T13:48:13;2020-07-17T23:29:07
-8;Handmade Granite Hat withdrawal solid state;Phased Handcrafted Concrete Towels;../fake-data/blob/hipster.txt;Mobility;array Kids Human;16578;2020-07-17T12:40:17;2020-07-17T22:19:23
-9;innovative;enterprise heuristic Refined;../fake-data/blob/hipster.txt;Intelligent Plastic Bacon;Gloves Handmade Granite Bacon;10166;2020-07-18T06:19:41;2020-07-17T19:25:09
-10;hub;Incredible Plastic Ball;../fake-data/blob/hipster.txt;Awesome Fresh Computer solution-oriented deposit;encoding Bedfordshire Visionary;11790;2020-07-17T18:24:57;2020-07-17T17:20:30
+id;code;name;sales_territory;border;latest_recorded_population;localization;valid_from;valid_to
+1;repurpose;Rand Loti;pink clicks-and-mortar Armenia;utilize;80205;../fake-data/blob/hipster.txt;2020-08-02T17:09:11;2020-08-02T02:58:37
+2;AGP Sleek;installation Streamlined granular;Coordinator View;neural whiteboard purple;1887;../fake-data/blob/hipster.txt;2020-08-02T12:50:14;2020-08-01T21:55:36
+3;Credit Card Account invoice;Incredible Fresh Chicken emulation transform;Saint Lucia;Agent;56683;../fake-data/blob/hipster.txt;2020-08-01T20:02:04;2020-08-01T20:42:49
+4;success system-worthy;holistic;monitor bluetooth Consultant;Rubber Albania;68640;../fake-data/blob/hipster.txt;2020-08-02T11:29:26;2020-08-02T08:57:34
+5;Multi-layered Generic;models;withdrawal Computer Central;open-source;56986;../fake-data/blob/hipster.txt;2020-08-02T09:40:53;2020-08-02T07:47:28
+6;Money Market Account Small Plastic Chips Visionary;Quality solution;Developer Tasty plum;Orchestrator;28494;../fake-data/blob/hipster.txt;2020-08-02T13:46:14;2020-08-02T08:11:15
+7;Designer Money Market Account;Tasty Paradigm;envisioneer;users Computers bypassing;75590;../fake-data/blob/hipster.txt;2020-08-01T23:29:17;2020-08-02T09:10:11
+8;Handmade Granite Hat withdrawal solid state;Phased Handcrafted Concrete Towels;Mobility;array Kids Human;16578;../fake-data/blob/hipster.txt;2020-08-01T22:21:21;2020-08-02T08:00:27
+9;innovative;enterprise heuristic Refined;Intelligent Plastic Bacon;Gloves Handmade Granite Bacon;10166;../fake-data/blob/hipster.txt;2020-08-02T16:00:45;2020-08-02T05:06:13
+10;hub;Incredible Plastic Ball;Awesome Fresh Computer solution-oriented deposit;encoding Bedfordshire Visionary;11790;../fake-data/blob/hipster.txt;2020-08-02T04:06:01;2020-08-02T03:01:34

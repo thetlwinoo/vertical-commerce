@@ -31,43 +31,42 @@ public class ProductCategoryExtendServiceImpl implements ProductCategoryExtendSe
     }
 
     @Override
-    public JsonNode getCategoriesTree(Boolean showNav) {
-
-        try {
-            List<ProductCategoryDTO> rootCategoriesDTO;
-            if(showNav == true){
-                rootCategoriesDTO = productCategoryExtendRepository.findAllByParentIdIsNullAndShowInNavIndIsTrueOrderBySortOrder()
-                    .stream()
-                    .map(productCategoryMapper::toDto)
-                    .collect(Collectors.toCollection(LinkedList::new));
-            }else{
-                rootCategoriesDTO = productCategoryExtendRepository.findAllByParentIdIsNullOrderBySortOrder()
-                    .stream()
-                    .map(productCategoryMapper::toDto)
-                    .collect(Collectors.toCollection(LinkedList::new));
-            }
-
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode rootNode = mapper.createArrayNode();
-
-            for (ProductCategoryDTO parentCategoryDTO : rootCategoriesDTO) {
-
-                List<ProductCategoryDTO> childCategoriesDTO = productCategoryExtendRepository.findAllByParentIdOrderBySortOrder(parentCategoryDTO.getId())
-                    .stream()
-                    .map(productCategoryMapper::toDto)
-                    .collect(Collectors.toCollection(LinkedList::new));
-
-                JsonNode categoryNode = mapper.convertValue(parentCategoryDTO, JsonNode.class);
-
-                JsonNode subCategoryNodes = mapper.valueToTree(childCategoriesDTO);
-                ((ObjectNode) categoryNode).put("children", subCategoryNodes);
-                ((ArrayNode) rootNode).add(categoryNode);
-            }
-
-            return rootNode;
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(ex.getMessage());
-        }
-
+    public String getCategoriesTree(String idList) {
+        String result =  productCategoryExtendRepository.getProductCategoryTree("{" + idList + "}");
+        return result;
     }
+
+//    @Override
+//    public JsonNode getCategoriesTree(Boolean showNav) {
+//
+//        try {
+//            List<ProductCategoryDTO> rootCategoriesDTO;
+//            rootCategoriesDTO = productCategoryExtendRepository.findAllByParentIdIsNullOrderBySortOrder()
+//                .stream()
+//                .map(productCategoryMapper::toDto)
+//                .collect(Collectors.toCollection(LinkedList::new));
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            JsonNode rootNode = mapper.createArrayNode();
+//
+//            for (ProductCategoryDTO parentCategoryDTO : rootCategoriesDTO) {
+//
+//                List<ProductCategoryDTO> childCategoriesDTO = productCategoryExtendRepository.findAllByParentIdOrderBySortOrder(parentCategoryDTO.getId())
+//                    .stream()
+//                    .map(productCategoryMapper::toDto)
+//                    .collect(Collectors.toCollection(LinkedList::new));
+//
+//                JsonNode categoryNode = mapper.convertValue(parentCategoryDTO, JsonNode.class);
+//
+//                JsonNode subCategoryNodes = mapper.valueToTree(childCategoriesDTO);
+//                ((ObjectNode) categoryNode).put("children", subCategoryNodes);
+//                ((ArrayNode) rootNode).add(categoryNode);
+//            }
+//
+//            return rootNode;
+//        } catch (Exception ex) {
+//            throw new IllegalArgumentException(ex.getMessage());
+//        }
+//
+//    }
 }

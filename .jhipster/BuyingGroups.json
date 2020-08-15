@@ -16,7 +16,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718074912",
+  "changelogDate": "20200802173016",
   "entityTableName": "buying_groups",
   "dto": "mapstruct",
   "pagination": "no",

@@ -7,9 +7,8 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "cultureDetails",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
+      "fieldName": "handle",
+      "fieldType": "String"
     },
     {
       "fieldName": "shortLabel",
@@ -32,8 +31,18 @@
       "fieldType": "Boolean"
     },
     {
-      "fieldName": "showInNavInd",
-      "fieldType": "Boolean"
+      "fieldName": "parentCascade",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "activeFlag",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "localization",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
     },
     {
       "fieldName": "validFrom",
@@ -54,7 +63,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718084312",
+  "changelogDate": "20200802182216",
   "entityTableName": "product_category",
   "dto": "mapstruct",
   "pagination": "no",

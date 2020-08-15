@@ -13,7 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Service Implementation for managing {@link Products}.
@@ -61,6 +65,21 @@ public class ProductsServiceImpl implements ProductsService {
             .map(productsMapper::toDto);
     }
 
+
+
+    /**
+     *  Get all the products where ProductDocument is {@code null}.
+     *  @return the list of entities.
+     */
+    @Transactional(readOnly = true) 
+    public List<ProductsDTO> findAllWhereProductDocumentIsNull() {
+        log.debug("Request to get all products where ProductDocument is null");
+        return StreamSupport
+            .stream(productsRepository.findAll().spliterator(), false)
+            .filter(products -> products.getProductDocument() == null)
+            .map(productsMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
 
     /**
      * Get one products by id.

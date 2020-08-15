@@ -130,13 +130,13 @@ public class ProductDocumentsQueryService extends QueryService<ProductDocuments>
             if (criteria.getLastEditedWhen() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getLastEditedWhen(), ProductDocuments_.lastEditedWhen));
             }
-            if (criteria.getWarrantyTypeId() != null) {
-                specification = specification.and(buildSpecification(criteria.getWarrantyTypeId(),
-                    root -> root.join(ProductDocuments_.warrantyType, JoinType.LEFT).get(WarrantyTypes_.id)));
-            }
             if (criteria.getProductId() != null) {
                 specification = specification.and(buildSpecification(criteria.getProductId(),
                     root -> root.join(ProductDocuments_.product, JoinType.LEFT).get(Products_.id)));
+            }
+            if (criteria.getWarrantyTypeId() != null) {
+                specification = specification.and(buildSpecification(criteria.getWarrantyTypeId(),
+                    root -> root.join(ProductDocuments_.warrantyType, JoinType.LEFT).get(WarrantyTypes_.id)));
             }
         }
         return specification;

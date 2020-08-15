@@ -30,6 +30,8 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
+    private StringFilter handle;
+
     private StringFilter vendorCode;
 
     private StringFilter vendorSKU;
@@ -122,6 +124,8 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     private LongFilter photoListId;
 
+    private LongFilter supplierId;
+
     private LongFilter itemLengthUnitId;
 
     private LongFilter itemWidthUnitId;
@@ -154,6 +158,7 @@ public class StockItemsCriteria implements Serializable, Criteria {
     public StockItemsCriteria(StockItemsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
+        this.handle = other.handle == null ? null : other.handle.copy();
         this.vendorCode = other.vendorCode == null ? null : other.vendorCode.copy();
         this.vendorSKU = other.vendorSKU == null ? null : other.vendorSKU.copy();
         this.generatedSKU = other.generatedSKU == null ? null : other.generatedSKU.copy();
@@ -200,6 +205,7 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.specialDealListId = other.specialDealListId == null ? null : other.specialDealListId.copy();
         this.photoListId = other.photoListId == null ? null : other.photoListId.copy();
+        this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
         this.itemLengthUnitId = other.itemLengthUnitId == null ? null : other.itemLengthUnitId.copy();
         this.itemWidthUnitId = other.itemWidthUnitId == null ? null : other.itemWidthUnitId.copy();
         this.itemHeightUnitId = other.itemHeightUnitId == null ? null : other.itemHeightUnitId.copy();
@@ -234,6 +240,14 @@ public class StockItemsCriteria implements Serializable, Criteria {
 
     public void setName(StringFilter name) {
         this.name = name;
+    }
+
+    public StringFilter getHandle() {
+        return handle;
+    }
+
+    public void setHandle(StringFilter handle) {
+        this.handle = handle;
     }
 
     public StringFilter getVendorCode() {
@@ -604,6 +618,14 @@ public class StockItemsCriteria implements Serializable, Criteria {
         this.photoListId = photoListId;
     }
 
+    public LongFilter getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(LongFilter supplierId) {
+        this.supplierId = supplierId;
+    }
+
     public LongFilter getItemLengthUnitId() {
         return itemLengthUnitId;
     }
@@ -721,6 +743,7 @@ public class StockItemsCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
+            Objects.equals(handle, that.handle) &&
             Objects.equals(vendorCode, that.vendorCode) &&
             Objects.equals(vendorSKU, that.vendorSKU) &&
             Objects.equals(generatedSKU, that.generatedSKU) &&
@@ -767,6 +790,7 @@ public class StockItemsCriteria implements Serializable, Criteria {
             Objects.equals(validTo, that.validTo) &&
             Objects.equals(specialDealListId, that.specialDealListId) &&
             Objects.equals(photoListId, that.photoListId) &&
+            Objects.equals(supplierId, that.supplierId) &&
             Objects.equals(itemLengthUnitId, that.itemLengthUnitId) &&
             Objects.equals(itemWidthUnitId, that.itemWidthUnitId) &&
             Objects.equals(itemHeightUnitId, that.itemHeightUnitId) &&
@@ -787,6 +811,7 @@ public class StockItemsCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         name,
+        handle,
         vendorCode,
         vendorSKU,
         generatedSKU,
@@ -833,6 +858,7 @@ public class StockItemsCriteria implements Serializable, Criteria {
         validTo,
         specialDealListId,
         photoListId,
+        supplierId,
         itemLengthUnitId,
         itemWidthUnitId,
         itemHeightUnitId,
@@ -855,6 +881,7 @@ public class StockItemsCriteria implements Serializable, Criteria {
         return "StockItemsCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
+                (handle != null ? "handle=" + handle + ", " : "") +
                 (vendorCode != null ? "vendorCode=" + vendorCode + ", " : "") +
                 (vendorSKU != null ? "vendorSKU=" + vendorSKU + ", " : "") +
                 (generatedSKU != null ? "generatedSKU=" + generatedSKU + ", " : "") +
@@ -901,6 +928,7 @@ public class StockItemsCriteria implements Serializable, Criteria {
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (specialDealListId != null ? "specialDealListId=" + specialDealListId + ", " : "") +
                 (photoListId != null ? "photoListId=" + photoListId + ", " : "") +
+                (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
                 (itemLengthUnitId != null ? "itemLengthUnitId=" + itemLengthUnitId + ", " : "") +
                 (itemWidthUnitId != null ? "itemWidthUnitId=" + itemWidthUnitId + ", " : "") +
                 (itemHeightUnitId != null ? "itemHeightUnitId=" + itemHeightUnitId + ", " : "") +

@@ -13,9 +13,12 @@ public interface PhotosExtendRepository extends PhotosRepository {
 
     List<Photos> findAllByStockItemId(Long stockItemId);
 
-    void deletePhotosByBlobId(String id);
+//    void deletePhotosByBlobId(String id);
 
     @Modifying
     @Query(value = "delete from Photos p where p.id=:id", nativeQuery = true)
     void deletePhotos(@Param("id") Long id);
+
+    @Query(value = "CALL delete_photo_by_blob_id(:blobId, null);", nativeQuery = true)
+    String deletePhotosByBlobId(@Param("blobId") String blobId);
 }

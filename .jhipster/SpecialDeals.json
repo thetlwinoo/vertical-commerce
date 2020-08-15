@@ -98,7 +98,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200718081312",
+  "changelogDate": "20200802175416",
   "entityTableName": "special_deals",
   "dto": "mapstruct",
   "pagination": "no",

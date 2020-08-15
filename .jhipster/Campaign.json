@@ -24,7 +24,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718084512",
+  "changelogDate": "20200802182416",
   "entityTableName": "campaign",
   "dto": "mapstruct",
   "pagination": "no",

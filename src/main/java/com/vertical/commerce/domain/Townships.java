@@ -30,13 +30,13 @@ public class Townships implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "culture_details")
-    private String cultureDetails;
-
     @Column(name = "description")
     private String description;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "localization")
+    private String localization;
 
     @NotNull
     @Column(name = "valid_from", nullable = false)
@@ -71,19 +71,6 @@ public class Townships implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public Townships cultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
-        return this;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -95,6 +82,19 @@ public class Townships implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLocalization() {
+        return localization;
+    }
+
+    public Townships localization(String localization) {
+        this.localization = localization;
+        return this;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
     }
 
     public Instant getValidFrom() {
@@ -159,8 +159,8 @@ public class Townships implements Serializable {
         return "Townships{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", description='" + getDescription() + "'" +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

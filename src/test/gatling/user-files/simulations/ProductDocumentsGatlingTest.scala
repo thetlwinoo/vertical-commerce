@@ -102,7 +102,6 @@ class ProductDocumentsGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "videoUrl":"SAMPLE_TEXT"
-                , "cultureDetails":null
                 , "highlights":null
                 , "longDescription":null
                 , "shortDescription":null

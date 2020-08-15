@@ -103,6 +103,7 @@ class SubscriptionsGatlingTest extends Simulation {
                 "id":null
                 , "emailAddress":"SAMPLE_TEXT"
                 , "subscribedOn":"2020-01-01T00:00:00.000Z"
+                , "activeFlag":null
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

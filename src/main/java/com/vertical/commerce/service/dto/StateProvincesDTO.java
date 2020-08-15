@@ -18,14 +18,14 @@ public class StateProvincesDTO implements Serializable {
     @NotNull
     private String name;
 
-    @Lob
-    private String cultureDetails;
-
     private String salesTerritory;
 
     private String border;
 
     private Long latestRecordedPopulation;
+
+    @Lob
+    private String localization;
 
     @NotNull
     private Instant validFrom;
@@ -61,14 +61,6 @@ public class StateProvincesDTO implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
-    }
-
     public String getSalesTerritory() {
         return salesTerritory;
     }
@@ -91,6 +83,14 @@ public class StateProvincesDTO implements Serializable {
 
     public void setLatestRecordedPopulation(Long latestRecordedPopulation) {
         this.latestRecordedPopulation = latestRecordedPopulation;
+    }
+
+    public String getLocalization() {
+        return localization;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
     }
 
     public Instant getValidFrom() {
@@ -149,10 +149,10 @@ public class StateProvincesDTO implements Serializable {
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", salesTerritory='" + getSalesTerritory() + "'" +
             ", border='" + getBorder() + "'" +
             ", latestRecordedPopulation=" + getLatestRecordedPopulation() +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             ", countryId=" + getCountryId() +

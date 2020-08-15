@@ -44,9 +44,9 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
 
     private InstantFilter lastEditedWhen;
 
-    private LongFilter sourceTownId;
+    private LongFilter sourceTownshipId;
 
-    private LongFilter destinationTownId;
+    private LongFilter destinationTownshipId;
 
     private LongFilter deliveryMethodId;
 
@@ -63,8 +63,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
         this.price = other.price == null ? null : other.price.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
-        this.sourceTownId = other.sourceTownId == null ? null : other.sourceTownId.copy();
-        this.destinationTownId = other.destinationTownId == null ? null : other.destinationTownId.copy();
+        this.sourceTownshipId = other.sourceTownshipId == null ? null : other.sourceTownshipId.copy();
+        this.destinationTownshipId = other.destinationTownshipId == null ? null : other.destinationTownshipId.copy();
         this.deliveryMethodId = other.deliveryMethodId == null ? null : other.deliveryMethodId.copy();
     }
 
@@ -145,20 +145,20 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public LongFilter getSourceTownId() {
-        return sourceTownId;
+    public LongFilter getSourceTownshipId() {
+        return sourceTownshipId;
     }
 
-    public void setSourceTownId(LongFilter sourceTownId) {
-        this.sourceTownId = sourceTownId;
+    public void setSourceTownshipId(LongFilter sourceTownshipId) {
+        this.sourceTownshipId = sourceTownshipId;
     }
 
-    public LongFilter getDestinationTownId() {
-        return destinationTownId;
+    public LongFilter getDestinationTownshipId() {
+        return destinationTownshipId;
     }
 
-    public void setDestinationTownId(LongFilter destinationTownId) {
-        this.destinationTownId = destinationTownId;
+    public void setDestinationTownshipId(LongFilter destinationTownshipId) {
+        this.destinationTownshipId = destinationTownshipId;
     }
 
     public LongFilter getDeliveryMethodId() {
@@ -189,8 +189,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
             Objects.equals(price, that.price) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
-            Objects.equals(sourceTownId, that.sourceTownId) &&
-            Objects.equals(destinationTownId, that.destinationTownId) &&
+            Objects.equals(sourceTownshipId, that.sourceTownshipId) &&
+            Objects.equals(destinationTownshipId, that.destinationTownshipId) &&
             Objects.equals(deliveryMethodId, that.deliveryMethodId);
     }
 
@@ -206,8 +206,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
         price,
         lastEditedBy,
         lastEditedWhen,
-        sourceTownId,
-        destinationTownId,
+        sourceTownshipId,
+        destinationTownshipId,
         deliveryMethodId
         );
     }
@@ -225,8 +225,8 @@ public class ShippingFeeChartCriteria implements Serializable, Criteria {
                 (price != null ? "price=" + price + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
-                (sourceTownId != null ? "sourceTownId=" + sourceTownId + ", " : "") +
-                (destinationTownId != null ? "destinationTownId=" + destinationTownId + ", " : "") +
+                (sourceTownshipId != null ? "sourceTownshipId=" + sourceTownshipId + ", " : "") +
+                (destinationTownshipId != null ? "destinationTownshipId=" + destinationTownshipId + ", " : "") +
                 (deliveryMethodId != null ? "deliveryMethodId=" + deliveryMethodId + ", " : "") +
             "}";
     }

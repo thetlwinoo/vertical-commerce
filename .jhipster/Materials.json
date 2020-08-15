@@ -7,13 +7,13 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "cultureDetails",
+      "fieldName": "localization",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "text"
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718083912",
+  "changelogDate": "20200802181816",
   "entityTableName": "materials",
   "dto": "mapstruct",
   "pagination": "no",

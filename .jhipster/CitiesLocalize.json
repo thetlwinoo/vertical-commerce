@@ -1,0 +1,38 @@
+{
+  "name": "CitiesLocalize",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "culture",
+      "otherEntityRelationshipName": "citiesLocalize",
+      "relationshipName": "culture",
+      "otherEntityField": "code"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "cities",
+      "otherEntityRelationshipName": "citiesLocalize",
+      "relationshipName": "city",
+      "otherEntityField": "name"
+    }
+  ],
+  "changelogDate": "20200802171216",
+  "entityTableName": "cities_localize",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "vscommerce",
+  "applications": "*",
+  "microserviceName": "vscommerce"
+}

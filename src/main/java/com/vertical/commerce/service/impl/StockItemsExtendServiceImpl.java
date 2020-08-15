@@ -1,10 +1,7 @@
 package com.vertical.commerce.service.impl;
 
 import com.vertical.commerce.domain.*;
-import com.vertical.commerce.repository.CurrencyRepository;
-import com.vertical.commerce.repository.ProductsRepository;
-import com.vertical.commerce.repository.StockItemsExtendRepository;
-import com.vertical.commerce.repository.StockItemsRepository;
+import com.vertical.commerce.repository.*;
 import com.vertical.commerce.security.SecurityUtils;
 import com.vertical.commerce.service.CommonService;
 import com.vertical.commerce.service.ProductsExtendService;
@@ -13,7 +10,6 @@ import com.vertical.commerce.service.StockItemsQueryService;
 import com.vertical.commerce.service.dto.StockItemsCriteria;
 import com.vertical.commerce.service.dto.StockItemsDTO;
 import com.vertical.commerce.service.mapper.StockItemsMapper;
-import io.github.jhipster.service.filter.LongFilter;
 import net.minidev.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +37,10 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
     private final CurrencyRepository currencyRepository;
     private final ProductsExtendService productsExtendService;
     private final StockItemsQueryService stockItemsQueryService;
+    private final SuppliersRepository suppliersRepository;
     private final CommonService commonService;
 
-    public StockItemsExtendServiceImpl(StockItemsRepository stockItemsRepository, StockItemsExtendRepository stockItemsExtendRepository, StockItemsMapper stockItemsMapper, ProductsRepository productsRepository, CurrencyRepository currencyRepository, ProductsExtendService productsExtendService, StockItemsQueryService stockItemsQueryService, CommonService commonService) {
+    public StockItemsExtendServiceImpl(StockItemsRepository stockItemsRepository, StockItemsExtendRepository stockItemsExtendRepository, StockItemsMapper stockItemsMapper, ProductsRepository productsRepository, CurrencyRepository currencyRepository, ProductsExtendService productsExtendService, StockItemsQueryService stockItemsQueryService, SuppliersRepository suppliersRepository, CommonService commonService) {
         this.stockItemsRepository = stockItemsRepository;
         this.stockItemsExtendRepository = stockItemsExtendRepository;
         this.stockItemsMapper = stockItemsMapper;
@@ -51,6 +48,7 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
         this.currencyRepository = currencyRepository;
         this.productsExtendService = productsExtendService;
         this.stockItemsQueryService = stockItemsQueryService;
+        this.suppliersRepository = suppliersRepository;
         this.commonService = commonService;
     }
 
@@ -123,9 +121,12 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
             saveStockItems.setLastEditedBy(userLogin);
             saveStockItems.setLastEditedWhen(Instant.now());
             saveStockItems.setIsChillerStock(stockItemsDTO.isIsChillerStock());
+            Suppliers suppliers = suppliersRepository.getOne(stockItemsDTO.getSupplierId());
+            saveStockItems.setSupplier(suppliers);
 //            saveStockItems.setTaxRate(BigDecimal.valueOf(commonService.getTaxByCode("ECT").getRate()));
             saveStockItems.setTaxRate(BigDecimal.valueOf(0.05));
             Currency currency = commonService.getCurrencyEntity(stockItemsDTO.getCurrencyId(),stockItemsDTO.getCurrencyCode());
+            saveStockItems.setThumbnailPhoto(stockItemsDTO.getThumbnailPhoto());
             saveStockItems.setCurrency(currency);
             saveStockItems.validFrom(stockItemsDTO.getValidFrom());
             saveStockItems.validTo(stockItemsDTO.getValidTo());
@@ -144,13 +145,17 @@ public class StockItemsExtendServiceImpl implements StockItemsExtendService {
     }
 
     @Override
-    public Page<StockItemsDTO> getAllStockItems(Long supplierId, StockItemsCriteria criteria, Pageable pageable, Principal principal){
-        List<Long> productIds = productsExtendService.getProductIdsBySupplier(supplierId);
-        if (productIds.size() > 0) {
-            LongFilter productIdsFilter = new LongFilter();
-            productIdsFilter.setIn(productIds);
-            criteria.setProductId(productIdsFilter);
-        }
+    public Page<StockItemsDTO> getAllStockItems(StockItemsCriteria criteria, Pageable pageable, Principal principal){
+//        List<Long> productIds = productsExtendService.getProductIdsBySupplier(supplierId);
+//        if (productIds.size() > 0) {
+//            LongFilter productIdsFilter = new LongFilter();
+//            productIdsFilter.setIn(productIds);
+//            criteria.setProductId(productIdsFilter);
+//        }else{
+//            LongFilter productIdsFilter = new LongFilter();
+//            productIdsFilter.setSpecified(false);
+//            criteria.setProductId(productIdsFilter);
+//        }
 
         return stockItemsQueryService.findByCriteria(criteria, pageable);
     }

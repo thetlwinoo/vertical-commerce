@@ -7,17 +7,17 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "cultureDetails",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
       "fieldName": "location",
       "fieldType": "String"
     },
     {
       "fieldName": "latestRecordedPopulation",
       "fieldType": "Long"
+    },
+    {
+      "fieldName": "localization",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
     },
     {
       "fieldName": "validFrom",
@@ -38,7 +38,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718073012",
+  "changelogDate": "20200802171116",
   "entityTableName": "cities",
   "dto": "mapstruct",
   "pagination": "no",

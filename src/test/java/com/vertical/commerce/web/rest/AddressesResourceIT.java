@@ -6,7 +6,6 @@ import com.vertical.commerce.domain.Addresses;
 import com.vertical.commerce.domain.Regions;
 import com.vertical.commerce.domain.Cities;
 import com.vertical.commerce.domain.Townships;
-import com.vertical.commerce.domain.Towns;
 import com.vertical.commerce.domain.AddressTypes;
 import com.vertical.commerce.domain.Customers;
 import com.vertical.commerce.domain.Suppliers;
@@ -999,26 +998,6 @@ public class AddressesResourceIT {
 
     @Test
     @Transactional
-    public void getAllAddressesByTownIsEqualToSomething() throws Exception {
-        // Initialize the database
-        addressesRepository.saveAndFlush(addresses);
-        Towns town = TownsResourceIT.createEntity(em);
-        em.persist(town);
-        em.flush();
-        addresses.setTown(town);
-        addressesRepository.saveAndFlush(addresses);
-        Long townId = town.getId();
-
-        // Get all the addressesList where town equals to townId
-        defaultAddressesShouldBeFound("townId.equals=" + townId);
-
-        // Get all the addressesList where town equals to townId + 1
-        defaultAddressesShouldNotBeFound("townId.equals=" + (townId + 1));
-    }
-
-
-    @Test
-    @Transactional
     public void getAllAddressesByAddressTypeIsEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
@@ -1039,41 +1018,41 @@ public class AddressesResourceIT {
 
     @Test
     @Transactional
-    public void getAllAddressesByCustomerAddressIsEqualToSomething() throws Exception {
+    public void getAllAddressesByCustomerIsEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
-        Customers customerAddress = CustomersResourceIT.createEntity(em);
-        em.persist(customerAddress);
+        Customers customer = CustomersResourceIT.createEntity(em);
+        em.persist(customer);
         em.flush();
-        addresses.setCustomerAddress(customerAddress);
+        addresses.setCustomer(customer);
         addressesRepository.saveAndFlush(addresses);
-        Long customerAddressId = customerAddress.getId();
+        Long customerId = customer.getId();
 
-        // Get all the addressesList where customerAddress equals to customerAddressId
-        defaultAddressesShouldBeFound("customerAddressId.equals=" + customerAddressId);
+        // Get all the addressesList where customer equals to customerId
+        defaultAddressesShouldBeFound("customerId.equals=" + customerId);
 
-        // Get all the addressesList where customerAddress equals to customerAddressId + 1
-        defaultAddressesShouldNotBeFound("customerAddressId.equals=" + (customerAddressId + 1));
+        // Get all the addressesList where customer equals to customerId + 1
+        defaultAddressesShouldNotBeFound("customerId.equals=" + (customerId + 1));
     }
 
 
     @Test
     @Transactional
-    public void getAllAddressesBySupplierAddressIsEqualToSomething() throws Exception {
+    public void getAllAddressesBySupplierIsEqualToSomething() throws Exception {
         // Initialize the database
         addressesRepository.saveAndFlush(addresses);
-        Suppliers supplierAddress = SuppliersResourceIT.createEntity(em);
-        em.persist(supplierAddress);
+        Suppliers supplier = SuppliersResourceIT.createEntity(em);
+        em.persist(supplier);
         em.flush();
-        addresses.setSupplierAddress(supplierAddress);
+        addresses.setSupplier(supplier);
         addressesRepository.saveAndFlush(addresses);
-        Long supplierAddressId = supplierAddress.getId();
+        Long supplierId = supplier.getId();
 
-        // Get all the addressesList where supplierAddress equals to supplierAddressId
-        defaultAddressesShouldBeFound("supplierAddressId.equals=" + supplierAddressId);
+        // Get all the addressesList where supplier equals to supplierId
+        defaultAddressesShouldBeFound("supplierId.equals=" + supplierId);
 
-        // Get all the addressesList where supplierAddress equals to supplierAddressId + 1
-        defaultAddressesShouldNotBeFound("supplierAddressId.equals=" + (supplierAddressId + 1));
+        // Get all the addressesList where supplier equals to supplierId + 1
+        defaultAddressesShouldNotBeFound("supplierId.equals=" + (supplierId + 1));
     }
 
     /**

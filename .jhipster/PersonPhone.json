@@ -36,7 +36,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718072312",
+  "changelogDate": "20200802170416",
   "entityTableName": "person_phone",
   "dto": "mapstruct",
   "pagination": "no",

@@ -17,7 +17,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718073912",
+  "changelogDate": "20200802172016",
   "entityTableName": "transaction_types",
   "dto": "mapstruct",
   "pagination": "no",

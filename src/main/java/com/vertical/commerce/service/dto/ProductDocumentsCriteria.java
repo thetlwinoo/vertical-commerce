@@ -53,9 +53,9 @@ public class ProductDocumentsCriteria implements Serializable, Criteria {
 
     private InstantFilter lastEditedWhen;
 
-    private LongFilter warrantyTypeId;
-
     private LongFilter productId;
+
+    private LongFilter warrantyTypeId;
 
     public ProductDocumentsCriteria() {
     }
@@ -75,8 +75,8 @@ public class ProductDocumentsCriteria implements Serializable, Criteria {
         this.dangerousGoods = other.dangerousGoods == null ? null : other.dangerousGoods.copy();
         this.lastEditedBy = other.lastEditedBy == null ? null : other.lastEditedBy.copy();
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
-        this.warrantyTypeId = other.warrantyTypeId == null ? null : other.warrantyTypeId.copy();
         this.productId = other.productId == null ? null : other.productId.copy();
+        this.warrantyTypeId = other.warrantyTypeId == null ? null : other.warrantyTypeId.copy();
     }
 
     @Override
@@ -196,20 +196,20 @@ public class ProductDocumentsCriteria implements Serializable, Criteria {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public LongFilter getWarrantyTypeId() {
-        return warrantyTypeId;
-    }
-
-    public void setWarrantyTypeId(LongFilter warrantyTypeId) {
-        this.warrantyTypeId = warrantyTypeId;
-    }
-
     public LongFilter getProductId() {
         return productId;
     }
 
     public void setProductId(LongFilter productId) {
         this.productId = productId;
+    }
+
+    public LongFilter getWarrantyTypeId() {
+        return warrantyTypeId;
+    }
+
+    public void setWarrantyTypeId(LongFilter warrantyTypeId) {
+        this.warrantyTypeId = warrantyTypeId;
     }
 
 
@@ -237,8 +237,8 @@ public class ProductDocumentsCriteria implements Serializable, Criteria {
             Objects.equals(dangerousGoods, that.dangerousGoods) &&
             Objects.equals(lastEditedBy, that.lastEditedBy) &&
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
-            Objects.equals(warrantyTypeId, that.warrantyTypeId) &&
-            Objects.equals(productId, that.productId);
+            Objects.equals(productId, that.productId) &&
+            Objects.equals(warrantyTypeId, that.warrantyTypeId);
     }
 
     @Override
@@ -258,8 +258,8 @@ public class ProductDocumentsCriteria implements Serializable, Criteria {
         dangerousGoods,
         lastEditedBy,
         lastEditedWhen,
-        warrantyTypeId,
-        productId
+        productId,
+        warrantyTypeId
         );
     }
 
@@ -281,8 +281,8 @@ public class ProductDocumentsCriteria implements Serializable, Criteria {
                 (dangerousGoods != null ? "dangerousGoods=" + dangerousGoods + ", " : "") +
                 (lastEditedBy != null ? "lastEditedBy=" + lastEditedBy + ", " : "") +
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
-                (warrantyTypeId != null ? "warrantyTypeId=" + warrantyTypeId + ", " : "") +
                 (productId != null ? "productId=" + productId + ", " : "") +
+                (warrantyTypeId != null ? "warrantyTypeId=" + warrantyTypeId + ", " : "") +
             "}";
     }
 

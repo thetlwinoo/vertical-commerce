@@ -3,11 +3,11 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.Products;
-import com.vertical.commerce.domain.ProductDocuments;
 import com.vertical.commerce.domain.StockItems;
 import com.vertical.commerce.domain.Suppliers;
 import com.vertical.commerce.domain.ProductCategory;
 import com.vertical.commerce.domain.ProductBrand;
+import com.vertical.commerce.domain.ProductDocuments;
 import com.vertical.commerce.repository.ProductsRepository;
 import com.vertical.commerce.service.ProductsService;
 import com.vertical.commerce.service.dto.ProductsDTO;
@@ -46,9 +46,6 @@ public class ProductsResourceIT {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
 
     private static final String DEFAULT_HANDLE = "AAAAAAAAAA";
     private static final String UPDATED_HANDLE = "BBBBBBBBBB";
@@ -136,7 +133,6 @@ public class ProductsResourceIT {
     public static Products createEntity(EntityManager em) {
         Products products = new Products()
             .name(DEFAULT_NAME)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .handle(DEFAULT_HANDLE)
             .searchDetails(DEFAULT_SEARCH_DETAILS)
             .productNumber(DEFAULT_PRODUCT_NUMBER)
@@ -166,7 +162,6 @@ public class ProductsResourceIT {
     public static Products createUpdatedEntity(EntityManager em) {
         Products products = new Products()
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .handle(UPDATED_HANDLE)
             .searchDetails(UPDATED_SEARCH_DETAILS)
             .productNumber(UPDATED_PRODUCT_NUMBER)
@@ -209,7 +204,6 @@ public class ProductsResourceIT {
         assertThat(productsList).hasSize(databaseSizeBeforeCreate + 1);
         Products testProducts = productsList.get(productsList.size() - 1);
         assertThat(testProducts.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testProducts.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testProducts.getHandle()).isEqualTo(DEFAULT_HANDLE);
         assertThat(testProducts.getSearchDetails()).isEqualTo(DEFAULT_SEARCH_DETAILS);
         assertThat(testProducts.getProductNumber()).isEqualTo(DEFAULT_PRODUCT_NUMBER);
@@ -403,7 +397,6 @@ public class ProductsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(products.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
             .andExpect(jsonPath("$.[*].searchDetails").value(hasItem(DEFAULT_SEARCH_DETAILS)))
             .andExpect(jsonPath("$.[*].productNumber").value(hasItem(DEFAULT_PRODUCT_NUMBER)))
@@ -436,7 +429,6 @@ public class ProductsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(products.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.handle").value(DEFAULT_HANDLE))
             .andExpect(jsonPath("$.searchDetails").value(DEFAULT_SEARCH_DETAILS))
             .andExpect(jsonPath("$.productNumber").value(DEFAULT_PRODUCT_NUMBER))
@@ -1704,26 +1696,6 @@ public class ProductsResourceIT {
 
     @Test
     @Transactional
-    public void getAllProductsByProductDocumentIsEqualToSomething() throws Exception {
-        // Initialize the database
-        productsRepository.saveAndFlush(products);
-        ProductDocuments productDocument = ProductDocumentsResourceIT.createEntity(em);
-        em.persist(productDocument);
-        em.flush();
-        products.setProductDocument(productDocument);
-        productsRepository.saveAndFlush(products);
-        Long productDocumentId = productDocument.getId();
-
-        // Get all the productsList where productDocument equals to productDocumentId
-        defaultProductsShouldBeFound("productDocumentId.equals=" + productDocumentId);
-
-        // Get all the productsList where productDocument equals to productDocumentId + 1
-        defaultProductsShouldNotBeFound("productDocumentId.equals=" + (productDocumentId + 1));
-    }
-
-
-    @Test
-    @Transactional
     public void getAllProductsByStockItemListIsEqualToSomething() throws Exception {
         // Initialize the database
         productsRepository.saveAndFlush(products);
@@ -1801,6 +1773,27 @@ public class ProductsResourceIT {
         defaultProductsShouldNotBeFound("productBrandId.equals=" + (productBrandId + 1));
     }
 
+
+    @Test
+    @Transactional
+    public void getAllProductsByProductDocumentIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productsRepository.saveAndFlush(products);
+        ProductDocuments productDocument = ProductDocumentsResourceIT.createEntity(em);
+        em.persist(productDocument);
+        em.flush();
+        products.setProductDocument(productDocument);
+        productDocument.setProduct(products);
+        productsRepository.saveAndFlush(products);
+        Long productDocumentId = productDocument.getId();
+
+        // Get all the productsList where productDocument equals to productDocumentId
+        defaultProductsShouldBeFound("productDocumentId.equals=" + productDocumentId);
+
+        // Get all the productsList where productDocument equals to productDocumentId + 1
+        defaultProductsShouldNotBeFound("productDocumentId.equals=" + (productDocumentId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -1810,7 +1803,6 @@ public class ProductsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(products.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
             .andExpect(jsonPath("$.[*].searchDetails").value(hasItem(DEFAULT_SEARCH_DETAILS)))
             .andExpect(jsonPath("$.[*].productNumber").value(hasItem(DEFAULT_PRODUCT_NUMBER)))
@@ -1876,7 +1868,6 @@ public class ProductsResourceIT {
         em.detach(updatedProducts);
         updatedProducts
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .handle(UPDATED_HANDLE)
             .searchDetails(UPDATED_SEARCH_DETAILS)
             .productNumber(UPDATED_PRODUCT_NUMBER)
@@ -1907,7 +1898,6 @@ public class ProductsResourceIT {
         assertThat(productsList).hasSize(databaseSizeBeforeUpdate);
         Products testProducts = productsList.get(productsList.size() - 1);
         assertThat(testProducts.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testProducts.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testProducts.getHandle()).isEqualTo(UPDATED_HANDLE);
         assertThat(testProducts.getSearchDetails()).isEqualTo(UPDATED_SEARCH_DETAILS);
         assertThat(testProducts.getProductNumber()).isEqualTo(UPDATED_PRODUCT_NUMBER);

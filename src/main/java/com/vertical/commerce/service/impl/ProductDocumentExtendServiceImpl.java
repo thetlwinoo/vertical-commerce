@@ -1,10 +1,8 @@
 package com.vertical.commerce.service.impl;
 
-import com.vertical.commerce.domain.Culture;
-import com.vertical.commerce.domain.People;
-import com.vertical.commerce.domain.ProductDocuments;
-import com.vertical.commerce.domain.WarrantyTypes;
+import com.vertical.commerce.domain.*;
 import com.vertical.commerce.repository.ProductDocumentsRepository;
+import com.vertical.commerce.repository.ProductsRepository;
 import com.vertical.commerce.security.SecurityUtils;
 import com.vertical.commerce.service.CommonService;
 import com.vertical.commerce.service.ProductDocumentExtendService;
@@ -17,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.Instant;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,45 +24,48 @@ public class ProductDocumentExtendServiceImpl implements ProductDocumentExtendSe
     private final CommonService commonService;
     private final ProductDocumentsRepository productDocumentRepository;
     private final ProductDocumentsMapper productDocumentMapper;
+    private final ProductsRepository productsRepository;
 
-    public ProductDocumentExtendServiceImpl(CommonService commonService, ProductDocumentsRepository productDocumentRepository, ProductDocumentsMapper productDocumentMapper) {
+    public ProductDocumentExtendServiceImpl(CommonService commonService, ProductDocumentsRepository productDocumentRepository, ProductDocumentsMapper productDocumentMapper, ProductsRepository productsRepository) {
         this.commonService = commonService;
         this.productDocumentRepository = productDocumentRepository;
         this.productDocumentMapper = productDocumentMapper;
+        this.productsRepository = productsRepository;
     }
 
     @Override
-    public ProductDocumentsDTO importProductDocument(ProductDocumentsDTO ProductDocumentsDTO, Principal principal){
+    public ProductDocumentsDTO importProductDocument(ProductDocumentsDTO productDocumentsDTO, Principal principal){
         ProductDocuments productDocument = new ProductDocuments();
 //        People people = commonService.getPeopleByPrincipal(principal);
         String userLogin = SecurityUtils.getCurrentUserLogin().get();
 
         try{
-            productDocument.setId(ProductDocumentsDTO.getId());
-            productDocument.setVideoUrl(ProductDocumentsDTO.getVideoUrl());
-            productDocument.setHighlights(ProductDocumentsDTO.getHighlights());
-            productDocument.setLongDescription(ProductDocumentsDTO.getLongDescription());
-            productDocument.setShortDescription(ProductDocumentsDTO.getShortDescription());
-            productDocument.setCareInstructions(ProductDocumentsDTO.getCareInstructions());
-            productDocument.setProductType(ProductDocumentsDTO.getProductType());
-            productDocument.setModelName(ProductDocumentsDTO.getModelName());
-            productDocument.setModelNumber(ProductDocumentsDTO.getModelNumber());
-            productDocument.setFabricType(ProductDocumentsDTO.getFabricType());
-            productDocument.setSpecialFeatures(ProductDocumentsDTO.getSpecialFeatures());
-            productDocument.setProductComplianceCertificate(ProductDocumentsDTO.getProductComplianceCertificate());
-            productDocument.setGenuineAndLegal(ProductDocumentsDTO.isGenuineAndLegal());
-            productDocument.setCountryOfOrigin(ProductDocumentsDTO.getCountryOfOrigin());
-            productDocument.setUsageAndSideEffects(ProductDocumentsDTO.getUsageAndSideEffects());
-            productDocument.setSafetyWarnning(ProductDocumentsDTO.getSafetyWarnning());
-            productDocument.setWarrantyPeriod(ProductDocumentsDTO.getWarrantyPeriod());
-            productDocument.setWarrantyPolicy(ProductDocumentsDTO.getWarrantyPolicy());
-            productDocument.setWhatInTheBox(ProductDocumentsDTO.getWhatInTheBox());
-            productDocument.setDangerousGoods(ProductDocumentsDTO.getDangerousGoods());
+            productDocument.setId(productDocumentsDTO.getId());
+            productDocument.setVideoUrl(productDocumentsDTO.getVideoUrl());
+            productDocument.setHighlights(productDocumentsDTO.getHighlights());
+            productDocument.setLongDescription(productDocumentsDTO.getLongDescription());
+            productDocument.setShortDescription(productDocumentsDTO.getShortDescription());
+            productDocument.setCareInstructions(productDocumentsDTO.getCareInstructions());
+            productDocument.setProductType(productDocumentsDTO.getProductType());
+            productDocument.setModelName(productDocumentsDTO.getModelName());
+            productDocument.setModelNumber(productDocumentsDTO.getModelNumber());
+            productDocument.setFabricType(productDocumentsDTO.getFabricType());
+            productDocument.setSpecialFeatures(productDocumentsDTO.getSpecialFeatures());
+            productDocument.setProductComplianceCertificate(productDocumentsDTO.getProductComplianceCertificate());
+            productDocument.setGenuineAndLegal(productDocumentsDTO.isGenuineAndLegal());
+            productDocument.setCountryOfOrigin(productDocumentsDTO.getCountryOfOrigin());
+            productDocument.setUsageAndSideEffects(productDocumentsDTO.getUsageAndSideEffects());
+            productDocument.setSafetyWarnning(productDocumentsDTO.getSafetyWarnning());
+            productDocument.setWarrantyPeriod(productDocumentsDTO.getWarrantyPeriod());
+            productDocument.setWarrantyPolicy(productDocumentsDTO.getWarrantyPolicy());
+            productDocument.setWhatInTheBox(productDocumentsDTO.getWhatInTheBox());
+            productDocument.setDangerousGoods(productDocumentsDTO.getDangerousGoods());
             productDocument.setLastEditedBy(userLogin);
             productDocument.setLastEditedWhen(Instant.now());
-            WarrantyTypes warrantyTypes= commonService.getWarrantyTypesEntity(ProductDocumentsDTO.getWarrantyTypeId(),ProductDocumentsDTO.getWarrantyTypeName());
+            WarrantyTypes warrantyTypes= commonService.getWarrantyTypesEntity(productDocumentsDTO.getWarrantyTypeId(),productDocumentsDTO.getWarrantyTypeName());
             productDocument.setWarrantyType(warrantyTypes);
-
+            Products products = productsRepository.getOne(productDocumentsDTO.getProductId());
+            productDocument.setProduct(products);
             productDocument = productDocumentRepository.save(productDocument);
         }catch (Exception ex) {
             System.err.println(ex.getMessage());

@@ -8,7 +8,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718072512",
+  "changelogDate": "20200802170616",
   "entityTableName": "contact_type",
   "dto": "mapstruct",
   "pagination": "no",

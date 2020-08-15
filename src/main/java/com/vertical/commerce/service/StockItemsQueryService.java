@@ -94,6 +94,9 @@ public class StockItemsQueryService extends QueryService<StockItems> {
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), StockItems_.name));
             }
+            if (criteria.getHandle() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getHandle(), StockItems_.handle));
+            }
             if (criteria.getVendorCode() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getVendorCode(), StockItems_.vendorCode));
             }
@@ -233,6 +236,10 @@ public class StockItemsQueryService extends QueryService<StockItems> {
             if (criteria.getPhotoListId() != null) {
                 specification = specification.and(buildSpecification(criteria.getPhotoListId(),
                     root -> root.join(StockItems_.photoLists, JoinType.LEFT).get(Photos_.id)));
+            }
+            if (criteria.getSupplierId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierId(),
+                    root -> root.join(StockItems_.supplier, JoinType.LEFT).get(Suppliers_.id)));
             }
             if (criteria.getItemLengthUnitId() != null) {
                 specification = specification.and(buildSpecification(criteria.getItemLengthUnitId(),

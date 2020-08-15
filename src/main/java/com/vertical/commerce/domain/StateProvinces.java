@@ -34,11 +34,6 @@ public class StateProvinces implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "culture_details")
-    private String cultureDetails;
-
     @Column(name = "sales_territory")
     private String salesTerritory;
 
@@ -47,6 +42,11 @@ public class StateProvinces implements Serializable {
 
     @Column(name = "latest_recorded_population")
     private Long latestRecordedPopulation;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "localization")
+    private String localization;
 
     @NotNull
     @Column(name = "valid_from", nullable = false)
@@ -94,19 +94,6 @@ public class StateProvinces implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public StateProvinces cultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
-        return this;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
-    }
-
     public String getSalesTerritory() {
         return salesTerritory;
     }
@@ -144,6 +131,19 @@ public class StateProvinces implements Serializable {
 
     public void setLatestRecordedPopulation(Long latestRecordedPopulation) {
         this.latestRecordedPopulation = latestRecordedPopulation;
+    }
+
+    public String getLocalization() {
+        return localization;
+    }
+
+    public StateProvinces localization(String localization) {
+        this.localization = localization;
+        return this;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
     }
 
     public Instant getValidFrom() {
@@ -209,10 +209,10 @@ public class StateProvinces implements Serializable {
             "id=" + getId() +
             ", code='" + getCode() + "'" +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", salesTerritory='" + getSalesTerritory() + "'" +
             ", border='" + getBorder() + "'" +
             ", latestRecordedPopulation=" + getLatestRecordedPopulation() +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

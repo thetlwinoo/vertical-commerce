@@ -23,7 +23,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718073812",
+  "changelogDate": "20200802171916",
   "entityTableName": "system_parameters",
   "dto": "mapstruct",
   "pagination": "no",

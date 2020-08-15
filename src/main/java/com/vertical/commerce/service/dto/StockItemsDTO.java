@@ -16,8 +16,7 @@ public class StockItemsDTO implements Serializable {
     @NotNull
     private String name;
 
-    @Lob
-    private String cultureDetails;
+    private String handle;
 
     private String vendorCode;
 
@@ -115,11 +114,18 @@ public class StockItemsDTO implements Serializable {
     @NotNull
     private Boolean activeFlag;
 
+    @Lob
+    private String localization;
+
     @NotNull
     private Instant validFrom;
 
     private Instant validTo;
 
+
+    private Long supplierId;
+
+    private String supplierName;
 
     private Long itemLengthUnitId;
 
@@ -187,12 +193,12 @@ public class StockItemsDTO implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
+    public String getHandle() {
+        return handle;
     }
 
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public void setHandle(String handle) {
+        this.handle = handle;
     }
 
     public String getVendorCode() {
@@ -539,6 +545,14 @@ public class StockItemsDTO implements Serializable {
         this.activeFlag = activeFlag;
     }
 
+    public String getLocalization() {
+        return localization;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
+    }
+
     public Instant getValidFrom() {
         return validFrom;
     }
@@ -553,6 +567,22 @@ public class StockItemsDTO implements Serializable {
 
     public void setValidTo(Instant validTo) {
         this.validTo = validTo;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long suppliersId) {
+        this.supplierId = suppliersId;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String suppliersName) {
+        this.supplierName = suppliersName;
     }
 
     public Long getItemLengthUnitId() {
@@ -778,7 +808,7 @@ public class StockItemsDTO implements Serializable {
         return "StockItemsDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
+            ", handle='" + getHandle() + "'" +
             ", vendorCode='" + getVendorCode() + "'" +
             ", vendorSKU='" + getVendorSKU() + "'" +
             ", generatedSKU='" + getGeneratedSKU() + "'" +
@@ -822,8 +852,11 @@ public class StockItemsDTO implements Serializable {
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", activeFlag='" + isActiveFlag() + "'" +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
+            ", supplierId=" + getSupplierId() +
+            ", supplierName='" + getSupplierName() + "'" +
             ", itemLengthUnitId=" + getItemLengthUnitId() +
             ", itemLengthUnitCode='" + getItemLengthUnitCode() + "'" +
             ", itemWidthUnitId=" + getItemWidthUnitId() +

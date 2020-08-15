@@ -43,7 +43,7 @@ public class AddressesExtendServiceImpl implements AddressesExtendService {
     @Override
     public List<AddressesDTO> fetchCustomerAddresses(Principal principal) {
         Customers customers = commonService.getCustomerByPrincipal(principal);
-        return addressesExtendRepository.findAllByCustomerAddressId(customers.getId()).stream()
+        return addressesExtendRepository.findAllByCustomerId(customers.getId()).stream()
             .map(addressesMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }

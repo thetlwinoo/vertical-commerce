@@ -12,7 +12,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718081212",
+  "changelogDate": "20200802175316",
   "entityTableName": "tracking_event",
   "dto": "mapstruct",
   "pagination": "no",

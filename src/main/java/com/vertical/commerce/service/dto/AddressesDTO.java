@@ -45,21 +45,17 @@ public class AddressesDTO implements Serializable {
 
     private String townshipName;
 
-    private Long townId;
-
-    private String townName;
-
     private Long addressTypeId;
 
     private String addressTypeName;
 
-    private Long customerAddressId;
+    private Long customerId;
 
-    private String customerAddressName;
+    private String customerName;
 
-    private Long supplierAddressId;
+    private Long supplierId;
 
-    private String supplierAddressName;
+    private String supplierName;
     
     public Long getId() {
         return id;
@@ -189,22 +185,6 @@ public class AddressesDTO implements Serializable {
         this.townshipName = townshipsName;
     }
 
-    public Long getTownId() {
-        return townId;
-    }
-
-    public void setTownId(Long townsId) {
-        this.townId = townsId;
-    }
-
-    public String getTownName() {
-        return townName;
-    }
-
-    public void setTownName(String townsName) {
-        this.townName = townsName;
-    }
-
     public Long getAddressTypeId() {
         return addressTypeId;
     }
@@ -221,36 +201,36 @@ public class AddressesDTO implements Serializable {
         this.addressTypeName = addressTypesName;
     }
 
-    public Long getCustomerAddressId() {
-        return customerAddressId;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerAddressId(Long customersId) {
-        this.customerAddressId = customersId;
+    public void setCustomerId(Long customersId) {
+        this.customerId = customersId;
     }
 
-    public String getCustomerAddressName() {
-        return customerAddressName;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setCustomerAddressName(String customersName) {
-        this.customerAddressName = customersName;
+    public void setCustomerName(String customersName) {
+        this.customerName = customersName;
     }
 
-    public Long getSupplierAddressId() {
-        return supplierAddressId;
+    public Long getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplierAddressId(Long suppliersId) {
-        this.supplierAddressId = suppliersId;
+    public void setSupplierId(Long suppliersId) {
+        this.supplierId = suppliersId;
     }
 
-    public String getSupplierAddressName() {
-        return supplierAddressName;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    public void setSupplierAddressName(String suppliersName) {
-        this.supplierAddressName = suppliersName;
+    public void setSupplierName(String suppliersName) {
+        this.supplierName = suppliersName;
     }
 
     @Override
@@ -290,14 +270,12 @@ public class AddressesDTO implements Serializable {
             ", cityName='" + getCityName() + "'" +
             ", townshipId=" + getTownshipId() +
             ", townshipName='" + getTownshipName() + "'" +
-            ", townId=" + getTownId() +
-            ", townName='" + getTownName() + "'" +
             ", addressTypeId=" + getAddressTypeId() +
             ", addressTypeName='" + getAddressTypeName() + "'" +
-            ", customerAddressId=" + getCustomerAddressId() +
-            ", customerAddressName='" + getCustomerAddressName() + "'" +
-            ", supplierAddressId=" + getSupplierAddressId() +
-            ", supplierAddressName='" + getSupplierAddressName() + "'" +
+            ", customerId=" + getCustomerId() +
+            ", customerName='" + getCustomerName() + "'" +
+            ", supplierId=" + getSupplierId() +
+            ", supplierName='" + getSupplierName() + "'" +
             "}";
     }
 }

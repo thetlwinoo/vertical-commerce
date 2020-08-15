@@ -3,8 +3,8 @@ package com.vertical.commerce.web.rest;
 import com.vertical.commerce.VscommerceApp;
 import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.ProductDocuments;
-import com.vertical.commerce.domain.WarrantyTypes;
 import com.vertical.commerce.domain.Products;
+import com.vertical.commerce.domain.WarrantyTypes;
 import com.vertical.commerce.repository.ProductDocumentsRepository;
 import com.vertical.commerce.service.ProductDocumentsService;
 import com.vertical.commerce.service.dto.ProductDocumentsDTO;
@@ -43,9 +43,6 @@ public class ProductDocumentsResourceIT {
 
     private static final String DEFAULT_VIDEO_URL = "AAAAAAAAAA";
     private static final String UPDATED_VIDEO_URL = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
 
     private static final String DEFAULT_HIGHLIGHTS = "AAAAAAAAAA";
     private static final String UPDATED_HIGHLIGHTS = "BBBBBBBBBB";
@@ -136,7 +133,6 @@ public class ProductDocumentsResourceIT {
     public static ProductDocuments createEntity(EntityManager em) {
         ProductDocuments productDocuments = new ProductDocuments()
             .videoUrl(DEFAULT_VIDEO_URL)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .highlights(DEFAULT_HIGHLIGHTS)
             .longDescription(DEFAULT_LONG_DESCRIPTION)
             .shortDescription(DEFAULT_SHORT_DESCRIPTION)
@@ -168,7 +164,6 @@ public class ProductDocumentsResourceIT {
     public static ProductDocuments createUpdatedEntity(EntityManager em) {
         ProductDocuments productDocuments = new ProductDocuments()
             .videoUrl(UPDATED_VIDEO_URL)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .highlights(UPDATED_HIGHLIGHTS)
             .longDescription(UPDATED_LONG_DESCRIPTION)
             .shortDescription(UPDATED_SHORT_DESCRIPTION)
@@ -213,7 +208,6 @@ public class ProductDocumentsResourceIT {
         assertThat(productDocumentsList).hasSize(databaseSizeBeforeCreate + 1);
         ProductDocuments testProductDocuments = productDocumentsList.get(productDocumentsList.size() - 1);
         assertThat(testProductDocuments.getVideoUrl()).isEqualTo(DEFAULT_VIDEO_URL);
-        assertThat(testProductDocuments.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testProductDocuments.getHighlights()).isEqualTo(DEFAULT_HIGHLIGHTS);
         assertThat(testProductDocuments.getLongDescription()).isEqualTo(DEFAULT_LONG_DESCRIPTION);
         assertThat(testProductDocuments.getShortDescription()).isEqualTo(DEFAULT_SHORT_DESCRIPTION);
@@ -309,7 +303,6 @@ public class ProductDocumentsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productDocuments.getId().intValue())))
             .andExpect(jsonPath("$.[*].videoUrl").value(hasItem(DEFAULT_VIDEO_URL)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].highlights").value(hasItem(DEFAULT_HIGHLIGHTS.toString())))
             .andExpect(jsonPath("$.[*].longDescription").value(hasItem(DEFAULT_LONG_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].shortDescription").value(hasItem(DEFAULT_SHORT_DESCRIPTION.toString())))
@@ -344,7 +337,6 @@ public class ProductDocumentsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productDocuments.getId().intValue()))
             .andExpect(jsonPath("$.videoUrl").value(DEFAULT_VIDEO_URL))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.highlights").value(DEFAULT_HIGHLIGHTS.toString()))
             .andExpect(jsonPath("$.longDescription").value(DEFAULT_LONG_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.shortDescription").value(DEFAULT_SHORT_DESCRIPTION.toString()))
@@ -1351,6 +1343,26 @@ public class ProductDocumentsResourceIT {
 
     @Test
     @Transactional
+    public void getAllProductDocumentsByProductIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productDocumentsRepository.saveAndFlush(productDocuments);
+        Products product = ProductsResourceIT.createEntity(em);
+        em.persist(product);
+        em.flush();
+        productDocuments.setProduct(product);
+        productDocumentsRepository.saveAndFlush(productDocuments);
+        Long productId = product.getId();
+
+        // Get all the productDocumentsList where product equals to productId
+        defaultProductDocumentsShouldBeFound("productId.equals=" + productId);
+
+        // Get all the productDocumentsList where product equals to productId + 1
+        defaultProductDocumentsShouldNotBeFound("productId.equals=" + (productId + 1));
+    }
+
+
+    @Test
+    @Transactional
     public void getAllProductDocumentsByWarrantyTypeIsEqualToSomething() throws Exception {
         // Initialize the database
         productDocumentsRepository.saveAndFlush(productDocuments);
@@ -1368,27 +1380,6 @@ public class ProductDocumentsResourceIT {
         defaultProductDocumentsShouldNotBeFound("warrantyTypeId.equals=" + (warrantyTypeId + 1));
     }
 
-
-    @Test
-    @Transactional
-    public void getAllProductDocumentsByProductIsEqualToSomething() throws Exception {
-        // Initialize the database
-        productDocumentsRepository.saveAndFlush(productDocuments);
-        Products product = ProductsResourceIT.createEntity(em);
-        em.persist(product);
-        em.flush();
-        productDocuments.setProduct(product);
-        product.setProductDocument(productDocuments);
-        productDocumentsRepository.saveAndFlush(productDocuments);
-        Long productId = product.getId();
-
-        // Get all the productDocumentsList where product equals to productId
-        defaultProductDocumentsShouldBeFound("productId.equals=" + productId);
-
-        // Get all the productDocumentsList where product equals to productId + 1
-        defaultProductDocumentsShouldNotBeFound("productId.equals=" + (productId + 1));
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -1398,7 +1389,6 @@ public class ProductDocumentsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productDocuments.getId().intValue())))
             .andExpect(jsonPath("$.[*].videoUrl").value(hasItem(DEFAULT_VIDEO_URL)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].highlights").value(hasItem(DEFAULT_HIGHLIGHTS.toString())))
             .andExpect(jsonPath("$.[*].longDescription").value(hasItem(DEFAULT_LONG_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].shortDescription").value(hasItem(DEFAULT_SHORT_DESCRIPTION.toString())))
@@ -1466,7 +1456,6 @@ public class ProductDocumentsResourceIT {
         em.detach(updatedProductDocuments);
         updatedProductDocuments
             .videoUrl(UPDATED_VIDEO_URL)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .highlights(UPDATED_HIGHLIGHTS)
             .longDescription(UPDATED_LONG_DESCRIPTION)
             .shortDescription(UPDATED_SHORT_DESCRIPTION)
@@ -1499,7 +1488,6 @@ public class ProductDocumentsResourceIT {
         assertThat(productDocumentsList).hasSize(databaseSizeBeforeUpdate);
         ProductDocuments testProductDocuments = productDocumentsList.get(productDocumentsList.size() - 1);
         assertThat(testProductDocuments.getVideoUrl()).isEqualTo(UPDATED_VIDEO_URL);
-        assertThat(testProductDocuments.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testProductDocuments.getHighlights()).isEqualTo(UPDATED_HIGHLIGHTS);
         assertThat(testProductDocuments.getLongDescription()).isEqualTo(UPDATED_LONG_DESCRIPTION);
         assertThat(testProductDocuments.getShortDescription()).isEqualTo(UPDATED_SHORT_DESCRIPTION);

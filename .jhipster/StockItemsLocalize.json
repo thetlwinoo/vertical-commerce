@@ -1,0 +1,38 @@
+{
+  "name": "StockItemsLocalize",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "culture",
+      "otherEntityRelationshipName": "stockItemsLocalize",
+      "relationshipName": "culture",
+      "otherEntityField": "code"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "stockItems",
+      "otherEntityRelationshipName": "stockItemsLocalize",
+      "relationshipName": "stockItem",
+      "otherEntityField": "name"
+    }
+  ],
+  "changelogDate": "20200802180416",
+  "entityTableName": "stock_items_localize",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "vscommerce",
+  "applications": "*",
+  "microserviceName": "vscommerce"
+}

@@ -8,7 +8,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718082212",
+  "changelogDate": "20200802180216",
   "entityTableName": "barcode_types",
   "dto": "mapstruct",
   "pagination": "no",

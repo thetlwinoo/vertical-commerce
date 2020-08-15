@@ -8,7 +8,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718082812",
+  "changelogDate": "20200802180816",
   "entityTableName": "warranty_types",
   "dto": "mapstruct",
   "pagination": "no",

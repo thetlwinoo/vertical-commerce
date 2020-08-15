@@ -43,11 +43,11 @@ public class RegionsResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
-
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LOCALIZATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCALIZATION = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -84,8 +84,8 @@ public class RegionsResourceIT {
     public static Regions createEntity(EntityManager em) {
         Regions regions = new Regions()
             .name(DEFAULT_NAME)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .description(DEFAULT_DESCRIPTION)
+            .localization(DEFAULT_LOCALIZATION)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return regions;
@@ -99,8 +99,8 @@ public class RegionsResourceIT {
     public static Regions createUpdatedEntity(EntityManager em) {
         Regions regions = new Regions()
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .description(UPDATED_DESCRIPTION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return regions;
@@ -127,8 +127,8 @@ public class RegionsResourceIT {
         assertThat(regionsList).hasSize(databaseSizeBeforeCreate + 1);
         Regions testRegions = regionsList.get(regionsList.size() - 1);
         assertThat(testRegions.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testRegions.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testRegions.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testRegions.getLocalization()).isEqualTo(DEFAULT_LOCALIZATION);
         assertThat(testRegions.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testRegions.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -206,8 +206,8 @@ public class RegionsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(regions.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -224,8 +224,8 @@ public class RegionsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(regions.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.localization").value(DEFAULT_LOCALIZATION.toString()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -538,8 +538,8 @@ public class RegionsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(regions.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -589,8 +589,8 @@ public class RegionsResourceIT {
         em.detach(updatedRegions);
         updatedRegions
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .description(UPDATED_DESCRIPTION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         RegionsDTO regionsDTO = regionsMapper.toDto(updatedRegions);
@@ -605,8 +605,8 @@ public class RegionsResourceIT {
         assertThat(regionsList).hasSize(databaseSizeBeforeUpdate);
         Regions testRegions = regionsList.get(regionsList.size() - 1);
         assertThat(testRegions.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testRegions.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testRegions.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testRegions.getLocalization()).isEqualTo(UPDATED_LOCALIZATION);
         assertThat(testRegions.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testRegions.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

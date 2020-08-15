@@ -15,7 +15,7 @@ public class MaterialsDTO implements Serializable {
     private String name;
 
     @Lob
-    private String cultureDetails;
+    private String localization;
 
     
     public Long getId() {
@@ -34,12 +34,12 @@ public class MaterialsDTO implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
+    public String getLocalization() {
+        return localization;
     }
 
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public void setLocalization(String localization) {
+        this.localization = localization;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MaterialsDTO implements Serializable {
         return "MaterialsDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
+            ", localization='" + getLocalization() + "'" +
             "}";
     }
 }

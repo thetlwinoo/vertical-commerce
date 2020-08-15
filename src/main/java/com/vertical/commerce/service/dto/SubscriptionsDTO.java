@@ -19,6 +19,9 @@ public class SubscriptionsDTO implements Serializable {
     private Instant subscribedOn;
 
     @NotNull
+    private Boolean activeFlag;
+
+    @NotNull
     private Instant validFrom;
 
     private Instant validTo;
@@ -46,6 +49,14 @@ public class SubscriptionsDTO implements Serializable {
 
     public void setSubscribedOn(Instant subscribedOn) {
         this.subscribedOn = subscribedOn;
+    }
+
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public Instant getValidFrom() {
@@ -88,6 +99,7 @@ public class SubscriptionsDTO implements Serializable {
             "id=" + getId() +
             ", emailAddress='" + getEmailAddress() + "'" +
             ", subscribedOn='" + getSubscribedOn() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

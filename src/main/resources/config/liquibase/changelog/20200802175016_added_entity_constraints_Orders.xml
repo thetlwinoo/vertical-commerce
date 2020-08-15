@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity Orders.
+    -->
+    <changeSet id="20200802175016-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="customer_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_orders_customer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="customers"/>
+
+        <addForeignKeyConstraint baseColumnNames="ship_to_address_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_orders_ship_to_address_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="addresses"/>
+
+        <addForeignKeyConstraint baseColumnNames="bill_to_address_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_orders_bill_to_address_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="addresses"/>
+
+        <addForeignKeyConstraint baseColumnNames="currency_rate_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_orders_currency_rate_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="currency_rate"/>
+
+        <addForeignKeyConstraint baseColumnNames="payment_method_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_orders_payment_method_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="payment_methods"/>
+
+        <addForeignKeyConstraint baseColumnNames="sale_person_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_orders_sale_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="people"/>
+
+        <addForeignKeyConstraint baseColumnNames="special_deals_id"
+                                 baseTableName="orders"
+                                 constraintName="fk_orders_special_deals_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="special_deals"/>
+
+    </changeSet>
+</databaseChangeLog>

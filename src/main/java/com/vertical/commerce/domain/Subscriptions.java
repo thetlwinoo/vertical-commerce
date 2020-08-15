@@ -34,6 +34,10 @@ public class Subscriptions implements Serializable {
     private Instant subscribedOn;
 
     @NotNull
+    @Column(name = "active_flag", nullable = false)
+    private Boolean activeFlag;
+
+    @NotNull
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
 
@@ -73,6 +77,19 @@ public class Subscriptions implements Serializable {
 
     public void setSubscribedOn(Instant subscribedOn) {
         this.subscribedOn = subscribedOn;
+    }
+
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public Subscriptions activeFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+        return this;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public Instant getValidFrom() {
@@ -125,6 +142,7 @@ public class Subscriptions implements Serializable {
             "id=" + getId() +
             ", emailAddress='" + getEmailAddress() + "'" +
             ", subscribedOn='" + getSubscribedOn() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

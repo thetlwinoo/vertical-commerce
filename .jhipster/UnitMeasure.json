@@ -13,7 +13,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718084912",
+  "changelogDate": "20200802182816",
   "entityTableName": "unit_measure",
   "dto": "mapstruct",
   "pagination": "no",

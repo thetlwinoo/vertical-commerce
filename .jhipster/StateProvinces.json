@@ -12,11 +12,6 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "cultureDetails",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
       "fieldName": "salesTerritory",
       "fieldType": "String"
     },
@@ -27,6 +22,11 @@
     {
       "fieldName": "latestRecordedPopulation",
       "fieldType": "Long"
+    },
+    {
+      "fieldName": "localization",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
     },
     {
       "fieldName": "validFrom",
@@ -47,7 +47,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718072812",
+  "changelogDate": "20200802170916",
   "entityTableName": "state_provinces",
   "dto": "mapstruct",
   "pagination": "no",

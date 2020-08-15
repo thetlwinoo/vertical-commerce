@@ -102,12 +102,13 @@ class ProductBrandGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
-                , "cultureDetails":null
+                , "handle":"SAMPLE_TEXT"
                 , "shortLabel":"SAMPLE_TEXT"
                 , "sortOrder":"0"
                 , "iconFont":"SAMPLE_TEXT"
                 , "iconPhoto":"SAMPLE_TEXT"
                 , "activeFlag":null
+                , "localization":null
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

@@ -83,7 +83,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718081612",
+  "changelogDate": "20200802175716",
   "entityTableName": "discount_details",
   "dto": "mapstruct",
   "pagination": "no",

@@ -29,6 +29,8 @@ public class ProductBrandCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
+    private StringFilter handle;
+
     private StringFilter shortLabel;
 
     private IntegerFilter sortOrder;
@@ -49,6 +51,7 @@ public class ProductBrandCriteria implements Serializable, Criteria {
     public ProductBrandCriteria(ProductBrandCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
+        this.handle = other.handle == null ? null : other.handle.copy();
         this.shortLabel = other.shortLabel == null ? null : other.shortLabel.copy();
         this.sortOrder = other.sortOrder == null ? null : other.sortOrder.copy();
         this.iconFont = other.iconFont == null ? null : other.iconFont.copy();
@@ -77,6 +80,14 @@ public class ProductBrandCriteria implements Serializable, Criteria {
 
     public void setName(StringFilter name) {
         this.name = name;
+    }
+
+    public StringFilter getHandle() {
+        return handle;
+    }
+
+    public void setHandle(StringFilter handle) {
+        this.handle = handle;
     }
 
     public StringFilter getShortLabel() {
@@ -148,6 +159,7 @@ public class ProductBrandCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
+            Objects.equals(handle, that.handle) &&
             Objects.equals(shortLabel, that.shortLabel) &&
             Objects.equals(sortOrder, that.sortOrder) &&
             Objects.equals(iconFont, that.iconFont) &&
@@ -162,6 +174,7 @@ public class ProductBrandCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         name,
+        handle,
         shortLabel,
         sortOrder,
         iconFont,
@@ -178,6 +191,7 @@ public class ProductBrandCriteria implements Serializable, Criteria {
         return "ProductBrandCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
+                (handle != null ? "handle=" + handle + ", " : "") +
                 (shortLabel != null ? "shortLabel=" + shortLabel + ", " : "") +
                 (sortOrder != null ? "sortOrder=" + sortOrder + ", " : "") +
                 (iconFont != null ? "iconFont=" + iconFont + ", " : "") +

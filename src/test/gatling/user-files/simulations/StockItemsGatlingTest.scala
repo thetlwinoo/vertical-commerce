@@ -102,7 +102,7 @@ class StockItemsGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
-                , "cultureDetails":null
+                , "handle":"SAMPLE_TEXT"
                 , "vendorCode":"SAMPLE_TEXT"
                 , "vendorSKU":"SAMPLE_TEXT"
                 , "generatedSKU":"SAMPLE_TEXT"
@@ -146,6 +146,7 @@ class StockItemsGatlingTest extends Simulation {
                 , "lastEditedBy":"SAMPLE_TEXT"
                 , "lastEditedWhen":"2020-01-01T00:00:00.000Z"
                 , "activeFlag":null
+                , "localization":null
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

@@ -139,7 +139,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200718081012",
+  "changelogDate": "20200802175116",
   "entityTableName": "order_packages",
   "dto": "mapstruct",
   "pagination": "no",

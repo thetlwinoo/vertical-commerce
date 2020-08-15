@@ -5,6 +5,7 @@ import com.vertical.commerce.config.TestSecurityConfiguration;
 import com.vertical.commerce.domain.StockItems;
 import com.vertical.commerce.domain.SpecialDeals;
 import com.vertical.commerce.domain.Photos;
+import com.vertical.commerce.domain.Suppliers;
 import com.vertical.commerce.domain.UnitMeasure;
 import com.vertical.commerce.domain.ProductAttribute;
 import com.vertical.commerce.domain.ProductOption;
@@ -52,8 +53,8 @@ public class StockItemsResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
+    private static final String DEFAULT_HANDLE = "AAAAAAAAAA";
+    private static final String UPDATED_HANDLE = "BBBBBBBBBB";
 
     private static final String DEFAULT_VENDOR_CODE = "AAAAAAAAAA";
     private static final String UPDATED_VENDOR_CODE = "BBBBBBBBBB";
@@ -206,6 +207,9 @@ public class StockItemsResourceIT {
     private static final Boolean DEFAULT_ACTIVE_FLAG = false;
     private static final Boolean UPDATED_ACTIVE_FLAG = true;
 
+    private static final String DEFAULT_LOCALIZATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCALIZATION = "BBBBBBBBBB";
+
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
@@ -241,7 +245,7 @@ public class StockItemsResourceIT {
     public static StockItems createEntity(EntityManager em) {
         StockItems stockItems = new StockItems()
             .name(DEFAULT_NAME)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
+            .handle(DEFAULT_HANDLE)
             .vendorCode(DEFAULT_VENDOR_CODE)
             .vendorSKU(DEFAULT_VENDOR_SKU)
             .generatedSKU(DEFAULT_GENERATED_SKU)
@@ -285,6 +289,7 @@ public class StockItemsResourceIT {
             .lastEditedBy(DEFAULT_LAST_EDITED_BY)
             .lastEditedWhen(DEFAULT_LAST_EDITED_WHEN)
             .activeFlag(DEFAULT_ACTIVE_FLAG)
+            .localization(DEFAULT_LOCALIZATION)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return stockItems;
@@ -298,7 +303,7 @@ public class StockItemsResourceIT {
     public static StockItems createUpdatedEntity(EntityManager em) {
         StockItems stockItems = new StockItems()
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
+            .handle(UPDATED_HANDLE)
             .vendorCode(UPDATED_VENDOR_CODE)
             .vendorSKU(UPDATED_VENDOR_SKU)
             .generatedSKU(UPDATED_GENERATED_SKU)
@@ -342,6 +347,7 @@ public class StockItemsResourceIT {
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN)
             .activeFlag(UPDATED_ACTIVE_FLAG)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return stockItems;
@@ -368,7 +374,7 @@ public class StockItemsResourceIT {
         assertThat(stockItemsList).hasSize(databaseSizeBeforeCreate + 1);
         StockItems testStockItems = stockItemsList.get(stockItemsList.size() - 1);
         assertThat(testStockItems.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testStockItems.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
+        assertThat(testStockItems.getHandle()).isEqualTo(DEFAULT_HANDLE);
         assertThat(testStockItems.getVendorCode()).isEqualTo(DEFAULT_VENDOR_CODE);
         assertThat(testStockItems.getVendorSKU()).isEqualTo(DEFAULT_VENDOR_SKU);
         assertThat(testStockItems.getGeneratedSKU()).isEqualTo(DEFAULT_GENERATED_SKU);
@@ -412,6 +418,7 @@ public class StockItemsResourceIT {
         assertThat(testStockItems.getLastEditedBy()).isEqualTo(DEFAULT_LAST_EDITED_BY);
         assertThat(testStockItems.getLastEditedWhen()).isEqualTo(DEFAULT_LAST_EDITED_WHEN);
         assertThat(testStockItems.isActiveFlag()).isEqualTo(DEFAULT_ACTIVE_FLAG);
+        assertThat(testStockItems.getLocalization()).isEqualTo(DEFAULT_LOCALIZATION);
         assertThat(testStockItems.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testStockItems.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -669,7 +676,7 @@ public class StockItemsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(stockItems.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
+            .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
             .andExpect(jsonPath("$.[*].vendorCode").value(hasItem(DEFAULT_VENDOR_CODE)))
             .andExpect(jsonPath("$.[*].vendorSKU").value(hasItem(DEFAULT_VENDOR_SKU)))
             .andExpect(jsonPath("$.[*].generatedSKU").value(hasItem(DEFAULT_GENERATED_SKU)))
@@ -713,6 +720,7 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())))
             .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -729,7 +737,7 @@ public class StockItemsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(stockItems.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
+            .andExpect(jsonPath("$.handle").value(DEFAULT_HANDLE))
             .andExpect(jsonPath("$.vendorCode").value(DEFAULT_VENDOR_CODE))
             .andExpect(jsonPath("$.vendorSKU").value(DEFAULT_VENDOR_SKU))
             .andExpect(jsonPath("$.generatedSKU").value(DEFAULT_GENERATED_SKU))
@@ -773,6 +781,7 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.lastEditedBy").value(DEFAULT_LAST_EDITED_BY))
             .andExpect(jsonPath("$.lastEditedWhen").value(DEFAULT_LAST_EDITED_WHEN.toString()))
             .andExpect(jsonPath("$.activeFlag").value(DEFAULT_ACTIVE_FLAG.booleanValue()))
+            .andExpect(jsonPath("$.localization").value(DEFAULT_LOCALIZATION.toString()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -872,6 +881,84 @@ public class StockItemsResourceIT {
 
         // Get all the stockItemsList where name does not contain UPDATED_NAME
         defaultStockItemsShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByHandleIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where handle equals to DEFAULT_HANDLE
+        defaultStockItemsShouldBeFound("handle.equals=" + DEFAULT_HANDLE);
+
+        // Get all the stockItemsList where handle equals to UPDATED_HANDLE
+        defaultStockItemsShouldNotBeFound("handle.equals=" + UPDATED_HANDLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByHandleIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where handle not equals to DEFAULT_HANDLE
+        defaultStockItemsShouldNotBeFound("handle.notEquals=" + DEFAULT_HANDLE);
+
+        // Get all the stockItemsList where handle not equals to UPDATED_HANDLE
+        defaultStockItemsShouldBeFound("handle.notEquals=" + UPDATED_HANDLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByHandleIsInShouldWork() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where handle in DEFAULT_HANDLE or UPDATED_HANDLE
+        defaultStockItemsShouldBeFound("handle.in=" + DEFAULT_HANDLE + "," + UPDATED_HANDLE);
+
+        // Get all the stockItemsList where handle equals to UPDATED_HANDLE
+        defaultStockItemsShouldNotBeFound("handle.in=" + UPDATED_HANDLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByHandleIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where handle is not null
+        defaultStockItemsShouldBeFound("handle.specified=true");
+
+        // Get all the stockItemsList where handle is null
+        defaultStockItemsShouldNotBeFound("handle.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllStockItemsByHandleContainsSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where handle contains DEFAULT_HANDLE
+        defaultStockItemsShouldBeFound("handle.contains=" + DEFAULT_HANDLE);
+
+        // Get all the stockItemsList where handle contains UPDATED_HANDLE
+        defaultStockItemsShouldNotBeFound("handle.contains=" + UPDATED_HANDLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllStockItemsByHandleNotContainsSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+
+        // Get all the stockItemsList where handle does not contain DEFAULT_HANDLE
+        defaultStockItemsShouldNotBeFound("handle.doesNotContain=" + DEFAULT_HANDLE);
+
+        // Get all the stockItemsList where handle does not contain UPDATED_HANDLE
+        defaultStockItemsShouldBeFound("handle.doesNotContain=" + UPDATED_HANDLE);
     }
 
 
@@ -4709,6 +4796,26 @@ public class StockItemsResourceIT {
 
     @Test
     @Transactional
+    public void getAllStockItemsBySupplierIsEqualToSomething() throws Exception {
+        // Initialize the database
+        stockItemsRepository.saveAndFlush(stockItems);
+        Suppliers supplier = SuppliersResourceIT.createEntity(em);
+        em.persist(supplier);
+        em.flush();
+        stockItems.setSupplier(supplier);
+        stockItemsRepository.saveAndFlush(stockItems);
+        Long supplierId = supplier.getId();
+
+        // Get all the stockItemsList where supplier equals to supplierId
+        defaultStockItemsShouldBeFound("supplierId.equals=" + supplierId);
+
+        // Get all the stockItemsList where supplier equals to supplierId + 1
+        defaultStockItemsShouldNotBeFound("supplierId.equals=" + (supplierId + 1));
+    }
+
+
+    @Test
+    @Transactional
     public void getAllStockItemsByItemLengthUnitIsEqualToSomething() throws Exception {
         // Initialize the database
         stockItemsRepository.saveAndFlush(stockItems);
@@ -4975,7 +5082,7 @@ public class StockItemsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(stockItems.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
+            .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
             .andExpect(jsonPath("$.[*].vendorCode").value(hasItem(DEFAULT_VENDOR_CODE)))
             .andExpect(jsonPath("$.[*].vendorSKU").value(hasItem(DEFAULT_VENDOR_SKU)))
             .andExpect(jsonPath("$.[*].generatedSKU").value(hasItem(DEFAULT_GENERATED_SKU)))
@@ -5019,6 +5126,7 @@ public class StockItemsResourceIT {
             .andExpect(jsonPath("$.[*].lastEditedBy").value(hasItem(DEFAULT_LAST_EDITED_BY)))
             .andExpect(jsonPath("$.[*].lastEditedWhen").value(hasItem(DEFAULT_LAST_EDITED_WHEN.toString())))
             .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -5068,7 +5176,7 @@ public class StockItemsResourceIT {
         em.detach(updatedStockItems);
         updatedStockItems
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
+            .handle(UPDATED_HANDLE)
             .vendorCode(UPDATED_VENDOR_CODE)
             .vendorSKU(UPDATED_VENDOR_SKU)
             .generatedSKU(UPDATED_GENERATED_SKU)
@@ -5112,6 +5220,7 @@ public class StockItemsResourceIT {
             .lastEditedBy(UPDATED_LAST_EDITED_BY)
             .lastEditedWhen(UPDATED_LAST_EDITED_WHEN)
             .activeFlag(UPDATED_ACTIVE_FLAG)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         StockItemsDTO stockItemsDTO = stockItemsMapper.toDto(updatedStockItems);
@@ -5126,7 +5235,7 @@ public class StockItemsResourceIT {
         assertThat(stockItemsList).hasSize(databaseSizeBeforeUpdate);
         StockItems testStockItems = stockItemsList.get(stockItemsList.size() - 1);
         assertThat(testStockItems.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testStockItems.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
+        assertThat(testStockItems.getHandle()).isEqualTo(UPDATED_HANDLE);
         assertThat(testStockItems.getVendorCode()).isEqualTo(UPDATED_VENDOR_CODE);
         assertThat(testStockItems.getVendorSKU()).isEqualTo(UPDATED_VENDOR_SKU);
         assertThat(testStockItems.getGeneratedSKU()).isEqualTo(UPDATED_GENERATED_SKU);
@@ -5170,6 +5279,7 @@ public class StockItemsResourceIT {
         assertThat(testStockItems.getLastEditedBy()).isEqualTo(UPDATED_LAST_EDITED_BY);
         assertThat(testStockItems.getLastEditedWhen()).isEqualTo(UPDATED_LAST_EDITED_WHEN);
         assertThat(testStockItems.isActiveFlag()).isEqualTo(UPDATED_ACTIVE_FLAG);
+        assertThat(testStockItems.getLocalization()).isEqualTo(UPDATED_LOCALIZATION);
         assertThat(testStockItems.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testStockItems.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

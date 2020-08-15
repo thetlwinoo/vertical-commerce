@@ -36,7 +36,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718085012",
+  "changelogDate": "20200802182916",
   "entityTableName": "vehicle_temperatures",
   "dto": "mapstruct",
   "pagination": "no",

@@ -7,9 +7,8 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "cultureDetails",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
+      "fieldName": "handle",
+      "fieldType": "String"
     },
     {
       "fieldName": "shortLabel",
@@ -33,6 +32,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "localization",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
       "fieldName": "validFrom",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
@@ -43,7 +47,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718084112",
+  "changelogDate": "20200802182016",
   "entityTableName": "product_brand",
   "dto": "mapstruct",
   "pagination": "no",

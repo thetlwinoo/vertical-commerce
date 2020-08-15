@@ -46,11 +46,11 @@ public class TownsResourceIT {
     private static final String DEFAULT_POSTAL_CODE = "AAAAAAAAAA";
     private static final String UPDATED_POSTAL_CODE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
-
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LOCALIZATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCALIZATION = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -88,8 +88,8 @@ public class TownsResourceIT {
         Towns towns = new Towns()
             .name(DEFAULT_NAME)
             .postalCode(DEFAULT_POSTAL_CODE)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .description(DEFAULT_DESCRIPTION)
+            .localization(DEFAULT_LOCALIZATION)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return towns;
@@ -104,8 +104,8 @@ public class TownsResourceIT {
         Towns towns = new Towns()
             .name(UPDATED_NAME)
             .postalCode(UPDATED_POSTAL_CODE)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .description(UPDATED_DESCRIPTION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return towns;
@@ -133,8 +133,8 @@ public class TownsResourceIT {
         Towns testTowns = townsList.get(townsList.size() - 1);
         assertThat(testTowns.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testTowns.getPostalCode()).isEqualTo(DEFAULT_POSTAL_CODE);
-        assertThat(testTowns.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testTowns.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testTowns.getLocalization()).isEqualTo(DEFAULT_LOCALIZATION);
         assertThat(testTowns.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testTowns.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -213,8 +213,8 @@ public class TownsResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(towns.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -232,8 +232,8 @@ public class TownsResourceIT {
             .andExpect(jsonPath("$.id").value(towns.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.postalCode").value(DEFAULT_POSTAL_CODE))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.localization").value(DEFAULT_LOCALIZATION.toString()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -625,8 +625,8 @@ public class TownsResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(towns.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].postalCode").value(hasItem(DEFAULT_POSTAL_CODE)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -677,8 +677,8 @@ public class TownsResourceIT {
         updatedTowns
             .name(UPDATED_NAME)
             .postalCode(UPDATED_POSTAL_CODE)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .description(UPDATED_DESCRIPTION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         TownsDTO townsDTO = townsMapper.toDto(updatedTowns);
@@ -694,8 +694,8 @@ public class TownsResourceIT {
         Towns testTowns = townsList.get(townsList.size() - 1);
         assertThat(testTowns.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testTowns.getPostalCode()).isEqualTo(UPDATED_POSTAL_CODE);
-        assertThat(testTowns.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testTowns.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testTowns.getLocalization()).isEqualTo(UPDATED_LOCALIZATION);
         assertThat(testTowns.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testTowns.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

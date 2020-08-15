@@ -9,9 +9,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link StockItems} and its DTO {@link StockItemsDTO}.
  */
-@Mapper(componentModel = "spring", uses = {UnitMeasureMapper.class, ProductAttributeMapper.class, ProductOptionMapper.class, MaterialsMapper.class, CurrencyMapper.class, BarcodeTypesMapper.class, ProductsMapper.class})
+@Mapper(componentModel = "spring", uses = {SuppliersMapper.class, UnitMeasureMapper.class, ProductAttributeMapper.class, ProductOptionMapper.class, MaterialsMapper.class, CurrencyMapper.class, BarcodeTypesMapper.class, ProductsMapper.class})
 public interface StockItemsMapper extends EntityMapper<StockItemsDTO, StockItems> {
 
+    @Mapping(source = "supplier.id", target = "supplierId")
+    @Mapping(source = "supplier.name", target = "supplierName")
     @Mapping(source = "itemLengthUnit.id", target = "itemLengthUnitId")
     @Mapping(source = "itemLengthUnit.code", target = "itemLengthUnitCode")
     @Mapping(source = "itemWidthUnit.id", target = "itemWidthUnitId")
@@ -43,6 +45,7 @@ public interface StockItemsMapper extends EntityMapper<StockItemsDTO, StockItems
     @Mapping(target = "removeSpecialDealList", ignore = true)
     @Mapping(target = "photoLists", ignore = true)
     @Mapping(target = "removePhotoList", ignore = true)
+    @Mapping(source = "supplierId", target = "supplier")
     @Mapping(source = "itemLengthUnitId", target = "itemLengthUnit")
     @Mapping(source = "itemWidthUnitId", target = "itemWidthUnit")
     @Mapping(source = "itemHeightUnitId", target = "itemHeightUnit")

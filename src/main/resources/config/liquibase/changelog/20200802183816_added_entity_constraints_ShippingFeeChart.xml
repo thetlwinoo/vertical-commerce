@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity ShippingFeeChart.
+    -->
+    <changeSet id="20200802183816-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="source_township_id"
+                                 baseTableName="shipping_fee_chart"
+                                 constraintName="fk_shipping_fee_chart_source_township_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="townships"/>
+
+        <addForeignKeyConstraint baseColumnNames="destination_township_id"
+                                 baseTableName="shipping_fee_chart"
+                                 constraintName="fk_shipping_fee_chart_destination_township_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="townships"/>
+
+        <addForeignKeyConstraint baseColumnNames="delivery_method_id"
+                                 baseTableName="shipping_fee_chart"
+                                 constraintName="fk_shipping_fee_chart_delivery_method_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="delivery_methods"/>
+
+    </changeSet>
+</databaseChangeLog>

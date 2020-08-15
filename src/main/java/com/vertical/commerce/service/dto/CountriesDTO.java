@@ -15,9 +15,6 @@ public class CountriesDTO implements Serializable {
     @NotNull
     private String name;
 
-    @Lob
-    private String cultureDetails;
-
     @NotNull
     private String formalName;
 
@@ -40,6 +37,9 @@ public class CountriesDTO implements Serializable {
 
     private String border;
 
+    @Lob
+    private String localization;
+
     @NotNull
     private Instant validFrom;
 
@@ -60,14 +60,6 @@ public class CountriesDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
     }
 
     public String getFormalName() {
@@ -142,6 +134,14 @@ public class CountriesDTO implements Serializable {
         this.border = border;
     }
 
+    public String getLocalization() {
+        return localization;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
+    }
+
     public Instant getValidFrom() {
         return validFrom;
     }
@@ -181,7 +181,6 @@ public class CountriesDTO implements Serializable {
         return "CountriesDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", formalName='" + getFormalName() + "'" +
             ", isoAplha3Code='" + getIsoAplha3Code() + "'" +
             ", isoNumericCode=" + getIsoNumericCode() +
@@ -191,6 +190,7 @@ public class CountriesDTO implements Serializable {
             ", region='" + getRegion() + "'" +
             ", subRegion='" + getSubRegion() + "'" +
             ", border='" + getBorder() + "'" +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

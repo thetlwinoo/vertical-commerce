@@ -29,10 +29,8 @@ public class ProductBrand implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "culture_details")
-    private String cultureDetails;
+    @Column(name = "handle")
+    private String handle;
 
     @Column(name = "short_label")
     private String shortLabel;
@@ -49,6 +47,11 @@ public class ProductBrand implements Serializable {
     @NotNull
     @Column(name = "active_flag", nullable = false)
     private Boolean activeFlag;
+
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "localization")
+    private String localization;
 
     @NotNull
     @Column(name = "valid_from", nullable = false)
@@ -79,17 +82,17 @@ public class ProductBrand implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
+    public String getHandle() {
+        return handle;
     }
 
-    public ProductBrand cultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public ProductBrand handle(String handle) {
+        this.handle = handle;
         return this;
     }
 
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public void setHandle(String handle) {
+        this.handle = handle;
     }
 
     public String getShortLabel() {
@@ -157,6 +160,19 @@ public class ProductBrand implements Serializable {
         this.activeFlag = activeFlag;
     }
 
+    public String getLocalization() {
+        return localization;
+    }
+
+    public ProductBrand localization(String localization) {
+        this.localization = localization;
+        return this;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
+    }
+
     public Instant getValidFrom() {
         return validFrom;
     }
@@ -206,12 +222,13 @@ public class ProductBrand implements Serializable {
         return "ProductBrand{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
+            ", handle='" + getHandle() + "'" +
             ", shortLabel='" + getShortLabel() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
             ", iconPhoto='" + getIconPhoto() + "'" +
             ", activeFlag='" + isActiveFlag() + "'" +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

@@ -54,7 +54,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718075712",
+  "changelogDate": "20200802173816",
   "entityTableName": "customer_payment_paypal",
   "dto": "mapstruct",
   "pagination": "no",

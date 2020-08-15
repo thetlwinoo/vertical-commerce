@@ -37,13 +37,13 @@ public class ShippingFeeChartDTO implements Serializable {
     private Instant lastEditedWhen;
 
 
-    private Long sourceTownId;
+    private Long sourceTownshipId;
 
-    private String sourceTownName;
+    private String sourceTownshipName;
 
-    private Long destinationTownId;
+    private Long destinationTownshipId;
 
-    private String destinationTownName;
+    private String destinationTownshipName;
 
     private Long deliveryMethodId;
 
@@ -121,36 +121,36 @@ public class ShippingFeeChartDTO implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public Long getSourceTownId() {
-        return sourceTownId;
+    public Long getSourceTownshipId() {
+        return sourceTownshipId;
     }
 
-    public void setSourceTownId(Long townsId) {
-        this.sourceTownId = townsId;
+    public void setSourceTownshipId(Long townshipsId) {
+        this.sourceTownshipId = townshipsId;
     }
 
-    public String getSourceTownName() {
-        return sourceTownName;
+    public String getSourceTownshipName() {
+        return sourceTownshipName;
     }
 
-    public void setSourceTownName(String townsName) {
-        this.sourceTownName = townsName;
+    public void setSourceTownshipName(String townshipsName) {
+        this.sourceTownshipName = townshipsName;
     }
 
-    public Long getDestinationTownId() {
-        return destinationTownId;
+    public Long getDestinationTownshipId() {
+        return destinationTownshipId;
     }
 
-    public void setDestinationTownId(Long townsId) {
-        this.destinationTownId = townsId;
+    public void setDestinationTownshipId(Long townshipsId) {
+        this.destinationTownshipId = townshipsId;
     }
 
-    public String getDestinationTownName() {
-        return destinationTownName;
+    public String getDestinationTownshipName() {
+        return destinationTownshipName;
     }
 
-    public void setDestinationTownName(String townsName) {
-        this.destinationTownName = townsName;
+    public void setDestinationTownshipName(String townshipsName) {
+        this.destinationTownshipName = townshipsName;
     }
 
     public Long getDeliveryMethodId() {
@@ -199,10 +199,10 @@ public class ShippingFeeChartDTO implements Serializable {
             ", price=" + getPrice() +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
-            ", sourceTownId=" + getSourceTownId() +
-            ", sourceTownName='" + getSourceTownName() + "'" +
-            ", destinationTownId=" + getDestinationTownId() +
-            ", destinationTownName='" + getDestinationTownName() + "'" +
+            ", sourceTownshipId=" + getSourceTownshipId() +
+            ", sourceTownshipName='" + getSourceTownshipName() + "'" +
+            ", destinationTownshipId=" + getDestinationTownshipId() +
+            ", destinationTownshipName='" + getDestinationTownshipName() + "'" +
             ", deliveryMethodId=" + getDeliveryMethodId() +
             ", deliveryMethodName='" + getDeliveryMethodName() + "'" +
             "}";

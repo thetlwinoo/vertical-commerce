@@ -60,7 +60,6 @@ entity ContactType{
 
 entity Countries {
     name String required
-    cultureDetails TextBlob
     formalName String required
     isoAplha3Code String
     isoNumericCode Integer
@@ -70,76 +69,77 @@ entity Countries {
     region String required
     subRegion String required
     border String
+    localization TextBlob
     validFrom Instant required
     validTo Instant
 }
 
-entity CountriesCulture {
+entity CountriesLocalize {
     name String required
 }
 
 entity StateProvinces {
     code String required
     name String required
-    cultureDetails TextBlob
     salesTerritory String
     border String
     latestRecordedPopulation Long
+    localization TextBlob
     validFrom Instant required
     validTo Instant
 }
 
-entity StateProvincesCulture {
+entity StateProvincesLocalize {
     name String required
 }
 
 entity Cities {
     name String required
-    cultureDetails TextBlob
     location String
     latestRecordedPopulation Long
+    localization TextBlob
     validFrom Instant required
     validTo Instant
 }
 
-entity CitiesCulture {
+entity CitiesLocalize {
     name String required
 }
 
 entity Townships{
     name String required
-    cultureDetails TextBlob
     description String
+    localization TextBlob
     validFrom Instant required
     validTo Instant
 }
 
-entity TownshipsCulture {
+entity TownshipsLocalize {
     name String required
 }
 
-entity Towns{
+entity PostalCodeMappers{
     name String required
     postalCode String
-    cultureDetails TextBlob
     description String
+    localization TextBlob
     validFrom Instant required
     validTo Instant
 }
 
-entity TownsCulture {
+entity PostalCodeMappersLocalize {
     name String required
 }
 
 entity Regions{
     name String required
-    cultureDetails TextBlob
     description String
+    localization TextBlob
     validFrom Instant required
     validTo Instant
 }
 
-entity RegionsCulture {
+entity RegionsLocalize {
     name String required
 }
 
@@ -625,7 +625,6 @@ entity PackageTypes {
 
 entity Products {
     name String required
-    cultureDetails TextBlob
     handle String
     searchDetails String
     productNumber String
@@ -646,10 +645,6 @@ entity Products {
     validTo Instant
 }
 
-entity ProductsCulture {
-    name String required
-}
-
 entity ProductListPriceHistory{
     startDate Instant required
     endDate Instant
@@ -663,7 +658,7 @@ entity BarcodeTypes{
 
 entity StockItems{
 	name String required
-	cultureDetails TextBlob
+	handle String
     vendorCode String
     vendorSKU String
     generatedSKU String
@@ -693,6 +688,7 @@ entity StockItems{
     noOfPieces Integer
     noOfItems Integer
     manufacture String
+    materials String
     marketingComments String
     internalComments String
     sellStartDate Instant
@@ -707,11 +703,12 @@ entity StockItems{
     lastEditedBy String required
     lastEditedWhen Instant required
     activeFlag Boolean required
+    localization TextBlob
     validFrom Instant required
     validTo Instant
 }
 
-entity StockItemsCulture {
+entity StockItemsLocalize {
     name String required
 }
 
@@ -788,7 +785,6 @@ entity ProductSetDetailPrice{
 
 entity ProductDocuments{
     videoUrl String
-    cultureDetails TextBlob
     highlights TextBlob
     longDescription TextBlob
     shortDescription TextBlob
@@ -811,49 +807,39 @@ entity ProductDocuments{
     lastEditedWhen Instant required
 }
 
-entity ProductDocumentsCulture {
-    name String required
-}
-
-entity Materials{
-	name String required
-	cultureDetails TextBlob
-}
-
-entity MaterialsCulture {
-    name String required
-}
-
 entity ProductBrand{
 	name String required
-	cultureDetails TextBlob
+	handle String
     shortLabel String
     sortOrder Integer
     iconFont String
     iconPhoto String
     activeFlag Boolean required
+    localization TextBlob
     validFrom Instant required
     validTo Instant
 }
 
-entity ProductBrandCulture {
+entity ProductBrandLocalize {
     name String required
 }
 
 entity ProductCategory{
     name String required
-    cultureDetails TextBlob
+    handle String
     shortLabel String
     sortOrder Integer
     iconFont String
     iconPhoto String
     justForYouInd Boolean
-    showInNavInd Boolean
+    parentCascade String
+    activeFlag Boolean required
+    localization TextBlob
     validFrom Instant required
     validTo Instant
 }
 
-entity ProductCategoryCulture {
+entity ProductCategoryLocalize {
     name String required
 }
 
@@ -966,6 +952,7 @@ entity ShippingFeeChart{
 entity Subscriptions{
     emailAddress String pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/) required
     subscribedOn Instant required
+    activeFlag Boolean required
     validFrom Instant required
     validTo Instant
 }
@@ -992,9 +979,9 @@ relationship ManyToOne {
     Regions{stateProvince(name)} to StateProvinces
     Cities{region(name)} to Regions
     Townships{city(name)} to Cities
-    Towns{township(name)} to Townships
-    ShippingFeeChart{sourceTown(name)} to Towns
-    ShippingFeeChart{destinationTown(name)} to Towns
+    PostalCodeMappers{township(name)} to Townships
+    ShippingFeeChart{sourceTownship(name)} to Townships
+    ShippingFeeChart{destinationTownship(name)} to Townships
     ShippingFeeChart{deliveryMethod(name)} to DeliveryMethods
     SystemParameters{deliveryCity(name)} to Cities
     SystemParameters{postalCity(name)} to Cities
@@ -1036,6 +1023,7 @@ relationship ManyToOne {
     UploadTransactions{supplier(name)} to Suppliers
     UploadTransactions{actionType(name)} to UploadActionTypes
     Products{supplier(name)} to Suppliers
+    StockItems{supplier(name)} to Suppliers
     Products{productCategory(name)} to ProductCategory
     Products{productBrand(name)} to ProductBrand
     WishlistLines{stockItem(name)} to StockItems
@@ -1050,7 +1038,6 @@ relationship ManyToOne {
     StockItems{itemPackageWeightUnit(code)} to UnitMeasure
     StockItems{productAttribute(value)} to ProductAttribute
     StockItems{productOption(value)} to ProductOption
-    StockItems{material(name)} to Materials
     StockItems{currency(code)} to Currency
     StockItems{barcodeType(name)} to BarcodeTypes
     OrderLines{stockItem(name)} to StockItems
@@ -1073,10 +1060,9 @@ relationship ManyToOne {
     Addresses{region(name)} to Regions
     Addresses{city(name)} to Cities
     Addresses{township(name)} to Townships
-    Addresses{town(name)} to Towns
     Addresses{addressType(name)} to AddressTypes
-    Addresses{customerAddress(name)} to Customers
-    Addresses{supplierAddress(name)} to Suppliers
+    Addresses{customer(name)} to Customers
+    Addresses{supplier(name)} to Suppliers
     BusinessEntityAddress{address} to Addresses
     BusinessEntityAddress{person} to People
     BusinessEntityAddress{addressType(name)} to AddressTypes
@@ -1116,30 +1102,24 @@ relationship ManyToOne {
 }
 
 relationship ManyToOne{
-    CountriesCulture{culture(code)} to Culture
-    CountriesCulture{country(name)} to Countries
-    StateProvincesCulture{culture(code)} to Culture
-    StateProvincesCulture{stateProvince(name)} to StateProvinces
-    CitiesCulture{culture(code)} to Culture
-    CitiesCulture{city(name)} to Cities
-    TownshipsCulture{culture(code)} to Culture
-    TownshipsCulture{township(name)} to Townships
-    RegionsCulture{culture(code)} to Culture
-    RegionsCulture{region(name)} to Regions
-    ProductsCulture{culture(code)} to Culture
-    ProductsCulture{product(name)} to Products
-    StockItemsCulture{culture(code)} to Culture
-    StockItemsCulture{stockItem(name)} to StockItems
-    ProductDocumentsCulture{culture(code)} to Culture
-    ProductDocumentsCulture{productDocument} to ProductDocuments
-    MaterialsCulture{culture(code)} to Culture
-    MaterialsCulture{material(name)} to Materials
-    ProductBrandCulture{culture(code)} to Culture
-    ProductBrandCulture{productBrand(name)} to ProductBrand
-    ProductCategoryCulture{culture(code)} to Culture
-    ProductCategoryCulture{productCategory(name)} to ProductCategory
-    MaterialsCulture{culture(code)} to Culture
-    MaterialsCulture{material(name)} to Materials
+    CountriesLocalize{culture(code)} to Culture
+    StateProvincesLocalize{culture(code)} to Culture
+    CitiesLocalize{culture(code)} to Culture
+    TownshipsLocalize{culture(code)} to Culture
+    PostalCodeMappersLocalize{culture(code)} to Culture
+    RegionsLocalize{culture(code)} to Culture
+    StockItemsLocalize{culture(code)} to Culture
+    ProductBrandLocalize{culture(code)} to Culture
+    ProductCategoryLocalize{culture(code)} to Culture
+    CountriesLocalize{country(name)} to Countries
+    StateProvincesLocalize{stateProvince(name)} to StateProvinces
+    CitiesLocalize{city(name)} to Cities
+    TownshipsLocalize{township(name)} to Townships
+    PostalCodeMappersLocalize{postalCodeMapper(name)} to PostalCodeMappers
+    RegionsLocalize{region(name)} to Regions
+    StockItemsLocalize{stockItem(name)} to StockItems
+    ProductBrandLocalize{productBrand(name)} to ProductBrand
+    ProductCategoryLocalize{productCategory(name)} to ProductCategory
 }
 
 relationship OneToMany{
@@ -1170,7 +1150,7 @@ relationship OneToOne{
     CustomerPaymentVoucher{customerPayment} to CustomerPayment{customerPaymentVoucher}
     CustomerPaymentBankTransfer{customerPayment} to CustomerPayment{customerPaymentBankTransfer}
     CustomerPaymentPaypal{customerPayment} to CustomerPayment{customerPaymentPaypal}
-    Products{productDocument} to ProductDocuments{product}
+    ProductDocuments{product} to Products{productDocument}
     OrderTracking{order} to Orders{orderTracking}
 }
 

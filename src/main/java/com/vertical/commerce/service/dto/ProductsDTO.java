@@ -15,9 +15,6 @@ public class ProductsDTO implements Serializable {
     @NotNull
     private String name;
 
-    @Lob
-    private String cultureDetails;
-
     private String handle;
 
     private String searchDetails;
@@ -62,8 +59,6 @@ public class ProductsDTO implements Serializable {
     private Instant validTo;
 
 
-    private Long productDocumentId;
-
     private Long supplierId;
 
     private String supplierName;
@@ -90,14 +85,6 @@ public class ProductsDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
     }
 
     public String getHandle() {
@@ -244,14 +231,6 @@ public class ProductsDTO implements Serializable {
         this.validTo = validTo;
     }
 
-    public Long getProductDocumentId() {
-        return productDocumentId;
-    }
-
-    public void setProductDocumentId(Long productDocumentsId) {
-        this.productDocumentId = productDocumentsId;
-    }
-
     public Long getSupplierId() {
         return supplierId;
     }
@@ -323,7 +302,6 @@ public class ProductsDTO implements Serializable {
         return "ProductsDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", handle='" + getHandle() + "'" +
             ", searchDetails='" + getSearchDetails() + "'" +
             ", productNumber='" + getProductNumber() + "'" +
@@ -342,7 +320,6 @@ public class ProductsDTO implements Serializable {
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
-            ", productDocumentId=" + getProductDocumentId() +
             ", supplierId=" + getSupplierId() +
             ", supplierName='" + getSupplierName() + "'" +
             ", productCategoryId=" + getProductCategoryId() +

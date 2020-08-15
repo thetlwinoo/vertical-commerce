@@ -42,9 +42,6 @@ public class CountriesResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
-
     private static final String DEFAULT_FORMAL_NAME = "AAAAAAAAAA";
     private static final String UPDATED_FORMAL_NAME = "BBBBBBBBBB";
 
@@ -73,6 +70,9 @@ public class CountriesResourceIT {
 
     private static final String DEFAULT_BORDER = "AAAAAAAAAA";
     private static final String UPDATED_BORDER = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LOCALIZATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCALIZATION = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -109,7 +109,6 @@ public class CountriesResourceIT {
     public static Countries createEntity(EntityManager em) {
         Countries countries = new Countries()
             .name(DEFAULT_NAME)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .formalName(DEFAULT_FORMAL_NAME)
             .isoAplha3Code(DEFAULT_ISO_APLHA_3_CODE)
             .isoNumericCode(DEFAULT_ISO_NUMERIC_CODE)
@@ -119,6 +118,7 @@ public class CountriesResourceIT {
             .region(DEFAULT_REGION)
             .subRegion(DEFAULT_SUB_REGION)
             .border(DEFAULT_BORDER)
+            .localization(DEFAULT_LOCALIZATION)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return countries;
@@ -132,7 +132,6 @@ public class CountriesResourceIT {
     public static Countries createUpdatedEntity(EntityManager em) {
         Countries countries = new Countries()
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .formalName(UPDATED_FORMAL_NAME)
             .isoAplha3Code(UPDATED_ISO_APLHA_3_CODE)
             .isoNumericCode(UPDATED_ISO_NUMERIC_CODE)
@@ -142,6 +141,7 @@ public class CountriesResourceIT {
             .region(UPDATED_REGION)
             .subRegion(UPDATED_SUB_REGION)
             .border(UPDATED_BORDER)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return countries;
@@ -168,7 +168,6 @@ public class CountriesResourceIT {
         assertThat(countriesList).hasSize(databaseSizeBeforeCreate + 1);
         Countries testCountries = countriesList.get(countriesList.size() - 1);
         assertThat(testCountries.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testCountries.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testCountries.getFormalName()).isEqualTo(DEFAULT_FORMAL_NAME);
         assertThat(testCountries.getIsoAplha3Code()).isEqualTo(DEFAULT_ISO_APLHA_3_CODE);
         assertThat(testCountries.getIsoNumericCode()).isEqualTo(DEFAULT_ISO_NUMERIC_CODE);
@@ -178,6 +177,7 @@ public class CountriesResourceIT {
         assertThat(testCountries.getRegion()).isEqualTo(DEFAULT_REGION);
         assertThat(testCountries.getSubRegion()).isEqualTo(DEFAULT_SUB_REGION);
         assertThat(testCountries.getBorder()).isEqualTo(DEFAULT_BORDER);
+        assertThat(testCountries.getLocalization()).isEqualTo(DEFAULT_LOCALIZATION);
         assertThat(testCountries.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testCountries.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -335,7 +335,6 @@ public class CountriesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(countries.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].formalName").value(hasItem(DEFAULT_FORMAL_NAME)))
             .andExpect(jsonPath("$.[*].isoAplha3Code").value(hasItem(DEFAULT_ISO_APLHA_3_CODE)))
             .andExpect(jsonPath("$.[*].isoNumericCode").value(hasItem(DEFAULT_ISO_NUMERIC_CODE)))
@@ -345,6 +344,7 @@ public class CountriesResourceIT {
             .andExpect(jsonPath("$.[*].region").value(hasItem(DEFAULT_REGION)))
             .andExpect(jsonPath("$.[*].subRegion").value(hasItem(DEFAULT_SUB_REGION)))
             .andExpect(jsonPath("$.[*].border").value(hasItem(DEFAULT_BORDER)))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -361,7 +361,6 @@ public class CountriesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(countries.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.formalName").value(DEFAULT_FORMAL_NAME))
             .andExpect(jsonPath("$.isoAplha3Code").value(DEFAULT_ISO_APLHA_3_CODE))
             .andExpect(jsonPath("$.isoNumericCode").value(DEFAULT_ISO_NUMERIC_CODE))
@@ -371,6 +370,7 @@ public class CountriesResourceIT {
             .andExpect(jsonPath("$.region").value(DEFAULT_REGION))
             .andExpect(jsonPath("$.subRegion").value(DEFAULT_SUB_REGION))
             .andExpect(jsonPath("$.border").value(DEFAULT_BORDER))
+            .andExpect(jsonPath("$.localization").value(DEFAULT_LOCALIZATION.toString()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -1341,7 +1341,6 @@ public class CountriesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(countries.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].formalName").value(hasItem(DEFAULT_FORMAL_NAME)))
             .andExpect(jsonPath("$.[*].isoAplha3Code").value(hasItem(DEFAULT_ISO_APLHA_3_CODE)))
             .andExpect(jsonPath("$.[*].isoNumericCode").value(hasItem(DEFAULT_ISO_NUMERIC_CODE)))
@@ -1351,6 +1350,7 @@ public class CountriesResourceIT {
             .andExpect(jsonPath("$.[*].region").value(hasItem(DEFAULT_REGION)))
             .andExpect(jsonPath("$.[*].subRegion").value(hasItem(DEFAULT_SUB_REGION)))
             .andExpect(jsonPath("$.[*].border").value(hasItem(DEFAULT_BORDER)))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -1400,7 +1400,6 @@ public class CountriesResourceIT {
         em.detach(updatedCountries);
         updatedCountries
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .formalName(UPDATED_FORMAL_NAME)
             .isoAplha3Code(UPDATED_ISO_APLHA_3_CODE)
             .isoNumericCode(UPDATED_ISO_NUMERIC_CODE)
@@ -1410,6 +1409,7 @@ public class CountriesResourceIT {
             .region(UPDATED_REGION)
             .subRegion(UPDATED_SUB_REGION)
             .border(UPDATED_BORDER)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         CountriesDTO countriesDTO = countriesMapper.toDto(updatedCountries);
@@ -1424,7 +1424,6 @@ public class CountriesResourceIT {
         assertThat(countriesList).hasSize(databaseSizeBeforeUpdate);
         Countries testCountries = countriesList.get(countriesList.size() - 1);
         assertThat(testCountries.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCountries.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testCountries.getFormalName()).isEqualTo(UPDATED_FORMAL_NAME);
         assertThat(testCountries.getIsoAplha3Code()).isEqualTo(UPDATED_ISO_APLHA_3_CODE);
         assertThat(testCountries.getIsoNumericCode()).isEqualTo(UPDATED_ISO_NUMERIC_CODE);
@@ -1434,6 +1433,7 @@ public class CountriesResourceIT {
         assertThat(testCountries.getRegion()).isEqualTo(UPDATED_REGION);
         assertThat(testCountries.getSubRegion()).isEqualTo(UPDATED_SUB_REGION);
         assertThat(testCountries.getBorder()).isEqualTo(UPDATED_BORDER);
+        assertThat(testCountries.getLocalization()).isEqualTo(UPDATED_LOCALIZATION);
         assertThat(testCountries.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testCountries.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

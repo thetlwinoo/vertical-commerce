@@ -27,7 +27,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718081712",
+  "changelogDate": "20200802175816",
   "entityTableName": "cold_room_temperatures",
   "dto": "mapstruct",
   "pagination": "no",

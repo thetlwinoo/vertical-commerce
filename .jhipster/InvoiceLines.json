@@ -69,7 +69,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200718075912",
+  "changelogDate": "20200802174016",
   "entityTableName": "invoice_lines",
   "dto": "mapstruct",
   "pagination": "no",

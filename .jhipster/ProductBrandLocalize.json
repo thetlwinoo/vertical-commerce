@@ -1,0 +1,38 @@
+{
+  "name": "ProductBrandLocalize",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "culture",
+      "otherEntityRelationshipName": "productBrandLocalize",
+      "relationshipName": "culture",
+      "otherEntityField": "code"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "productBrand",
+      "otherEntityRelationshipName": "productBrandLocalize",
+      "relationshipName": "productBrand",
+      "otherEntityField": "name"
+    }
+  ],
+  "changelogDate": "20200802182116",
+  "entityTableName": "product_brand_localize",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "vscommerce",
+  "applications": "*",
+  "microserviceName": "vscommerce"
+}

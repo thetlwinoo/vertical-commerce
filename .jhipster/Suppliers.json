@@ -184,7 +184,7 @@
       "ownerSide": false
     }
   ],
-  "changelogDate": "20200718074312",
+  "changelogDate": "20200802172416",
   "entityTableName": "suppliers",
   "dto": "mapstruct",
   "pagination": "no",

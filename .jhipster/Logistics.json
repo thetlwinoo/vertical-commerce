@@ -27,7 +27,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718085812",
+  "changelogDate": "20200802183716",
   "entityTableName": "logistics",
   "dto": "mapstruct",
   "pagination": "no",

@@ -6,11 +6,6 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "cultureDetails",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
       "fieldName": "highlights",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "text"
@@ -103,21 +98,22 @@
   ],
   "relationships": [
     {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "products",
+      "otherEntityRelationshipName": "productDocument",
+      "relationshipName": "product",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
       "relationshipType": "many-to-one",
       "otherEntityName": "warrantyTypes",
       "otherEntityRelationshipName": "productDocuments",
       "relationshipName": "warrantyType",
       "otherEntityField": "name"
-    },
-    {
-      "relationshipType": "one-to-one",
-      "otherEntityName": "products",
-      "otherEntityRelationshipName": "productDocument",
-      "relationshipName": "product",
-      "ownerSide": false
     }
   ],
-  "changelogDate": "20200718083712",
+  "changelogDate": "20200802181716",
   "entityTableName": "product_documents",
   "dto": "mapstruct",
   "pagination": "no",

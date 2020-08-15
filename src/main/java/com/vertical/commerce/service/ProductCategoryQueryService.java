@@ -94,6 +94,9 @@ public class ProductCategoryQueryService extends QueryService<ProductCategory> {
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), ProductCategory_.name));
             }
+            if (criteria.getHandle() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getHandle(), ProductCategory_.handle));
+            }
             if (criteria.getShortLabel() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getShortLabel(), ProductCategory_.shortLabel));
             }
@@ -109,8 +112,11 @@ public class ProductCategoryQueryService extends QueryService<ProductCategory> {
             if (criteria.getJustForYouInd() != null) {
                 specification = specification.and(buildSpecification(criteria.getJustForYouInd(), ProductCategory_.justForYouInd));
             }
-            if (criteria.getShowInNavInd() != null) {
-                specification = specification.and(buildSpecification(criteria.getShowInNavInd(), ProductCategory_.showInNavInd));
+            if (criteria.getParentCascade() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getParentCascade(), ProductCategory_.parentCascade));
+            }
+            if (criteria.getActiveFlag() != null) {
+                specification = specification.and(buildSpecification(criteria.getActiveFlag(), ProductCategory_.activeFlag));
             }
             if (criteria.getValidFrom() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), ProductCategory_.validFrom));

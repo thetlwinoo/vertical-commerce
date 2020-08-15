@@ -102,7 +102,6 @@ class ProductsGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
-                , "cultureDetails":null
                 , "handle":"SAMPLE_TEXT"
                 , "searchDetails":"SAMPLE_TEXT"
                 , "productNumber":"SAMPLE_TEXT"

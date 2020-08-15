@@ -7,7 +7,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718082612",
+  "changelogDate": "20200802180616",
   "entityTableName": "upload_action_types",
   "dto": "mapstruct",
   "pagination": "no",

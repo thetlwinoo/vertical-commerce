@@ -7,9 +7,8 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "cultureDetails",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
+      "fieldName": "handle",
+      "fieldType": "String"
     },
     {
       "fieldName": "vendorCode",
@@ -194,6 +193,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "localization",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
       "fieldName": "validFrom",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
@@ -215,6 +219,13 @@
       "otherEntityName": "photos",
       "otherEntityRelationshipName": "stockItem",
       "relationshipName": "photoList"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "suppliers",
+      "otherEntityRelationshipName": "stockItems",
+      "relationshipName": "supplier",
+      "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
@@ -308,7 +319,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200718082312",
+  "changelogDate": "20200802180316",
   "entityTableName": "stock_items",
   "dto": "mapstruct",
   "pagination": "pagination",

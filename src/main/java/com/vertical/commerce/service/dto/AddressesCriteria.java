@@ -51,13 +51,11 @@ public class AddressesCriteria implements Serializable, Criteria {
 
     private LongFilter townshipId;
 
-    private LongFilter townId;
-
     private LongFilter addressTypeId;
 
-    private LongFilter customerAddressId;
+    private LongFilter customerId;
 
-    private LongFilter supplierAddressId;
+    private LongFilter supplierId;
 
     public AddressesCriteria() {
     }
@@ -76,10 +74,9 @@ public class AddressesCriteria implements Serializable, Criteria {
         this.regionId = other.regionId == null ? null : other.regionId.copy();
         this.cityId = other.cityId == null ? null : other.cityId.copy();
         this.townshipId = other.townshipId == null ? null : other.townshipId.copy();
-        this.townId = other.townId == null ? null : other.townId.copy();
         this.addressTypeId = other.addressTypeId == null ? null : other.addressTypeId.copy();
-        this.customerAddressId = other.customerAddressId == null ? null : other.customerAddressId.copy();
-        this.supplierAddressId = other.supplierAddressId == null ? null : other.supplierAddressId.copy();
+        this.customerId = other.customerId == null ? null : other.customerId.copy();
+        this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
     }
 
     @Override
@@ -191,14 +188,6 @@ public class AddressesCriteria implements Serializable, Criteria {
         this.townshipId = townshipId;
     }
 
-    public LongFilter getTownId() {
-        return townId;
-    }
-
-    public void setTownId(LongFilter townId) {
-        this.townId = townId;
-    }
-
     public LongFilter getAddressTypeId() {
         return addressTypeId;
     }
@@ -207,20 +196,20 @@ public class AddressesCriteria implements Serializable, Criteria {
         this.addressTypeId = addressTypeId;
     }
 
-    public LongFilter getCustomerAddressId() {
-        return customerAddressId;
+    public LongFilter getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerAddressId(LongFilter customerAddressId) {
-        this.customerAddressId = customerAddressId;
+    public void setCustomerId(LongFilter customerId) {
+        this.customerId = customerId;
     }
 
-    public LongFilter getSupplierAddressId() {
-        return supplierAddressId;
+    public LongFilter getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplierAddressId(LongFilter supplierAddressId) {
-        this.supplierAddressId = supplierAddressId;
+    public void setSupplierId(LongFilter supplierId) {
+        this.supplierId = supplierId;
     }
 
 
@@ -247,10 +236,9 @@ public class AddressesCriteria implements Serializable, Criteria {
             Objects.equals(regionId, that.regionId) &&
             Objects.equals(cityId, that.cityId) &&
             Objects.equals(townshipId, that.townshipId) &&
-            Objects.equals(townId, that.townId) &&
             Objects.equals(addressTypeId, that.addressTypeId) &&
-            Objects.equals(customerAddressId, that.customerAddressId) &&
-            Objects.equals(supplierAddressId, that.supplierAddressId);
+            Objects.equals(customerId, that.customerId) &&
+            Objects.equals(supplierId, that.supplierId);
     }
 
     @Override
@@ -269,10 +257,9 @@ public class AddressesCriteria implements Serializable, Criteria {
         regionId,
         cityId,
         townshipId,
-        townId,
         addressTypeId,
-        customerAddressId,
-        supplierAddressId
+        customerId,
+        supplierId
         );
     }
 
@@ -293,10 +280,9 @@ public class AddressesCriteria implements Serializable, Criteria {
                 (regionId != null ? "regionId=" + regionId + ", " : "") +
                 (cityId != null ? "cityId=" + cityId + ", " : "") +
                 (townshipId != null ? "townshipId=" + townshipId + ", " : "") +
-                (townId != null ? "townId=" + townId + ", " : "") +
                 (addressTypeId != null ? "addressTypeId=" + addressTypeId + ", " : "") +
-                (customerAddressId != null ? "customerAddressId=" + customerAddressId + ", " : "") +
-                (supplierAddressId != null ? "supplierAddressId=" + supplierAddressId + ", " : "") +
+                (customerId != null ? "customerId=" + customerId + ", " : "") +
+                (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
             "}";
     }
 

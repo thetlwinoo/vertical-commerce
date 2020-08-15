@@ -1,6 +1,5 @@
 package com.vertical.commerce.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -29,11 +28,6 @@ public class ProductDocuments implements Serializable {
 
     @Column(name = "video_url")
     private String videoUrl;
-
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "culture_details")
-    private String cultureDetails;
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
@@ -113,13 +107,13 @@ public class ProductDocuments implements Serializable {
     @Column(name = "last_edited_when", nullable = false)
     private Instant lastEditedWhen;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Products product;
+
     @ManyToOne
     @JsonIgnoreProperties(value = "productDocuments", allowSetters = true)
     private WarrantyTypes warrantyType;
-
-    @OneToOne(mappedBy = "productDocument")
-    @JsonIgnore
-    private Products product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -141,19 +135,6 @@ public class ProductDocuments implements Serializable {
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
-    }
-
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public ProductDocuments cultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
-        return this;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
     }
 
     public String getHighlights() {
@@ -416,19 +397,6 @@ public class ProductDocuments implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public WarrantyTypes getWarrantyType() {
-        return warrantyType;
-    }
-
-    public ProductDocuments warrantyType(WarrantyTypes warrantyTypes) {
-        this.warrantyType = warrantyTypes;
-        return this;
-    }
-
-    public void setWarrantyType(WarrantyTypes warrantyTypes) {
-        this.warrantyType = warrantyTypes;
-    }
-
     public Products getProduct() {
         return product;
     }
@@ -440,6 +408,19 @@ public class ProductDocuments implements Serializable {
 
     public void setProduct(Products products) {
         this.product = products;
+    }
+
+    public WarrantyTypes getWarrantyType() {
+        return warrantyType;
+    }
+
+    public ProductDocuments warrantyType(WarrantyTypes warrantyTypes) {
+        this.warrantyType = warrantyTypes;
+        return this;
+    }
+
+    public void setWarrantyType(WarrantyTypes warrantyTypes) {
+        this.warrantyType = warrantyTypes;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -465,7 +446,6 @@ public class ProductDocuments implements Serializable {
         return "ProductDocuments{" +
             "id=" + getId() +
             ", videoUrl='" + getVideoUrl() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", highlights='" + getHighlights() + "'" +
             ", longDescription='" + getLongDescription() + "'" +
             ", shortDescription='" + getShortDescription() + "'" +

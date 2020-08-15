@@ -130,21 +130,17 @@ public class AddressesQueryService extends QueryService<Addresses> {
                 specification = specification.and(buildSpecification(criteria.getTownshipId(),
                     root -> root.join(Addresses_.township, JoinType.LEFT).get(Townships_.id)));
             }
-            if (criteria.getTownId() != null) {
-                specification = specification.and(buildSpecification(criteria.getTownId(),
-                    root -> root.join(Addresses_.town, JoinType.LEFT).get(Towns_.id)));
-            }
             if (criteria.getAddressTypeId() != null) {
                 specification = specification.and(buildSpecification(criteria.getAddressTypeId(),
                     root -> root.join(Addresses_.addressType, JoinType.LEFT).get(AddressTypes_.id)));
             }
-            if (criteria.getCustomerAddressId() != null) {
-                specification = specification.and(buildSpecification(criteria.getCustomerAddressId(),
-                    root -> root.join(Addresses_.customerAddress, JoinType.LEFT).get(Customers_.id)));
+            if (criteria.getCustomerId() != null) {
+                specification = specification.and(buildSpecification(criteria.getCustomerId(),
+                    root -> root.join(Addresses_.customer, JoinType.LEFT).get(Customers_.id)));
             }
-            if (criteria.getSupplierAddressId() != null) {
-                specification = specification.and(buildSpecification(criteria.getSupplierAddressId(),
-                    root -> root.join(Addresses_.supplierAddress, JoinType.LEFT).get(Suppliers_.id)));
+            if (criteria.getSupplierId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierId(),
+                    root -> root.join(Addresses_.supplier, JoinType.LEFT).get(Suppliers_.id)));
             }
         }
         return specification;

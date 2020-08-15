@@ -229,14 +229,16 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
             saveProduct.setProductBrand(productBrand);
             saveProduct.setReleaseDate(productsDTO.getReleaseDate());
             saveProduct.setAvailableDate(productsDTO.getAvailableDate());
+            saveProduct.setAvailableDate(productsDTO.getAvailableDate());
             saveProduct.setLastEditedBy(userLogin);
             saveProduct.setLastEditedWhen(Instant.now());
             saveProduct.setSellCount(0);
+            saveProduct.setPreferredInd(productsDTO.isPreferredInd());
+            saveProduct.setMadeInMyanmarInd(productsDTO.isMadeInMyanmarInd());
+            saveProduct.setFreeShippingInd(productsDTO.isFreeShippingInd());
             Suppliers suppliers = suppliersRepository.getOne(productsDTO.getSupplierId());
             saveProduct.setSupplier(suppliers);
             saveProduct.setQuestionsAboutProductInd(true);
-            ProductDocuments productDocument = productDocumentsRepository.getOne(productsDTO.getProductDocumentId());
-            saveProduct.setProductDocument(productDocument);
             String prefixNumber = saveProduct.getName().replaceAll("[^a-zA-Z0-9]", "").toUpperCase();
             prefixNumber = prefixNumber.length() > 7 ? prefixNumber.substring(0,7): prefixNumber;
             Random random= new Random();
@@ -268,11 +270,11 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
     }
 
     @Override
-    public String getFilterProducts(Long categoryId,String brandIdList,String tag,String attributes,String options,String priceRange,Integer rating,Integer page,Integer limit) {
+    public String getFilterProducts(Long categoryId,Long brandId,Long supplierId,String brandIdList,String tag,String attributes,String options,String priceRange,Integer rating,Integer page,Integer limit) {
         try{
 //            String.join(",", attributes)
 
-            String result =  productsExtendFilterRepository.filterProducts(categoryId,"{" + brandIdList + "}",tag, "{" + attributes + "}","{" + options + "}","{" + priceRange + "}",rating,page,limit);
+            String result =  productsExtendFilterRepository.filterProducts(categoryId,brandId,supplierId,"{" + brandIdList + "}",tag, "{" + attributes + "}","{" + options + "}","{" + priceRange + "}",rating,page,limit);
             return result;
         }
         catch(Exception ex){
@@ -282,9 +284,9 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
     }
 
     @Override
-    public String getFilterControllers(Long categoryId,String tag) {
+    public String getFilterControllers(Long categoryId,Long brandId,Long supplierId,String tag) {
         try{
-            String result =  productsExtendFilterRepository.getFilterControllers(categoryId,tag);
+            String result =  productsExtendFilterRepository.getFilterControllers(categoryId,brandId,supplierId,tag);
             return result;
         }
         catch(Exception ex){
@@ -306,23 +308,33 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
     }
 
     @Override
-    public void productDetailsBatchUpdate() throws JsonProcessingException {
-        for(Products product:productsRepository.findAll()){
-            String productDetails = getProductDetailsShort(product.getId());
+    public void productDetailsUpdate(Long id) throws JsonProcessingException {
+        Products products = productsRepository.getOne(id);
+        String productDetails = getProductDetailsShort(id);
 
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode actualObj = mapper.readTree(productDetails);
-            JsonNode jsonNode1 = actualObj.get("ratings").get("overallRating");
-            JsonNode jsonNode2 = actualObj.get("totalWishlists");
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode actualObj = mapper.readTree(productDetails);
+        JsonNode jsonNode1 = actualObj.get("ratings").get("overallRating");
+        JsonNode jsonNode2 = actualObj.get("totalWishlists");
 
+        if(!(jsonNode1==null)){
             Integer overallRating = jsonNode1.intValue();
+            products.setOverallRating(overallRating);
+        }
+
+        if(!(jsonNode2 == null)){
             Integer totalWishlist = jsonNode2.intValue();
+            products.setTotalWishlist(totalWishlist);
+        }
 
-            product.setProductDetails(productDetails);
-            product.setOverallRating(overallRating);
-            product.setTotalWishlist(totalWishlist);
+        products.setProductDetails(productDetails);
+        productsRepository.save(products);
+    }
 
-            productsRepository.save(product);
+    @Override
+    public void productDetailsBatchUpdate() throws JsonProcessingException {
+        for(Products products:productsRepository.findAll()){
+            this.productDetailsUpdate(products.getId());
         }
     }
 
@@ -348,5 +360,29 @@ public class ProductsExtendServiceImpl implements ProductsExtendService {
 
             productsRepository.save(products);
         }
+    }
+
+    @Override
+    public String getProductsHome() {
+        try{
+            String result =  productsExtendFilterRepository.getProductsHome();
+            return result;
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+
+    }
+
+    @Override
+    public List<String> getTags(String filter) {
+        try{
+            List<String> result =  productsExtendFilterRepository.getTags(filter);
+            return result;
+        }
+        catch(Exception ex){
+            throw ex;
+        }
+
     }
 }

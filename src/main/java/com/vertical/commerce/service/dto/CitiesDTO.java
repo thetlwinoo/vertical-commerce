@@ -15,12 +15,12 @@ public class CitiesDTO implements Serializable {
     @NotNull
     private String name;
 
-    @Lob
-    private String cultureDetails;
-
     private String location;
 
     private Long latestRecordedPopulation;
+
+    @Lob
+    private String localization;
 
     @NotNull
     private Instant validFrom;
@@ -48,14 +48,6 @@ public class CitiesDTO implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
-    }
-
     public String getLocation() {
         return location;
     }
@@ -70,6 +62,14 @@ public class CitiesDTO implements Serializable {
 
     public void setLatestRecordedPopulation(Long latestRecordedPopulation) {
         this.latestRecordedPopulation = latestRecordedPopulation;
+    }
+
+    public String getLocalization() {
+        return localization;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
     }
 
     public Instant getValidFrom() {
@@ -127,9 +127,9 @@ public class CitiesDTO implements Serializable {
         return "CitiesDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", location='" + getLocation() + "'" +
             ", latestRecordedPopulation=" + getLatestRecordedPopulation() +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             ", regionId=" + getRegionId() +

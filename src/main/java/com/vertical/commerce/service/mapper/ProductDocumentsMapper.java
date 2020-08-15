@@ -9,15 +9,16 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ProductDocuments} and its DTO {@link ProductDocumentsDTO}.
  */
-@Mapper(componentModel = "spring", uses = {WarrantyTypesMapper.class})
+@Mapper(componentModel = "spring", uses = {ProductsMapper.class, WarrantyTypesMapper.class})
 public interface ProductDocumentsMapper extends EntityMapper<ProductDocumentsDTO, ProductDocuments> {
 
+    @Mapping(source = "product.id", target = "productId")
     @Mapping(source = "warrantyType.id", target = "warrantyTypeId")
     @Mapping(source = "warrantyType.name", target = "warrantyTypeName")
     ProductDocumentsDTO toDto(ProductDocuments productDocuments);
 
+    @Mapping(source = "productId", target = "product")
     @Mapping(source = "warrantyTypeId", target = "warrantyType")
-    @Mapping(target = "product", ignore = true)
     ProductDocuments toEntity(ProductDocumentsDTO productDocumentsDTO);
 
     default ProductDocuments fromId(Long id) {

@@ -7,11 +7,6 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "cultureDetails",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
       "fieldName": "handle",
       "fieldType": "String"
     },
@@ -93,14 +88,6 @@
   ],
   "relationships": [
     {
-      "relationshipType": "one-to-one",
-      "otherEntityName": "productDocuments",
-      "otherEntityRelationshipName": "product",
-      "relationshipName": "productDocument",
-      "otherEntityField": "id",
-      "ownerSide": true
-    },
-    {
       "relationshipType": "one-to-many",
       "otherEntityName": "stockItems",
       "otherEntityRelationshipName": "product",
@@ -126,9 +113,16 @@
       "otherEntityRelationshipName": "products",
       "relationshipName": "productBrand",
       "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "productDocuments",
+      "otherEntityRelationshipName": "product",
+      "relationshipName": "productDocument",
+      "ownerSide": false
     }
   ],
-  "changelogDate": "20200718081912",
+  "changelogDate": "20200802180016",
   "entityTableName": "products",
   "dto": "mapstruct",
   "pagination": "pagination",

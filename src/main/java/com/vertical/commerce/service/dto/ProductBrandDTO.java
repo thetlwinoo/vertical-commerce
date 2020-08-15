@@ -15,8 +15,7 @@ public class ProductBrandDTO implements Serializable {
     @NotNull
     private String name;
 
-    @Lob
-    private String cultureDetails;
+    private String handle;
 
     private String shortLabel;
 
@@ -28,6 +27,9 @@ public class ProductBrandDTO implements Serializable {
 
     @NotNull
     private Boolean activeFlag;
+
+    @Lob
+    private String localization;
 
     @NotNull
     private Instant validFrom;
@@ -51,12 +53,12 @@ public class ProductBrandDTO implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
+    public String getHandle() {
+        return handle;
     }
 
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public void setHandle(String handle) {
+        this.handle = handle;
     }
 
     public String getShortLabel() {
@@ -99,6 +101,14 @@ public class ProductBrandDTO implements Serializable {
         this.activeFlag = activeFlag;
     }
 
+    public String getLocalization() {
+        return localization;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
+    }
+
     public Instant getValidFrom() {
         return validFrom;
     }
@@ -138,12 +148,13 @@ public class ProductBrandDTO implements Serializable {
         return "ProductBrandDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
+            ", handle='" + getHandle() + "'" +
             ", shortLabel='" + getShortLabel() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
             ", iconPhoto='" + getIconPhoto() + "'" +
             ", activeFlag='" + isActiveFlag() + "'" +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

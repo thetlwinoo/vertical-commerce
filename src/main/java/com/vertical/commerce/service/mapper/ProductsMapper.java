@@ -9,10 +9,9 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link Products} and its DTO {@link ProductsDTO}.
  */
-@Mapper(componentModel = "spring", uses = {ProductDocumentsMapper.class, SuppliersMapper.class, ProductCategoryMapper.class, ProductBrandMapper.class})
+@Mapper(componentModel = "spring", uses = {SuppliersMapper.class, ProductCategoryMapper.class, ProductBrandMapper.class})
 public interface ProductsMapper extends EntityMapper<ProductsDTO, Products> {
 
-    @Mapping(source = "productDocument.id", target = "productDocumentId")
     @Mapping(source = "supplier.id", target = "supplierId")
     @Mapping(source = "supplier.name", target = "supplierName")
     @Mapping(source = "productCategory.id", target = "productCategoryId")
@@ -21,12 +20,12 @@ public interface ProductsMapper extends EntityMapper<ProductsDTO, Products> {
     @Mapping(source = "productBrand.name", target = "productBrandName")
     ProductsDTO toDto(Products products);
 
-    @Mapping(source = "productDocumentId", target = "productDocument")
     @Mapping(target = "stockItemLists", ignore = true)
     @Mapping(target = "removeStockItemList", ignore = true)
     @Mapping(source = "supplierId", target = "supplier")
     @Mapping(source = "productCategoryId", target = "productCategory")
     @Mapping(source = "productBrandId", target = "productBrand")
+    @Mapping(target = "productDocument", ignore = true)
     Products toEntity(ProductsDTO productsDTO);
 
     default Products fromId(Long id) {

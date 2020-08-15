@@ -29,6 +29,8 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
+    private StringFilter handle;
+
     private StringFilter shortLabel;
 
     private IntegerFilter sortOrder;
@@ -39,7 +41,9 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
 
     private BooleanFilter justForYouInd;
 
-    private BooleanFilter showInNavInd;
+    private StringFilter parentCascade;
+
+    private BooleanFilter activeFlag;
 
     private InstantFilter validFrom;
 
@@ -53,12 +57,14 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
     public ProductCategoryCriteria(ProductCategoryCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
+        this.handle = other.handle == null ? null : other.handle.copy();
         this.shortLabel = other.shortLabel == null ? null : other.shortLabel.copy();
         this.sortOrder = other.sortOrder == null ? null : other.sortOrder.copy();
         this.iconFont = other.iconFont == null ? null : other.iconFont.copy();
         this.iconPhoto = other.iconPhoto == null ? null : other.iconPhoto.copy();
         this.justForYouInd = other.justForYouInd == null ? null : other.justForYouInd.copy();
-        this.showInNavInd = other.showInNavInd == null ? null : other.showInNavInd.copy();
+        this.parentCascade = other.parentCascade == null ? null : other.parentCascade.copy();
+        this.activeFlag = other.activeFlag == null ? null : other.activeFlag.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
         this.parentId = other.parentId == null ? null : other.parentId.copy();
@@ -83,6 +89,14 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
 
     public void setName(StringFilter name) {
         this.name = name;
+    }
+
+    public StringFilter getHandle() {
+        return handle;
+    }
+
+    public void setHandle(StringFilter handle) {
+        this.handle = handle;
     }
 
     public StringFilter getShortLabel() {
@@ -125,12 +139,20 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
         this.justForYouInd = justForYouInd;
     }
 
-    public BooleanFilter getShowInNavInd() {
-        return showInNavInd;
+    public StringFilter getParentCascade() {
+        return parentCascade;
     }
 
-    public void setShowInNavInd(BooleanFilter showInNavInd) {
-        this.showInNavInd = showInNavInd;
+    public void setParentCascade(StringFilter parentCascade) {
+        this.parentCascade = parentCascade;
+    }
+
+    public BooleanFilter getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(BooleanFilter activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public InstantFilter getValidFrom() {
@@ -170,12 +192,14 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
+            Objects.equals(handle, that.handle) &&
             Objects.equals(shortLabel, that.shortLabel) &&
             Objects.equals(sortOrder, that.sortOrder) &&
             Objects.equals(iconFont, that.iconFont) &&
             Objects.equals(iconPhoto, that.iconPhoto) &&
             Objects.equals(justForYouInd, that.justForYouInd) &&
-            Objects.equals(showInNavInd, that.showInNavInd) &&
+            Objects.equals(parentCascade, that.parentCascade) &&
+            Objects.equals(activeFlag, that.activeFlag) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo) &&
             Objects.equals(parentId, that.parentId);
@@ -186,12 +210,14 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         name,
+        handle,
         shortLabel,
         sortOrder,
         iconFont,
         iconPhoto,
         justForYouInd,
-        showInNavInd,
+        parentCascade,
+        activeFlag,
         validFrom,
         validTo,
         parentId
@@ -204,12 +230,14 @@ public class ProductCategoryCriteria implements Serializable, Criteria {
         return "ProductCategoryCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
+                (handle != null ? "handle=" + handle + ", " : "") +
                 (shortLabel != null ? "shortLabel=" + shortLabel + ", " : "") +
                 (sortOrder != null ? "sortOrder=" + sortOrder + ", " : "") +
                 (iconFont != null ? "iconFont=" + iconFont + ", " : "") +
                 (iconPhoto != null ? "iconPhoto=" + iconPhoto + ", " : "") +
                 (justForYouInd != null ? "justForYouInd=" + justForYouInd + ", " : "") +
-                (showInNavInd != null ? "showInNavInd=" + showInNavInd + ", " : "") +
+                (parentCascade != null ? "parentCascade=" + parentCascade + ", " : "") +
+                (activeFlag != null ? "activeFlag=" + activeFlag + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
                 (parentId != null ? "parentId=" + parentId + ", " : "") +

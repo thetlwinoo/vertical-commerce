@@ -1,5 +1,6 @@
 package com.vertical.commerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -31,11 +32,6 @@ public class Products implements Serializable {
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
-
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "culture_details")
-    private String cultureDetails;
 
     @Column(name = "handle")
     private String handle;
@@ -99,10 +95,6 @@ public class Products implements Serializable {
     @Column(name = "valid_to")
     private Instant validTo;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private ProductDocuments productDocument;
-
     @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<StockItems> stockItemLists = new HashSet<>();
@@ -118,6 +110,10 @@ public class Products implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "products", allowSetters = true)
     private ProductBrand productBrand;
+
+    @OneToOne(mappedBy = "product")
+    @JsonIgnore
+    private ProductDocuments productDocument;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -139,19 +135,6 @@ public class Products implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public Products cultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
-        return this;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
     }
 
     public String getHandle() {
@@ -388,19 +371,6 @@ public class Products implements Serializable {
         this.validTo = validTo;
     }
 
-    public ProductDocuments getProductDocument() {
-        return productDocument;
-    }
-
-    public Products productDocument(ProductDocuments productDocuments) {
-        this.productDocument = productDocuments;
-        return this;
-    }
-
-    public void setProductDocument(ProductDocuments productDocuments) {
-        this.productDocument = productDocuments;
-    }
-
     public Set<StockItems> getStockItemLists() {
         return stockItemLists;
     }
@@ -464,6 +434,19 @@ public class Products implements Serializable {
     public void setProductBrand(ProductBrand productBrand) {
         this.productBrand = productBrand;
     }
+
+    public ProductDocuments getProductDocument() {
+        return productDocument;
+    }
+
+    public Products productDocument(ProductDocuments productDocuments) {
+        this.productDocument = productDocuments;
+        return this;
+    }
+
+    public void setProductDocument(ProductDocuments productDocuments) {
+        this.productDocument = productDocuments;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -488,7 +471,6 @@ public class Products implements Serializable {
         return "Products{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", handle='" + getHandle() + "'" +
             ", searchDetails='" + getSearchDetails() + "'" +
             ", productNumber='" + getProductNumber() + "'" +

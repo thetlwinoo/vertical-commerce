@@ -102,7 +102,7 @@
       "otherEntityField": "id"
     }
   ],
-  "changelogDate": "20200718075112",
+  "changelogDate": "20200802173216",
   "entityTableName": "customers",
   "dto": "mapstruct",
   "pagination": "no",

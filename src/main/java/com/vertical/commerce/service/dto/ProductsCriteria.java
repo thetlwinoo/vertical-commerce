@@ -63,8 +63,6 @@ public class ProductsCriteria implements Serializable, Criteria {
 
     private InstantFilter validTo;
 
-    private LongFilter productDocumentId;
-
     private LongFilter stockItemListId;
 
     private LongFilter supplierId;
@@ -72,6 +70,8 @@ public class ProductsCriteria implements Serializable, Criteria {
     private LongFilter productCategoryId;
 
     private LongFilter productBrandId;
+
+    private LongFilter productDocumentId;
 
     public ProductsCriteria() {
     }
@@ -96,11 +96,11 @@ public class ProductsCriteria implements Serializable, Criteria {
         this.lastEditedWhen = other.lastEditedWhen == null ? null : other.lastEditedWhen.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
-        this.productDocumentId = other.productDocumentId == null ? null : other.productDocumentId.copy();
         this.stockItemListId = other.stockItemListId == null ? null : other.stockItemListId.copy();
         this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
         this.productCategoryId = other.productCategoryId == null ? null : other.productCategoryId.copy();
         this.productBrandId = other.productBrandId == null ? null : other.productBrandId.copy();
+        this.productDocumentId = other.productDocumentId == null ? null : other.productDocumentId.copy();
     }
 
     @Override
@@ -260,14 +260,6 @@ public class ProductsCriteria implements Serializable, Criteria {
         this.validTo = validTo;
     }
 
-    public LongFilter getProductDocumentId() {
-        return productDocumentId;
-    }
-
-    public void setProductDocumentId(LongFilter productDocumentId) {
-        this.productDocumentId = productDocumentId;
-    }
-
     public LongFilter getStockItemListId() {
         return stockItemListId;
     }
@@ -300,6 +292,14 @@ public class ProductsCriteria implements Serializable, Criteria {
         this.productBrandId = productBrandId;
     }
 
+    public LongFilter getProductDocumentId() {
+        return productDocumentId;
+    }
+
+    public void setProductDocumentId(LongFilter productDocumentId) {
+        this.productDocumentId = productDocumentId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -330,11 +330,11 @@ public class ProductsCriteria implements Serializable, Criteria {
             Objects.equals(lastEditedWhen, that.lastEditedWhen) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo) &&
-            Objects.equals(productDocumentId, that.productDocumentId) &&
             Objects.equals(stockItemListId, that.stockItemListId) &&
             Objects.equals(supplierId, that.supplierId) &&
             Objects.equals(productCategoryId, that.productCategoryId) &&
-            Objects.equals(productBrandId, that.productBrandId);
+            Objects.equals(productBrandId, that.productBrandId) &&
+            Objects.equals(productDocumentId, that.productDocumentId);
     }
 
     @Override
@@ -359,11 +359,11 @@ public class ProductsCriteria implements Serializable, Criteria {
         lastEditedWhen,
         validFrom,
         validTo,
-        productDocumentId,
         stockItemListId,
         supplierId,
         productCategoryId,
-        productBrandId
+        productBrandId,
+        productDocumentId
         );
     }
 
@@ -390,11 +390,11 @@ public class ProductsCriteria implements Serializable, Criteria {
                 (lastEditedWhen != null ? "lastEditedWhen=" + lastEditedWhen + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
-                (productDocumentId != null ? "productDocumentId=" + productDocumentId + ", " : "") +
                 (stockItemListId != null ? "stockItemListId=" + stockItemListId + ", " : "") +
                 (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
                 (productCategoryId != null ? "productCategoryId=" + productCategoryId + ", " : "") +
                 (productBrandId != null ? "productBrandId=" + productBrandId + ", " : "") +
+                (productDocumentId != null ? "productDocumentId=" + productDocumentId + ", " : "") +
             "}";
     }
 

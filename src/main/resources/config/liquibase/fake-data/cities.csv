@@ -1,11 +1,11 @@
-id;name;culture_details;location;latest_recorded_population;valid_from;valid_to
-1;architectures killer;../fake-data/blob/hipster.txt;Toys;3433;2020-07-17T22:46:05;2020-07-17T10:16:46
-2;Unbranded;../fake-data/blob/hipster.txt;1080p RAM;61181;2020-07-17T20:32:01;2020-07-18T07:29:01
-3;Lead;../fake-data/blob/hipster.txt;Singapore Dollar;5123;2020-07-18T06:39:29;2020-07-18T03:20:17
-4;Health Generic Stream;../fake-data/blob/hipster.txt;national Ball;41603;2020-07-18T00:27:02;2020-07-17T13:08:33
-5;Down-sized Flat Shirt;../fake-data/blob/hipster.txt;model indexing forecast;2745;2020-07-18T06:12:50;2020-07-17T09:11:12
-6;best-of-breed Mexican Peso Mexican Unidad de Inversion (UDI);../fake-data/blob/hipster.txt;Berkshire;95442;2020-07-18T01:54:36;2020-07-17T18:52:26
-7;California tan;../fake-data/blob/hipster.txt;Tuna Licensed Plastic Table THX;5065;2020-07-17T17:03:47;2020-07-17T07:50:28
-8;Sausages;../fake-data/blob/hipster.txt;Agent Assistant;90449;2020-07-17T17:46:20;2020-07-18T03:08:02
-9;driver Awesome mint green;../fake-data/blob/hipster.txt;core infomediaries;28189;2020-07-17T20:05:49;2020-07-18T00:36:46
-10;microchip;../fake-data/blob/hipster.txt;Platinum Interactions;15874;2020-07-17T13:06:27;2020-07-18T01:03:31
+id;name;location;latest_recorded_population;localization;valid_from;valid_to
+1;architectures killer;Toys;3433;../fake-data/blob/hipster.txt;2020-08-02T08:27:09;2020-08-01T19:57:50
+2;Unbranded;1080p RAM;61181;../fake-data/blob/hipster.txt;2020-08-02T06:13:05;2020-08-02T17:10:05
+3;Lead;Singapore Dollar;5123;../fake-data/blob/hipster.txt;2020-08-02T16:20:33;2020-08-02T13:01:21
+4;Health Generic Stream;national Ball;41603;../fake-data/blob/hipster.txt;2020-08-02T10:08:06;2020-08-01T22:49:37
+5;Down-sized Flat Shirt;model indexing forecast;2745;../fake-data/blob/hipster.txt;2020-08-02T15:53:54;2020-08-01T18:52:16
+6;best-of-breed Mexican Peso Mexican Unidad de Inversion (UDI);Berkshire;95442;../fake-data/blob/hipster.txt;2020-08-02T11:35:40;2020-08-02T04:33:30
+7;California tan;Tuna Licensed Plastic Table THX;5065;../fake-data/blob/hipster.txt;2020-08-02T02:44:51;2020-08-01T17:31:32
+8;Sausages;Agent Assistant;90449;../fake-data/blob/hipster.txt;2020-08-02T03:27:24;2020-08-02T12:49:06
+9;driver Awesome mint green;core infomediaries;28189;../fake-data/blob/hipster.txt;2020-08-02T05:46:53;2020-08-02T10:17:50
+10;microchip;Platinum Interactions;15874;../fake-data/blob/hipster.txt;2020-08-01T22:47:31;2020-08-02T10:44:35

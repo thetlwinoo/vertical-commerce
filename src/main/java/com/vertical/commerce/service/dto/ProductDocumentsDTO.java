@@ -15,9 +15,6 @@ public class ProductDocumentsDTO implements Serializable {
     private String videoUrl;
 
     @Lob
-    private String cultureDetails;
-
-    @Lob
     private String highlights;
 
     @Lob
@@ -68,6 +65,8 @@ public class ProductDocumentsDTO implements Serializable {
     private Instant lastEditedWhen;
 
 
+    private Long productId;
+
     private Long warrantyTypeId;
 
     private String warrantyTypeName;
@@ -86,14 +85,6 @@ public class ProductDocumentsDTO implements Serializable {
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
-    }
-
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
     }
 
     public String getHighlights() {
@@ -256,6 +247,14 @@ public class ProductDocumentsDTO implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productsId) {
+        this.productId = productsId;
+    }
+
     public Long getWarrantyTypeId() {
         return warrantyTypeId;
     }
@@ -295,7 +294,6 @@ public class ProductDocumentsDTO implements Serializable {
         return "ProductDocumentsDTO{" +
             "id=" + getId() +
             ", videoUrl='" + getVideoUrl() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", highlights='" + getHighlights() + "'" +
             ", longDescription='" + getLongDescription() + "'" +
             ", shortDescription='" + getShortDescription() + "'" +
@@ -316,6 +314,7 @@ public class ProductDocumentsDTO implements Serializable {
             ", dangerousGoods='" + getDangerousGoods() + "'" +
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
+            ", productId=" + getProductId() +
             ", warrantyTypeId=" + getWarrantyTypeId() +
             ", warrantyTypeName='" + getWarrantyTypeName() + "'" +
             "}";

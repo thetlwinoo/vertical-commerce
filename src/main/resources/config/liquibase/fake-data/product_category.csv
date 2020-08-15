@@ -1,11 +1,11 @@
-id;name;culture_details;short_label;sort_order;icon_font;icon_photo;just_for_you_ind;show_in_nav_ind;valid_from;valid_to
-1;firmware;../fake-data/blob/hipster.txt;Liaison compress proactive;97402;Pennsylvania Tasty Frozen Sausages;capacitor Data orchestrate;true;false;2020-07-17T16:20:18;2020-07-17T17:50:55
-2;Monitored;../fake-data/blob/hipster.txt;Chair;14407;Ergonomic Cotton Pizza Idaho;Intelligent Granite Fish collaboration;true;true;2020-07-17T21:35:51;2020-07-18T08:31:29
-3;Balboa US Dollar Games;../fake-data/blob/hipster.txt;Branding Chair Seamless;57808;Berkshire;Licensed Plastic Car Sports driver;false;true;2020-07-17T19:10:48;2020-07-17T11:39:31
-4;Universal Iraqi Dinar;../fake-data/blob/hipster.txt;Clothing New Jersey;81848;bus Advanced;Human transmit;false;false;2020-07-17T22:11:38;2020-07-17T16:40:50
-5;relationships;../fake-data/blob/hipster.txt;Marshall Islands;53428;Soap Brunei Dollar sky blue;Tactics Movies;true;false;2020-07-17T23:52:09;2020-07-17T11:25:06
-6;Sudan;../fake-data/blob/hipster.txt;technologies eyeballs withdrawal;64525;Mauritius Rupee;Mississippi Buckinghamshire;true;true;2020-07-17T18:02:07;2020-07-18T01:00:28
-7;Cambridgeshire bleeding-edge markets;../fake-data/blob/hipster.txt;Leone radical;27160;Sports Checking Account Interactions;holistic;true;true;2020-07-17T20:40:32;2020-07-17T08:54:49
-8;transmitter Mill;../fake-data/blob/hipster.txt;USB invoice Sri Lanka;65058;parsing invoice Pants;generating;false;false;2020-07-17T19:11:47;2020-07-17T10:03:36
-9;payment indigo Soft;../fake-data/blob/hipster.txt;optical Global deposit;29334;haptic;Drive United States Minor Outlying Islands;false;false;2020-07-18T04:27:38;2020-07-17T10:40:17
-10;cross-media firewall compress;../fake-data/blob/hipster.txt;incubate Cambridgeshire;54598;orange Angola;blue;true;false;2020-07-18T03:18:30;2020-07-17T20:04:16
+id;name;handle;short_label;sort_order;icon_font;icon_photo;just_for_you_ind;parent_cascade;active_flag;localization;valid_from;valid_to
+1;firmware;Liaison compress proactive;front-end bypass Strategist;95238;capacitor Data orchestrate;Clothing Savings Account Monitored;false;Rustic Granite Car;false;../fake-data/blob/hipster.txt;2020-08-02T09:34:59;2020-08-01T21:44:34
+2;tan Intelligent Granite Fish;Bacon;Avenue Palau;61570;Fresh;deposit Computers multi-byte;false;Buckinghamshire Licensed Plastic Car;false;../fake-data/blob/hipster.txt;2020-08-01T21:56:31;2020-08-02T01:02:21
+3;Soft;HDD Universal;reintermediate Clothing New Jersey;81848;bus Advanced;Human transmit;false;bandwidth;false;../fake-data/blob/hipster.txt;2020-08-02T07:56:18;2020-08-02T05:47:39
+4;Marshall Islands;Corporate Ohio;sky blue;35688;ability Licensed explicit;Awesome calculating technologies;false;withdrawal;true;../fake-data/blob/hipster.txt;2020-08-02T17:37:32;2020-08-02T02:14:19
+5;Nevada Mills;application Money Market Account EXE;bleeding-edge markets infomediaries;72974;compress;Sports Checking Account Interactions;false;Analyst haptic;true;../fake-data/blob/hipster.txt;2020-08-02T09:08:31;2020-08-02T00:59:59
+6;Mill programming calculate;Sri Lanka invoice parsing;GB robust;84213;Plastic West Virginia;payment indigo Soft;true;JSON Norway Gloves;false;../fake-data/blob/hipster.txt;2020-08-01T22:59:55;2020-08-02T05:31:46
+7;Drive United States Minor Outlying Islands;Mouse;PCI Saint Helena Pound Saint Martin;26288;incubate Cambridgeshire;Extension interface;false;blue;true;../fake-data/blob/hipster.txt;2020-08-02T08:14:54;2020-08-02T12:57:34
+8;hard drive Groves;virtual user-centric;AGP functionalities vortals;59205;Liaison;multi-byte paradigms back-end;true;Tennessee synergistic synergies;false;../fake-data/blob/hipster.txt;2020-08-02T04:25:17;2020-08-02T12:58:16
+9;port Fantastic Frozen Pizza;Chief;Auto Loan Account Berkshire;32426;needs-based;Incredible Plastic Hat;false;aggregate;false;../fake-data/blob/hipster.txt;2020-08-02T02:18:41;2020-08-02T03:33:58
+10;lavender microchip;functionalities Wooden Avon;cross-platform;94160;Dobra deposit Texas;mobile;true;Prairie deposit;false;../fake-data/blob/hipster.txt;2020-08-01T21:46:44;2020-08-02T12:52:43

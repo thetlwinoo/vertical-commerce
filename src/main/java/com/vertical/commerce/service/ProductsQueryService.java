@@ -145,10 +145,6 @@ public class ProductsQueryService extends QueryService<Products> {
             if (criteria.getValidTo() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidTo(), Products_.validTo));
             }
-            if (criteria.getProductDocumentId() != null) {
-                specification = specification.and(buildSpecification(criteria.getProductDocumentId(),
-                    root -> root.join(Products_.productDocument, JoinType.LEFT).get(ProductDocuments_.id)));
-            }
             if (criteria.getStockItemListId() != null) {
                 specification = specification.and(buildSpecification(criteria.getStockItemListId(),
                     root -> root.join(Products_.stockItemLists, JoinType.LEFT).get(StockItems_.id)));
@@ -164,6 +160,10 @@ public class ProductsQueryService extends QueryService<Products> {
             if (criteria.getProductBrandId() != null) {
                 specification = specification.and(buildSpecification(criteria.getProductBrandId(),
                     root -> root.join(Products_.productBrand, JoinType.LEFT).get(ProductBrand_.id)));
+            }
+            if (criteria.getProductDocumentId() != null) {
+                specification = specification.and(buildSpecification(criteria.getProductDocumentId(),
+                    root -> root.join(Products_.productDocument, JoinType.LEFT).get(ProductDocuments_.id)));
             }
         }
         return specification;

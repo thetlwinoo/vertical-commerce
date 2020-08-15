@@ -39,7 +39,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718075512",
+  "changelogDate": "20200802173616",
   "entityTableName": "customer_payment_voucher",
   "dto": "mapstruct",
   "pagination": "no",

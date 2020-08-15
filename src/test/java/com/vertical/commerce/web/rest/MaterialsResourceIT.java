@@ -40,8 +40,8 @@ public class MaterialsResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
+    private static final String DEFAULT_LOCALIZATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCALIZATION = "BBBBBBBBBB";
 
     @Autowired
     private MaterialsRepository materialsRepository;
@@ -72,7 +72,7 @@ public class MaterialsResourceIT {
     public static Materials createEntity(EntityManager em) {
         Materials materials = new Materials()
             .name(DEFAULT_NAME)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS);
+            .localization(DEFAULT_LOCALIZATION);
         return materials;
     }
     /**
@@ -84,7 +84,7 @@ public class MaterialsResourceIT {
     public static Materials createUpdatedEntity(EntityManager em) {
         Materials materials = new Materials()
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS);
+            .localization(UPDATED_LOCALIZATION);
         return materials;
     }
 
@@ -109,7 +109,7 @@ public class MaterialsResourceIT {
         assertThat(materialsList).hasSize(databaseSizeBeforeCreate + 1);
         Materials testMaterials = materialsList.get(materialsList.size() - 1);
         assertThat(testMaterials.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testMaterials.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
+        assertThat(testMaterials.getLocalization()).isEqualTo(DEFAULT_LOCALIZATION);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class MaterialsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(materials.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())));
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())));
     }
     
     @Test
@@ -180,7 +180,7 @@ public class MaterialsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(materials.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()));
+            .andExpect(jsonPath("$.localization").value(DEFAULT_LOCALIZATION.toString()));
     }
 
 
@@ -289,7 +289,7 @@ public class MaterialsResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(materials.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())));
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())));
 
         // Check, that the count call also returns 1
         restMaterialsMockMvc.perform(get("/api/materials/count?sort=id,desc&" + filter))
@@ -337,7 +337,7 @@ public class MaterialsResourceIT {
         em.detach(updatedMaterials);
         updatedMaterials
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS);
+            .localization(UPDATED_LOCALIZATION);
         MaterialsDTO materialsDTO = materialsMapper.toDto(updatedMaterials);
 
         restMaterialsMockMvc.perform(put("/api/materials").with(csrf())
@@ -350,7 +350,7 @@ public class MaterialsResourceIT {
         assertThat(materialsList).hasSize(databaseSizeBeforeUpdate);
         Materials testMaterials = materialsList.get(materialsList.size() - 1);
         assertThat(testMaterials.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testMaterials.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
+        assertThat(testMaterials.getLocalization()).isEqualTo(UPDATED_LOCALIZATION);
     }
 
     @Test

@@ -69,19 +69,15 @@ public class Addresses implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "addresses", allowSetters = true)
-    private Towns town;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "addresses", allowSetters = true)
     private AddressTypes addressType;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "addresses", allowSetters = true)
-    private Customers customerAddress;
+    private Customers customer;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "addresses", allowSetters = true)
-    private Suppliers supplierAddress;
+    private Suppliers supplier;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -248,19 +244,6 @@ public class Addresses implements Serializable {
         this.township = townships;
     }
 
-    public Towns getTown() {
-        return town;
-    }
-
-    public Addresses town(Towns towns) {
-        this.town = towns;
-        return this;
-    }
-
-    public void setTown(Towns towns) {
-        this.town = towns;
-    }
-
     public AddressTypes getAddressType() {
         return addressType;
     }
@@ -274,30 +257,30 @@ public class Addresses implements Serializable {
         this.addressType = addressTypes;
     }
 
-    public Customers getCustomerAddress() {
-        return customerAddress;
+    public Customers getCustomer() {
+        return customer;
     }
 
-    public Addresses customerAddress(Customers customers) {
-        this.customerAddress = customers;
+    public Addresses customer(Customers customers) {
+        this.customer = customers;
         return this;
     }
 
-    public void setCustomerAddress(Customers customers) {
-        this.customerAddress = customers;
+    public void setCustomer(Customers customers) {
+        this.customer = customers;
     }
 
-    public Suppliers getSupplierAddress() {
-        return supplierAddress;
+    public Suppliers getSupplier() {
+        return supplier;
     }
 
-    public Addresses supplierAddress(Suppliers suppliers) {
-        this.supplierAddress = suppliers;
+    public Addresses supplier(Suppliers suppliers) {
+        this.supplier = suppliers;
         return this;
     }
 
-    public void setSupplierAddress(Suppliers suppliers) {
-        this.supplierAddress = suppliers;
+    public void setSupplier(Suppliers suppliers) {
+        this.supplier = suppliers;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

@@ -17,7 +17,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718074212",
+  "changelogDate": "20200802172316",
   "entityTableName": "supplier_categories",
   "dto": "mapstruct",
   "pagination": "no",

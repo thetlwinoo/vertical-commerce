@@ -1,0 +1,38 @@
+{
+  "name": "PostalCodeMappersLocalize",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "culture",
+      "otherEntityRelationshipName": "postalCodeMappersLocalize",
+      "relationshipName": "culture",
+      "otherEntityField": "code"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "postalCodeMappers",
+      "otherEntityRelationshipName": "postalCodeMappersLocalize",
+      "relationshipName": "postalCodeMapper",
+      "otherEntityField": "name"
+    }
+  ],
+  "changelogDate": "20200802171616",
+  "entityTableName": "postal_code_mappers_localize",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "vscommerce",
+  "applications": "*",
+  "microserviceName": "vscommerce"
+}

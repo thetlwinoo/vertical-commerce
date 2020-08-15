@@ -49,7 +49,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718080312",
+  "changelogDate": "20200802174416",
   "entityTableName": "bank_accounts",
   "dto": "mapstruct",
   "pagination": "no",

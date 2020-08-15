@@ -60,11 +60,11 @@ public class ShippingFeeChart implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "shippingFeeCharts", allowSetters = true)
-    private Towns sourceTown;
+    private Townships sourceTownship;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "shippingFeeCharts", allowSetters = true)
-    private Towns destinationTown;
+    private Townships destinationTownship;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "shippingFeeCharts", allowSetters = true)
@@ -183,30 +183,30 @@ public class ShippingFeeChart implements Serializable {
         this.lastEditedWhen = lastEditedWhen;
     }
 
-    public Towns getSourceTown() {
-        return sourceTown;
+    public Townships getSourceTownship() {
+        return sourceTownship;
     }
 
-    public ShippingFeeChart sourceTown(Towns towns) {
-        this.sourceTown = towns;
+    public ShippingFeeChart sourceTownship(Townships townships) {
+        this.sourceTownship = townships;
         return this;
     }
 
-    public void setSourceTown(Towns towns) {
-        this.sourceTown = towns;
+    public void setSourceTownship(Townships townships) {
+        this.sourceTownship = townships;
     }
 
-    public Towns getDestinationTown() {
-        return destinationTown;
+    public Townships getDestinationTownship() {
+        return destinationTownship;
     }
 
-    public ShippingFeeChart destinationTown(Towns towns) {
-        this.destinationTown = towns;
+    public ShippingFeeChart destinationTownship(Townships townships) {
+        this.destinationTownship = townships;
         return this;
     }
 
-    public void setDestinationTown(Towns towns) {
-        this.destinationTown = towns;
+    public void setDestinationTownship(Townships townships) {
+        this.destinationTownship = townships;
     }
 
     public DeliveryMethods getDeliveryMethod() {

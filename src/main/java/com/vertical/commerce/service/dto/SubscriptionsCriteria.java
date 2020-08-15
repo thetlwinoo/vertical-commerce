@@ -31,6 +31,8 @@ public class SubscriptionsCriteria implements Serializable, Criteria {
 
     private InstantFilter subscribedOn;
 
+    private BooleanFilter activeFlag;
+
     private InstantFilter validFrom;
 
     private InstantFilter validTo;
@@ -42,6 +44,7 @@ public class SubscriptionsCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.emailAddress = other.emailAddress == null ? null : other.emailAddress.copy();
         this.subscribedOn = other.subscribedOn == null ? null : other.subscribedOn.copy();
+        this.activeFlag = other.activeFlag == null ? null : other.activeFlag.copy();
         this.validFrom = other.validFrom == null ? null : other.validFrom.copy();
         this.validTo = other.validTo == null ? null : other.validTo.copy();
     }
@@ -75,6 +78,14 @@ public class SubscriptionsCriteria implements Serializable, Criteria {
         this.subscribedOn = subscribedOn;
     }
 
+    public BooleanFilter getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(BooleanFilter activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
     public InstantFilter getValidFrom() {
         return validFrom;
     }
@@ -105,6 +116,7 @@ public class SubscriptionsCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(emailAddress, that.emailAddress) &&
             Objects.equals(subscribedOn, that.subscribedOn) &&
+            Objects.equals(activeFlag, that.activeFlag) &&
             Objects.equals(validFrom, that.validFrom) &&
             Objects.equals(validTo, that.validTo);
     }
@@ -115,6 +127,7 @@ public class SubscriptionsCriteria implements Serializable, Criteria {
         id,
         emailAddress,
         subscribedOn,
+        activeFlag,
         validFrom,
         validTo
         );
@@ -127,6 +140,7 @@ public class SubscriptionsCriteria implements Serializable, Criteria {
                 (id != null ? "id=" + id + ", " : "") +
                 (emailAddress != null ? "emailAddress=" + emailAddress + ", " : "") +
                 (subscribedOn != null ? "subscribedOn=" + subscribedOn + ", " : "") +
+                (activeFlag != null ? "activeFlag=" + activeFlag + ", " : "") +
                 (validFrom != null ? "validFrom=" + validFrom + ", " : "") +
                 (validTo != null ? "validTo=" + validTo + ", " : "") +
             "}";

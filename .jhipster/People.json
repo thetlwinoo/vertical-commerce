@@ -136,7 +136,7 @@
       "ownerSide": false
     }
   ],
-  "changelogDate": "20200718074012",
+  "changelogDate": "20200802172116",
   "entityTableName": "people",
   "dto": "mapstruct",
   "pagination": "no",

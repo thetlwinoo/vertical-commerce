@@ -13,7 +13,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718071612",
+  "changelogDate": "20200802165716",
   "entityTableName": "culture",
   "dto": "mapstruct",
   "pagination": "no",

@@ -13,6 +13,11 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "activeFlag",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "validFrom",
       "fieldType": "Instant",
       "fieldValidateRules": ["required"]
@@ -23,7 +28,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718090012",
+  "changelogDate": "20200802183916",
   "entityTableName": "subscriptions",
   "dto": "mapstruct",
   "pagination": "no",

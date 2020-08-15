@@ -15,8 +15,7 @@ public class ProductCategoryDTO implements Serializable {
     @NotNull
     private String name;
 
-    @Lob
-    private String cultureDetails;
+    private String handle;
 
     private String shortLabel;
 
@@ -28,7 +27,13 @@ public class ProductCategoryDTO implements Serializable {
 
     private Boolean justForYouInd;
 
-    private Boolean showInNavInd;
+    private String parentCascade;
+
+    @NotNull
+    private Boolean activeFlag;
+
+    @Lob
+    private String localization;
 
     @NotNull
     private Instant validFrom;
@@ -56,12 +61,12 @@ public class ProductCategoryDTO implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
+    public String getHandle() {
+        return handle;
     }
 
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public void setHandle(String handle) {
+        this.handle = handle;
     }
 
     public String getShortLabel() {
@@ -104,12 +109,28 @@ public class ProductCategoryDTO implements Serializable {
         this.justForYouInd = justForYouInd;
     }
 
-    public Boolean isShowInNavInd() {
-        return showInNavInd;
+    public String getParentCascade() {
+        return parentCascade;
     }
 
-    public void setShowInNavInd(Boolean showInNavInd) {
-        this.showInNavInd = showInNavInd;
+    public void setParentCascade(String parentCascade) {
+        this.parentCascade = parentCascade;
+    }
+
+    public Boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Boolean activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public String getLocalization() {
+        return localization;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
     }
 
     public Instant getValidFrom() {
@@ -167,13 +188,15 @@ public class ProductCategoryDTO implements Serializable {
         return "ProductCategoryDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
+            ", handle='" + getHandle() + "'" +
             ", shortLabel='" + getShortLabel() + "'" +
             ", sortOrder=" + getSortOrder() +
             ", iconFont='" + getIconFont() + "'" +
             ", iconPhoto='" + getIconPhoto() + "'" +
             ", justForYouInd='" + isJustForYouInd() + "'" +
-            ", showInNavInd='" + isShowInNavInd() + "'" +
+            ", parentCascade='" + getParentCascade() + "'" +
+            ", activeFlag='" + isActiveFlag() + "'" +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             ", parentId=" + getParentId() +

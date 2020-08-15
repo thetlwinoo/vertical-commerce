@@ -22,7 +22,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718075412",
+  "changelogDate": "20200802173516",
   "entityTableName": "customer_payment_credit_card_extended",
   "dto": "mapstruct",
   "pagination": "no",

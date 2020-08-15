@@ -36,7 +36,7 @@
     }
   ],
   "relationships": [],
-  "changelogDate": "20200718080212",
+  "changelogDate": "20200802174316",
   "entityTableName": "payment_methods",
   "dto": "mapstruct",
   "pagination": "no",

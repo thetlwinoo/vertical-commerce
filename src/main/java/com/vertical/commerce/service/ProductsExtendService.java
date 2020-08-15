@@ -53,13 +53,19 @@ public interface ProductsExtendService {
 
     String getProductDetailsShort(Long productId);
 
-    String getFilterProducts(Long categoryId,String brandIdList,String tag,String attributes,String options,String priceRange,Integer rating,Integer page,Integer limit);
+    String getFilterProducts(Long categoryId,Long brandId,Long supplierId,String brandIdList,String tag,String attributes,String options,String priceRange,Integer rating,Integer page,Integer limit);
 
-    String getFilterControllers(Long categoryId,String tag);
+    String getFilterControllers(Long categoryId,Long brandId,Long supplierId,String tag);
+
+    void productDetailsUpdate(Long id) throws JsonProcessingException;
 
     void productDetailsBatchUpdate() throws JsonProcessingException;
 
     List<Long> getProductsIdsByOrder(Long productId);
 
     void updateProductDetailsByOrder(Long orderId) throws JsonProcessingException;
+
+    String getProductsHome();
+
+    List<String> getTags(String filter);
 }

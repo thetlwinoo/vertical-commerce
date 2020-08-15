@@ -46,9 +46,6 @@ public class StateProvincesResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
-
     private static final String DEFAULT_SALES_TERRITORY = "AAAAAAAAAA";
     private static final String UPDATED_SALES_TERRITORY = "BBBBBBBBBB";
 
@@ -58,6 +55,9 @@ public class StateProvincesResourceIT {
     private static final Long DEFAULT_LATEST_RECORDED_POPULATION = 1L;
     private static final Long UPDATED_LATEST_RECORDED_POPULATION = 2L;
     private static final Long SMALLER_LATEST_RECORDED_POPULATION = 1L - 1L;
+
+    private static final String DEFAULT_LOCALIZATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCALIZATION = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -95,10 +95,10 @@ public class StateProvincesResourceIT {
         StateProvinces stateProvinces = new StateProvinces()
             .code(DEFAULT_CODE)
             .name(DEFAULT_NAME)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .salesTerritory(DEFAULT_SALES_TERRITORY)
             .border(DEFAULT_BORDER)
             .latestRecordedPopulation(DEFAULT_LATEST_RECORDED_POPULATION)
+            .localization(DEFAULT_LOCALIZATION)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return stateProvinces;
@@ -113,10 +113,10 @@ public class StateProvincesResourceIT {
         StateProvinces stateProvinces = new StateProvinces()
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .salesTerritory(UPDATED_SALES_TERRITORY)
             .border(UPDATED_BORDER)
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return stateProvinces;
@@ -144,10 +144,10 @@ public class StateProvincesResourceIT {
         StateProvinces testStateProvinces = stateProvincesList.get(stateProvincesList.size() - 1);
         assertThat(testStateProvinces.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testStateProvinces.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testStateProvinces.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testStateProvinces.getSalesTerritory()).isEqualTo(DEFAULT_SALES_TERRITORY);
         assertThat(testStateProvinces.getBorder()).isEqualTo(DEFAULT_BORDER);
         assertThat(testStateProvinces.getLatestRecordedPopulation()).isEqualTo(DEFAULT_LATEST_RECORDED_POPULATION);
+        assertThat(testStateProvinces.getLocalization()).isEqualTo(DEFAULT_LOCALIZATION);
         assertThat(testStateProvinces.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testStateProvinces.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -246,10 +246,10 @@ public class StateProvincesResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(stateProvinces.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].salesTerritory").value(hasItem(DEFAULT_SALES_TERRITORY)))
             .andExpect(jsonPath("$.[*].border").value(hasItem(DEFAULT_BORDER)))
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -267,10 +267,10 @@ public class StateProvincesResourceIT {
             .andExpect(jsonPath("$.id").value(stateProvinces.getId().intValue()))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.salesTerritory").value(DEFAULT_SALES_TERRITORY))
             .andExpect(jsonPath("$.border").value(DEFAULT_BORDER))
             .andExpect(jsonPath("$.latestRecordedPopulation").value(DEFAULT_LATEST_RECORDED_POPULATION.intValue()))
+            .andExpect(jsonPath("$.localization").value(DEFAULT_LOCALIZATION.toString()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -845,10 +845,10 @@ public class StateProvincesResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(stateProvinces.getId().intValue())))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].salesTerritory").value(hasItem(DEFAULT_SALES_TERRITORY)))
             .andExpect(jsonPath("$.[*].border").value(hasItem(DEFAULT_BORDER)))
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -899,10 +899,10 @@ public class StateProvincesResourceIT {
         updatedStateProvinces
             .code(UPDATED_CODE)
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .salesTerritory(UPDATED_SALES_TERRITORY)
             .border(UPDATED_BORDER)
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         StateProvincesDTO stateProvincesDTO = stateProvincesMapper.toDto(updatedStateProvinces);
@@ -918,10 +918,10 @@ public class StateProvincesResourceIT {
         StateProvinces testStateProvinces = stateProvincesList.get(stateProvincesList.size() - 1);
         assertThat(testStateProvinces.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testStateProvinces.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testStateProvinces.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testStateProvinces.getSalesTerritory()).isEqualTo(UPDATED_SALES_TERRITORY);
         assertThat(testStateProvinces.getBorder()).isEqualTo(UPDATED_BORDER);
         assertThat(testStateProvinces.getLatestRecordedPopulation()).isEqualTo(UPDATED_LATEST_RECORDED_POPULATION);
+        assertThat(testStateProvinces.getLocalization()).isEqualTo(UPDATED_LOCALIZATION);
         assertThat(testStateProvinces.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testStateProvinces.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

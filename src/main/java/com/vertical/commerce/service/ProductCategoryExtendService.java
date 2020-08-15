@@ -3,5 +3,6 @@ package com.vertical.commerce.service;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public interface ProductCategoryExtendService {
-    JsonNode getCategoriesTree(Boolean showNav);
+//    JsonNode getCategoriesTree(Boolean showNav);
+    String getCategoriesTree(String idList);
 }

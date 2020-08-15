@@ -30,8 +30,8 @@ public class Materials implements Serializable {
 
     @Lob
     @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "culture_details")
-    private String cultureDetails;
+    @Column(name = "localization")
+    private String localization;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -55,17 +55,17 @@ public class Materials implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
+    public String getLocalization() {
+        return localization;
     }
 
-    public Materials cultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public Materials localization(String localization) {
+        this.localization = localization;
         return this;
     }
 
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public void setLocalization(String localization) {
+        this.localization = localization;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -91,7 +91,7 @@ public class Materials implements Serializable {
         return "Materials{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
+            ", localization='" + getLocalization() + "'" +
             "}";
     }
 }

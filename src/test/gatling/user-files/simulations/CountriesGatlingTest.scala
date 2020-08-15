@@ -102,7 +102,6 @@ class CountriesGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "name":"SAMPLE_TEXT"
-                , "cultureDetails":null
                 , "formalName":"SAMPLE_TEXT"
                 , "isoAplha3Code":"SAMPLE_TEXT"
                 , "isoNumericCode":"0"
@@ -112,6 +111,7 @@ class CountriesGatlingTest extends Simulation {
                 , "region":"SAMPLE_TEXT"
                 , "subRegion":"SAMPLE_TEXT"
                 , "border":"SAMPLE_TEXT"
+                , "localization":null
                 , "validFrom":"2020-01-01T00:00:00.000Z"
                 , "validTo":"2020-01-01T00:00:00.000Z"
                 }""")).asJson

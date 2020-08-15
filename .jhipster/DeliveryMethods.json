@@ -46,7 +46,7 @@
       "ownerSide": false
     }
   ],
-  "changelogDate": "20200718074112",
+  "changelogDate": "20200802172216",
   "entityTableName": "delivery_methods",
   "dto": "mapstruct",
   "pagination": "no",

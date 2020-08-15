@@ -213,6 +213,8 @@ public class ProductsExtendResource {
     public ResponseEntity<String> filterProducts(
         @RequestParam(value = "tag", required = false) String tag,
         @RequestParam(value = "categoryId", required = false) Long categoryId,
+        @RequestParam(value = "brandId", required = false) Long brandId,
+        @RequestParam(value = "supplierId", required = false) Long supplierId,
         @RequestParam(value = "brandIdList", required = false) String brandIdList,
         @RequestParam(value = "attributes", required = false) String attributes,
         @RequestParam(value = "options", required = false) String options,
@@ -220,21 +222,40 @@ public class ProductsExtendResource {
         @RequestParam(value = "rating", required = false) Integer rating,
         Pageable pageable
     ) throws JsonProcessingException {
-        String result = productsExtendService.getFilterProducts(categoryId == null? -1:categoryId,brandIdList == null ? "" : brandIdList,tag == null?"":tag,attributes == null? "": attributes,options == null? "":options,priceRange == null?"":priceRange,rating == null?-1:rating,pageable.getPageNumber(),pageable.getPageSize());
+        String result = productsExtendService.getFilterProducts(categoryId == null? -1:categoryId,brandId == null? -1:brandId,supplierId == null? -1:supplierId,brandIdList == null ? "" : brandIdList,tag == null?"":tag,attributes == null? "": attributes,options == null? "":options,priceRange == null?"":priceRange,rating == null?-1:rating,pageable.getPageNumber(),pageable.getPageSize());
         return ResponseEntity.ok().body(result);
     }
 
     @RequestMapping(value = "/products-extend/filter-controllers", method = RequestMethod.GET)
     public ResponseEntity<String> getFilterControllers(
         @RequestParam(value = "tag", required = false) String tag,
-        @RequestParam(value = "categoryId", required = false) Long categoryId
+        @RequestParam(value = "categoryId", required = false) Long categoryId,
+        @RequestParam(value = "brandId", required = false) Long brandId,
+        @RequestParam(value = "supplierId", required = false) Long supplierId
     ) throws JsonProcessingException {
-        String result = productsExtendService.getFilterControllers(categoryId == null? -1:categoryId,tag == null?"":tag);
+        String result = productsExtendService.getFilterControllers(categoryId == null? -1:categoryId,brandId == null? -1:brandId,supplierId == null? -1:supplierId,tag == null?"":tag);
         return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/products-extend/details-update/{id}")
+    public void productDetailsUpdate(@PathVariable Long id) throws JsonProcessingException {
+        productsExtendService.productDetailsUpdate(id);
     }
 
     @PostMapping("/products-extend/details-batch-update")
     public void productDetailsBatchUpdate() throws JsonProcessingException {
         productsExtendService.productDetailsBatchUpdate();
+    }
+
+    @RequestMapping(value = "/products-extend/home", method = RequestMethod.GET)
+    public ResponseEntity getProductsHome() {
+        String result = productsExtendService.getProductsHome();
+        return ResponseEntity.ok().body(result);
+    }
+
+    @RequestMapping(value = "/products-extend/tags", method = RequestMethod.GET)
+    public ResponseEntity getTags(@RequestParam("filter") String filter) {
+        List<String> result = productsExtendService.getTags(filter);
+        return ResponseEntity.ok().body(result);
     }
 }

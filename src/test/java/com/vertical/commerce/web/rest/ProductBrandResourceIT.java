@@ -42,8 +42,8 @@ public class ProductBrandResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
+    private static final String DEFAULT_HANDLE = "AAAAAAAAAA";
+    private static final String UPDATED_HANDLE = "BBBBBBBBBB";
 
     private static final String DEFAULT_SHORT_LABEL = "AAAAAAAAAA";
     private static final String UPDATED_SHORT_LABEL = "BBBBBBBBBB";
@@ -60,6 +60,9 @@ public class ProductBrandResourceIT {
 
     private static final Boolean DEFAULT_ACTIVE_FLAG = false;
     private static final Boolean UPDATED_ACTIVE_FLAG = true;
+
+    private static final String DEFAULT_LOCALIZATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCALIZATION = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -96,12 +99,13 @@ public class ProductBrandResourceIT {
     public static ProductBrand createEntity(EntityManager em) {
         ProductBrand productBrand = new ProductBrand()
             .name(DEFAULT_NAME)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
+            .handle(DEFAULT_HANDLE)
             .shortLabel(DEFAULT_SHORT_LABEL)
             .sortOrder(DEFAULT_SORT_ORDER)
             .iconFont(DEFAULT_ICON_FONT)
             .iconPhoto(DEFAULT_ICON_PHOTO)
             .activeFlag(DEFAULT_ACTIVE_FLAG)
+            .localization(DEFAULT_LOCALIZATION)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return productBrand;
@@ -115,12 +119,13 @@ public class ProductBrandResourceIT {
     public static ProductBrand createUpdatedEntity(EntityManager em) {
         ProductBrand productBrand = new ProductBrand()
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
+            .handle(UPDATED_HANDLE)
             .shortLabel(UPDATED_SHORT_LABEL)
             .sortOrder(UPDATED_SORT_ORDER)
             .iconFont(UPDATED_ICON_FONT)
             .iconPhoto(UPDATED_ICON_PHOTO)
             .activeFlag(UPDATED_ACTIVE_FLAG)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return productBrand;
@@ -147,12 +152,13 @@ public class ProductBrandResourceIT {
         assertThat(productBrandList).hasSize(databaseSizeBeforeCreate + 1);
         ProductBrand testProductBrand = productBrandList.get(productBrandList.size() - 1);
         assertThat(testProductBrand.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testProductBrand.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
+        assertThat(testProductBrand.getHandle()).isEqualTo(DEFAULT_HANDLE);
         assertThat(testProductBrand.getShortLabel()).isEqualTo(DEFAULT_SHORT_LABEL);
         assertThat(testProductBrand.getSortOrder()).isEqualTo(DEFAULT_SORT_ORDER);
         assertThat(testProductBrand.getIconFont()).isEqualTo(DEFAULT_ICON_FONT);
         assertThat(testProductBrand.getIconPhoto()).isEqualTo(DEFAULT_ICON_PHOTO);
         assertThat(testProductBrand.isActiveFlag()).isEqualTo(DEFAULT_ACTIVE_FLAG);
+        assertThat(testProductBrand.getLocalization()).isEqualTo(DEFAULT_LOCALIZATION);
         assertThat(testProductBrand.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testProductBrand.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -250,12 +256,13 @@ public class ProductBrandResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productBrand.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
+            .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
             .andExpect(jsonPath("$.[*].shortLabel").value(hasItem(DEFAULT_SHORT_LABEL)))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
             .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
             .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)))
             .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -272,12 +279,13 @@ public class ProductBrandResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(productBrand.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
+            .andExpect(jsonPath("$.handle").value(DEFAULT_HANDLE))
             .andExpect(jsonPath("$.shortLabel").value(DEFAULT_SHORT_LABEL))
             .andExpect(jsonPath("$.sortOrder").value(DEFAULT_SORT_ORDER))
             .andExpect(jsonPath("$.iconFont").value(DEFAULT_ICON_FONT))
             .andExpect(jsonPath("$.iconPhoto").value(DEFAULT_ICON_PHOTO))
             .andExpect(jsonPath("$.activeFlag").value(DEFAULT_ACTIVE_FLAG.booleanValue()))
+            .andExpect(jsonPath("$.localization").value(DEFAULT_LOCALIZATION.toString()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -377,6 +385,84 @@ public class ProductBrandResourceIT {
 
         // Get all the productBrandList where name does not contain UPDATED_NAME
         defaultProductBrandShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByHandleIsEqualToSomething() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where handle equals to DEFAULT_HANDLE
+        defaultProductBrandShouldBeFound("handle.equals=" + DEFAULT_HANDLE);
+
+        // Get all the productBrandList where handle equals to UPDATED_HANDLE
+        defaultProductBrandShouldNotBeFound("handle.equals=" + UPDATED_HANDLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByHandleIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where handle not equals to DEFAULT_HANDLE
+        defaultProductBrandShouldNotBeFound("handle.notEquals=" + DEFAULT_HANDLE);
+
+        // Get all the productBrandList where handle not equals to UPDATED_HANDLE
+        defaultProductBrandShouldBeFound("handle.notEquals=" + UPDATED_HANDLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByHandleIsInShouldWork() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where handle in DEFAULT_HANDLE or UPDATED_HANDLE
+        defaultProductBrandShouldBeFound("handle.in=" + DEFAULT_HANDLE + "," + UPDATED_HANDLE);
+
+        // Get all the productBrandList where handle equals to UPDATED_HANDLE
+        defaultProductBrandShouldNotBeFound("handle.in=" + UPDATED_HANDLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByHandleIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where handle is not null
+        defaultProductBrandShouldBeFound("handle.specified=true");
+
+        // Get all the productBrandList where handle is null
+        defaultProductBrandShouldNotBeFound("handle.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllProductBrandsByHandleContainsSomething() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where handle contains DEFAULT_HANDLE
+        defaultProductBrandShouldBeFound("handle.contains=" + DEFAULT_HANDLE);
+
+        // Get all the productBrandList where handle contains UPDATED_HANDLE
+        defaultProductBrandShouldNotBeFound("handle.contains=" + UPDATED_HANDLE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllProductBrandsByHandleNotContainsSomething() throws Exception {
+        // Initialize the database
+        productBrandRepository.saveAndFlush(productBrand);
+
+        // Get all the productBrandList where handle does not contain DEFAULT_HANDLE
+        defaultProductBrandShouldNotBeFound("handle.doesNotContain=" + DEFAULT_HANDLE);
+
+        // Get all the productBrandList where handle does not contain UPDATED_HANDLE
+        defaultProductBrandShouldBeFound("handle.doesNotContain=" + UPDATED_HANDLE);
     }
 
 
@@ -883,12 +969,13 @@ public class ProductBrandResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(productBrand.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
+            .andExpect(jsonPath("$.[*].handle").value(hasItem(DEFAULT_HANDLE)))
             .andExpect(jsonPath("$.[*].shortLabel").value(hasItem(DEFAULT_SHORT_LABEL)))
             .andExpect(jsonPath("$.[*].sortOrder").value(hasItem(DEFAULT_SORT_ORDER)))
             .andExpect(jsonPath("$.[*].iconFont").value(hasItem(DEFAULT_ICON_FONT)))
             .andExpect(jsonPath("$.[*].iconPhoto").value(hasItem(DEFAULT_ICON_PHOTO)))
             .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -938,12 +1025,13 @@ public class ProductBrandResourceIT {
         em.detach(updatedProductBrand);
         updatedProductBrand
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
+            .handle(UPDATED_HANDLE)
             .shortLabel(UPDATED_SHORT_LABEL)
             .sortOrder(UPDATED_SORT_ORDER)
             .iconFont(UPDATED_ICON_FONT)
             .iconPhoto(UPDATED_ICON_PHOTO)
             .activeFlag(UPDATED_ACTIVE_FLAG)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         ProductBrandDTO productBrandDTO = productBrandMapper.toDto(updatedProductBrand);
@@ -958,12 +1046,13 @@ public class ProductBrandResourceIT {
         assertThat(productBrandList).hasSize(databaseSizeBeforeUpdate);
         ProductBrand testProductBrand = productBrandList.get(productBrandList.size() - 1);
         assertThat(testProductBrand.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testProductBrand.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
+        assertThat(testProductBrand.getHandle()).isEqualTo(UPDATED_HANDLE);
         assertThat(testProductBrand.getShortLabel()).isEqualTo(UPDATED_SHORT_LABEL);
         assertThat(testProductBrand.getSortOrder()).isEqualTo(UPDATED_SORT_ORDER);
         assertThat(testProductBrand.getIconFont()).isEqualTo(UPDATED_ICON_FONT);
         assertThat(testProductBrand.getIconPhoto()).isEqualTo(UPDATED_ICON_PHOTO);
         assertThat(testProductBrand.isActiveFlag()).isEqualTo(UPDATED_ACTIVE_FLAG);
+        assertThat(testProductBrand.getLocalization()).isEqualTo(UPDATED_LOCALIZATION);
         assertThat(testProductBrand.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testProductBrand.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

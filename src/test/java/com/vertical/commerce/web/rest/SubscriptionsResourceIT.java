@@ -38,11 +38,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class SubscriptionsResourceIT {
 
-    private static final String DEFAULT_EMAIL_ADDRESS = "%H0J@K.O=";
-    private static final String UPDATED_EMAIL_ADDRESS = "[V7m2}@(HFF.b;9";
+    private static final String DEFAULT_EMAIL_ADDRESS = "K@O=.[V7m2}";
+    private static final String UPDATED_EMAIL_ADDRESS = "(HFF@b;9.>";
 
     private static final Instant DEFAULT_SUBSCRIBED_ON = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_SUBSCRIBED_ON = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Boolean DEFAULT_ACTIVE_FLAG = false;
+    private static final Boolean UPDATED_ACTIVE_FLAG = true;
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -80,6 +83,7 @@ public class SubscriptionsResourceIT {
         Subscriptions subscriptions = new Subscriptions()
             .emailAddress(DEFAULT_EMAIL_ADDRESS)
             .subscribedOn(DEFAULT_SUBSCRIBED_ON)
+            .activeFlag(DEFAULT_ACTIVE_FLAG)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return subscriptions;
@@ -94,6 +98,7 @@ public class SubscriptionsResourceIT {
         Subscriptions subscriptions = new Subscriptions()
             .emailAddress(UPDATED_EMAIL_ADDRESS)
             .subscribedOn(UPDATED_SUBSCRIBED_ON)
+            .activeFlag(UPDATED_ACTIVE_FLAG)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return subscriptions;
@@ -121,6 +126,7 @@ public class SubscriptionsResourceIT {
         Subscriptions testSubscriptions = subscriptionsList.get(subscriptionsList.size() - 1);
         assertThat(testSubscriptions.getEmailAddress()).isEqualTo(DEFAULT_EMAIL_ADDRESS);
         assertThat(testSubscriptions.getSubscribedOn()).isEqualTo(DEFAULT_SUBSCRIBED_ON);
+        assertThat(testSubscriptions.isActiveFlag()).isEqualTo(DEFAULT_ACTIVE_FLAG);
         assertThat(testSubscriptions.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testSubscriptions.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -188,6 +194,26 @@ public class SubscriptionsResourceIT {
 
     @Test
     @Transactional
+    public void checkActiveFlagIsRequired() throws Exception {
+        int databaseSizeBeforeTest = subscriptionsRepository.findAll().size();
+        // set the field null
+        subscriptions.setActiveFlag(null);
+
+        // Create the Subscriptions, which fails.
+        SubscriptionsDTO subscriptionsDTO = subscriptionsMapper.toDto(subscriptions);
+
+
+        restSubscriptionsMockMvc.perform(post("/api/subscriptions").with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(subscriptionsDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Subscriptions> subscriptionsList = subscriptionsRepository.findAll();
+        assertThat(subscriptionsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void checkValidFromIsRequired() throws Exception {
         int databaseSizeBeforeTest = subscriptionsRepository.findAll().size();
         // set the field null
@@ -219,6 +245,7 @@ public class SubscriptionsResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(subscriptions.getId().intValue())))
             .andExpect(jsonPath("$.[*].emailAddress").value(hasItem(DEFAULT_EMAIL_ADDRESS)))
             .andExpect(jsonPath("$.[*].subscribedOn").value(hasItem(DEFAULT_SUBSCRIBED_ON.toString())))
+            .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -236,6 +263,7 @@ public class SubscriptionsResourceIT {
             .andExpect(jsonPath("$.id").value(subscriptions.getId().intValue()))
             .andExpect(jsonPath("$.emailAddress").value(DEFAULT_EMAIL_ADDRESS))
             .andExpect(jsonPath("$.subscribedOn").value(DEFAULT_SUBSCRIBED_ON.toString()))
+            .andExpect(jsonPath("$.activeFlag").value(DEFAULT_ACTIVE_FLAG.booleanValue()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -392,6 +420,58 @@ public class SubscriptionsResourceIT {
 
     @Test
     @Transactional
+    public void getAllSubscriptionsByActiveFlagIsEqualToSomething() throws Exception {
+        // Initialize the database
+        subscriptionsRepository.saveAndFlush(subscriptions);
+
+        // Get all the subscriptionsList where activeFlag equals to DEFAULT_ACTIVE_FLAG
+        defaultSubscriptionsShouldBeFound("activeFlag.equals=" + DEFAULT_ACTIVE_FLAG);
+
+        // Get all the subscriptionsList where activeFlag equals to UPDATED_ACTIVE_FLAG
+        defaultSubscriptionsShouldNotBeFound("activeFlag.equals=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSubscriptionsByActiveFlagIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        subscriptionsRepository.saveAndFlush(subscriptions);
+
+        // Get all the subscriptionsList where activeFlag not equals to DEFAULT_ACTIVE_FLAG
+        defaultSubscriptionsShouldNotBeFound("activeFlag.notEquals=" + DEFAULT_ACTIVE_FLAG);
+
+        // Get all the subscriptionsList where activeFlag not equals to UPDATED_ACTIVE_FLAG
+        defaultSubscriptionsShouldBeFound("activeFlag.notEquals=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSubscriptionsByActiveFlagIsInShouldWork() throws Exception {
+        // Initialize the database
+        subscriptionsRepository.saveAndFlush(subscriptions);
+
+        // Get all the subscriptionsList where activeFlag in DEFAULT_ACTIVE_FLAG or UPDATED_ACTIVE_FLAG
+        defaultSubscriptionsShouldBeFound("activeFlag.in=" + DEFAULT_ACTIVE_FLAG + "," + UPDATED_ACTIVE_FLAG);
+
+        // Get all the subscriptionsList where activeFlag equals to UPDATED_ACTIVE_FLAG
+        defaultSubscriptionsShouldNotBeFound("activeFlag.in=" + UPDATED_ACTIVE_FLAG);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSubscriptionsByActiveFlagIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        subscriptionsRepository.saveAndFlush(subscriptions);
+
+        // Get all the subscriptionsList where activeFlag is not null
+        defaultSubscriptionsShouldBeFound("activeFlag.specified=true");
+
+        // Get all the subscriptionsList where activeFlag is null
+        defaultSubscriptionsShouldNotBeFound("activeFlag.specified=false");
+    }
+
+    @Test
+    @Transactional
     public void getAllSubscriptionsByValidFromIsEqualToSomething() throws Exception {
         // Initialize the database
         subscriptionsRepository.saveAndFlush(subscriptions);
@@ -503,6 +583,7 @@ public class SubscriptionsResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(subscriptions.getId().intValue())))
             .andExpect(jsonPath("$.[*].emailAddress").value(hasItem(DEFAULT_EMAIL_ADDRESS)))
             .andExpect(jsonPath("$.[*].subscribedOn").value(hasItem(DEFAULT_SUBSCRIBED_ON.toString())))
+            .andExpect(jsonPath("$.[*].activeFlag").value(hasItem(DEFAULT_ACTIVE_FLAG.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -553,6 +634,7 @@ public class SubscriptionsResourceIT {
         updatedSubscriptions
             .emailAddress(UPDATED_EMAIL_ADDRESS)
             .subscribedOn(UPDATED_SUBSCRIBED_ON)
+            .activeFlag(UPDATED_ACTIVE_FLAG)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         SubscriptionsDTO subscriptionsDTO = subscriptionsMapper.toDto(updatedSubscriptions);
@@ -568,6 +650,7 @@ public class SubscriptionsResourceIT {
         Subscriptions testSubscriptions = subscriptionsList.get(subscriptionsList.size() - 1);
         assertThat(testSubscriptions.getEmailAddress()).isEqualTo(UPDATED_EMAIL_ADDRESS);
         assertThat(testSubscriptions.getSubscribedOn()).isEqualTo(UPDATED_SUBSCRIBED_ON);
+        assertThat(testSubscriptions.isActiveFlag()).isEqualTo(UPDATED_ACTIVE_FLAG);
         assertThat(testSubscriptions.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testSubscriptions.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }

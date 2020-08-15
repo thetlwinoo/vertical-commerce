@@ -17,10 +17,10 @@ public class TownsDTO implements Serializable {
 
     private String postalCode;
 
-    @Lob
-    private String cultureDetails;
-
     private String description;
+
+    @Lob
+    private String localization;
 
     @NotNull
     private Instant validFrom;
@@ -56,20 +56,20 @@ public class TownsDTO implements Serializable {
         this.postalCode = postalCode;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
-    }
-
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLocalization() {
+        return localization;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
     }
 
     public Instant getValidFrom() {
@@ -128,8 +128,8 @@ public class TownsDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", postalCode='" + getPostalCode() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
             ", description='" + getDescription() + "'" +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             ", townshipId=" + getTownshipId() +

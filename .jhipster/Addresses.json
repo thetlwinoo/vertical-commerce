@@ -66,13 +66,6 @@
     },
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "towns",
-      "otherEntityRelationshipName": "addresses",
-      "relationshipName": "town",
-      "otherEntityField": "name"
-    },
-    {
-      "relationshipType": "many-to-one",
       "otherEntityName": "addressTypes",
       "otherEntityRelationshipName": "addresses",
       "relationshipName": "addressType",
@@ -82,18 +75,18 @@
       "relationshipType": "many-to-one",
       "otherEntityName": "customers",
       "otherEntityRelationshipName": "addresses",
-      "relationshipName": "customerAddress",
+      "relationshipName": "customer",
       "otherEntityField": "name"
     },
     {
       "relationshipType": "many-to-one",
       "otherEntityName": "suppliers",
       "otherEntityRelationshipName": "addresses",
-      "relationshipName": "supplierAddress",
+      "relationshipName": "supplier",
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718071912",
+  "changelogDate": "20200802170016",
   "entityTableName": "addresses",
   "dto": "mapstruct",
   "pagination": "no",

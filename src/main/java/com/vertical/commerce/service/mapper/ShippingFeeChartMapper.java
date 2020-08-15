@@ -9,19 +9,19 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link ShippingFeeChart} and its DTO {@link ShippingFeeChartDTO}.
  */
-@Mapper(componentModel = "spring", uses = {TownsMapper.class, DeliveryMethodsMapper.class})
+@Mapper(componentModel = "spring", uses = {TownshipsMapper.class, DeliveryMethodsMapper.class})
 public interface ShippingFeeChartMapper extends EntityMapper<ShippingFeeChartDTO, ShippingFeeChart> {
 
-    @Mapping(source = "sourceTown.id", target = "sourceTownId")
-    @Mapping(source = "sourceTown.name", target = "sourceTownName")
-    @Mapping(source = "destinationTown.id", target = "destinationTownId")
-    @Mapping(source = "destinationTown.name", target = "destinationTownName")
+    @Mapping(source = "sourceTownship.id", target = "sourceTownshipId")
+    @Mapping(source = "sourceTownship.name", target = "sourceTownshipName")
+    @Mapping(source = "destinationTownship.id", target = "destinationTownshipId")
+    @Mapping(source = "destinationTownship.name", target = "destinationTownshipName")
     @Mapping(source = "deliveryMethod.id", target = "deliveryMethodId")
     @Mapping(source = "deliveryMethod.name", target = "deliveryMethodName")
     ShippingFeeChartDTO toDto(ShippingFeeChart shippingFeeChart);
 
-    @Mapping(source = "sourceTownId", target = "sourceTown")
-    @Mapping(source = "destinationTownId", target = "destinationTown")
+    @Mapping(source = "sourceTownshipId", target = "sourceTownship")
+    @Mapping(source = "destinationTownshipId", target = "destinationTownship")
     @Mapping(source = "deliveryMethodId", target = "deliveryMethod")
     ShippingFeeChart toEntity(ShippingFeeChartDTO shippingFeeChartDTO);
 

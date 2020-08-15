@@ -25,8 +25,8 @@ public class ProductCategoryExtendResource {
     }
 
     @GetMapping("/product-categories-extend")
-    public ResponseEntity getAllProductCategories(@RequestParam(value = "shownav", required = false) Boolean shownav) {
-        JsonNode returnValue = productCategoryExtendService.getCategoriesTree(shownav == null?false:shownav);
+    public ResponseEntity getProductCategories(@RequestParam(value = "idList", required = false) String idList) {
+        String returnValue = productCategoryExtendService.getCategoriesTree(idList == null ? "" : idList);
         return ResponseEntity.ok().body(returnValue);
     }
 }

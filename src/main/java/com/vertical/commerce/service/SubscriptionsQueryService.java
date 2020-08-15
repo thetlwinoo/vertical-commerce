@@ -97,6 +97,9 @@ public class SubscriptionsQueryService extends QueryService<Subscriptions> {
             if (criteria.getSubscribedOn() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getSubscribedOn(), Subscriptions_.subscribedOn));
             }
+            if (criteria.getActiveFlag() != null) {
+                specification = specification.and(buildSpecification(criteria.getActiveFlag(), Subscriptions_.activeFlag));
+            }
             if (criteria.getValidFrom() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getValidFrom(), Subscriptions_.validFrom));
             }

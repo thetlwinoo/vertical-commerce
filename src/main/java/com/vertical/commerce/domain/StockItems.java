@@ -33,10 +33,8 @@ public class StockItems implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "culture_details")
-    private String cultureDetails;
+    @Column(name = "handle")
+    private String handle;
 
     @Column(name = "vendor_code")
     private String vendorCode;
@@ -178,6 +176,11 @@ public class StockItems implements Serializable {
     @Column(name = "active_flag", nullable = false)
     private Boolean activeFlag;
 
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "localization")
+    private String localization;
+
     @NotNull
     @Column(name = "valid_from", nullable = false)
     private Instant validFrom;
@@ -192,6 +195,10 @@ public class StockItems implements Serializable {
     @OneToMany(mappedBy = "stockItem")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Photos> photoLists = new HashSet<>();
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "stockItems", allowSetters = true)
+    private Suppliers supplier;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "stockItems", allowSetters = true)
@@ -267,17 +274,17 @@ public class StockItems implements Serializable {
         this.name = name;
     }
 
-    public String getCultureDetails() {
-        return cultureDetails;
+    public String getHandle() {
+        return handle;
     }
 
-    public StockItems cultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public StockItems handle(String handle) {
+        this.handle = handle;
         return this;
     }
 
-    public void setCultureDetails(String cultureDetails) {
-        this.cultureDetails = cultureDetails;
+    public void setHandle(String handle) {
+        this.handle = handle;
     }
 
     public String getVendorCode() {
@@ -839,6 +846,19 @@ public class StockItems implements Serializable {
         this.activeFlag = activeFlag;
     }
 
+    public String getLocalization() {
+        return localization;
+    }
+
+    public StockItems localization(String localization) {
+        this.localization = localization;
+        return this;
+    }
+
+    public void setLocalization(String localization) {
+        this.localization = localization;
+    }
+
     public Instant getValidFrom() {
         return validFrom;
     }
@@ -913,6 +933,19 @@ public class StockItems implements Serializable {
 
     public void setPhotoLists(Set<Photos> photos) {
         this.photoLists = photos;
+    }
+
+    public Suppliers getSupplier() {
+        return supplier;
+    }
+
+    public StockItems supplier(Suppliers suppliers) {
+        this.supplier = suppliers;
+        return this;
+    }
+
+    public void setSupplier(Suppliers suppliers) {
+        this.supplier = suppliers;
     }
 
     public UnitMeasure getItemLengthUnit() {
@@ -1107,7 +1140,7 @@ public class StockItems implements Serializable {
         return "StockItems{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", cultureDetails='" + getCultureDetails() + "'" +
+            ", handle='" + getHandle() + "'" +
             ", vendorCode='" + getVendorCode() + "'" +
             ", vendorSKU='" + getVendorSKU() + "'" +
             ", generatedSKU='" + getGeneratedSKU() + "'" +
@@ -1151,6 +1184,7 @@ public class StockItems implements Serializable {
             ", lastEditedBy='" + getLastEditedBy() + "'" +
             ", lastEditedWhen='" + getLastEditedWhen() + "'" +
             ", activeFlag='" + isActiveFlag() + "'" +
+            ", localization='" + getLocalization() + "'" +
             ", validFrom='" + getValidFrom() + "'" +
             ", validTo='" + getValidTo() + "'" +
             "}";

@@ -7,13 +7,13 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "cultureDetails",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
       "fieldName": "description",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "localization",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
     },
     {
       "fieldName": "validFrom",
@@ -34,7 +34,7 @@
       "otherEntityField": "name"
     }
   ],
-  "changelogDate": "20200718073612",
+  "changelogDate": "20200802171716",
   "entityTableName": "regions",
   "dto": "mapstruct",
   "pagination": "no",

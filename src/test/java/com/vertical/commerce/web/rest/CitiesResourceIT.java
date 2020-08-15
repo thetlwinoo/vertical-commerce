@@ -43,15 +43,15 @@ public class CitiesResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_CULTURE_DETAILS = "AAAAAAAAAA";
-    private static final String UPDATED_CULTURE_DETAILS = "BBBBBBBBBB";
-
     private static final String DEFAULT_LOCATION = "AAAAAAAAAA";
     private static final String UPDATED_LOCATION = "BBBBBBBBBB";
 
     private static final Long DEFAULT_LATEST_RECORDED_POPULATION = 1L;
     private static final Long UPDATED_LATEST_RECORDED_POPULATION = 2L;
     private static final Long SMALLER_LATEST_RECORDED_POPULATION = 1L - 1L;
+
+    private static final String DEFAULT_LOCALIZATION = "AAAAAAAAAA";
+    private static final String UPDATED_LOCALIZATION = "BBBBBBBBBB";
 
     private static final Instant DEFAULT_VALID_FROM = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_VALID_FROM = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -88,9 +88,9 @@ public class CitiesResourceIT {
     public static Cities createEntity(EntityManager em) {
         Cities cities = new Cities()
             .name(DEFAULT_NAME)
-            .cultureDetails(DEFAULT_CULTURE_DETAILS)
             .location(DEFAULT_LOCATION)
             .latestRecordedPopulation(DEFAULT_LATEST_RECORDED_POPULATION)
+            .localization(DEFAULT_LOCALIZATION)
             .validFrom(DEFAULT_VALID_FROM)
             .validTo(DEFAULT_VALID_TO);
         return cities;
@@ -104,9 +104,9 @@ public class CitiesResourceIT {
     public static Cities createUpdatedEntity(EntityManager em) {
         Cities cities = new Cities()
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .location(UPDATED_LOCATION)
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         return cities;
@@ -133,9 +133,9 @@ public class CitiesResourceIT {
         assertThat(citiesList).hasSize(databaseSizeBeforeCreate + 1);
         Cities testCities = citiesList.get(citiesList.size() - 1);
         assertThat(testCities.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testCities.getCultureDetails()).isEqualTo(DEFAULT_CULTURE_DETAILS);
         assertThat(testCities.getLocation()).isEqualTo(DEFAULT_LOCATION);
         assertThat(testCities.getLatestRecordedPopulation()).isEqualTo(DEFAULT_LATEST_RECORDED_POPULATION);
+        assertThat(testCities.getLocalization()).isEqualTo(DEFAULT_LOCALIZATION);
         assertThat(testCities.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
         assertThat(testCities.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
     }
@@ -213,9 +213,9 @@ public class CitiesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cities.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)))
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
     }
@@ -232,9 +232,9 @@ public class CitiesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(cities.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.cultureDetails").value(DEFAULT_CULTURE_DETAILS.toString()))
             .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION))
             .andExpect(jsonPath("$.latestRecordedPopulation").value(DEFAULT_LATEST_RECORDED_POPULATION.intValue()))
+            .andExpect(jsonPath("$.localization").value(DEFAULT_LOCALIZATION.toString()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
             .andExpect(jsonPath("$.validTo").value(DEFAULT_VALID_TO.toString()));
     }
@@ -652,9 +652,9 @@ public class CitiesResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cities.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].cultureDetails").value(hasItem(DEFAULT_CULTURE_DETAILS.toString())))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION)))
             .andExpect(jsonPath("$.[*].latestRecordedPopulation").value(hasItem(DEFAULT_LATEST_RECORDED_POPULATION.intValue())))
+            .andExpect(jsonPath("$.[*].localization").value(hasItem(DEFAULT_LOCALIZATION.toString())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
             .andExpect(jsonPath("$.[*].validTo").value(hasItem(DEFAULT_VALID_TO.toString())));
 
@@ -704,9 +704,9 @@ public class CitiesResourceIT {
         em.detach(updatedCities);
         updatedCities
             .name(UPDATED_NAME)
-            .cultureDetails(UPDATED_CULTURE_DETAILS)
             .location(UPDATED_LOCATION)
             .latestRecordedPopulation(UPDATED_LATEST_RECORDED_POPULATION)
+            .localization(UPDATED_LOCALIZATION)
             .validFrom(UPDATED_VALID_FROM)
             .validTo(UPDATED_VALID_TO);
         CitiesDTO citiesDTO = citiesMapper.toDto(updatedCities);
@@ -721,9 +721,9 @@ public class CitiesResourceIT {
         assertThat(citiesList).hasSize(databaseSizeBeforeUpdate);
         Cities testCities = citiesList.get(citiesList.size() - 1);
         assertThat(testCities.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCities.getCultureDetails()).isEqualTo(UPDATED_CULTURE_DETAILS);
         assertThat(testCities.getLocation()).isEqualTo(UPDATED_LOCATION);
         assertThat(testCities.getLatestRecordedPopulation()).isEqualTo(UPDATED_LATEST_RECORDED_POPULATION);
+        assertThat(testCities.getLocalization()).isEqualTo(UPDATED_LOCALIZATION);
         assertThat(testCities.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testCities.getValidTo()).isEqualTo(UPDATED_VALID_TO);
     }
